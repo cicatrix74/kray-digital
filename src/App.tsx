@@ -127,6 +127,21 @@ export default function App() {
 
     saveLeads([newLead, ...leads]);
 
+    // Track conversion in Google Analytics 4 (GA4)
+    try {
+      if (typeof window !== 'undefined' && (window as any).gtag) {
+        (window as any).gtag('event', 'generate_lead', {
+          event_category: 'Lead',
+          event_label: rawLead.service,
+          service_name: rawLead.service,
+          value: parseFloat((rawLead.budget || '0').replace(/\D/g, '')) || 0,
+          currency: 'UAH'
+        });
+      }
+    } catch (e) {
+      // ignore
+    }
+
     // Send email notification to cicatrix74@gmail.com via FormSubmit.co
     fetch('https://formsubmit.co/ajax/cicatrix74@gmail.com', {
       method: 'POST',
