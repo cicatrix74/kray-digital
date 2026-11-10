@@ -138,7 +138,7 @@ export default function Portfolio({ onOpenCase }: PortfolioProps) {
                   {/* Image preview with smooth zoom on hover */}
                   <img
                     src={cs.image}
-                    alt=""
+                    alt={cs.title}
                     onError={(e) => {
                       (e.target as HTMLElement).style.display = 'none';
                     }}

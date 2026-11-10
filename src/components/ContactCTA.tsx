@@ -151,10 +151,11 @@ export default function ContactCTA({ onSubmitLead }: ContactCTAProps) {
                     id="cta-form"
                   >
                     <div>
-                      <label className="block text-xs font-semibold text-brand-on-surface-variant mb-1.5">
+                      <label htmlFor="cta-name" className="block text-xs font-semibold text-brand-on-surface-variant mb-1.5">
                         {t.contact.label_name}
                       </label>
                       <input
+                        id="cta-name"
                         type="text"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
@@ -165,10 +166,11 @@ export default function ContactCTA({ onSubmitLead }: ContactCTAProps) {
                     </div>
 
                     <div>
-                      <label className="block text-xs font-semibold text-brand-on-surface-variant mb-1.5">
+                      <label htmlFor="cta-phone" className="block text-xs font-semibold text-brand-on-surface-variant mb-1.5">
                         {t.contact.label_phone}
                       </label>
                       <input
+                        id="cta-phone"
                         type="tel"
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
@@ -179,11 +181,12 @@ export default function ContactCTA({ onSubmitLead }: ContactCTAProps) {
                     </div>
 
                     <div>
-                      <label className="block text-xs font-semibold text-brand-on-surface-variant mb-1.5">
+                      <label htmlFor="cta-service" className="block text-xs font-semibold text-brand-on-surface-variant mb-1.5">
                         {t.contact.label_service}
                       </label>
                       <div className="relative">
                         <select
+                          id="cta-service"
                           value={service}
                           onChange={(e) => setService(e.target.value)}
                           className="w-full bg-brand-surface-container border border-brand-outline-variant/50 rounded px-4 py-3 text-xs md:text-sm text-brand-on-surface focus:border-brand-primary-container focus:ring-1 focus:ring-brand-primary-container outline-none transition-colors appearance-none cursor-pointer"

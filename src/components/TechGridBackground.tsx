@@ -4,8 +4,15 @@ export default function TechGridBackground() {
   const [mousePos, setMousePos] = useState({ x: -1000, y: -1000 });
 
   useEffect(() => {
+    let ticking = false;
     const handleMouseMove = (e: MouseEvent) => {
-      setMousePos({ x: e.clientX, y: e.clientY });
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setMousePos({ x: e.clientX, y: e.clientY });
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
 
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
@@ -17,23 +24,7 @@ export default function TechGridBackground() {
       className="fixed inset-0 w-full h-full pointer-events-none z-0 overflow-hidden select-none bg-[#0a0d14]"
       id="tech-grid-bg"
     >
-      {/* 1. Real Office Workspace Atmosphere (Desks, Monitors & IT Team) */}
-      <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none">
-        <img
-          src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=1600"
-          alt="Modern Agency Office Workspace"
-          loading="lazy"
-          decoding="async"
-          width="1600"
-          height="900"
-          className="w-full h-full object-cover object-top opacity-20 filter grayscale contrast-125 scale-[1.02] transition-transform duration-1000 ease-out"
-        />
-        {/* Cinematic dark gradients to keep text 100% readable and contrast-rich */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0d14] via-[#0a0d14]/75 to-[#0a0d14]/60" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0a0d14] via-transparent to-[#0a0d14]/85" />
-      </div>
-
-      {/* 2. Base Blueprint Grid Pattern (SVG) */}
+      {/* 1. Base Blueprint Grid Pattern (SVG) - 100% Vector & 0ms Load */}
       <svg
         className="absolute inset-0 w-full h-full opacity-[0.14] stroke-cyan-400"
         xmlns="http://www.w3.org/2000/svg"
