@@ -1,19 +1,45 @@
 <!doctype html>
-<html lang="ru" class="dark">
+<html lang="uk" class="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Kray Digital — Розробка та просування</title>
-    <!-- Google Fonts: Inter and Montserrat -->
+    <title>Kray Digital — Розробка сайтів та digital-маркетинг</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Digital-агентство Kray Digital. Розробка швидких веб-сайтів від 5 000 ₴, SEO-оптимізація та Google реклама. Символічна передоплата 10% — 90% за фактом робіт." />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#0f131e" />
+    <link rel="canonical" href="https://kray-digital.pp.ua/" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://kray-digital.pp.ua/" />
+    <meta property="og:title" content="Kray Digital — Розробка сайтів та digital-маркетинг" />
+    <meta property="og:description" content="Розробка швидких сайтів, SEO та Google реклама. 10% передоплати, 90% за фактом здачі робіт." />
+
+    <!-- Non-blocking Google Fonts: Inter and Montserrat -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet" />
-    <!-- Google Tag Manager -->
-    <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-5TLVJ2GK"></script>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800&display=swap" media="print" onload="this.media='all'" />
+    <noscript>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800&display=swap" />
+    </noscript>
+
+    <!-- Google Tag Manager (Deferred to avoid blocking main thread on mobile) -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
+
+      // Load GTM asynchronously after initial page load
+      window.addEventListener('load', function() {
+        var s = document.createElement('script');
+        s.async = true;
+        s.src = "https://www.googletagmanager.com/gtm.js?id=GTM-5TLVJ2GK";
+        document.head.appendChild(s);
+      });
     </script>
   </head>
   <body class="bg-[#0f131e] text-[#dfe2f2]">

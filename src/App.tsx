@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { AnimatePresence } from 'motion/react';
 import Header from './components/Header';
 import Hero from './components/Hero';
@@ -6,17 +6,19 @@ import Expertise from './components/Expertise';
 import Stats from './components/Stats';
 import ContactCTA from './components/ContactCTA';
 import Footer from './components/Footer';
-import CasesDrawer from './components/CasesDrawer';
-import CalculatorModal from './components/CalculatorModal';
-import LeadPanel from './components/LeadPanel';
 import TechGridBackground from './components/TechGridBackground';
 import ScrollToTop from './components/ScrollToTop';
 import Portfolio from './components/Portfolio';
-import QuickHelpChat from './components/QuickHelpChat';
 import ProjectRoadmap from './components/ProjectRoadmap';
-import FAQ from './components/FAQ';
-import Testimonials from './components/Testimonials';
 import { LeadSubmission } from './types';
+
+// Code-split heavy below-the-fold and modal components for ultra-fast initial load
+const CasesDrawer = lazy(() => import('./components/CasesDrawer'));
+const CalculatorModal = lazy(() => import('./components/CalculatorModal'));
+const LeadPanel = lazy(() => import('./components/LeadPanel'));
+const QuickHelpChat = lazy(() => import('./components/QuickHelpChat'));
+const Testimonials = lazy(() => import('./components/Testimonials'));
+const FAQ = lazy(() => import('./components/FAQ'));
 
 const LOCAL_STORAGE_KEY = 'digital_agency_crm_leads';
 
@@ -246,16 +248,20 @@ export default function App() {
         <Portfolio onOpenCase={handleOpenCasesWithCase} />
 
         {/* Testimonials / Client Success Stories carousel section */}
-        <Testimonials 
-          onOpenCase={handleOpenCasesWithCase}
-          onScrollToContact={() => handleScrollToSection('contact-cta-section')}
-        />
+        <Suspense fallback={null}>
+          <Testimonials 
+            onOpenCase={handleOpenCasesWithCase}
+            onScrollToContact={() => handleScrollToSection('contact-cta-section')}
+          />
+        </Suspense>
 
         {/* FAQ Section answering client questions on timelines, guarantees, workflows */}
-        <FAQ 
-          onScrollToContact={() => handleScrollToSection('contact-cta-section')}
-          onOpenCalculator={handleOpenCalculatorWithService}
-        />
+        <Suspense fallback={null}>
+          <FAQ 
+            onScrollToContact={() => handleScrollToSection('contact-cta-section')}
+            onOpenCalculator={handleOpenCalculatorWithService}
+          />
+        </Suspense>
 
         {/* Contact/Lead Capture Form Section */}
         <ContactCTA onSubmitLead={handleAddLead} />
@@ -270,57 +276,65 @@ export default function App() {
       />
 
       {/* OVERLAY COMPONENT POPUPS WITH FRAMER MOTION ANIMATION */}
-      <AnimatePresence>
-        {isCasesOpen && (
-          <CasesDrawer 
-            isOpen={isCasesOpen} 
-            initialCaseId={selectedCaseId}
-            onClose={() => {
-              setIsCasesOpen(false);
-              setSelectedCaseId(null);
-            }}
-            onContactClick={() => {
-              setTimeout(() => {
-                handleScrollToSection('contact-cta-section');
-              }, 300);
-            }}
-          />
-        )}
-      </AnimatePresence>
+      <Suspense fallback={null}>
+        <AnimatePresence>
+          {isCasesOpen && (
+            <CasesDrawer 
+              isOpen={isCasesOpen} 
+              initialCaseId={selectedCaseId}
+              onClose={() => {
+                setIsCasesOpen(false);
+                setSelectedCaseId(null);
+              }}
+              onContactClick={() => {
+                setTimeout(() => {
+                  handleScrollToSection('contact-cta-section');
+                }, 300);
+              }}
+            />
+          )}
+        </AnimatePresence>
+      </Suspense>
 
-      <AnimatePresence>
-        {isCalculatorOpen && (
-          <CalculatorModal 
-            isOpen={isCalculatorOpen} 
-            onClose={() => setIsCalculatorOpen(false)} 
-            onSubmitLead={handleAddLead}
-            initialService={calculatorService}
-          />
-        )}
-      </AnimatePresence>
+      <Suspense fallback={null}>
+        <AnimatePresence>
+          {isCalculatorOpen && (
+            <CalculatorModal 
+              isOpen={isCalculatorOpen} 
+              onClose={() => setIsCalculatorOpen(false)} 
+              onSubmitLead={handleAddLead}
+              initialService={calculatorService}
+            />
+          )}
+        </AnimatePresence>
+      </Suspense>
 
-      <AnimatePresence>
-        {isLeadPanelOpen && (
-          <LeadPanel 
-            isOpen={isLeadPanelOpen} 
-            onClose={() => setIsLeadPanelOpen(false)} 
-            leads={leads}
-            onUpdateStatus={handleUpdateStatus}
-            onDeleteLead={handleDeleteLead}
-            onResetLeads={handleResetLeads}
-            onAddLead={handleAddLead}
-          />
-        )}
-      </AnimatePresence>
+      <Suspense fallback={null}>
+        <AnimatePresence>
+          {isLeadPanelOpen && (
+            <LeadPanel 
+              isOpen={isLeadPanelOpen} 
+              onClose={() => setIsLeadPanelOpen(false)} 
+              leads={leads}
+              onUpdateStatus={handleUpdateStatus}
+              onDeleteLead={handleDeleteLead}
+              onResetLeads={handleResetLeads}
+              onAddLead={handleAddLead}
+            />
+          )}
+        </AnimatePresence>
+      </Suspense>
 
       {/* Floating Scroll to Top Action */}
       <ScrollToTop />
 
-      {/* Floating Quick Help Chat Bubble using Gemini API */}
-      <QuickHelpChat 
-        onOpenCalculator={() => handleOpenCalculatorWithService('')}
-        onScrollToContact={() => handleScrollToSection('contact-cta-section')}
-      />
+      {/* Floating Quick Help Chat Bubble */}
+      <Suspense fallback={null}>
+        <QuickHelpChat 
+          onOpenCalculator={() => handleOpenCalculatorWithService('')}
+          onScrollToContact={() => handleScrollToSection('contact-cta-section')}
+        />
+      </Suspense>
 
     </div>
   );

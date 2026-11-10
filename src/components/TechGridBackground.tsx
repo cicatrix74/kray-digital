@@ -20,8 +20,12 @@ export default function TechGridBackground() {
       {/* 1. Real Office Workspace Atmosphere (Desks, Monitors & IT Team) */}
       <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none">
         <img
-          src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=2000"
+          src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=1600"
           alt="Modern Agency Office Workspace"
+          loading="lazy"
+          decoding="async"
+          width="1600"
+          height="900"
           className="w-full h-full object-cover object-top opacity-20 filter grayscale contrast-125 scale-[1.02] transition-transform duration-1000 ease-out"
         />
         {/* Cinematic dark gradients to keep text 100% readable and contrast-rich */}
