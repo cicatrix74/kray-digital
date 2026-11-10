@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450" fill="none">
+  <defs>
+    <linearGradient id="bg-grad-3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0e1122" />
+      <stop offset="100%" stop-color="#050711" />
+    </linearGradient>
+    <linearGradient id="purple-blue" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#6366f1" />
+      <stop offset="100%" stop-color="#a855f7" />
+    </linearGradient>
+    <linearGradient id="cyan-blue" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#06b6d4" />
+      <stop offset="100%" stop-color="#3b82f6" />
+    </linearGradient>
+    <linearGradient id="panel-grad-3" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#14182e" />
+      <stop offset="100%" stop-color="#0b0e1e" />
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="450" fill="url(#bg-grad-3)" />
+  <circle cx="710" cy="80" r="170" fill="#6366f1" fill-opacity="0.06" filter="blur(40px)" />
+  <circle cx="90" cy="360" r="130" fill="#a855f7" fill-opacity="0.05" filter="blur(30px)" />
+
+  <!-- Navigation -->
+  <rect x="30" y="25" width="740" height="48" rx="8" fill="#12162a" stroke="#212745" stroke-width="1" />
+  <text x="50" y="54" fill="#a855f7" font-family="system-ui, sans-serif" font-weight="800" font-size="14" letter-spacing="1">LOGISTIX CLOUD ERP</text>
+  <rect x="230" y="37" width="230" height="24" rx="6" fill="#090b17" stroke="#212745" />
+  <text x="245" y="53" fill="#64748b" font-family="system-ui, sans-serif" font-size="10">Google Ads Performance Max Campaign</text>
+  
+  <rect x="580" y="36" width="80" height="26" rx="6" fill="#1e233d" />
+  <text x="592" y="53" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10">CRM Сделки</text>
+  <rect x="670" y="36" width="90" height="26" rx="6" fill="url(#purple-blue)" />
+  <text x="682" y="53" fill="#ffffff" font-family="system-ui, sans-serif" font-weight="700" font-size="10">ROI: 320% ★</text>
+
+  <!-- Left: Performance Funnel KPI Cards -->
+  <rect x="30" y="85" width="220" height="340" rx="10" fill="url(#panel-grad-3)" stroke="#212745" stroke-width="1" />
+  <text x="45" y="112" fill="#94a3b8" font-family="system-ui, sans-serif" font-weight="700" font-size="10" letter-spacing="0.5">СКВОЗНАЯ АНАЛИТИКА ADS</text>
+
+  <!-- Metric 1 -->
+  <rect x="45" y="125" width="190" height="60" rx="8" fill="#090c19" stroke="#6366f1" stroke-opacity="0.3" />
+  <text x="58" y="145" fill="#64748b" font-family="system-ui, sans-serif" font-size="9">КВАЛИФИЦИРОВАННЫЕ ЛИДЫ</text>
+  <text x="58" y="171" fill="#a855f7" font-family="system-ui, sans-serif" font-weight="900" font-size="20">+150% SQL</text>
+
+  <!-- Metric 2 -->
+  <rect x="45" y="195" width="190" height="60" rx="8" fill="#090c19" stroke="#212745" />
+  <text x="58" y="215" fill="#64748b" font-family="system-ui, sans-serif" font-size="9">ОКУПАЕМОСТЬ БЮДЖЕТА</text>
+  <text x="58" y="241" fill="#38bdf8" font-family="system-ui, sans-serif" font-weight="900" font-size="20">320% ROI</text>
+
+  <!-- Metric 3 -->
+  <rect x="45" y="265" width="190" height="60" rx="8" fill="#090c19" stroke="#212745" />
+  <text x="58" y="285" fill="#64748b" font-family="system-ui, sans-serif" font-size="9">СТОИМОСТЬ ЛИДА (CPL)</text>
+  <text x="58" y="311" fill="#34d399" font-family="system-ui, sans-serif" font-weight="900" font-size="20">-45%</text>
+
+  <rect x="45" y="338" width="190" height="72" rx="8" fill="#070914" stroke="#a855f7" stroke-opacity="0.2" />
+  <text x="56" y="358" fill="#a855f7" font-family="system-ui, sans-serif" font-weight="700" font-size="10">МИНУС-СЛОВА &amp; ФИЛЬТРЫ</text>
+  <text x="56" y="375" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="9">✓ 1 800+ минус-слов</text>
+  <text x="56" y="392" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="9">✓ Мусорный трафик: -75%</text>
+
+  <!-- Right: Fleet Map + Conversion Funnel Visual -->
+  <rect x="265" y="85" width="505" height="340" rx="10" fill="url(#panel-grad-3)" stroke="#212745" stroke-width="1" />
+  <text x="285" y="115" fill="#f8fafc" font-family="system-ui, sans-serif" font-weight="700" font-size="14">Воронка конверсии: от клика в Google до контракта в CRM</text>
+  <text x="285" y="132" fill="#64748b" font-family="system-ui, sans-serif" font-size="11">Таргетинг на директоров по логистике и руководителей цепочек поставок</text>
+
+  <!-- Funnel Bars -->
+  <g transform="translate(285, 150)">
+    <!-- Stage 1 -->
+    <rect width="465" height="42" rx="6" fill="#18203d" stroke="#2d3b66" />
+    <rect width="440" height="42" rx="6" fill="#3b82f6" fill-opacity="0.15" />
+    <text x="15" y="26" fill="#93c5fd" font-family="system-ui, sans-serif" font-weight="600" font-size="12">1. Целевые показы Google Search &amp; P-Max</text>
+    <text x="360" y="26" fill="#ffffff" font-family="system-ui, sans-serif" font-weight="700" font-size="12">128 400</text>
+
+    <!-- Stage 2 -->
+    <g transform="translate(0, 52)">
+      <rect width="465" height="42" rx="6" fill="#18203d" stroke="#2d3b66" />
+      <rect width="320" height="42" rx="6" fill="#6366f1" fill-opacity="0.25" />
+      <text x="15" y="26" fill="#c7d2fe" font-family="system-ui, sans-serif" font-weight="600" font-size="12">2. Переходы на лендинг (CTR 8.4%)</text>
+      <text x="360" y="26" fill="#ffffff" font-family="system-ui, sans-serif" font-weight="700" font-size="12">10 780</text>
+    </g>
+
+    <!-- Stage 3 -->
+    <g transform="translate(0, 104)">
+      <rect width="465" height="42" rx="6" fill="#18203d" stroke="#2d3b66" />
+      <rect width="210" height="42" rx="6" fill="#a855f7" fill-opacity="0.3" />
+      <text x="15" y="26" fill="#e9d5ff" font-family="system-ui, sans-serif" font-weight="600" font-size="12">3. Демо-заявки и калькулятор логистики</text>
+      <text x="360" y="26" fill="#ffffff" font-family="system-ui, sans-serif" font-weight="700" font-size="12">842 заявки</text>
+    </g>
+
+    <!-- Stage 4 -->
+    <g transform="translate(0, 156)">
+      <rect width="465" height="52" rx="6" fill="#0e172e" stroke="#10b981" stroke-opacity="0.5" />
+      <rect width="140" height="52" rx="6" fill="#10b981" fill-opacity="0.25" />
+      <text x="15" y="25" fill="#34d399" font-family="system-ui, sans-serif" font-weight="700" font-size="12">4. Закрытые B2B контракты (Enterprise)</text>
+      <text x="15" y="42" fill="#64748b" font-family="system-ui, sans-serif" font-size="10">Средний LTV клиента: 480 000 ₴</text>
+      <text x="345" y="32" fill="#10b981" font-family="system-ui, sans-serif" font-weight="900" font-size="15">68 сделок</text>
+    </g>
+  </g>
+</svg>

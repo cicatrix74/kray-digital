@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450" fill="none">
+  <defs>
+    <linearGradient id="bg-grad-6" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a121e" />
+      <stop offset="100%" stop-color="#050812" />
+    </linearGradient>
+    <linearGradient id="blue-grad-6" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#2563eb" />
+      <stop offset="100%" stop-color="#0284c7" />
+    </linearGradient>
+    <linearGradient id="panel-grad-6" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#121b2d" />
+      <stop offset="100%" stop-color="#0a101b" />
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="450" fill="url(#bg-grad-6)" />
+  <circle cx="700" cy="80" r="160" fill="#2563eb" fill-opacity="0.06" filter="blur(40px)" />
+  <circle cx="100" cy="370" r="140" fill="#0284c7" fill-opacity="0.05" filter="blur(30px)" />
+
+  <!-- Navigation -->
+  <rect x="30" y="25" width="740" height="48" rx="8" fill="#101828" stroke="#1d283c" stroke-width="1" />
+  <text x="50" y="54" fill="#38bdf8" font-family="system-ui, sans-serif" font-weight="800" font-size="14" letter-spacing="1">WORDPRESS ENTERPRISE CMS</text>
+  <rect x="260" y="37" width="220" height="24" rx="6" fill="#080c14" stroke="#1d283c" />
+  <text x="275" y="53" fill="#64748b" font-family="system-ui, sans-serif" font-size="10">Миграция 10,000+ статей и медиа-архива</text>
+  
+  <rect x="560" y="36" width="95" height="26" rx="6" fill="#1e293b" />
+  <text x="572" y="53" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10">100% SEO Ranks</text>
+  <rect x="665" y="36" width="95" height="26" rx="6" fill="url(#blue-grad-6)" />
+  <text x="677" y="53" fill="#ffffff" font-family="system-ui, sans-serif" font-weight="700" font-size="10">Gutenberg v6.4</text>
+
+  <!-- Left: Migration Status -->
+  <rect x="30" y="85" width="240" height="340" rx="10" fill="url(#panel-grad-6)" stroke="#1d283c" stroke-width="1" />
+  <text x="45" y="112" fill="#94a3b8" font-family="system-ui, sans-serif" font-weight="700" font-size="10" letter-spacing="0.5">ИТОГИ БЕСШОВНОЙ МИГРАЦИИ</text>
+
+  <!-- Metric 1 -->
+  <rect x="45" y="125" width="210" height="60" rx="8" fill="#080c14" stroke="#2563eb" stroke-opacity="0.3" />
+  <text x="58" y="145" fill="#64748b" font-family="system-ui, sans-serif" font-size="9">СОХРАНЕНИЕ ПОЗИЦИЙ В GOOGLE</text>
+  <text x="58" y="171" fill="#38bdf8" font-family="system-ui, sans-serif" font-weight="900" font-size="20">100%</text>
+  <text x="120" y="170" fill="#64748b" font-family="system-ui, sans-serif" font-size="10">(301 редиректы без потерь)</text>
+
+  <!-- Metric 2 -->
+  <rect x="45" y="195" width="210" height="60" rx="8" fill="#080c14" stroke="#1d283c" />
+  <text x="58" y="215" fill="#64748b" font-family="system-ui, sans-serif" font-size="9">ОБЪЕМ МАТЕРИАЛОВ</text>
+  <text x="58" y="241" fill="#34d399" font-family="system-ui, sans-serif" font-weight="900" font-size="20">10 450</text>
+  <text x="145" y="240" fill="#64748b" font-family="system-ui, sans-serif" font-size="10">статей и новостей</text>
+
+  <!-- Metric 3 -->
+  <rect x="45" y="265" width="210" height="60" rx="8" fill="#080c14" stroke="#1d283c" />
+  <text x="58" y="285" fill="#64748b" font-family="system-ui, sans-serif" font-size="9">СКОРОСТЬ ПУБЛИКАЦИИ СТАТЬИ</text>
+  <text x="58" y="311" fill="#f59e0b" font-family="system-ui, sans-serif" font-weight="900" font-size="20">-50% времени</text>
+
+  <rect x="45" y="338" width="210" height="72" rx="8" fill="#060910" stroke="#2563eb" stroke-opacity="0.2" />
+  <text x="58" y="358" fill="#38bdf8" font-family="system-ui, sans-serif" font-weight="700" font-size="10">БЕЗОПАСНОСТЬ И ЗАЩИТА CMS</text>
+  <text x="58" y="375" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="9">✓ 2FA авторизация редакции</text>
+  <text x="58" y="392" fill="#34d399" font-family="system-ui, sans-serif" font-weight="600" font-size="9">✓ Снижение спам-атак на 99%</text>
+
+  <!-- Right: Visual Article Editor & Taxonomy mapping -->
+  <rect x="285" y="85" width="485" height="340" rx="10" fill="url(#panel-grad-6)" stroke="#1d283c" stroke-width="1" />
+  <text x="305" y="115" fill="#f8fafc" font-family="system-ui, sans-serif" font-weight="700" font-size="14">Кастомный Gutenberg-редактор &amp; Таксономия</text>
+  <text x="305" y="132" fill="#64748b" font-family="system-ui, sans-serif" font-size="11">Удобное форматирование без необходимости привлекать программистов</text>
+
+  <!-- Visual Article Layout mock -->
+  <g transform="translate(305, 150)">
+    <rect width="445" height="250" rx="8" fill="#080c14" stroke="#162030" />
+    
+    <!-- Top toolbar -->
+    <rect width="445" height="34" rx="8 8 0 0" fill="#0f1725" stroke="#162030" />
+    <circle cx="20" cy="17" r="4" fill="#38bdf8" />
+    <text x="34" y="21" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10">Черновик сохранен • Автосинхронизация с БД</text>
+    <rect x="340" y="7" width="90" height="20" rx="4" fill="#2563eb" />
+    <text x="352" y="21" fill="#ffffff" font-family="system-ui, sans-serif" font-weight="600" font-size="10">Опубликовать</text>
+
+    <!-- Document body -->
+    <text x="25" y="65" fill="#f1f5f9" font-family="system-ui, sans-serif" font-weight="800" font-size="16">Тренды цифровой трансформации 2026: Анализ рынка</text>
+    <rect x="25" y="80" width="395" height="12" rx="3" fill="#1e293b" fill-opacity="0.6" />
+    <rect x="25" y="100" width="360" height="12" rx="3" fill="#1e293b" fill-opacity="0.6" />
+    <rect x="25" y="120" width="280" height="12" rx="3" fill="#1e293b" fill-opacity="0.6" />
+
+    <!-- Gutenberg Block -->
+    <rect x="25" y="145" width="395" height="85" rx="6" fill="#0c1320" stroke="#0284c7" stroke-opacity="0.4" stroke-dasharray="3 3" />
+    <text x="40" y="170" fill="#38bdf8" font-family="system-ui, sans-serif" font-weight="700" font-size="11">[Кастомный блок KRAY]: Интерактивный опрос читателей</text>
+    <rect x="40" y="185" width="160" height="30" rx="4" fill="#152238" stroke="#1e293b" />
+    <text x="55" y="204" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="10">Вариант А: 64%</text>
+    <rect x="215" y="185" width="160" height="30" rx="4" fill="#152238" stroke="#1e293b" />
+    <text x="230" y="204" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="10">Вариант Б: 36%</text>
+  </g>
+</svg>

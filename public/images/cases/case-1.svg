@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450" fill="none">
+  <defs>
+    <linearGradient id="bg-grad-1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b1120" />
+      <stop offset="100%" stop-color="#050811" />
+    </linearGradient>
+    <linearGradient id="cyan-glow" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00f2fe" />
+      <stop offset="100%" stop-color="#4facfe" />
+    </linearGradient>
+    <linearGradient id="panel-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#141e33" />
+      <stop offset="100%" stop-color="#0e1626" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="450" fill="url(#bg-grad-1)" />
+  <circle cx="700" cy="80" r="180" fill="#00f2fe" fill-opacity="0.05" filter="blur(40px)" />
+  <circle cx="100" cy="350" r="140" fill="#4facfe" fill-opacity="0.04" filter="blur(30px)" />
+
+  <!-- Grid overlay -->
+  <path d="M0 50 H800 M0 100 H800 M0 150 H800 M0 200 H800 M0 250 H800 M0 300 H800 M0 350 H800 M0 400 H800" stroke="#1e293b" stroke-opacity="0.25" stroke-dasharray="4 4" />
+  <path d="M100 0 V450 M200 0 V450 M300 0 V450 M400 0 V450 M500 0 V450 M600 0 V450 M700 0 V450" stroke="#1e293b" stroke-opacity="0.25" stroke-dasharray="4 4" />
+
+  <!-- Top App Navigation Bar -->
+  <rect x="30" y="25" width="740" height="48" rx="8" fill="#111a2e" stroke="#1e293b" stroke-width="1" />
+  <text x="50" y="54" fill="#00f2fe" font-family="system-ui, sans-serif" font-weight="800" font-size="14" letter-spacing="1">METALL-HUB B2B</text>
+  <rect x="180" y="37" width="220" height="24" rx="6" fill="#0a0f1d" stroke="#253554" />
+  <text x="195" y="53" fill="#64748b" font-family="system-ui, sans-serif" font-size="10">Поиск ГОСТ, марка стали, профиль...</text>
+  
+  <rect x="580" y="36" width="80" height="26" rx="6" fill="#1e293b" />
+  <text x="592" y="53" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10">Прайс-лист</text>
+  <rect x="670" y="36" width="85" height="26" rx="6" fill="url(#cyan-glow)" />
+  <text x="684" y="53" fill="#050811" font-family="system-ui, sans-serif" font-weight="700" font-size="10">Корзина (4)</text>
+
+  <!-- Left Sidebar: Categories -->
+  <rect x="30" y="85" width="180" height="340" rx="10" fill="url(#panel-grad)" stroke="#1e293b" stroke-width="1" />
+  <text x="45" y="112" fill="#94a3b8" font-family="system-ui, sans-serif" font-weight="700" font-size="10" letter-spacing="0.5">КАТАЛОГ МЕТАЛЛА</text>
+  
+  <rect x="42" y="125" width="156" height="28" rx="6" fill="#00f2fe" fill-opacity="0.12" stroke="#00f2fe" stroke-opacity="0.4" />
+  <text x="52" y="143" fill="#00f2fe" font-family="system-ui, sans-serif" font-weight="600" font-size="11">Труба профильная</text>
+  
+  <rect x="42" y="160" width="156" height="28" rx="6" fill="#0d1527" />
+  <text x="52" y="178" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11">Арматура А500С</text>
+  
+  <rect x="42" y="195" width="156" height="28" rx="6" fill="#0d1527" />
+  <text x="52" y="213" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11">Балка двутавровая</text>
+
+  <rect x="42" y="230" width="156" height="28" rx="6" fill="#0d1527" />
+  <text x="52" y="248" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11">Листовой прокат</text>
+
+  <rect x="42" y="265" width="156" height="28" rx="6" fill="#0d1527" />
+  <text x="52" y="283" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11">Швеллер г/к</text>
+
+  <rect x="42" y="360" width="156" height="50" rx="8" fill="#080e1c" stroke="#00f2fe" stroke-opacity="0.2" />
+  <text x="52" y="380" fill="#00f2fe" font-family="system-ui, sans-serif" font-weight="700" font-size="10">Склад Киев-Восток</text>
+  <text x="52" y="398" fill="#64748b" font-family="system-ui, sans-serif" font-size="9">Отгрузка 24/7 • Наличие 98%</text>
+
+  <!-- Main Content: Interactive Metal Calculator -->
+  <rect x="225" y="85" width="545" height="215" rx="10" fill="url(#panel-grad)" stroke="#1e293b" stroke-width="1" />
+  
+  <text x="245" y="115" fill="#f8fafc" font-family="system-ui, sans-serif" font-weight="700" font-size="14">Интерактивный калькулятор спецификаций и веса</text>
+  <text x="245" y="132" fill="#64748b" font-family="system-ui, sans-serif" font-size="11">Расчет ГОСТ 8639-82, автоматический перевод метров в тонны и формирование счета-фактуры</text>
+
+  <!-- Input fields row -->
+  <rect x="245" y="148" width="120" height="42" rx="6" fill="#0a0f1d" stroke="#253554" />
+  <text x="255" y="163" fill="#64748b" font-family="system-ui, sans-serif" font-size="8">ТИП СТАЛИ</text>
+  <text x="255" y="180" fill="#f1f5f9" font-family="system-ui, sans-serif" font-weight="600" font-size="11">Ст3пс / 09Г2С</text>
+
+  <rect x="375" y="148" width="115" height="42" rx="6" fill="#0a0f1d" stroke="#253554" />
+  <text x="385" y="163" fill="#64748b" font-family="system-ui, sans-serif" font-size="8">СЕЧЕНИЕ (ММ)</text>
+  <text x="385" y="180" fill="#f1f5f9" font-family="system-ui, sans-serif" font-weight="600" font-size="11">80 x 80 x 4.0</text>
+
+  <rect x="500" y="148" width="115" height="42" rx="6" fill="#0a0f1d" stroke="#253554" />
+  <text x="510" y="163" fill="#64748b" font-family="system-ui, sans-serif" font-size="8">ДЛИНА ПАРТИИ</text>
+  <text x="510" y="180" fill="#f1f5f9" font-family="system-ui, sans-serif" font-weight="600" font-size="11">1 200 метров</text>
+
+  <rect x="625" y="148" width="130" height="42" rx="6" fill="#00f2fe" fill-opacity="0.1" stroke="#00f2fe" stroke-opacity="0.5" />
+  <text x="635" y="163" fill="#00f2fe" font-family="system-ui, sans-serif" font-size="8">ИТОГОВЫЙ ВЕС</text>
+  <text x="635" y="181" fill="#00f2fe" font-family="system-ui, sans-serif" font-weight="800" font-size="13">11.45 тонн</text>
+
+  <!-- Result Banner inside Calculator -->
+  <rect x="245" y="205" width="510" height="80" rx="8" fill="#09101d" stroke="#1d2d47" />
+  <text x="260" y="230" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10">Оптовая стоимость с НДС (Скидка за объем 8%):</text>
+  <text x="260" y="262" fill="#38bdf8" font-family="system-ui, sans-serif" font-weight="900" font-size="22">438 200 ₴</text>
+  <text x="405" y="260" fill="#10b981" font-family="system-ui, sans-serif" font-weight="600" font-size="11">✓ Доставка краном включена</text>
+
+  <rect x="610" y="224" width="130" height="42" rx="6" fill="url(#cyan-glow)" />
+  <text x="628" y="250" fill="#050811" font-family="system-ui, sans-serif" font-weight="800" font-size="11">В СПЕЦИФИКАЦИЮ →</text>
+
+  <!-- Bottom Data Table / Quick Stats -->
+  <rect x="225" y="315" width="545" height="110" rx="10" fill="url(#panel-grad)" stroke="#1e293b" stroke-width="1" />
+  <text x="245" y="338" fill="#94a3b8" font-family="system-ui, sans-serif" font-weight="700" font-size="10" letter-spacing="0.5">ПОСЛЕДНИЕ ОТГРУЗКИ В РЕАЛЬНОМ ВРЕМЕНИ (СИНХРОНИЗАЦИЯ 1C)</text>
+
+  <g transform="translate(245, 350)">
+    <rect width="165" height="60" rx="6" fill="#09101d" stroke="#1a2538" />
+    <text x="12" y="22" fill="#64748b" font-family="system-ui, sans-serif" font-size="9">Заказ №8492 • Днепр</text>
+    <text x="12" y="44" fill="#f1f5f9" font-family="system-ui, sans-serif" font-weight="700" font-size="12">14.8 т • Арматура</text>
+  </g>
+
+  <g transform="translate(418, 350)">
+    <rect width="170" height="60" rx="6" fill="#09101d" stroke="#1a2538" />
+    <text x="12" y="22" fill="#64748b" font-family="system-ui, sans-serif" font-size="9">Заказ №8493 • Киев</text>
+    <text x="12" y="44" fill="#f1f5f9" font-family="system-ui, sans-serif" font-weight="700" font-size="12">8.2 т • Двутавр 20Б1</text>
+  </g>
+
+  <g transform="translate(595, 350)">
+    <rect width="160" height="60" rx="6" fill="#09101d" stroke="#00f2fe" stroke-opacity="0.3" />
+    <text x="12" y="22" fill="#00f2fe" font-family="system-ui, sans-serif" font-weight="600" font-size="9">СКОРОСТЬ ВЫГРУЗКИ</text>
+    <text x="12" y="44" fill="#38bdf8" font-family="system-ui, sans-serif" font-weight="800" font-size="13">0.8s Next.js</text>
+  </g>
+</svg>

@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450" fill="none">
+  <defs>
+    <linearGradient id="bg-grad-2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b1322" />
+      <stop offset="100%" stop-color="#040913" />
+    </linearGradient>
+    <linearGradient id="emerald-glow" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#10b981" />
+      <stop offset="100%" stop-color="#06b6d4" />
+    </linearGradient>
+    <linearGradient id="chart-area" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#10b981" stop-opacity="0.35" />
+      <stop offset="100%" stop-color="#10b981" stop-opacity="0.0" />
+    </linearGradient>
+    <linearGradient id="panel-grad-2" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#121d30" />
+      <stop offset="100%" stop-color="#0a1220" />
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="450" fill="url(#bg-grad-2)" />
+  <circle cx="680" cy="90" r="160" fill="#10b981" fill-opacity="0.06" filter="blur(40px)" />
+  <circle cx="120" cy="380" r="140" fill="#06b6d4" fill-opacity="0.05" filter="blur(30px)" />
+
+  <!-- Top App Navigation -->
+  <rect x="30" y="25" width="740" height="48" rx="8" fill="#111c2e" stroke="#1f2d42" stroke-width="1" />
+  <text x="50" y="54" fill="#10b981" font-family="system-ui, sans-serif" font-weight="800" font-size="14" letter-spacing="1">DENTAL-CLINIC.UA</text>
+  <rect x="210" y="37" width="220" height="24" rx="6" fill="#09101b" stroke="#1f2d42" />
+  <text x="225" y="53" fill="#64748b" font-family="system-ui, sans-serif" font-size="10">Имплантация, виниры, брекеты...</text>
+  
+  <rect x="560" y="36" width="95" height="26" rx="6" fill="#1e293b" />
+  <text x="572" y="53" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10">24 Филиала</text>
+  <rect x="665" y="36" width="95" height="26" rx="6" fill="url(#emerald-glow)" />
+  <text x="677" y="53" fill="#040913" font-family="system-ui, sans-serif" font-weight="700" font-size="10">Запись онлайн</text>
+
+  <!-- Left Side: SEO Performance & Visibility Metrics -->
+  <rect x="30" y="85" width="240" height="340" rx="10" fill="url(#panel-grad-2)" stroke="#1f2d42" stroke-width="1" />
+  <text x="45" y="112" fill="#94a3b8" font-family="system-ui, sans-serif" font-weight="700" font-size="10" letter-spacing="0.5">ПОКАЗАТЕЛИ SEO-ВИДИМОСТИ</text>
+
+  <!-- Metric 1 -->
+  <rect x="45" y="125" width="210" height="60" rx="8" fill="#09101b" stroke="#10b981" stroke-opacity="0.3" />
+  <text x="58" y="145" fill="#64748b" font-family="system-ui, sans-serif" font-size="9">ЗАПРОСЫ В ТОП-10 GOOGLE</text>
+  <text x="58" y="171" fill="#10b981" font-family="system-ui, sans-serif" font-weight="900" font-size="20">85%</text>
+  <text x="110" y="170" fill="#64748b" font-family="system-ui, sans-serif" font-size="10">(+340 ключевых фраз)</text>
+
+  <!-- Metric 2 -->
+  <rect x="45" y="195" width="210" height="60" rx="8" fill="#09101b" stroke="#1f2d42" />
+  <text x="58" y="215" fill="#64748b" font-family="system-ui, sans-serif" font-size="9">ОРГАНИЧЕСКИЙ ТРАФИК</text>
+  <text x="58" y="241" fill="#38bdf8" font-family="system-ui, sans-serif" font-weight="900" font-size="20">+320%</text>
+  <text x="145" y="240" fill="#64748b" font-family="system-ui, sans-serif" font-size="10">64k визитов/мес</text>
+
+  <!-- Metric 3 -->
+  <rect x="45" y="265" width="210" height="60" rx="8" fill="#09101b" stroke="#1f2d42" />
+  <text x="58" y="285" fill="#64748b" font-family="system-ui, sans-serif" font-size="9">СНИЖЕНИЕ СТОИМОСТИ ЛИДА</text>
+  <text x="58" y="311" fill="#34d399" font-family="system-ui, sans-serif" font-weight="900" font-size="20">-60% CPL</text>
+
+  <rect x="45" y="338" width="210" height="72" rx="8" fill="#070d17" stroke="#10b981" stroke-opacity="0.2" />
+  <text x="58" y="358" fill="#10b981" font-family="system-ui, sans-serif" font-weight="700" font-size="10">E-E-A-T МЕДИЦИНСКИЙ АУДИТ</text>
+  <text x="58" y="375" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="9">✓ Верификация врачами высшей кат.</text>
+  <text x="58" y="392" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="9">✓ Google My Business 24 точки: 4.9★</text>
+
+  <!-- Right Side: Big Chart & Keyword ranking table -->
+  <rect x="285" y="85" width="485" height="340" rx="10" fill="url(#panel-grad-2)" stroke="#1f2d42" stroke-width="1" />
+  <text x="305" y="115" fill="#f8fafc" font-family="system-ui, sans-serif" font-weight="700" font-size="14">Динамика поискового трафика Google (органика)</text>
+  <text x="305" y="132" fill="#64748b" font-family="system-ui, sans-serif" font-size="11">Период: 6 месяцев продвижения с внедрением кластеризации и E-E-A-T</text>
+
+  <!-- Growth Line Chart -->
+  <g transform="translate(305, 145)">
+    <rect width="445" height="150" rx="6" fill="#080e18" stroke="#1a2538" />
+    
+    <!-- Grid horizontal lines -->
+    <line x1="0" y1="30" x2="445" y2="30" stroke="#1e293b" stroke-opacity="0.3" />
+    <line x1="0" y1="70" x2="445" y2="70" stroke="#1e293b" stroke-opacity="0.3" />
+    <line x1="0" y1="110" x2="445" y2="110" stroke="#1e293b" stroke-opacity="0.3" />
+
+    <!-- Chart path area -->
+    <path d="M 10 130 Q 80 120, 150 95 T 280 50 T 430 15 L 430 145 L 10 145 Z" fill="url(#chart-area)" />
+    <!-- Chart stroke line -->
+    <path d="M 10 130 Q 80 120, 150 95 T 280 50 T 430 15" stroke="#10b981" stroke-width="3" fill="none" />
+
+    <circle cx="10" cy="130" r="4" fill="#10b981" />
+    <circle cx="150" cy="95" r="4" fill="#10b981" />
+    <circle cx="280" cy="50" r="4" fill="#10b981" />
+    <circle cx="430" cy="15" r="5" fill="#00f2fe" stroke="#fff" stroke-width="1.5" />
+
+    <text x="360" y="35" fill="#10b981" font-family="system-ui, sans-serif" font-weight="800" font-size="11">+320% РОСТ</text>
+  </g>
+
+  <!-- Top Keywords Rank Table snippet -->
+  <g transform="translate(305, 310)">
+    <rect width="445" height="100" rx="8" fill="#080e18" stroke="#1a2538" />
+    <text x="15" y="22" fill="#64748b" font-family="system-ui, sans-serif" font-size="9">КЛЮЧЕВОЙ ЗАПРОС</text>
+    <text x="230" y="22" fill="#64748b" font-family="system-ui, sans-serif" font-size="9">БЫЛО</text>
+    <text x="320" y="22" fill="#64748b" font-family="system-ui, sans-serif" font-size="9">СТАЛО</text>
+    <text x="385" y="22" fill="#64748b" font-family="system-ui, sans-serif" font-size="9">ТРАФИК</text>
+
+    <!-- Row 1 -->
+    <text x="15" y="45" fill="#f1f5f9" font-family="system-ui, sans-serif" font-weight="600" font-size="11">«имплантация зубов киев»</text>
+    <text x="230" y="45" fill="#ef4444" font-family="system-ui, sans-serif" font-size="11">#48</text>
+    <text x="320" y="45" fill="#10b981" font-family="system-ui, sans-serif" font-weight="800" font-size="11">#2 Google</text>
+    <text x="385" y="45" fill="#38bdf8" font-family="system-ui, sans-serif" font-size="11">8 400/мес</text>
+
+    <!-- Row 2 -->
+    <text x="15" y="72" fill="#f1f5f9" font-family="system-ui, sans-serif" font-weight="600" font-size="11">«детская стоматология круглосуточно»</text>
+    <text x="230" y="72" fill="#ef4444" font-family="system-ui, sans-serif" font-size="11">#62</text>
+    <text x="320" y="72" fill="#10b981" font-family="system-ui, sans-serif" font-weight="800" font-size="11">#1 Google</text>
+    <text x="385" y="72" fill="#38bdf8" font-family="system-ui, sans-serif" font-size="11">5 200/мес</text>
+  </g>
+</svg>

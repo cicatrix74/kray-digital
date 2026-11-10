@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450" fill="none">
+  <defs>
+    <linearGradient id="bg-grad-7" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a121f" />
+      <stop offset="100%" stop-color="#040810" />
+    </linearGradient>
+    <linearGradient id="cyan-glow-7" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00f2fe" />
+      <stop offset="100%" stop-color="#38bdf8" />
+    </linearGradient>
+    <linearGradient id="panel-grad-7" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#111c2e" />
+      <stop offset="100%" stop-color="#09101d" />
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="450" fill="url(#bg-grad-7)" />
+  <circle cx="700" cy="80" r="160" fill="#00f2fe" fill-opacity="0.06" filter="blur(40px)" />
+  <circle cx="100" cy="370" r="140" fill="#38bdf8" fill-opacity="0.05" filter="blur(30px)" />
+
+  <!-- Navigation -->
+  <rect x="30" y="25" width="740" height="48" rx="8" fill="#0f192b" stroke="#1d2d46" stroke-width="1" />
+  <text x="50" y="54" fill="#00f2fe" font-family="system-ui, sans-serif" font-weight="800" font-size="14" letter-spacing="1">INFRASTRUCTURE SLA 24/7</text>
+  <rect x="250" y="37" width="230" height="24" rx="6" fill="#070c16" stroke="#1d2d46" />
+  <text x="265" y="53" fill="#64748b" font-family="system-ui, sans-serif" font-size="10">Мониторинг серверов, бэкапов и баз данных</text>
+  
+  <rect x="560" y="36" width="95" height="26" rx="6" fill="#10b981" fill-opacity="0.15" stroke="#10b981" stroke-opacity="0.4" />
+  <text x="572" y="53" fill="#34d399" font-family="system-ui, sans-serif" font-size="10">● Все узлы ОК</text>
+  <rect x="665" y="36" width="95" height="26" rx="6" fill="url(#cyan-glow-7)" />
+  <text x="677" y="53" fill="#040810" font-family="system-ui, sans-serif" font-weight="700" font-size="10">Uptime: 99.99%</text>
+
+  <!-- Left: SLA Status Cards -->
+  <rect x="30" y="85" width="240" height="340" rx="10" fill="url(#panel-grad-7)" stroke="#1d2d46" stroke-width="1" />
+  <text x="45" y="112" fill="#94a3b8" font-family="system-ui, sans-serif" font-weight="700" font-size="10" letter-spacing="0.5">SLA ПОКАЗАТЕЛИ ПОДДЕРЖКИ</text>
+
+  <!-- Metric 1 -->
+  <rect x="45" y="125" width="210" height="60" rx="8" fill="#080e1a" stroke="#00f2fe" stroke-opacity="0.3" />
+  <text x="58" y="145" fill="#64748b" font-family="system-ui, sans-serif" font-size="9">ДОСТУПНОСТЬ САЙТА (UPTIME)</text>
+  <text x="58" y="171" fill="#00f2fe" font-family="system-ui, sans-serif" font-weight="900" font-size="20">99.99%</text>
+  <text x="145" y="170" fill="#64748b" font-family="system-ui, sans-serif" font-size="10">365 дней без сбоев</text>
+
+  <!-- Metric 2 -->
+  <rect x="45" y="195" width="210" height="60" rx="8" fill="#080e1a" stroke="#1d2d46" />
+  <text x="58" y="215" fill="#64748b" font-family="system-ui, sans-serif" font-size="9">ВРЕМЯ РЕАКЦИИ НА ИНЦИДЕНТЫ</text>
+  <text x="58" y="241" fill="#38bdf8" font-family="system-ui, sans-serif" font-weight="900" font-size="20">&lt; 15 мин</text>
+  <text x="145" y="240" fill="#64748b" font-family="system-ui, sans-serif" font-size="10">Круглосуточно 24/7</text>
+
+  <!-- Metric 3 -->
+  <rect x="45" y="265" width="210" height="60" rx="8" fill="#080e1a" stroke="#1d2d46" />
+  <text x="58" y="285" fill="#64748b" font-family="system-ui, sans-serif" font-size="9">БЭКАПЫ И БЕЗОПАСНОСТЬ</text>
+  <text x="58" y="311" fill="#34d399" font-family="system-ui, sans-serif" font-weight="900" font-size="20">Daily Cloud</text>
+
+  <rect x="45" y="338" width="210" height="72" rx="8" fill="#060b14" stroke="#00f2fe" stroke-opacity="0.2" />
+  <text x="58" y="358" fill="#00f2fe" font-family="system-ui, sans-serif" font-weight="700" font-size="10">СЕРВЕРНАЯ ТЕЛЕМЕТРИЯ</text>
+  <text x="58" y="375" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="9">CPU: 18% • RAM: 4.2/16 GB</text>
+  <text x="58" y="392" fill="#34d399" font-family="system-ui, sans-serif" font-weight="600" font-size="9">✓ Защита от DDoS &amp; WAF активна</text>
+
+  <!-- Right: Server Cluster & Live Healthcheck Monitor -->
+  <rect x="285" y="85" width="485" height="340" rx="10" fill="url(#panel-grad-7)" stroke="#1d2d46" stroke-width="1" />
+  <text x="305" y="115" fill="#f8fafc" font-family="system-ui, sans-serif" font-weight="700" font-size="14">Мониторинг микросервисов и серверов в реальном времени</text>
+  <text x="305" y="132" fill="#64748b" font-family="system-ui, sans-serif" font-size="11">Автоматическая проверка статуса каждые 30 секунд (HTTP 200 OK)</text>
+
+  <!-- Server nodes grid -->
+  <g transform="translate(305, 148)">
+    <!-- Node 1 -->
+    <rect width="445" height="48" rx="6" fill="#080e1a" stroke="#1a273c" />
+    <circle cx="25" cy="24" r="5" fill="#10b981" />
+    <text x="42" y="22" fill="#f1f5f9" font-family="system-ui, sans-serif" font-weight="600" font-size="11">Production Web-Cluster (Nginx + PHP-FPM 8.2)</text>
+    <text x="42" y="38" fill="#64748b" font-family="system-ui, sans-serif" font-size="9">Ответ сервера: 18ms • SSL сертификат: Действителен (A+)</text>
+    <text x="385" y="28" fill="#10b981" font-family="system-ui, sans-serif" font-weight="700" font-size="11">ONLINE</text>
+
+    <!-- Node 2 -->
+    <g transform="translate(0, 58)">
+      <rect width="445" height="48" rx="6" fill="#080e1a" stroke="#1a273c" />
+      <circle cx="25" cy="24" r="5" fill="#10b981" />
+      <text x="42" y="22" fill="#f1f5f9" font-family="system-ui, sans-serif" font-weight="600" font-size="11">Database Primary Cluster (PostgreSQL + Read-Replicas)</text>
+      <text x="42" y="38" fill="#64748b" font-family="system-ui, sans-serif" font-size="9">Запросы в сек: 1 420 QPS • Нагрузка: В норме (14%)</text>
+      <text x="385" y="28" fill="#10b981" font-family="system-ui, sans-serif" font-weight="700" font-size="11">ONLINE</text>
+    </g>
+
+    <!-- Node 3 -->
+    <g transform="translate(0, 116)">
+      <rect width="445" height="48" rx="6" fill="#080e1a" stroke="#1a273c" />
+      <circle cx="25" cy="24" r="5" fill="#10b981" />
+      <text x="42" y="22" fill="#f1f5f9" font-family="system-ui, sans-serif" font-weight="600" font-size="11">Daily Cloud Backup Service (S3 Glacier Sync)</text>
+      <text x="42" y="38" fill="#64748b" font-family="system-ui, sans-serif" font-size="9">Последний снимок: Сегодня в 03:00 (Размер: 42.6 GB)</text>
+      <text x="380" y="28" fill="#38bdf8" font-family="system-ui, sans-serif" font-weight="700" font-size="11">SYNCED</text>
+    </g>
+
+    <!-- Node 4 -->
+    <g transform="translate(0, 174)">
+      <rect width="445" height="48" rx="6" fill="#080e1a" stroke="#1a273c" />
+      <circle cx="25" cy="24" r="5" fill="#10b981" />
+      <text x="42" y="22" fill="#f1f5f9" font-family="system-ui, sans-serif" font-weight="600" font-size="11">Cloudflare Enterprise WAF &amp; DDoS Shield</text>
+      <text x="42" y="38" fill="#64748b" font-family="system-ui, sans-serif" font-size="9">Отражено атак за 30 дней: 14 200 • Ложных блокировок: 0</text>
+      <text x="375" y="28" fill="#10b981" font-family="system-ui, sans-serif" font-weight="700" font-size="11">SECURED</text>
+    </g>
+  </g>
+</svg>
