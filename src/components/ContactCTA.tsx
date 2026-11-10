@@ -189,13 +189,13 @@ export default function ContactCTA({ onSubmitLead }: ContactCTAProps) {
                           id="cta-service"
                           value={service}
                           onChange={(e) => setService(e.target.value)}
-                          className="w-full bg-brand-surface-container border border-brand-outline-variant/50 rounded px-4 py-3 text-xs md:text-sm text-brand-on-surface focus:border-brand-primary-container focus:ring-1 focus:ring-brand-primary-container outline-none transition-colors appearance-none cursor-pointer"
+                          className="w-full bg-[#1b1f2b] border border-brand-outline-variant/50 rounded-xl px-4 py-3 text-xs md:text-sm text-brand-on-surface focus:border-brand-primary-container focus:ring-1 focus:ring-brand-primary-container outline-none transition-colors appearance-none cursor-pointer"
                         >
-                          <option>{t.contact.opt1}</option>
-                          <option>{t.contact.opt2}</option>
-                          <option>{t.contact.opt3}</option>
-                          <option>{t.contact.opt4}</option>
-                          <option>{t.contact.opt5}</option>
+                          <option value={t.contact.opt1} className="bg-[#171b27] text-white py-2">{t.contact.opt1}</option>
+                          <option value={t.contact.opt2} className="bg-[#171b27] text-white py-2">{t.contact.opt2}</option>
+                          <option value={t.contact.opt3} className="bg-[#171b27] text-white py-2">{t.contact.opt3}</option>
+                          <option value={t.contact.opt4} className="bg-[#171b27] text-white py-2">{t.contact.opt4}</option>
+                          <option value={t.contact.opt5} className="bg-[#171b27] text-white py-2">{t.contact.opt5}</option>
                         </select>
                         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-brand-on-surface-variant">
                           <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">

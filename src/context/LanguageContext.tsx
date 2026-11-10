@@ -59,6 +59,11 @@ export interface TranslationSchema {
     label_phone: string;
     placeholder_phone: string;
     label_service: string;
+    opt1: string;
+    opt2: string;
+    opt3: string;
+    opt4: string;
+    opt5: string;
     btn_submit: string;
     btn_submitting: string;
     err_name: string;
@@ -226,6 +231,11 @@ const TRANSLATIONS: Record<Language, TranslationSchema> = {
       label_phone: 'Телефон',
       placeholder_phone: '+380 (99) 000-00-00',
       label_service: 'Послуга, що цікавить',
+      opt1: 'Розробка сайту (Landing, Корпоративний, Магазин)',
+      opt2: 'SEO-оптимізація та просування в Google',
+      opt3: 'Налаштування реклами Google Ads (PPC)',
+      opt4: 'Технічна підтримка та модернізація сайту',
+      opt5: 'Комплексний Digital-маркетинг під ключ',
       btn_submit: 'Надіслати заявку',
       btn_submitting: 'Надсилання...',
       err_name: 'Будь ласка, вкажіть ваше ім\'я',
@@ -391,6 +401,11 @@ const TRANSLATIONS: Record<Language, TranslationSchema> = {
       label_phone: 'Телефон',
       placeholder_phone: '+380 (99) 000-00-00',
       label_service: 'Интересующая услуга',
+      opt1: 'Разработка сайта (Landing, Корпоративный, Магазин)',
+      opt2: 'SEO-оптимизация и продвижение в Google',
+      opt3: 'Настройка рекламы Google Ads (Контекст)',
+      opt4: 'Техническая поддержка и модернизация сайта',
+      opt5: 'Комплексный Digital-маркетинг под ключ',
       btn_submit: 'Отправить заявку',
       btn_submitting: 'Отправка...',
       err_name: 'Пожалуйста, укажите ваше имя',
@@ -556,6 +571,11 @@ const TRANSLATIONS: Record<Language, TranslationSchema> = {
       label_phone: 'Phone',
       placeholder_phone: '+1 (555) 000-0000',
       label_service: 'Service of Interest',
+      opt1: 'Web Development (Landing, Corporate, E-Commerce)',
+      opt2: 'SEO Optimization & Google Ranking',
+      opt3: 'Google Ads & PPC Campaigns',
+      opt4: 'Technical Support & Modernization',
+      opt5: 'Full-Cycle Digital Marketing',
       btn_submit: 'Submit Request',
       btn_submitting: 'Sending...',
       err_name: 'Please enter your name',
