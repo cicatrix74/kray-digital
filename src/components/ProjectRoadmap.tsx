@@ -748,7 +748,7 @@ export default function ProjectRoadmap({ onOpenCalculator, onScrollToContact }: 
   };
 
   return (
-    <section id="roadmap-section" className="py-24 px-4 md:px-10 max-w-7xl mx-auto relative z-20">
+    <section id="roadmap-section" className="py-24 px-4 md:px-10 max-w-7xl mx-auto relative z-20 overflow-hidden w-full max-w-full">
       
       {/* Background glow accent */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-brand-primary-container/5 blur-[120px] rounded-full pointer-events-none -z-10" />
@@ -1120,9 +1120,9 @@ export default function ProjectRoadmap({ onOpenCalculator, onScrollToContact }: 
       )}
 
       {/* FOOTER CALLOUT / GUARANTEE STATEMENT */}
-      <div className="mt-16 bg-gradient-to-r from-brand-primary-container/10 via-brand-surface-container/90 to-cyan-500/10 rounded-2xl p-6 md:p-10 border border-brand-primary-container/30 flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl relative overflow-hidden">
+      <div className="mt-16 bg-gradient-to-r from-brand-primary-container/10 via-brand-surface-container/90 to-cyan-500/10 rounded-2xl p-6 md:p-10 border border-brand-primary-container/30 flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl relative overflow-hidden w-full max-w-full">
         
-        <div className="flex items-start gap-4">
+        <div className="flex items-start gap-4 w-full md:w-auto">
           <div className="w-12 h-12 rounded-2xl bg-brand-primary-container/20 border border-brand-primary-container/40 flex items-center justify-center text-brand-primary-container shrink-0 mt-1">
             <Zap className="w-6 h-6 animate-bounce" />
           </div>
@@ -1140,7 +1140,7 @@ export default function ProjectRoadmap({ onOpenCalculator, onScrollToContact }: 
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto shrink-0">
+        <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto md:shrink-0">
           <button
             onClick={() => onOpenCalculator(presetLabels[activePreset][language] || presetLabels[activePreset]['uk'])}
             className="w-full sm:w-auto px-6 py-3 rounded-xl bg-brand-primary-container text-[#00363a] font-bold text-xs md:text-sm shadow-glow hover:brightness-110 active:scale-95 transition-all cursor-pointer text-center"

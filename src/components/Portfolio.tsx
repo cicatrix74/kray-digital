@@ -43,7 +43,7 @@ export default function Portfolio({ onOpenCase }: PortfolioProps) {
   };
 
   return (
-    <section className="relative py-24 bg-transparent border-b border-brand-outline-variant/10" id="portfolio-section">
+    <section className="relative py-24 bg-transparent border-b border-brand-outline-variant/10 overflow-hidden w-full max-w-full" id="portfolio-section">
       <div className="max-w-7xl mx-auto px-4 md:px-10 relative z-10">
         
         {/* Section Header */}

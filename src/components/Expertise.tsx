@@ -176,7 +176,7 @@ export default function Expertise({ onSelectService }: ExpertiseProps) {
   const currentLabels = LABELS[language as keyof typeof LABELS] || LABELS.ru;
 
   return (
-    <section className="py-24 bg-transparent border-t border-brand-outline-variant/10" id="expertise-section">
+    <section className="py-24 bg-transparent border-t border-brand-outline-variant/10 overflow-hidden w-full max-w-full" id="expertise-section">
       <div className="max-w-7xl mx-auto px-4 md:px-10">
         
         {/* Title and Intro */}

@@ -220,7 +220,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-brand-surface text-brand-on-background selection:bg-brand-primary-container selection:text-[#00363a] relative" id="app-root">
+    <div className="min-h-screen bg-brand-surface text-brand-on-background selection:bg-brand-primary-container selection:text-[#00363a] relative overflow-x-hidden w-full max-w-full" id="app-root">
       
       {/* Modern High-Tech Blueprint Grid Background */}
       <TechGridBackground />
@@ -233,7 +233,7 @@ export default function App() {
       />
 
        {/* Main layout */}
-      <main className="pt-20 relative z-20">
+      <main className="pt-20 relative z-20 overflow-x-hidden w-full max-w-full">
         
         {/* Hero Banner section */}
         <Hero 
