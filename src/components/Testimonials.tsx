@@ -469,23 +469,24 @@ export default function Testimonials({ onOpenCase, onScrollToContact }: Testimon
           <div className="flex items-center gap-3">
             <button
               onClick={() => setIsAutoplay(!isAutoplay)}
-              className="p-2.5 rounded-xl bg-brand-surface-container-high/60 border border-brand-outline-variant/15 text-brand-on-surface-variant hover:text-brand-on-surface transition-colors cursor-pointer"
+              className="w-12 h-12 flex items-center justify-center rounded-xl bg-brand-surface-container-high/60 border border-brand-outline-variant/15 text-brand-on-surface-variant hover:text-brand-on-surface transition-colors cursor-pointer"
               title={isAutoplay ? 'Pause Carousel' : 'Play Carousel'}
+              aria-label={isAutoplay ? 'Pause Carousel' : 'Play Carousel'}
             >
-              {isAutoplay ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 text-brand-primary-container" />}
+              {isAutoplay ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5 text-brand-primary-container" />}
             </button>
 
-            <div className="flex items-center gap-1.5">
+            <div className="flex items-center gap-2">
               <button
                 onClick={handlePrev}
-                className="p-2.5 rounded-xl bg-brand-surface-container-high border border-brand-outline-variant/20 hover:border-brand-primary-container/50 text-brand-on-surface transition-all cursor-pointer hover:bg-brand-primary-container/10 active:scale-95"
+                className="w-12 h-12 flex items-center justify-center rounded-xl bg-brand-surface-container-high border border-brand-outline-variant/20 hover:border-brand-primary-container/50 text-brand-on-surface transition-all cursor-pointer hover:bg-brand-primary-container/10 active:scale-95"
                 aria-label="Previous testimonial"
               >
                 <ChevronLeft className="w-5 h-5" />
               </button>
               <button
                 onClick={handleNext}
-                className="p-2.5 rounded-xl bg-brand-surface-container-high border border-brand-outline-variant/20 hover:border-brand-primary-container/50 text-brand-on-surface transition-all cursor-pointer hover:bg-brand-primary-container/10 active:scale-95"
+                className="w-12 h-12 flex items-center justify-center rounded-xl bg-brand-surface-container-high border border-brand-outline-variant/20 hover:border-brand-primary-container/50 text-brand-on-surface transition-all cursor-pointer hover:bg-brand-primary-container/10 active:scale-95"
                 aria-label="Next testimonial"
               >
                 <ChevronRight className="w-5 h-5" />
@@ -609,19 +610,23 @@ export default function Testimonials({ onOpenCase, onScrollToContact }: Testimon
               </motion.div>
             </AnimatePresence>
 
-            {/* Pagination Dots */}
-            <div className="flex items-center justify-center gap-2 mt-8">
+            {/* Pagination Dots (With accessible 48px touch targets for mobile) */}
+            <div className="flex items-center justify-center gap-1 mt-8">
               {filteredTestimonials.map((item, idx) => (
                 <button
                   key={item.id}
                   onClick={() => setCurrentIndex(idx)}
-                  className={`transition-all duration-300 rounded-full cursor-pointer ${
-                    idx === currentIndex
-                      ? 'w-8 h-2.5 bg-brand-primary-container shadow-[0_0_10px_rgba(77,208,225,0.6)]'
-                      : 'w-2.5 h-2.5 bg-brand-outline-variant/30 hover:bg-brand-outline-variant/60'
-                  }`}
+                  className="w-12 h-12 flex items-center justify-center cursor-pointer p-2 rounded-full"
                   aria-label={`Go to slide ${idx + 1}`}
-                />
+                >
+                  <span
+                    className={`transition-all duration-300 rounded-full block pointer-events-none ${
+                      idx === currentIndex
+                        ? 'w-8 h-2.5 bg-brand-primary-container shadow-[0_0_10px_rgba(77,208,225,0.6)]'
+                        : 'w-2.5 h-2.5 bg-brand-outline-variant/30 hover:bg-brand-outline-variant/60'
+                    }`}
+                  />
+                </button>
               ))}
             </div>
           </div>

@@ -25,46 +25,46 @@ export default function Footer({ onOpenCases, onScrollToSection, onOpenLeadPanel
         </div>
 
         {/* Links Navigation */}
-        <nav className="flex flex-wrap justify-center gap-x-6 gap-y-3">
+        <nav className="flex flex-wrap justify-center gap-x-3 gap-y-2">
           <button
             onClick={() => onScrollToSection('expertise-section')}
-            className="text-xs sm:text-sm text-brand-on-surface-variant hover:text-brand-primary-container transition-colors cursor-pointer animate-none bg-transparent border-none p-0"
+            className="text-xs sm:text-sm text-brand-on-surface-variant hover:text-brand-primary-container transition-colors cursor-pointer py-2 px-2"
           >
             {t.footer.link_services}
           </button>
           <button
             onClick={() => onScrollToSection('roadmap-section')}
-            className="text-xs sm:text-sm text-brand-on-surface-variant hover:text-brand-primary-container transition-colors cursor-pointer animate-none bg-transparent border-none p-0 font-medium"
+            className="text-xs sm:text-sm text-brand-on-surface-variant hover:text-brand-primary-container transition-colors cursor-pointer py-2 px-2 font-medium"
           >
             {language === 'ru' ? 'Этапы & Сроки' : language === 'en' ? 'Process & Timeline' : 'Етапи & Терміни'}
           </button>
           <button
             onClick={onOpenCases}
-            className="text-xs sm:text-sm text-brand-on-surface-variant hover:text-brand-primary-container transition-colors cursor-pointer animate-none bg-transparent border-none p-0"
+            className="text-xs sm:text-sm text-brand-on-surface-variant hover:text-brand-primary-container transition-colors cursor-pointer py-2 px-2"
           >
             {t.footer.link_cases}
           </button>
           <button
             onClick={() => onScrollToSection('stats-section')}
-            className="text-xs sm:text-sm text-brand-on-surface-variant hover:text-brand-primary-container transition-colors cursor-pointer animate-none bg-transparent border-none p-0"
+            className="text-xs sm:text-sm text-brand-on-surface-variant hover:text-brand-primary-container transition-colors cursor-pointer py-2 px-2"
           >
             {t.footer.link_why}
           </button>
           <button
             onClick={() => onScrollToSection('faq-section')}
-            className="text-xs sm:text-sm text-brand-on-surface-variant hover:text-brand-primary-container transition-colors cursor-pointer animate-none bg-transparent border-none p-0 font-medium"
+            className="text-xs sm:text-sm text-brand-on-surface-variant hover:text-brand-primary-container transition-colors cursor-pointer py-2 px-2 font-medium"
           >
             FAQ
           </button>
           <button
             onClick={() => onScrollToSection('contact-cta-section')}
-            className="text-xs sm:text-sm text-brand-on-surface-variant hover:text-brand-primary-container transition-colors cursor-pointer animate-none bg-transparent border-none p-0"
+            className="text-xs sm:text-sm text-brand-on-surface-variant hover:text-brand-primary-container transition-colors cursor-pointer py-2 px-2"
           >
             {t.footer.link_contacts}
           </button>
           <button
             onClick={onOpenLeadPanel}
-            className="text-xs sm:text-sm text-brand-secondary hover:text-brand-primary-container transition-colors flex items-center gap-1.5 cursor-pointer font-bold animate-none bg-transparent border-none p-0"
+            className="text-xs sm:text-sm text-brand-secondary hover:text-brand-primary-container transition-colors flex items-center gap-1.5 cursor-pointer font-bold py-2 px-2"
             id="open-crm-btn"
           >
             <Database className="w-3.5 h-3.5" /> {t.footer.crm_panel}
