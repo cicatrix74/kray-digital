@@ -774,9 +774,9 @@ export default function ProjectRoadmap({ onOpenCalculator, onScrollToContact }: 
 
         <p className="text-brand-on-surface-variant text-sm md:text-base leading-relaxed">
           {language === 'uk' ? (
-            'Жодних "завтраків" чи непередбачених затримок. Ми гарантуємо точний графік виконання кожного етапу з контролем якості та прозорою звітністю.'
+            'Жодних "завтраків" чи непередбачених затримок. Ми гарантуємо точний графік виконання кожного кроку з контролем якості та прозорою звітністю.'
           ) : language === 'ru' ? (
-            'Никаких "завтраков" или непредвиденных задержек. Мы гарантируем точный график выполнения каждого этапа с контролем качества и прозрачной отчетностью.'
+            'Никаких "завтраков" или непредвиденных задержек. Мы гарантируем точный график выполнения каждого шага с контролем качества и прозрачной отчетностью.'
           ) : (
             'No missed deadlines or vague promises. Clear phase breakdowns, fixed timelines, and full transparency from kickoff to production launch.'
           )}
@@ -840,7 +840,7 @@ export default function ProjectRoadmap({ onOpenCalculator, onScrollToContact }: 
             }`}
           >
             <Layers className="w-3.5 h-3.5" />
-            <span>{language === 'uk' ? 'Картки Етапів' : language === 'ru' ? 'Карточки Этапов' : 'Phase Cards'}</span>
+            <span>{language === 'uk' ? 'Кроки Розробки' : language === 'ru' ? 'Шаги Разработки' : 'Phase Cards'}</span>
           </button>
           <button
             onClick={() => setViewMode('gantt')}
@@ -861,7 +861,7 @@ export default function ProjectRoadmap({ onOpenCalculator, onScrollToContact }: 
         <div className="flex justify-between items-center text-xs font-semibold text-brand-on-surface-variant mb-3">
           <span className="flex items-center gap-1.5 text-brand-primary-container">
             <Calendar className="w-3.5 h-3.5" />
-            {language === 'uk' ? 'Розподіл часу між етапами (100% виробництва)' : language === 'ru' ? 'Распределение времени между этапами (100% производства)' : 'Timeline distribution across phases (100% lifecycle)'}
+            {language === 'uk' ? 'Розподіл часу за кроками розробки (100% виробництва)' : language === 'ru' ? 'Распределение времени по шагам разработки (100% производства)' : 'Timeline distribution across phases (100% lifecycle)'}
           </span>
           <span className="font-mono text-brand-on-surface">
             {language === 'uk' ? 'Загальний термін:' : language === 'ru' ? 'Общий срок:' : 'Total duration:'} {presetDurations[activePreset][language] || presetDurations[activePreset]['uk']}
@@ -949,7 +949,7 @@ export default function ProjectRoadmap({ onOpenCalculator, onScrollToContact }: 
                     <div>
                       <div className="flex flex-wrap items-center gap-2 mb-1">
                         <span className="font-mono text-xs font-bold text-brand-primary-container">
-                          {language === 'uk' ? `ЕТАП ${phase.stepNumber}` : language === 'ru' ? `ЭТАП ${phase.stepNumber}` : `PHASE ${phase.stepNumber}`}
+                          {language === 'uk' ? `КРОК ${phase.stepNumber}` : language === 'ru' ? `ШАГ ${phase.stepNumber}` : `PHASE ${phase.stepNumber}`}
                         </span>
                         <span className={`text-[11px] px-2.5 py-0.5 rounded-full font-mono font-semibold border ${phase.badgeColor}`}>
                           {getLangText(phase.duration)}
@@ -1058,7 +1058,7 @@ export default function ProjectRoadmap({ onOpenCalculator, onScrollToContact }: 
                             className="w-full py-2.5 px-4 rounded-xl bg-brand-primary-container/10 border border-brand-primary-container/30 text-brand-primary-container hover:bg-brand-primary-container hover:text-[#00363a] font-bold text-xs transition-all flex items-center justify-center gap-2 cursor-pointer group"
                           >
                             <span>
-                              {language === 'uk' ? 'Розрахувати цей етап' : language === 'ru' ? 'Рассчитать этот этап' : 'Calculate phase budget'}
+                              {language === 'uk' ? 'Розрахувати цей крок' : language === 'ru' ? 'Рассчитать этот шаг' : 'Calculate phase budget'}
                             </span>
                             <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                           </button>

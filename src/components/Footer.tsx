@@ -36,7 +36,7 @@ export default function Footer({ onOpenCases, onScrollToSection, onOpenLeadPanel
             onClick={() => onScrollToSection('roadmap-section')}
             className="text-xs sm:text-sm text-brand-on-surface-variant hover:text-brand-primary-container transition-colors cursor-pointer py-2 px-2 font-medium"
           >
-            {language === 'ru' ? 'Этапы & Сроки' : language === 'en' ? 'Process & Timeline' : 'Етапи & Терміни'}
+            {language === 'ru' ? 'Процесс & Сроки' : language === 'en' ? 'Process & Timeline' : 'Процес & Терміни'}
           </button>
           <button
             onClick={onOpenCases}

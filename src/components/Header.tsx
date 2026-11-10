@@ -11,7 +11,7 @@ interface HeaderProps {
 const NAV_ITEMS = {
   uk: [
     { id: 'expertise-section', label: 'Послуги' },
-    { id: 'roadmap-section', label: 'Етапи & Терміни' },
+    { id: 'roadmap-section', label: 'Процес & Терміни' },
     { id: 'portfolio-section', label: 'Кейси' },
     { id: 'stats-section', label: 'Чому ми' },
     { id: 'faq-section', label: 'FAQ' },
@@ -19,7 +19,7 @@ const NAV_ITEMS = {
   ],
   ru: [
     { id: 'expertise-section', label: 'Услуги' },
-    { id: 'roadmap-section', label: 'Этапы & Сроки' },
+    { id: 'roadmap-section', label: 'Процесс & Сроки' },
     { id: 'portfolio-section', label: 'Кейсы' },
     { id: 'stats-section', label: 'Почему мы' },
     { id: 'faq-section', label: 'FAQ' },
