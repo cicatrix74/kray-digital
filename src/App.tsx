@@ -1,16 +1,15 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
-import { AnimatePresence } from 'motion/react';
 import Header from './components/Header';
 import Hero from './components/Hero';
-import Expertise from './components/Expertise';
-import Stats from './components/Stats';
-import ContactCTA from './components/ContactCTA';
 import Footer from './components/Footer';
 import TechGridBackground from './components/TechGridBackground';
 import ScrollToTop from './components/ScrollToTop';
 import { LeadSubmission } from './types';
 
 // Code-split heavy below-the-fold and modal components for ultra-fast initial load
+const Expertise = lazy(() => import('./components/Expertise'));
+const Stats = lazy(() => import('./components/Stats'));
+const ContactCTA = lazy(() => import('./components/ContactCTA'));
 const Portfolio = lazy(() => import('./components/Portfolio'));
 const ProjectRoadmap = lazy(() => import('./components/ProjectRoadmap'));
 const CasesDrawer = lazy(() => import('./components/CasesDrawer'));
@@ -243,7 +242,9 @@ export default function App() {
         />
 
         {/* Expertise / Bento services section */}
-        <Expertise onSelectService={handleOpenCalculatorWithService} />
+        <Suspense fallback={null}>
+          <Expertise onSelectService={handleOpenCalculatorWithService} />
+        </Suspense>
 
         {/* Visual Project Roadmap & Durations section */}
         <Suspense fallback={null}>
@@ -254,7 +255,9 @@ export default function App() {
         </Suspense>
 
         {/* Stats and trust section */}
-        <Stats />
+        <Suspense fallback={null}>
+          <Stats />
+        </Suspense>
 
         {/* Portfolio / Our Works section */}
         <Suspense fallback={null}>
@@ -278,7 +281,9 @@ export default function App() {
         </Suspense>
 
         {/* Contact/Lead Capture Form Section */}
-        <ContactCTA onSubmitLead={handleAddLead} />
+        <Suspense fallback={null}>
+          <ContactCTA onSubmitLead={handleAddLead} />
+        </Suspense>
 
       </main>
 
@@ -289,54 +294,48 @@ export default function App() {
         onOpenLeadPanel={() => setIsLeadPanelOpen(true)}
       />
 
-      {/* OVERLAY COMPONENT POPUPS WITH FRAMER MOTION ANIMATION */}
+      {/* OVERLAY COMPONENT POPUPS */}
       <Suspense fallback={null}>
-        <AnimatePresence>
-          {isCasesOpen && (
-            <CasesDrawer 
-              isOpen={isCasesOpen} 
-              initialCaseId={selectedCaseId}
-              onClose={() => {
-                setIsCasesOpen(false);
-                setSelectedCaseId(null);
-              }}
-              onContactClick={() => {
-                setTimeout(() => {
-                  handleScrollToSection('contact-cta-section');
-                }, 300);
-              }}
-            />
-          )}
-        </AnimatePresence>
+        {isCasesOpen && (
+          <CasesDrawer 
+            isOpen={isCasesOpen} 
+            initialCaseId={selectedCaseId}
+            onClose={() => {
+              setIsCasesOpen(false);
+              setSelectedCaseId(null);
+            }}
+            onContactClick={() => {
+              setTimeout(() => {
+                handleScrollToSection('contact-cta-section');
+              }, 300);
+            }}
+          />
+        )}
       </Suspense>
 
       <Suspense fallback={null}>
-        <AnimatePresence>
-          {isCalculatorOpen && (
-            <CalculatorModal 
-              isOpen={isCalculatorOpen} 
-              onClose={() => setIsCalculatorOpen(false)} 
-              onSubmitLead={handleAddLead}
-              initialService={calculatorService}
-            />
-          )}
-        </AnimatePresence>
+        {isCalculatorOpen && (
+          <CalculatorModal 
+            isOpen={isCalculatorOpen} 
+            onClose={() => setIsCalculatorOpen(false)} 
+            onSubmitLead={handleAddLead}
+            initialService={calculatorService}
+          />
+        )}
       </Suspense>
 
       <Suspense fallback={null}>
-        <AnimatePresence>
-          {isLeadPanelOpen && (
-            <LeadPanel 
-              isOpen={isLeadPanelOpen} 
-              onClose={() => setIsLeadPanelOpen(false)} 
-              leads={leads}
-              onUpdateStatus={handleUpdateStatus}
-              onDeleteLead={handleDeleteLead}
-              onResetLeads={handleResetLeads}
-              onAddLead={handleAddLead}
-            />
-          )}
-        </AnimatePresence>
+        {isLeadPanelOpen && (
+          <LeadPanel 
+            isOpen={isLeadPanelOpen} 
+            onClose={() => setIsLeadPanelOpen(false)} 
+            leads={leads}
+            onUpdateStatus={handleUpdateStatus}
+            onDeleteLead={handleDeleteLead}
+            onResetLeads={handleResetLeads}
+            onAddLead={handleAddLead}
+          />
+        )}
       </Suspense>
 
       {/* Floating Scroll to Top Action */}

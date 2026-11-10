@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
 import { Code2, Menu, X, ArrowRight } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 
@@ -116,45 +115,39 @@ export default function Header({ onOpenCalculator, onScrollToSection, onOpenCase
         </div>
       </div>
 
-      {/* Mobile Animated Dropdown Menu (Hamburger Drawer) */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.25, ease: 'easeInOut' }}
-            className="lg:hidden border-b border-brand-outline-variant/30 bg-[#0f131e]/98 backdrop-blur-2xl px-6 py-6 shadow-2xl overflow-hidden"
-            id="mobile-nav-drawer"
-          >
-            <nav className="flex flex-col gap-2">
-              {navItems.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => handleNavClick(item.id)}
-                  className="w-full text-left text-sm font-semibold text-brand-on-surface hover:text-brand-primary-container py-3 px-3 rounded-xl hover:bg-white/5 transition-all flex items-center justify-between cursor-pointer group"
-                >
-                  <span>{item.label}</span>
-                  <ArrowRight className="w-4 h-4 text-brand-primary-container opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
-                </button>
-              ))}
+      {/* Mobile Animated Dropdown Menu (Clean, GPU-accelerated CSS transition) */}
+      {isMobileMenuOpen && (
+        <div
+          className="lg:hidden border-b border-brand-outline-variant/30 bg-[#0f131e]/98 backdrop-blur-2xl px-6 py-6 shadow-2xl overflow-hidden animate-fade-in"
+          id="mobile-nav-drawer"
+        >
+          <nav className="flex flex-col gap-2">
+            {navItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => handleNavClick(item.id)}
+                className="w-full text-left text-sm font-semibold text-brand-on-surface hover:text-brand-primary-container py-3 px-3 rounded-xl hover:bg-white/5 transition-all flex items-center justify-between cursor-pointer group"
+              >
+                <span>{item.label}</span>
+                <ArrowRight className="w-4 h-4 text-brand-primary-container opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+              </button>
+            ))}
 
-              {/* Mobile CTA inside Drawer (for small smartphones) */}
-              <div className="pt-4 mt-2 border-t border-brand-outline-variant/15 flex flex-col gap-2.5">
-                <button
-                  onClick={() => {
-                    setIsMobileMenuOpen(false);
-                    onOpenCalculator();
-                  }}
-                  className="w-full bg-brand-primary-container text-[#00363a] font-bold text-sm py-3.5 rounded-xl text-center shadow-glow transition-all active:scale-[0.98] cursor-pointer"
-                >
-                  {t.header.getEstimate}
-                </button>
-              </div>
-            </nav>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            {/* Mobile CTA inside Drawer (for small smartphones) */}
+            <div className="pt-4 mt-2 border-t border-brand-outline-variant/15 flex flex-col gap-2.5">
+              <button
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  onOpenCalculator();
+                }}
+                className="w-full bg-brand-primary-container text-[#00363a] font-bold text-sm py-3.5 rounded-xl text-center shadow-glow transition-all active:scale-[0.98] cursor-pointer"
+              >
+                {t.header.getEstimate}
+              </button>
+            </div>
+          </nav>
+        </div>
+      )}
     </header>
   );
 }

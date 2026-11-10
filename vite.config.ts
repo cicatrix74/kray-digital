@@ -17,8 +17,11 @@ export default defineConfig(() => {
               if (id.includes('lucide-react')) {
                 return 'vendor-icons';
               }
-              if (id.includes('react') || id.includes('motion')) {
-                return 'vendor-framework';
+              if (id.includes('motion')) {
+                return 'vendor-motion';
+              }
+              if (id.includes('react')) {
+                return 'vendor-react';
               }
               return 'vendor-libs';
             }

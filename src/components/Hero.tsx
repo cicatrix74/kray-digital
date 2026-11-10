@@ -1,5 +1,4 @@
 import React from 'react';
-import { motion } from 'motion/react';
 import { 
   CalendarRange, 
   Briefcase, 
@@ -8,9 +7,9 @@ import {
   Zap, 
   ShieldCheck, 
   Code2, 
-  CheckCircle2,
-  Calculator,
-  ArrowUpRight
+  CheckCircle2, 
+  Calculator, 
+  ArrowUpRight 
 } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 
@@ -77,23 +76,17 @@ export default function Hero({ onOpenCalculator, onOpenCases }: HeroProps) {
           {/* Left Column: Title, Description & Action Buttons (7 cols) */}
           <div className="lg:col-span-7">
             {/* Animated Badge */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.25 }}
-              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-primary-container/10 border border-brand-primary-container/20 mb-8 text-brand-primary-container text-xs font-semibold uppercase tracking-wider"
+            <div
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-primary-container/10 border border-brand-primary-container/20 mb-8 text-brand-primary-container text-xs font-semibold uppercase tracking-wider animate-fade-in"
               id="hero-badge"
             >
               <span className="w-2.5 h-2.5 rounded-full bg-brand-primary-container animate-pulse shadow-glow"></span>
               {t.hero.badge}
-            </motion.div>
+            </div>
 
             {/* Heading */}
-            <motion.h1
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.25 }}
-              className="font-display text-4xl sm:text-5xl md:text-6xl font-extrabold text-brand-on-surface mb-6 leading-tight tracking-tight"
+            <h1
+              className="font-display text-4xl sm:text-5xl md:text-6xl font-extrabold text-brand-on-surface mb-6 leading-tight tracking-tight animate-fade-in"
               id="hero-title"
             >
               {t.hero.title_prefix}{' '}
@@ -101,25 +94,19 @@ export default function Hero({ onOpenCalculator, onOpenCases }: HeroProps) {
                 {t.hero.title_highlight}
               </span>{' '}
               {t.hero.title_suffix}
-            </motion.h1>
+            </h1>
 
             {/* Description */}
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.25 }}
-              className="text-base sm:text-lg md:text-xl text-brand-on-surface-variant mb-10 max-w-2xl leading-relaxed font-sans"
+            <p
+              className="text-base sm:text-lg md:text-xl text-brand-on-surface-variant mb-10 max-w-2xl leading-relaxed font-sans animate-fade-in"
               id="hero-description"
             >
               {t.hero.description}
-            </motion.p>
+            </p>
 
             {/* Actions */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.25 }}
-              className="flex flex-col sm:flex-row gap-4 mb-10"
+            <div
+              className="flex flex-col sm:flex-row gap-4 mb-10 animate-fade-in"
               id="hero-actions-container"
             >
               <button
@@ -136,14 +123,11 @@ export default function Hero({ onOpenCalculator, onOpenCases }: HeroProps) {
               >
                 <Briefcase className="w-5 h-5" /> {t.hero.cases}
               </button>
-            </motion.div>
+            </div>
 
             {/* Key Trust Bullets under buttons */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.25 }}
-              className="pt-6 border-t border-brand-outline-variant/30 flex flex-wrap items-center gap-y-3 gap-x-6 text-xs text-brand-on-surface-variant"
+            <div
+              className="pt-6 border-t border-brand-outline-variant/30 flex flex-wrap items-center gap-y-3 gap-x-6 text-xs text-brand-on-surface-variant animate-fade-in"
             >
               <div className="flex items-center gap-2">
                 <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
@@ -157,15 +141,12 @@ export default function Hero({ onOpenCalculator, onOpenCases }: HeroProps) {
                 <Zap className="w-4 h-4 text-amber-400 shrink-0" />
                 <span>{cardStrings.auditBadge}</span>
               </div>
-            </motion.div>
+            </div>
           </div>
 
           {/* Right Column: Sleek Live Agency Terminal & KPI Card (5 cols) */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.98 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.3 }}
-            className="lg:col-span-5 relative"
+          <div
+            className="lg:col-span-5 relative animate-fade-in"
           >
             {/* Ambient Backlight for the card */}
             <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500/20 via-teal-500/10 to-indigo-500/20 rounded-3xl blur-xl opacity-70 group-hover:opacity-100 transition duration-1000 -z-10" />
@@ -251,7 +232,7 @@ export default function Hero({ onOpenCalculator, onOpenCases }: HeroProps) {
               </button>
 
             </div>
-          </motion.div>
+          </div>
 
         </div>
       </div>
