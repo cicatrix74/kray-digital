@@ -62,13 +62,6 @@ export default function Footer({ onOpenCases, onScrollToSection, onOpenLeadPanel
           >
             {t.footer.link_contacts}
           </button>
-          <button
-            onClick={onOpenLeadPanel}
-            className="text-xs sm:text-sm text-brand-secondary hover:text-brand-primary-container transition-colors flex items-center gap-1.5 cursor-pointer font-bold py-2 px-2"
-            id="open-crm-btn"
-          >
-            <Database className="w-3.5 h-3.5" /> {t.footer.crm_panel}
-          </button>
         </nav>
 
         {/* Copyright & Security */}
@@ -77,7 +70,7 @@ export default function Footer({ onOpenCases, onScrollToSection, onOpenLeadPanel
             {t.footer.copyright}
           </span>
           <div className="flex items-center gap-1 text-[10px] text-brand-on-surface-variant/60">
-            <ShieldCheck className="w-3 h-3 text-brand-tertiary-container" /> Secured by SSL & localStorage
+            <ShieldCheck className="w-3 h-3 text-brand-tertiary-container" /> Secured by SSL 256-bit Encryption
           </div>
         </div>
 
