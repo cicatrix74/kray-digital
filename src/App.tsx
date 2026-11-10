@@ -8,11 +8,11 @@ import ContactCTA from './components/ContactCTA';
 import Footer from './components/Footer';
 import TechGridBackground from './components/TechGridBackground';
 import ScrollToTop from './components/ScrollToTop';
-import Portfolio from './components/Portfolio';
-import ProjectRoadmap from './components/ProjectRoadmap';
 import { LeadSubmission } from './types';
 
 // Code-split heavy below-the-fold and modal components for ultra-fast initial load
+const Portfolio = lazy(() => import('./components/Portfolio'));
+const ProjectRoadmap = lazy(() => import('./components/ProjectRoadmap'));
 const CasesDrawer = lazy(() => import('./components/CasesDrawer'));
 const CalculatorModal = lazy(() => import('./components/CalculatorModal'));
 const LeadPanel = lazy(() => import('./components/LeadPanel'));
@@ -80,6 +80,9 @@ export default function App() {
 
   // Track cursor globally for interactive light sphere (throttled on desktop, passive)
   useEffect(() => {
+    if (typeof window === 'undefined' || !window.matchMedia('(pointer: fine)').matches) {
+      return;
+    }
     let ticking = false;
     const handleMove = (e: MouseEvent) => {
       if (!ticking) {
@@ -243,16 +246,20 @@ export default function App() {
         <Expertise onSelectService={handleOpenCalculatorWithService} />
 
         {/* Visual Project Roadmap & Durations section */}
-        <ProjectRoadmap 
-          onOpenCalculator={handleOpenCalculatorWithService}
-          onScrollToContact={() => handleScrollToSection('contact-cta-section')}
-        />
+        <Suspense fallback={null}>
+          <ProjectRoadmap 
+            onOpenCalculator={handleOpenCalculatorWithService}
+            onScrollToContact={() => handleScrollToSection('contact-cta-section')}
+          />
+        </Suspense>
 
         {/* Stats and trust section */}
         <Stats />
 
         {/* Portfolio / Our Works section */}
-        <Portfolio onOpenCase={handleOpenCasesWithCase} />
+        <Suspense fallback={null}>
+          <Portfolio onOpenCase={handleOpenCasesWithCase} />
+        </Suspense>
 
         {/* Testimonials / Client Success Stories carousel section */}
         <Suspense fallback={null}>

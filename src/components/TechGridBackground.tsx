@@ -4,6 +4,11 @@ export default function TechGridBackground() {
   const [mousePos, setMousePos] = useState({ x: -1000, y: -1000 });
 
   useEffect(() => {
+    // Only track cursor spotlight on devices with a physical mouse/pointer
+    if (typeof window === 'undefined' || !window.matchMedia('(pointer: fine)').matches) {
+      return;
+    }
+
     let ticking = false;
     const handleMouseMove = (e: MouseEvent) => {
       if (!ticking) {

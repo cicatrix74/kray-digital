@@ -78,9 +78,9 @@ export default function Hero({ onOpenCalculator, onOpenCases }: HeroProps) {
           <div className="lg:col-span-7">
             {/* Animated Badge */}
             <motion.div
-              initial={{ opacity: 0, y: -15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.25 }}
               className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-primary-container/10 border border-brand-primary-container/20 mb-8 text-brand-primary-container text-xs font-semibold uppercase tracking-wider"
               id="hero-badge"
             >
@@ -90,9 +90,9 @@ export default function Hero({ onOpenCalculator, onOpenCases }: HeroProps) {
 
             {/* Heading */}
             <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.25 }}
               className="font-display text-4xl sm:text-5xl md:text-6xl font-extrabold text-brand-on-surface mb-6 leading-tight tracking-tight"
               id="hero-title"
             >
@@ -105,9 +105,9 @@ export default function Hero({ onOpenCalculator, onOpenCases }: HeroProps) {
 
             {/* Description */}
             <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.25 }}
               className="text-base sm:text-lg md:text-xl text-brand-on-surface-variant mb-10 max-w-2xl leading-relaxed font-sans"
               id="hero-description"
             >
@@ -116,9 +116,9 @@ export default function Hero({ onOpenCalculator, onOpenCases }: HeroProps) {
 
             {/* Actions */}
             <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.25 }}
               className="flex flex-col sm:flex-row gap-4 mb-10"
               id="hero-actions-container"
             >
@@ -142,7 +142,7 @@ export default function Hero({ onOpenCalculator, onOpenCases }: HeroProps) {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
+              transition={{ duration: 0.25 }}
               className="pt-6 border-t border-brand-outline-variant/30 flex flex-wrap items-center gap-y-3 gap-x-6 text-xs text-brand-on-surface-variant"
             >
               <div className="flex items-center gap-2">
@@ -162,9 +162,9 @@ export default function Hero({ onOpenCalculator, onOpenCases }: HeroProps) {
 
           {/* Right Column: Sleek Live Agency Terminal & KPI Card (5 cols) */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
+            initial={{ opacity: 0, scale: 0.98 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.3 }}
             className="lg:col-span-5 relative"
           >
             {/* Ambient Backlight for the card */}
