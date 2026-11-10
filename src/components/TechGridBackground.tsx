@@ -24,7 +24,29 @@ export default function TechGridBackground() {
       className="fixed inset-0 w-full h-full pointer-events-none z-0 overflow-hidden select-none bg-[#0a0d14]"
       id="tech-grid-bg"
     >
-      {/* 1. Base Blueprint Grid Pattern (SVG) - 100% Vector & 0ms Load */}
+      {/* 1. Desktop-Only Modern Agency Workspace Atmosphere (Hidden on mobile for maximum speed) */}
+      <div className="hidden md:block absolute inset-0 w-full h-full overflow-hidden pointer-events-none">
+        <picture>
+          <source 
+            media="(min-width: 768px)" 
+            srcSet="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=75&w=1600" 
+          />
+          <img
+            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E"
+            alt="Modern Agency Office Workspace"
+            loading="lazy"
+            decoding="async"
+            width="1600"
+            height="900"
+            className="w-full h-full object-cover object-top opacity-20 filter grayscale contrast-125 scale-[1.02] transition-transform duration-1000 ease-out"
+          />
+        </picture>
+        {/* Cinematic dark gradients to keep text 100% readable and contrast-rich */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0d14] via-[#0a0d14]/75 to-[#0a0d14]/60" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0a0d14] via-transparent to-[#0a0d14]/85" />
+      </div>
+
+      {/* 2. Base Blueprint Grid Pattern (SVG) - 100% Vector & 0ms Load */}
       <svg
         className="absolute inset-0 w-full h-full opacity-[0.14] stroke-cyan-400"
         xmlns="http://www.w3.org/2000/svg"
