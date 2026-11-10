@@ -73,16 +73,16 @@ export default function TechGridBackground() {
         <rect width="100%" height="100%" fill="url(#main-grid)" />
       </svg>
 
-      {/* 2. Top Hero Ambient Glows (Smooth Cyan & Indigo Lighting) */}
+      {/* 2. Top Hero Ambient Glows (Smooth Cyan & Indigo Lighting - Desktop only for GPU speed) */}
       <div 
-        className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[550px] opacity-40 blur-[130px] rounded-full pointer-events-none"
+        className="hidden md:block absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[550px] opacity-40 blur-[130px] rounded-full pointer-events-none"
         style={{
           background: 'radial-gradient(circle, rgba(77, 208, 225, 0.45) 0%, rgba(13, 71, 161, 0.25) 45%, transparent 70%)'
         }}
       />
       
       <div 
-        className="absolute top-20 right-[-10%] w-[600px] h-[450px] opacity-25 blur-[120px] rounded-full pointer-events-none"
+        className="hidden md:block absolute top-20 right-[-10%] w-[600px] h-[450px] opacity-25 blur-[120px] rounded-full pointer-events-none"
         style={{
           background: 'radial-gradient(circle, rgba(0, 188, 212, 0.35) 0%, rgba(38, 166, 154, 0.15) 50%, transparent 70%)'
         }}

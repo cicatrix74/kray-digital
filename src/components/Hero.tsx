@@ -66,9 +66,9 @@ export default function Hero({ onOpenCalculator, onOpenCases }: HeroProps) {
 
   return (
     <section className="relative min-h-[calc(100vh-80px)] flex items-center overflow-hidden py-12 lg:py-20" id="hero-section">
-      {/* Decorative Gradient Blobs */}
-      <div className="absolute top-1/4 -right-1/4 w-1/2 h-1/2 bg-cyan-500/10 blur-[140px] rounded-full pointer-events-none" />
-      <div className="absolute -bottom-1/4 -left-1/4 w-1/2 h-1/2 bg-indigo-500/10 blur-[140px] rounded-full pointer-events-none" />
+      {/* Decorative Gradient Blobs (Desktop only to prevent mobile GPU compositing delays) */}
+      <div className="hidden sm:block absolute top-1/4 -right-1/4 w-1/2 h-1/2 bg-cyan-500/10 blur-[140px] rounded-full pointer-events-none" />
+      <div className="hidden sm:block absolute -bottom-1/4 -left-1/4 w-1/2 h-1/2 bg-indigo-500/10 blur-[140px] rounded-full pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 md:px-10 relative z-10 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
@@ -77,16 +77,16 @@ export default function Hero({ onOpenCalculator, onOpenCases }: HeroProps) {
           <div className="lg:col-span-7">
             {/* Animated Badge */}
             <div
-              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-primary-container/10 border border-brand-primary-container/20 mb-8 text-brand-primary-container text-xs font-semibold uppercase tracking-wider animate-fade-in"
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-primary-container/10 border border-brand-primary-container/20 mb-8 text-brand-primary-container text-xs font-semibold uppercase tracking-wider"
               id="hero-badge"
             >
               <span className="w-2.5 h-2.5 rounded-full bg-brand-primary-container animate-pulse shadow-glow"></span>
               {t.hero.badge}
             </div>
 
-            {/* Heading */}
+            {/* Heading - Instant 100% opacity for sub-second LCP */}
             <h1
-              className="font-display text-4xl sm:text-5xl md:text-6xl font-extrabold text-brand-on-surface mb-6 leading-tight tracking-tight animate-fade-in"
+              className="font-display text-4xl sm:text-5xl md:text-6xl font-extrabold text-brand-on-surface mb-6 leading-tight tracking-tight"
               id="hero-title"
             >
               {t.hero.title_prefix}{' '}
@@ -98,7 +98,7 @@ export default function Hero({ onOpenCalculator, onOpenCases }: HeroProps) {
 
             {/* Description */}
             <p
-              className="text-base sm:text-lg md:text-xl text-brand-on-surface-variant mb-10 max-w-2xl leading-relaxed font-sans animate-fade-in"
+              className="text-base sm:text-lg md:text-xl text-brand-on-surface-variant mb-10 max-w-2xl leading-relaxed font-sans"
               id="hero-description"
             >
               {t.hero.description}
@@ -106,7 +106,7 @@ export default function Hero({ onOpenCalculator, onOpenCases }: HeroProps) {
 
             {/* Actions */}
             <div
-              className="flex flex-col sm:flex-row gap-4 mb-10 animate-fade-in"
+              className="flex flex-col sm:flex-row gap-4 mb-10"
               id="hero-actions-container"
             >
               <button
@@ -127,7 +127,7 @@ export default function Hero({ onOpenCalculator, onOpenCases }: HeroProps) {
 
             {/* Key Trust Bullets under buttons */}
             <div
-              className="pt-6 border-t border-brand-outline-variant/30 flex flex-wrap items-center gap-y-3 gap-x-6 text-xs text-brand-on-surface-variant animate-fade-in"
+              className="pt-6 border-t border-brand-outline-variant/30 flex flex-wrap items-center gap-y-3 gap-x-6 text-xs text-brand-on-surface-variant"
             >
               <div className="flex items-center gap-2">
                 <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />

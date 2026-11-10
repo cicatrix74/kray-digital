@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://kray-digital.pp.ua/sitemap.xml
