@@ -1,36 +1,11 @@
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
-import {defineConfig, Plugin} from 'vite';
-
-function inlineMainCss(): Plugin {
-  return {
-    name: 'inline-main-css',
-    enforce: 'post',
-    apply: 'build',
-    transformIndexHtml(html, ctx) {
-      if (!ctx.bundle) return html;
-      let updatedHtml = html;
-      for (const [fileName, chunk] of Object.entries(ctx.bundle)) {
-        if (fileName.endsWith('.css') && chunk.type === 'asset') {
-          const cssSource = typeof chunk.source === 'string'
-            ? chunk.source
-            : Buffer.from(chunk.source).toString('utf8');
-          const linkRe = new RegExp(`<link[^>]+href=["']/${fileName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}["'][^>]*>`, 'i');
-          if (linkRe.test(updatedHtml)) {
-            updatedHtml = updatedHtml.replace(linkRe, `<style>${cssSource}</style>`);
-            delete ctx.bundle[fileName];
-          }
-        }
-      }
-      return updatedHtml;
-    },
-  };
-}
+import {defineConfig} from 'vite';
 
 export default defineConfig(() => {
   return {
-    plugins: [react(), tailwindcss(), inlineMainCss()],
+    plugins: [react(), tailwindcss()],
     build: {
       target: 'esnext',
       minify: 'esbuild',
