@@ -61,6 +61,22 @@ export default function App() {
   const [isLeadPanelOpen, setIsLeadPanelOpen] = useState(false);
   const [calculatorService, setCalculatorService] = useState('');
   const [leads, setLeads] = useState<LeadSubmission[]>([]);
+  const [showBelowFold, setShowBelowFold] = useState(false);
+
+  // Defer below-the-fold lazy chunks until first interaction or idle fallback
+  // so initial mobile paint isn't competing with vendor-motion & 8 section bundles.
+  useEffect(() => {
+    if (showBelowFold) return;
+    const reveal = () => setShowBelowFold(true);
+    const events = ['scroll', 'touchstart', 'pointerdown', 'keydown', 'mousemove'] as const;
+    events.forEach((ev) => window.addEventListener(ev, reveal, { once: true, passive: true }));
+    const timer = window.setTimeout(reveal, 4500);
+
+    return () => {
+      events.forEach((ev) => window.removeEventListener(ev, reveal));
+      window.clearTimeout(timer);
+    };
+  }, [showBelowFold]);
 
   // Load leads from localStorage on mount
   useEffect(() => {
@@ -186,42 +202,63 @@ export default function App() {
 
   // Utility to scroll to section smoothly with cubic easing & fixed header offset
   const handleScrollToSection = (elementId: string) => {
-    const el = document.getElementById(elementId);
-    if (!el) return;
+    if (!showBelowFold) {
+      setShowBelowFold(true);
+    }
 
-    // Fixed header height (80px) + breathing room (12px)
-    const headerOffset = 92;
-    const targetY = Math.max(0, el.getBoundingClientRect().top + window.pageYOffset - headerOffset);
-    const startY = window.pageYOffset;
-    const distance = targetY - startY;
+    const scrollToEl = (el: HTMLElement) => {
+      // Fixed header height (80px) + breathing room (12px)
+      const headerOffset = 92;
+      const targetY = Math.max(0, el.getBoundingClientRect().top + window.pageYOffset - headerOffset);
+      const startY = window.pageYOffset;
+      const distance = targetY - startY;
 
-    if (Math.abs(distance) < 5) return;
+      if (Math.abs(distance) < 5) return;
 
-    // Smooth duration adapted to distance (550ms - 850ms)
-    const duration = Math.min(850, Math.max(550, Math.abs(distance) * 0.35));
-    let startTime: number | null = null;
+      // Smooth duration adapted to distance (550ms - 850ms)
+      const duration = Math.min(850, Math.max(550, Math.abs(distance) * 0.35));
+      let startTime: number | null = null;
 
-    // Easing curve: easeInOutCubic (soft start, pleasant momentum, silky stop)
-    const easeInOutCubic = (t: number) => {
-      return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      // Easing curve: easeInOutCubic (soft start, pleasant momentum, silky stop)
+      const easeInOutCubic = (t: number) => {
+        return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      };
+
+      const step = (currentTime: number) => {
+        if (!startTime) startTime = currentTime;
+        const timeElapsed = currentTime - startTime;
+        const progress = Math.min(timeElapsed / duration, 1);
+        const easedProgress = easeInOutCubic(progress);
+
+        window.scrollTo(0, startY + distance * easedProgress);
+
+        if (timeElapsed < duration) {
+          requestAnimationFrame(step);
+        } else {
+          window.scrollTo(0, targetY);
+        }
+      };
+
+      requestAnimationFrame(step);
     };
 
-    const step = (currentTime: number) => {
-      if (!startTime) startTime = currentTime;
-      const timeElapsed = currentTime - startTime;
-      const progress = Math.min(timeElapsed / duration, 1);
-      const easedProgress = easeInOutCubic(progress);
+    const immediateEl = document.getElementById(elementId);
+    if (immediateEl) {
+      scrollToEl(immediateEl);
+      return;
+    }
 
-      window.scrollTo(0, startY + distance * easedProgress);
-
-      if (timeElapsed < duration) {
-        requestAnimationFrame(step);
-      } else {
-        window.scrollTo(0, targetY);
+    let attempts = 0;
+    const waitForEl = () => {
+      const el = document.getElementById(elementId);
+      if (el) {
+        scrollToEl(el);
+      } else if (attempts < 25) {
+        attempts += 1;
+        window.setTimeout(waitForEl, 60);
       }
     };
-
-    requestAnimationFrame(step);
+    window.setTimeout(waitForEl, 60);
   };
 
   const handleOpenCalculatorWithService = (serviceName: string) => {
@@ -256,49 +293,54 @@ export default function App() {
           onOpenCases={() => handleScrollToSection('portfolio-section')} 
         />
 
-        {/* Expertise / Bento services section */}
-        <Suspense fallback={null}>
-          <Expertise onSelectService={handleOpenCalculatorWithService} />
-        </Suspense>
+        {/* Below-the-fold sections deferred until interaction or idle */}
+        {showBelowFold && (
+          <>
+            {/* Expertise / Bento services section */}
+            <Suspense fallback={null}>
+              <Expertise onSelectService={handleOpenCalculatorWithService} />
+            </Suspense>
 
-        {/* Visual Project Roadmap & Durations section */}
-        <Suspense fallback={null}>
-          <ProjectRoadmap 
-            onOpenCalculator={handleOpenCalculatorWithService}
-            onScrollToContact={() => handleScrollToSection('contact-cta-section')}
-          />
-        </Suspense>
+            {/* Visual Project Roadmap & Durations section */}
+            <Suspense fallback={null}>
+              <ProjectRoadmap 
+                onOpenCalculator={handleOpenCalculatorWithService}
+                onScrollToContact={() => handleScrollToSection('contact-cta-section')}
+              />
+            </Suspense>
 
-        {/* Stats and trust section */}
-        <Suspense fallback={null}>
-          <Stats />
-        </Suspense>
+            {/* Stats and trust section */}
+            <Suspense fallback={null}>
+              <Stats />
+            </Suspense>
 
-        {/* Portfolio / Our Works section */}
-        <Suspense fallback={null}>
-          <Portfolio onOpenCase={handleOpenCasesWithCase} />
-        </Suspense>
+            {/* Portfolio / Our Works section */}
+            <Suspense fallback={null}>
+              <Portfolio onOpenCase={handleOpenCasesWithCase} />
+            </Suspense>
 
-        {/* Testimonials / Client Success Stories carousel section */}
-        <Suspense fallback={null}>
-          <Testimonials 
-            onOpenCase={handleOpenCasesWithCase}
-            onScrollToContact={() => handleScrollToSection('contact-cta-section')}
-          />
-        </Suspense>
+            {/* Testimonials / Client Success Stories carousel section */}
+            <Suspense fallback={null}>
+              <Testimonials 
+                onOpenCase={handleOpenCasesWithCase}
+                onScrollToContact={() => handleScrollToSection('contact-cta-section')}
+              />
+            </Suspense>
 
-        {/* FAQ Section answering client questions on timelines, guarantees, workflows */}
-        <Suspense fallback={null}>
-          <FAQ 
-            onScrollToContact={() => handleScrollToSection('contact-cta-section')}
-            onOpenCalculator={handleOpenCalculatorWithService}
-          />
-        </Suspense>
+            {/* FAQ Section answering client questions on timelines, guarantees, workflows */}
+            <Suspense fallback={null}>
+              <FAQ 
+                onScrollToContact={() => handleScrollToSection('contact-cta-section')}
+                onOpenCalculator={handleOpenCalculatorWithService}
+              />
+            </Suspense>
 
-        {/* Contact/Lead Capture Form Section */}
-        <Suspense fallback={null}>
-          <ContactCTA onSubmitLead={handleAddLead} />
-        </Suspense>
+            {/* Contact/Lead Capture Form Section */}
+            <Suspense fallback={null}>
+              <ContactCTA onSubmitLead={handleAddLead} />
+            </Suspense>
+          </>
+        )}
 
       </main>
 
@@ -357,12 +399,14 @@ export default function App() {
       <ScrollToTop />
 
       {/* Floating Quick Help Chat Bubble */}
-      <Suspense fallback={null}>
-        <QuickHelpChat 
-          onOpenCalculator={() => handleOpenCalculatorWithService('')}
-          onScrollToContact={() => handleScrollToSection('contact-cta-section')}
-        />
-      </Suspense>
+      {showBelowFold && (
+        <Suspense fallback={null}>
+          <QuickHelpChat 
+            onOpenCalculator={() => handleOpenCalculatorWithService('')}
+            onScrollToContact={() => handleScrollToSection('contact-cta-section')}
+          />
+        </Suspense>
+      )}
 
     </div>
   );

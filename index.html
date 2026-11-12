@@ -50,10 +50,10 @@
         document.head.appendChild(gtm);
       }
 
-      ['scroll', 'mousemove', 'touchstart', 'click'].forEach(function(e) {
+      ['scroll', 'mousemove', 'touchstart', 'click', 'keydown'].forEach(function(e) {
         window.addEventListener(e, loadAnalytics, { once: true, passive: true });
       });
-      setTimeout(loadAnalytics, 3000);
+      setTimeout(loadAnalytics, 5000);
     </script>
   </head>
   <body class="bg-[#0f131e] text-[#dfe2f2]">
