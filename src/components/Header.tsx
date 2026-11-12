@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Code2, Menu, X, ArrowRight } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import { PhoneLink, EmailLink } from './ContactLinks';
 
 interface HeaderProps {
   onOpenCalculator: () => void;
@@ -83,9 +84,12 @@ export default function Header({ onOpenCalculator, onScrollToSection, onOpenCase
           ))}
         </nav>
 
-        {/* Right Actions Container: CTA + Hamburger Button */}
-        <div className="flex items-center gap-2.5 sm:gap-4 shrink-0">
-          
+        {/* Right Actions Container: Phone + CTA + Hamburger Button */}
+        <div className="flex items-center gap-2.5 sm:gap-3.5 shrink-0">
+          <PhoneLink
+            className="hidden md:inline-flex lg:hidden xl:inline-flex text-xs xl:text-sm px-3 py-2 rounded-xl border border-brand-outline-variant/25 bg-[#171b27]/70 hover:border-brand-primary-container/40"
+          />
+
           {/* Action CTA Button */}
           <button
             onClick={() => {
@@ -133,8 +137,12 @@ export default function Header({ onOpenCalculator, onScrollToSection, onOpenCase
               </button>
             ))}
 
-            {/* Mobile CTA inside Drawer (for small smartphones) */}
-            <div className="pt-4 mt-2 border-t border-brand-outline-variant/15 flex flex-col gap-2.5">
+            {/* Mobile Direct Contacts & CTA inside Drawer */}
+            <div className="pt-4 mt-2 border-t border-brand-outline-variant/15 flex flex-col gap-3">
+              <div className="flex flex-col gap-2 px-1">
+                <PhoneLink className="text-sm py-1.5" />
+                <EmailLink className="text-sm py-1.5" />
+              </div>
               <button
                 onClick={() => {
                   setIsMobileMenuOpen(false);

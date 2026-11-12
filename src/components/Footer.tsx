@@ -1,6 +1,7 @@
 import React from 'react';
-import { Database, ShieldCheck, Code2 } from 'lucide-react';
+import { ShieldCheck, Code2 } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import { PhoneLink, EmailLink } from './ContactLinks';
 
 interface FooterProps {
   onOpenCases: () => void;
@@ -64,8 +65,12 @@ export default function Footer({ onOpenCases, onScrollToSection, onOpenLeadPanel
           </button>
         </nav>
 
-        {/* Copyright & Security */}
-        <div className="flex flex-col items-center md:items-end gap-1.5">
+        {/* Direct Contacts, Copyright & Security */}
+        <div className="flex flex-col items-center md:items-end gap-2">
+          <div className="flex flex-wrap items-center justify-center md:justify-end gap-x-4 gap-y-2 text-xs sm:text-sm">
+            <PhoneLink className="py-1" />
+            <EmailLink className="py-1" />
+          </div>
           <span className="text-xs text-brand-on-surface-variant text-center md:text-right">
             {t.footer.copyright}
           </span>

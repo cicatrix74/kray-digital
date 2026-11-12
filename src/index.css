@@ -122,6 +122,38 @@ body {
   animation: scroll-up linear infinite;
 }
 
+@keyframes phone-ring {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  5% {
+    transform: rotate(-14deg);
+  }
+  10% {
+    transform: rotate(14deg);
+  }
+  15% {
+    transform: rotate(-12deg);
+  }
+  20% {
+    transform: rotate(10deg);
+  }
+  25% {
+    transform: rotate(0deg);
+  }
+}
+
+.animate-phone-ring {
+  animation: phone-ring 2.4s ease-in-out infinite;
+  transform-origin: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-phone-ring {
+    animation: none;
+  }
+}
+
 /* Hide Netlify Drawer & Collaborative Feedback Badge completely */
 [data-netlify-deploy-id],
 #netlify-drawer,

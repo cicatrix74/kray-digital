@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { CheckCircle2, Zap, Send, Check } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import { PhoneLink, EmailLink } from './ContactLinks';
 
 interface ContactCTAProps {
   onSubmitLead: (lead: { name: string; phone: string; service: string }) => void;
@@ -130,6 +131,12 @@ export default function ContactCTA({ onSubmitLead }: ContactCTAProps) {
                   </li>
                 ))}
               </ul>
+
+              {/* Direct Contacts */}
+              <div className="flex flex-wrap items-center gap-3 pt-2">
+                <PhoneLink className="text-xs sm:text-sm px-4 py-2.5 rounded-xl bg-brand-surface/80 border border-brand-outline-variant/25 hover:border-brand-primary-container/45" />
+                <EmailLink className="text-xs sm:text-sm px-4 py-2.5 rounded-xl bg-brand-surface/80 border border-brand-outline-variant/25 hover:border-brand-primary-container/45" />
+              </div>
             </motion.div>
 
             {/* Right Form Column with Transition */}
