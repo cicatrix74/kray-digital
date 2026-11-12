@@ -144,17 +144,11 @@ body {
 }
 
 .animate-phone-ring {
-  animation: phone-ring 3s infinite ease-in-out;
-  transform-origin: center;
+  animation: phone-ring 3s infinite ease-in-out !important;
+  transform-origin: center !important;
   will-change: transform;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .animate-phone-ring {
-    animation: none;
-  }
 }
 
 /* Hide Netlify Drawer & Collaborative Feedback Badge completely */
