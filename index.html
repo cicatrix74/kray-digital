@@ -50,7 +50,7 @@
         document.head.appendChild(gtm);
       }
 
-      ['scroll', 'mousemove', 'touchstart', 'click', 'keydown'].forEach(function(e) {
+      ['scroll', 'touchstart', 'click', 'keydown'].forEach(function(e) {
         window.addEventListener(e, loadAnalytics, { once: true, passive: true });
       });
       setTimeout(loadAnalytics, 5000);

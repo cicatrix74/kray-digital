@@ -68,7 +68,7 @@ export default function App() {
   useEffect(() => {
     if (showBelowFold) return;
     const reveal = () => setShowBelowFold(true);
-    const events = ['scroll', 'touchstart', 'pointerdown', 'keydown', 'mousemove'] as const;
+    const events = ['scroll', 'touchstart', 'pointerdown', 'keydown'] as const;
     events.forEach((ev) => window.addEventListener(ev, reveal, { once: true, passive: true }));
     const timer = window.setTimeout(reveal, 4500);
 
