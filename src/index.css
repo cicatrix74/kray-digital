@@ -123,29 +123,32 @@ body {
 }
 
 @keyframes phone-ring {
-  0%, 100% {
-    transform: rotate(0deg);
+  0% {
+    transform: rotate3d(0, 0, 1, 0deg);
   }
   5% {
-    transform: rotate(-14deg);
+    transform: rotate3d(0, 0, 1, 15deg);
   }
   10% {
-    transform: rotate(14deg);
+    transform: rotate3d(0, 0, 1, -15deg);
   }
   15% {
-    transform: rotate(-12deg);
+    transform: rotate3d(0, 0, 1, 20deg);
   }
   20% {
-    transform: rotate(10deg);
+    transform: rotate3d(0, 0, 1, -20deg);
   }
-  25% {
-    transform: rotate(0deg);
+  100% {
+    transform: rotate3d(0, 0, 1, 0deg);
   }
 }
 
 .animate-phone-ring {
-  animation: phone-ring 2.4s ease-in-out infinite;
+  animation: phone-ring 3s infinite ease-in-out;
   transform-origin: center;
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 @media (prefers-reduced-motion: reduce) {
