@@ -85,18 +85,20 @@
   <header class="site-header">
     <div class="container header-container">
       <div class="logo-area">
-        <div class="brand-logo">
+        <a href="/" class="brand-logo" title="На головну kray-digital">
           <span class="logo-icon">⚡</span>
           <div class="brand-text">
             <span class="brand-name">kray-digital</span>
             <span class="page-badge" data-i18n="brandBadge">Дніпропетровська область • Live</span>
           </div>
-        </div>
+        </a>
       </div>
-      <div class="lang-switch-group" aria-label="Вибір мови / Выбор языка / Language selection">
-        <button class="lang-btn active" data-lang="ua">UA</button>
-        <button class="lang-btn" data-lang="ru">RU</button>
-        <button class="lang-btn" data-lang="en">EN</button>
+      <div class="header-action-area">
+        <a href="/" class="header-order-btn" title="Замовити сайт в kray-digital">
+          <span class="order-spark">✨</span>
+          <span data-i18n="orderSiteBtn">Замовити сайт</span>
+          <span class="order-arrow">→</span>
+        </a>
       </div>
     </div>
   </header>
@@ -554,6 +556,14 @@
       </div>
     </div>
   </footer>
+
+  <!-- Scroll to Top Button (Matching Main Landing Page) -->
+  <button id="scrollToTopBtn" class="scroll-to-top-btn" aria-label="Вгору" title="Вгору">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m5 12 7-7 7 7"/>
+      <path d="M12 19V5"/>
+    </svg>
+  </button>
 
   <script src="./vendor/leaflet/leaflet.js"></script>
   <script src="./i18n.js"></script>

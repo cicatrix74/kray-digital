@@ -733,6 +733,32 @@ setInterval(() => {
   fetchSystemStatus();
 }, 30000);
 
+// Scroll to Top Button (Smooth RAF Scroll - Matching Main Landing Page)
+const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+if (scrollToTopBtn) {
+  let isTicking = false;
+  window.addEventListener('scroll', () => {
+    if (!isTicking) {
+      window.requestAnimationFrame(() => {
+        if (window.scrollY > 350) {
+          scrollToTopBtn.classList.add('visible');
+        } else {
+          scrollToTopBtn.classList.remove('visible');
+        }
+        isTicking = false;
+      });
+      isTicking = true;
+    }
+  }, { passive: true });
+
+  scrollToTopBtn.addEventListener('click', () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  });
+}
+
 // Initialize
 (async () => {
   updateLocationInfo();

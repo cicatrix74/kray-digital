@@ -2,6 +2,7 @@
 (function() {
   const TRANSLATIONS = {
     ua: {
+      orderSiteBtn: 'Замовити сайт',
       seoTitle: 'Графік відключень світла — Дніпро та Дніпропетровська область ДТЕК | Неофіційний моніторинг',
       metaDesc: 'Неофіційний сервіс моніторингу графіків відключень світла у Дніпрі та Дніпропетровській області (відкриті дані ДТЕК, ЦЕК, YASNO). Пошук черги за адресою будинку, інтерактивна карта та таймер.',
       brandBadge: 'Дніпропетровська область • Неофіційний моніторинг',
@@ -83,6 +84,7 @@
       months: ['січ', 'лют', 'бер', 'квіт', 'трав', 'черв', 'лип', 'серп', 'вер', 'жовт', 'лист', 'груд']
     },
     ru: {
+      orderSiteBtn: 'Заказать сайт',
       seoTitle: 'График отключений света — Днепр и Днепропетровская область ДТЭК | Неофициальный мониторинг',
       metaDesc: 'Неофициальный сервис мониторинга графиков отключений света в Днепре и Днепропетровской области (открытые данные ДТЭК, ЦЭК, YASNO). Поиск очереди по адресу дома, интерактивная карта и таймер.',
       brandBadge: 'Днепропетровская область • Неофициальный мониторинг',
@@ -164,6 +166,7 @@
       months: ['янв', 'фев', 'мар', 'апр', 'май', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек']
     },
     en: {
+      orderSiteBtn: 'Order a Website',
       seoTitle: 'Power Outage Schedule Dnipro & Region | Unofficial Live Monitoring',
       metaDesc: 'Unofficial power outage schedule monitoring for Dnipro and Dnipropetrovsk region (based on open data from DTEK, CEK, YASNO). Address lookup, interactive map, and countdown timer.',
       brandBadge: 'Dnipropetrovsk Region • Unofficial Monitor',
