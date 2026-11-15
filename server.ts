@@ -176,18 +176,13 @@ app.get('/api/providers', (_req, res) => {
   res.json({ success: true, providers: PROVIDERS, liveSyncStatus: 'Активно (ДТЕК Дніпро / YASNO Live)' });
 });
 
-app.get('/api/status', async (_req, res) => {
-  const yasno = await fetchLiveYasno();
-  const g51 = yasno ? yasno['5.1'] : null;
-  const isNoOutages = g51 && g51.today && g51.today.status === 'NoOutages';
-  const statusText = isNoOutages ? 'Сьогодні без відключень (ДТЕК Дніпро)' : 'Стабілізаційні відключення (за графіком ДТЕК Дніпро)';
-
+app.get('/api/status', (_req, res) => {
   res.json({
     success: true,
-    mode: 'normal',
-    modeLabel: statusText,
-    liveStatus: 'Синхронізовано з ДТЕК Дніпро Live',
-    lastSync: g51 && g51.updatedOn ? new Date(g51.updatedOn).toLocaleTimeString('uk-UA', { hour: '2-digit', minute: '2-digit' }) : 'Сьогодні',
+    mode: 'emergency',
+    modeLabel: 'ЕКСТРЕНІ АВАРІЙНІ ВІДКЛЮЧЕННЯ (ГАВ)',
+    liveStatus: 'Екстрені відключення (НЕК Укренерго ГАВ/САВ)',
+    lastSync: 'Сьогодні',
     region: 'Дніпропетровська область (Дніпро, Кривий Ріг, Кам\'янське, Павлоград, Нікополь)',
     activeProvidersCount: PROVIDERS.length
   });
