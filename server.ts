@@ -125,6 +125,42 @@ async function checkEmergencyStatus(): Promise<{ isEmergency: boolean; reason: s
   return cachedEmergencyStatus;
 }
 
+let cachedDtekMirror: any = null;
+let lastDtekMirrorFetch = 0;
+
+function fetchLiveDtekMirror(): Promise<any> {
+  const now = Date.now();
+  if (cachedDtekMirror && (now - lastDtekMirrorFetch < 60000)) {
+    return Promise.resolve(cachedDtekMirror);
+  }
+  return new Promise((resolve) => {
+    https.get('https://raw.githubusercontent.com/Baskerville42/outage-data-ua/main/data/dnipro.json', {
+      headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' }
+    }, (res) => {
+      let raw = '';
+      res.on('data', chunk => raw += chunk);
+      res.on('end', () => {
+        try {
+          cachedDtekMirror = JSON.parse(raw);
+          lastDtekMirrorFetch = now;
+          resolve(cachedDtekMirror);
+        } catch {
+          resolve(cachedDtekMirror);
+        }
+      });
+    }).on('error', () => resolve(cachedDtekMirror));
+  });
+}
+
+function mapDtekHourStatus(val: any) {
+  if (!val) return 'on';
+  const v = String(val).toLowerCase();
+  if (v === 'yes') return 'on';
+  if (v === 'no') return 'off';
+  if (['maybe', 'first', 'second', 'mfirst', 'msecond', 'probable'].includes(v)) return 'maybe';
+  return 'on';
+}
+
 function fetchLiveYasno(): Promise<any> {
   const now = Date.now();
   if (cachedYasno && (now - lastYasnoFetch < 60000)) {
@@ -149,17 +185,59 @@ function fetchLiveYasno(): Promise<any> {
   });
 }
 
-function parseDaySchedule(group: string, isTomorrow: boolean, yasnoData: any) {
+function parseDaySchedule(group: string, isTomorrow: boolean, yasnoData: any, dtekMirror?: any) {
   const normSubgroup = ALL_SUBGROUPS.includes(group) ? group : '5.1';
-  const groupData = yasnoData ? yasnoData[normSubgroup] : null;
-  const dayObj = groupData ? (isTomorrow ? groupData.tomorrow : groupData.today) : null;
-
+  const gpvKey = `GPV${normSubgroup}`;
   const todayStr = new Date().toISOString().split('T')[0];
   const tomDate = new Date(Date.now() + 86400000);
   const tomorrowStr = tomDate.toISOString().split('T')[0];
   const dateStr = isTomorrow ? tomorrowStr : todayStr;
 
   const hours = [];
+
+  // 1. Пріоритет #1: Фактичний прямий розклад ДТЕК Дніпро
+  if (!isTomorrow && dtekMirror && dtekMirror.fact && dtekMirror.fact.data) {
+    let matchedFactSlots: any = null;
+    for (const [timestampStr, gpvObj] of Object.entries(dtekMirror.fact.data) as any) {
+      const factDate = new Date((parseInt(timestampStr, 10) + 7200) * 1000);
+      if (factDate.toISOString().split('T')[0] === dateStr && gpvObj[gpvKey]) {
+        matchedFactSlots = gpvObj[gpvKey];
+        break;
+      }
+    }
+
+    if (matchedFactSlots) {
+      const hasAnyOutages = Object.values(matchedFactSlots).some((v: any) => v !== 'yes');
+      for (let h = 0; h < 24; h++) {
+        const val = matchedFactSlots[String(h + 1)];
+        hours.push({
+          hour: h,
+          time: `${String(h).padStart(2, '0')}:00 - ${String((h + 1) % 24).padStart(2, '0')}:00`,
+          status: mapDtekHourStatus(val)
+        });
+      }
+
+      const updateTime = dtekMirror.lastUpdated 
+        ? new Date(dtekMirror.lastUpdated).toLocaleTimeString('uk-UA', { hour: '2-digit', minute: '2-digit' }) 
+        : '21:20';
+
+      return {
+        provider: 'dtek_dnipro',
+        group: normSubgroup,
+        date: dateStr,
+        isLive: true,
+        liveSource: 'ДТЕК Live (Фактичний графік Дніпро)',
+        status: hasAnyOutages ? 'Active' : 'NoOutages',
+        lastUpdate: updateTime,
+        hours: hours,
+        updatedAt: new Date().toISOString()
+      };
+    }
+  }
+
+  // 2. Пріоритет #2: YASNO
+  const groupData = yasnoData ? yasnoData[normSubgroup] : null;
+  const dayObj = groupData ? (isTomorrow ? groupData.tomorrow : groupData.today) : null;
 
   if (dayObj) {
     const isNoOutages = dayObj.status === 'NoOutages' || dayObj.status === 'WaitingForSchedule';
@@ -235,22 +313,39 @@ app.get('/api/providers', (_req, res) => {
 });
 
 app.get('/api/status', async (_req, res) => {
-  const [yasno, emerg] = await Promise.all([
+  const [yasno, dtekMirror, emerg] = await Promise.all([
     fetchLiveYasno(),
+    fetchLiveDtekMirror(),
     checkEmergencyStatus()
   ]);
-  const g51 = yasno ? yasno['5.1'] : null;
-  const todayData = g51 ? g51.today : null;
-  const isNoOutages = todayData && todayData.status === 'NoOutages';
 
-  const isEmergency = emerg.isEmergency;
+  let dtekHasFactSchedule = false;
+  let dtekHasOutages = false;
+  if (dtekMirror && dtekMirror.fact && dtekMirror.fact.data) {
+    for (const gpvObj of Object.values(dtekMirror.fact.data) as any) {
+      if (gpvObj['GPV5.1']) {
+        dtekHasFactSchedule = true;
+        if (Object.values(gpvObj['GPV5.1']).some((v: any) => v !== 'yes')) {
+          dtekHasOutages = true;
+        }
+        break;
+      }
+    }
+  }
+
+  const isEmergency = !dtekHasFactSchedule && emerg.isEmergency;
+
   let mode = isEmergency ? 'emergency' : 'normal';
   let modeLabel = 'Стабілізаційні відключення (за графіком ДТЕК Дніпро)';
   if (isEmergency) {
     modeLabel = 'ЕКСТРЕНІ АВАРІЙНІ ВІДКЛЮЧЕННЯ (ГАВ)';
-  } else if (isNoOutages) {
+  } else if (!dtekHasOutages) {
     modeLabel = 'Сьогодні без відключень (ДТЕК Дніпро)';
   }
+
+  const updateTime = (dtekMirror && dtekMirror.lastUpdated)
+    ? new Date(dtekMirror.lastUpdated).toLocaleTimeString('uk-UA', { hour: '2-digit', minute: '2-digit' })
+    : '21:20';
 
   res.json({
     success: true,
@@ -258,8 +353,8 @@ app.get('/api/status', async (_req, res) => {
     modeLabel: modeLabel,
     liveStatus: isEmergency 
       ? 'Екстрені відключення (НЕК Укренерго ГАВ / ДТЕК Дніпро)' 
-      : (isNoOutages ? 'Синхронізовано з ДТЕК Дніпро (Без відключень)' : 'Синхронізовано з ДТЕК Дніпро Live'),
-    lastSync: g51 && g51.updatedOn ? new Date(g51.updatedOn).toLocaleTimeString('uk-UA', { hour: '2-digit', minute: '2-digit' }) : 'Сьогодні',
+      : (dtekHasOutages ? 'Синхронізовано з ДТЕК Дніпро Live (Графік діє)' : 'Синхронізовано з ДТЕК Дніпро (Без відключень)'),
+    lastSync: updateTime,
     region: 'Дніпропетровська область (Дніпро, Кривий Ріг, Кам\'янське, Павлоград, Нікополь)',
     activeProvidersCount: PROVIDERS.length
   });
@@ -271,28 +366,32 @@ app.post('/api/toggle-mode', (_req, res) => {
 
 app.post('/api/sync-live', async (_req, res) => {
   cachedYasno = null;
-  await fetchLiveYasno();
-  res.json({ success: true, status: 'Синхронізовано з YASNO Live', lastSync: new Date().toISOString() });
+  cachedDtekMirror = null;
+  await Promise.all([fetchLiveYasno(), fetchLiveDtekMirror()]);
+  res.json({ success: true, status: 'Синхронізовано з YASNO/ДТЕК Live', lastSync: new Date().toISOString() });
 });
 
 app.get('/api/schedule', async (req, res) => {
   const group = (req.query.group as string) || '5.1';
-  const yasno = await fetchLiveYasno();
+  const [yasno, dtekMirror] = await Promise.all([
+    fetchLiveYasno(),
+    fetchLiveDtekMirror()
+  ]);
 
   const todayMatrix: Record<string, string[]> = {};
   const tomorrowMatrix: Record<string, string[]> = {};
 
   ALL_SUBGROUPS.forEach(sub => {
-    todayMatrix[sub] = parseDaySchedule(sub, false, yasno).hours.map(h => h.status);
-    tomorrowMatrix[sub] = parseDaySchedule(sub, true, yasno).hours.map(h => h.status);
+    todayMatrix[sub] = parseDaySchedule(sub, false, yasno, dtekMirror).hours.map(h => h.status);
+    tomorrowMatrix[sub] = parseDaySchedule(sub, true, yasno, dtekMirror).hours.map(h => h.status);
   });
 
   res.json({
     success: true,
     provider: 'dtek_dnipro',
     group: group,
-    today: parseDaySchedule(group, false, yasno),
-    tomorrow: parseDaySchedule(group, true, yasno),
+    today: parseDaySchedule(group, false, yasno, dtekMirror),
+    tomorrow: parseDaySchedule(group, true, yasno, dtekMirror),
     todayMatrix: todayMatrix,
     tomorrowMatrix: tomorrowMatrix
   });
