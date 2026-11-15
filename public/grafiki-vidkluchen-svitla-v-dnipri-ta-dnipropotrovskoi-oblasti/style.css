@@ -1424,25 +1424,6 @@ body {
   line-height: 1.6;
 }
 
-.seo-tags-cloud {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 24px;
-  padding-top: 20px;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.seo-tag {
-  background: rgba(6, 182, 212, 0.08);
-  border: 1px solid rgba(6, 182, 212, 0.2);
-  color: #38bdf8;
-  border-radius: 9999px;
-  padding: 4px 12px;
-  font-size: 11.5px;
-  font-weight: 500;
-}
-
 @media (max-width: 768px) {
   .seo-content-section {
     padding: 20px 16px;
