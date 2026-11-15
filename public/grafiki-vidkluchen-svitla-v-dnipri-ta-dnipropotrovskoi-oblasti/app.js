@@ -741,9 +741,11 @@ if (scrollToTopBtn) {
     if (!isTicking) {
       window.requestAnimationFrame(() => {
         if (window.scrollY > 350) {
+          scrollToTopBtn.style.display = 'flex';
           scrollToTopBtn.classList.add('visible');
         } else {
           scrollToTopBtn.classList.remove('visible');
+          scrollToTopBtn.style.display = 'none';
         }
         isTicking = false;
       });

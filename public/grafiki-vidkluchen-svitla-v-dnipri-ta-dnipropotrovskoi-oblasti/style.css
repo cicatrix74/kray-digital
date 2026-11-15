@@ -1485,7 +1485,7 @@ body {
 
 /* Scroll To Top Button - Matching Main Landing Page */
 .scroll-to-top-btn {
-  position: fixed;
+  position: fixed !important;
   bottom: 84px;
   right: 24px;
   z-index: 100;
@@ -1497,7 +1497,7 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.16);
   color: #38bdf8;
   border-radius: 50%;
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
@@ -1507,9 +1507,11 @@ body {
   transform: translateY(16px);
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   outline: none;
+  padding: 0;
 }
 
 .scroll-to-top-btn.visible {
+  display: flex !important;
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
