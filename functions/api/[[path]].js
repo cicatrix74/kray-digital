@@ -1,4 +1,4 @@
-// Cloudflare Pages Functions - API routes for Kray Digital Dnipro Outages
+// Cloudflare Pages Functions - Live API routes for Kray Digital Dnipro Outages
 import streetsData from './streets-data.js';
 
 const PROVIDERS = [
@@ -30,34 +30,88 @@ const PROVIDERS = [
 
 const ALL_SUBGROUPS = ['1.1', '1.2', '2.1', '2.2', '3.1', '3.2', '4.1', '4.2', '5.1', '5.2', '6.1', '6.2'];
 
-const BASE_DTEK_MATRIX = {
-  '1.1': ['on','on','on','maybe','off','off','off','off','maybe','on','on','on','on','maybe','off','off','off','off','maybe','on','on','on','on','on'],
-  '1.2': ['on','maybe','off','off','off','off','maybe','on','on','on','on','maybe','off','off','off','off','maybe','on','on','on','on','on','on','on'],
-  '2.1': ['off','off','off','off','maybe','on','on','on','on','maybe','off','off','off','off','maybe','on','on','on','on','maybe','off','off','off','off'],
-  '2.2': ['off','off','maybe','on','on','on','on','maybe','off','off','off','off','maybe','on','on','on','on','maybe','off','off','off','off','maybe','on'],
-  '3.1': ['maybe','on','on','on','on','maybe','off','off','off','off','maybe','on','on','on','on','maybe','off','off','off','off','maybe','on','on','on'],
-  '3.2': ['on','on','on','maybe','off','off','off','off','maybe','on','on','on','on','maybe','off','off','off','off','maybe','on','on','on','on','on'],
-  '4.1': ['on','on','on','maybe','off','off','off','off','maybe','on','on','on','on','on','maybe','off','off','off','off','maybe','on','on','on','on'],
-  '4.2': ['on','maybe','off','off','off','off','maybe','on','on','on','on','maybe','off','off','off','off','maybe','on','on','on','on','on','on','on'],
-  '5.1': ['off','off','off','off','maybe','on','on','on','on','maybe','off','off','off','off','maybe','on','on','on','on','maybe','off','off','off','off'],
-  '5.2': ['off','off','maybe','on','on','on','on','maybe','off','off','off','off','maybe','on','on','on','on','maybe','off','off','off','off','maybe','on'],
-  '6.1': ['on','on','on','on','on','maybe','off','off','off','off','maybe','on','on','on','on','maybe','off','off','off','off','maybe','on','on','on'],
-  '6.2': ['on','on','on','maybe','off','off','off','off','maybe','on','on','on','on','maybe','off','off','off','off','maybe','on','on','on','on','on']
-};
+let cachedYasno = null;
+let lastYasnoFetch = 0;
 
-function generateSchedule(group, dateStr) {
+async function fetchLiveYasno() {
+  const now = Date.now();
+  if (cachedYasno && (now - lastYasnoFetch < 60000)) {
+    return cachedYasno;
+  }
+  try {
+    const res = await fetch('https://app.yasno.ua/api/blackout-service/public/shutdowns/regions/3/dsos/301/planned-outages', {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+      }
+    });
+    if (res.ok) {
+      cachedYasno = await res.json();
+      lastYasnoFetch = now;
+      return cachedYasno;
+    }
+  } catch (e) {
+    console.error('YASNO fetch error:', e);
+  }
+  return cachedYasno;
+}
+
+function parseDaySchedule(group, isTomorrow, yasnoData) {
   const normSubgroup = ALL_SUBGROUPS.includes(group) ? group : '5.1';
-  const basePattern = BASE_DTEK_MATRIX[normSubgroup] || BASE_DTEK_MATRIX['5.1'];
-  const d = new Date(dateStr);
-  const dayShift = (d.getDate() % 2 === 0) ? 0 : 1;
+  const groupData = yasnoData ? yasnoData[normSubgroup] : null;
+  const dayObj = groupData ? (isTomorrow ? groupData.tomorrow : groupData.today) : null;
+
+  const todayStr = new Date().toISOString().split('T')[0];
+  const tomDate = new Date(Date.now() + 86400000);
+  const tomorrowStr = tomDate.toISOString().split('T')[0];
+  const dateStr = isTomorrow ? tomorrowStr : todayStr;
+
   const hours = [];
 
+  if (dayObj) {
+    const isNoOutages = dayObj.status === 'NoOutages' || dayObj.status === 'WaitingForSchedule';
+    const slots = dayObj.slots || [];
+
+    for (let h = 0; h < 24; h++) {
+      const mid = h * 60 + 30;
+      let slotStatus = 'on';
+
+      if (!isNoOutages && slots.length > 0) {
+        for (const slot of slots) {
+          if (mid >= slot.start && mid < slot.end) {
+            if (slot.type === 'Definite') slotStatus = 'off';
+            else if (slot.type === 'Probable') slotStatus = 'maybe';
+            else slotStatus = 'on';
+            break;
+          }
+        }
+      }
+
+      hours.push({
+        hour: h,
+        time: `${String(h).padStart(2, '0')}:00 - ${String((h + 1) % 24).padStart(2, '0')}:00`,
+        status: slotStatus
+      });
+    }
+
+    return {
+      provider: 'dtek_dnipro',
+      group: normSubgroup,
+      date: dateStr,
+      isLive: true,
+      liveSource: 'ДТЕК Дніпро / YASNO (Пряме Live API)',
+      status: dayObj.status || 'Active',
+      lastUpdate: groupData.updatedOn ? new Date(groupData.updatedOn).toLocaleTimeString('uk-UA', { hour: '2-digit', minute: '2-digit' }) : 'Сьогодні',
+      hours: hours,
+      updatedAt: new Date().toISOString()
+    };
+  }
+
+  // Резервний розклад, якщо немає зв'язку: вважаємо день без відключень
   for (let h = 0; h < 24; h++) {
-    const idx = (h + (dayShift ? 1 : 0)) % 24;
     hours.push({
       hour: h,
       time: `${String(h).padStart(2, '0')}:00 - ${String((h + 1) % 24).padStart(2, '0')}:00`,
-      status: basePattern[idx]
+      status: 'on'
     });
   }
 
@@ -65,8 +119,9 @@ function generateSchedule(group, dateStr) {
     provider: 'dtek_dnipro',
     group: normSubgroup,
     date: dateStr,
-    isLive: true,
-    liveSource: 'ДТЕК Live (Розклад Дніпро)',
+    isLive: false,
+    liveSource: 'ДТЕК Дніпро (Резервний розклад)',
+    status: 'NoOutages',
     lastUpdate: 'Сьогодні',
     hours: hours,
     updatedAt: new Date().toISOString()
@@ -101,17 +156,22 @@ export async function onRequest(context) {
     return new Response(JSON.stringify({
       success: true,
       providers: PROVIDERS,
-      liveSyncStatus: 'Активно (ДТЕК Дніпро)'
+      liveSyncStatus: 'Активно (ДТЕК Дніпро / YASNO Live)'
     }), { headers: corsHeaders });
   }
 
   if (pathname.endsWith('/status')) {
+    const yasno = await fetchLiveYasno();
+    const g51 = yasno ? yasno['5.1'] : null;
+    const isNoOutages = g51 && g51.today && g51.today.status === 'NoOutages';
+    const statusText = isNoOutages ? 'Сьогодні без відключень (ДТЕК Дніпро)' : 'Стабілізаційні відключення (за графіком ДТЕК Дніпро)';
+
     return new Response(JSON.stringify({
       success: true,
       mode: 'normal',
-      modeLabel: 'Стабілізаційні відключення (за графіком ДТЕК Дніпро)',
-      liveStatus: 'Синхронізовано з ДТЕК Дніпро',
-      lastSync: 'Сьогодні',
+      modeLabel: statusText,
+      liveStatus: 'Синхронізовано з ДТЕК Дніпро Live',
+      lastSync: g51 && g51.updatedOn ? new Date(g51.updatedOn).toLocaleTimeString('uk-UA', { hour: '2-digit', minute: '2-digit' }) : 'Сьогодні',
       region: 'Дніпропетровська область (Дніпро, Кривий Ріг, Кам\'янське, Павлоград, Нікополь)',
       activeProvidersCount: PROVIDERS.length
     }), { headers: corsHeaders });
@@ -122,25 +182,25 @@ export async function onRequest(context) {
   }
 
   if (pathname.endsWith('/sync-live')) {
-    return new Response(JSON.stringify({ success: true, status: 'Синхронізовано', lastSync: new Date().toISOString() }), { headers: corsHeaders });
+    cachedYasno = null;
+    await fetchLiveYasno();
+    return new Response(JSON.stringify({ success: true, status: 'Синхронізовано з YASNO Live', lastSync: new Date().toISOString() }), { headers: corsHeaders });
   }
 
   if (pathname.endsWith('/schedule')) {
     const group = url.searchParams.get('group') || '5.1';
-    const todayStr = new Date().toISOString().split('T')[0];
-    const tomDate = new Date(Date.now() + 86400000);
-    const tomorrowStr = tomDate.toISOString().split('T')[0];
+    const yasno = await fetchLiveYasno();
 
     const todayMatrix = {};
     const tomorrowMatrix = {};
 
     ALL_SUBGROUPS.forEach(sub => {
-      todayMatrix[sub] = generateSchedule(sub, todayStr).hours.map(h => h.status);
-      tomorrowMatrix[sub] = generateSchedule(sub, tomorrowStr).hours.map(h => h.status);
+      todayMatrix[sub] = parseDaySchedule(sub, false, yasno).hours.map(h => h.status);
+      tomorrowMatrix[sub] = parseDaySchedule(sub, true, yasno).hours.map(h => h.status);
     });
 
-    const todaySched = generateSchedule(group, todayStr);
-    const tomorrowSched = generateSchedule(group, tomorrowStr);
+    const todaySched = parseDaySchedule(group, false, yasno);
+    const tomorrowSched = parseDaySchedule(group, true, yasno);
 
     return new Response(JSON.stringify({
       success: true,
