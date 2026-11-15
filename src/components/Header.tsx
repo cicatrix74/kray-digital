@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Code2, Menu, X, ArrowRight } from 'lucide-react';
+import { Code2, Menu, X, ArrowRight, PhoneCall } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { PhoneLink, EmailLink } from './ContactLinks';
 
 interface HeaderProps {
   onOpenCalculator: () => void;
+  onOpenCallback?: () => void;
   onScrollToSection: (elementId: string) => void;
   onOpenCases: () => void;
 }
@@ -36,9 +37,15 @@ const NAV_ITEMS = {
   ]
 };
 
-export default function Header({ onOpenCalculator, onScrollToSection, onOpenCases }: HeaderProps) {
+export default function Header({ onOpenCalculator, onOpenCallback, onScrollToSection, onOpenCases }: HeaderProps) {
   const { language, t } = useLanguage();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const callbackLabel = {
+    uk: 'Замовити дзвінок',
+    ru: 'Заказать звонок',
+    en: 'Request Call'
+  }[language] || 'Замовити дзвінок';
 
   const navItems = NAV_ITEMS[language] || NAV_ITEMS.uk;
 
@@ -72,12 +79,12 @@ export default function Header({ onOpenCalculator, onScrollToSection, onOpenCase
         </div>
 
         {/* Desktop Navigation Menu (hidden on mobile, visible on lg screens) */}
-        <nav className="hidden lg:flex items-center gap-6 xl:gap-8" id="header-desktop-nav">
+        <nav className="hidden lg:flex items-center gap-5 xl:gap-7" id="header-desktop-nav">
           {navItems.map((item) => (
             <button
               key={item.id}
               onClick={() => handleNavClick(item.id)}
-              className="text-xs lg:text-sm font-medium text-brand-on-surface-variant hover:text-brand-primary-container transition-colors cursor-pointer bg-transparent border-none p-0 relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-brand-primary-container hover:after:w-full after:transition-all after:duration-200"
+              className="text-xs lg:text-sm font-medium text-brand-on-surface-variant hover:text-brand-primary-container transition-colors cursor-pointer bg-transparent border-none p-0 relative py-1 whitespace-nowrap after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-brand-primary-container hover:after:w-full after:transition-all after:duration-200"
             >
               {item.label}
             </button>
@@ -143,6 +150,19 @@ export default function Header({ onOpenCalculator, onScrollToSection, onOpenCase
                 <PhoneLink className="text-sm py-1.5" />
                 <EmailLink className="text-sm py-1.5" />
               </div>
+              {onOpenCallback && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    onOpenCallback();
+                  }}
+                  className="w-full border border-brand-primary-container/40 bg-brand-primary-container/10 text-brand-primary-container font-bold text-sm py-3 rounded-xl text-center transition-all hover:bg-brand-primary-container/20 flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <PhoneCall className="w-4 h-4" />
+                  <span>{callbackLabel}</span>
+                </button>
+              )}
               <button
                 onClick={() => {
                   setIsMobileMenuOpen(false);

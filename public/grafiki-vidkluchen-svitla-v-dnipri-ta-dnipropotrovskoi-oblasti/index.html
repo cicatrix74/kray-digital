@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Графік відключень світла — Дніпро та Дніпропетровська область ДТЕК 2026 | Онлайн розклад</title>
+  <meta name="description" content="Актуальний графік відключень світла у Дніпрі та Дніпропетровській області від ДТЕК, ЦЕК та YASNO. Пошук черги за адресою будинку, інтерактивна карта та зворотний відлік.">
+  <meta name="keywords" content="графік відключень світла Дніпро, графік ДТЕК Дніпропетровська область, відключення електроенергії Дніпро, ДТЕК графіки 2026, черги відключень світла, графік YASNO Дніпро, график отключений света Днепр">
+  <meta property="og:title" content="Графік відключень світла: Дніпро та Дніпропетровська область — ДТЕК Live">
+  <meta property="og:description" content="Офіційний онлайн графік відключень світла в Дніпрі та області. Дізнайтесь підгрупу за адресою та час перемикання.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://kray-digital.pp.ua/grafiki-vidkluchen-svitla-v-dnipri-ta-dnipropotrovskoi-oblasti">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <link rel="canonical" href="https://kray-digital.pp.ua/grafiki-vidkluchen-svitla-v-dnipri-ta-dnipropotrovskoi-oblasti">
+  <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://kray-digital.pp.ua/#website",
+        "url": "https://kray-digital.pp.ua/",
+        "name": "kray-digital — Моніторинг відключень світла Дніпро та область",
+        "description": "Онлайн моніторинг графіків відключень світла в Дніпрі та Дніпропетровській області",
+        "inLanguage": ["uk", "ru", "en"]
+      },
+      {
+        "@type": "WebPage",
+        "@id": "https://kray-digital.pp.ua/grafiki-vidkluchen-svitla-v-dnipri-ta-dnipropotrovskoi-oblasti#webpage",
+        "url": "https://kray-digital.pp.ua/grafiki-vidkluchen-svitla-v-dnipri-ta-dnipropotrovskoi-oblasti",
+        "name": "Графік відключень світла — Дніпро та Дніпропетровська область ДТЕК 2026",
+        "isPartOf": { "@id": "https://kray-digital.pp.ua/#website" },
+        "description": "Актуальний онлайн-графік відключень електроенергії у Дніпрі та Дніпропетровській області (відкриті дані ДТЕК, ЦЕК, YASNO). Пошук черги за адресою будинку, інтерактивна карта та зворотний відлік.",
+        "inLanguage": "uk"
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Як дізнатися свою чергу та номер підгрупи відключень світла у Дніпрі?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Скористайтеся формою пошуку вгорі сторінки: виберіть місто (Дніпро, Кривий Ріг тощо), почніть вводити назву вулиці та номер будинку. Сервіс миттєво визначить вашу підгрупу ДТЕК чи ЦЕК (від 1.1 до 6.2) та збереже вибір у кеші браузера."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Чим відрізняються графіки ГПВ від аварійних відключень ГАВ?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "ГПВ (графіки погодинних відключень) — це плановий розклад із чіткими годинами світла. ГАВ (графік аварійних відключень) та СГАВ вводяться розпорядженням НЕК «Укренерго» екстрено при аваріях чи дефіциті потужності в енергосистемі України; під час ГАВ погодинні графіки тимчасово скасовуються."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Які оператори електромереж діють у Дніпрі та області?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Основними операторами систем розподілу є ДТЕК Дніпровські електромережі (покриває більшість населених пунктів області) та ПрАТ ПЕЕМ «ЦЕК» (Центральна енергетична компанія — низка мікрорайонів Дніпра та області). Постачальником послуг є YASNO."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Що означають біла, сіра та жовта зони у розкладі?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Біла зона — світло гарантовано подається. Сіра зона — гарантоване знеструмлення за графіком. Жовта зона — зона можливого відключення або перемикання черг, якщо дефіцит потужності в енергосистемі зростає."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./vendor/leaflet/leaflet.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Header / Navigation -->
+  <header class="site-header">
+    <div class="container header-container">
+      <div class="logo-area">
+        <div class="brand-logo">
+          <span class="logo-icon">⚡</span>
+          <div class="brand-text">
+            <span class="brand-name">kray-digital</span>
+            <span class="page-badge" data-i18n="brandBadge">Дніпропетровська область • Live</span>
+          </div>
+        </div>
+      </div>
+      <div class="lang-switch-group" aria-label="Вибір мови / Выбор языка / Language selection">
+        <button class="lang-btn active" data-lang="ua">UA</button>
+        <button class="lang-btn" data-lang="ru">RU</button>
+        <button class="lang-btn" data-lang="en">EN</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Emergency Banner -->
+  <div class="emergency-banner" id="emergencyBanner">
+    <div class="container">
+      <span class="emergency-icon">⚠️</span>
+      <div class="emergency-text">
+        <strong data-i18n="emergencyBannerTitle">УВАГА: В області застосовано екстрені (аварійні) відключення світла!</strong>
+        <span data-i18n="emergencyBannerSub">За розпорядженням НЕК Укренерго графіки погодинних відключень тимчасово не діють.</span>
+      </div>
+    </div>
+  </div>
+
+  <main class="main-content">
+    <div class="container">
+      <!-- Hero / Controls -->
+      <section class="controls-card">
+        <div class="controls-header">
+          <div class="controls-header-top">
+            <h1 data-i18n="h1Title">Графік відключень світла: Дніпро та Дніпропетровська область</h1>
+            <span class="live-api-tag" id="liveApiTag" data-i18n="liveDtekTag">🟢 ДТЕК ДНІПРО: LIVE</span>
+          </div>
+          <p data-i18n="h1Subtitle">Неофіційний інформаційний ресурс на основі відкритих даних ДТЕК Дніпровські електромережі, ЦЕК та YASNO. Пряма синхронізація, зворотний відлік до перемикання та точний пошук підгрупи за номером будинку.</p>
+          <div class="unofficial-disclaimer-bar">
+            <span class="disclaimer-badge" data-i18n="badgeUnofficial">Неофіційний ресурс</span>
+            <span class="disclaimer-text" data-i18n="disclaimerNotice">Дані сформовано з відкритих джерел ДТЕК/ЦЕК для зручності жителів. Сервіс не є офіційним представником енергетичних компаній.</span>
+          </div>
+        </div>
+
+        <div class="controls-grid">
+          <!-- Operator in Dnipropetrovsk Oblast -->
+          <div class="control-group">
+            <label for="providerSelect" data-i18n="labelOperator">Оператор електромереж:</label>
+            <div class="select-wrapper">
+              <select id="providerSelect">
+                <option value="dtek_dnipro" selected>ДТЕК Дніпровські електромережі (Дніпро, Кривий Ріг та область)</option>
+                <option value="yasno_dnipro">YASNO (Дніпровські енергетичні послуги)</option>
+                <option value="cek_dnipro">ПрАТ ПЕЕМ «ЦЕК» (Центральна енергетична компанія)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- All 12 Subgroups (1.1 - 6.2) -->
+          <div class="control-group subgroups-group">
+            <div class="label-with-hint">
+              <label data-i18n="labelSubgroups">Оберіть вашу підгрупу відключень (1.1–6.2):</label>
+              <span class="hint-tag" data-i18n="subgroupHint">ДТЕК Дніпро</span>
+            </div>
+            <div class="subgroup-grid" id="subgroupGrid">
+              <!-- Injected by JS: 1.1, 1.2, 2.1, 2.2 ... 6.2 -->
+            </div>
+          </div>
+
+          <!-- Address & House Number Search with City Selector -->
+          <div class="control-group search-group">
+            <div class="label-with-hint">
+              <label for="addressSearch" data-i18n="labelSearchAddress">Пошук черги за адресою:</label>
+              <span class="hint-tag" data-i18n="regionHint">Дніпропетровська обл.</span>
+            </div>
+            
+            <!-- Вибір населеного пункту для точного пошуку -->
+            <div class="city-filter-row">
+              <div class="select-wrapper city-select-wrapper">
+                <select id="citySelect">
+                  <option value="all" data-i18n="cityAll">🌐 Усі міста області</option>
+                  <option value="Дніпро" selected data-i18n="cityDnipro">🏙️ м. Дніпро</option>
+                  <option value="Кривий Ріг" data-i18n="cityKryvyiRih">⛏️ м. Кривий Ріг</option>
+                  <option value="Кам'янське" data-i18n="cityKamianske">🏭 м. Кам'янське</option>
+                  <option value="Павлоград" data-i18n="cityPavlohrad">⚒️ м. Павлоград</option>
+                  <option value="Нікополь" data-i18n="cityNikopol">🌊 м. Нікополь</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="address-inputs-row">
+              <div class="search-input-wrapper street-input-wrapper">
+                <input type="text" id="addressSearch" placeholder="Вулиця (напр. Мандриківська, Миру, Гагаріна)..." data-i18n-placeholder="placeholderStreet" autocomplete="off">
+                <button class="search-clear-btn" id="clearSearch" style="display: none;">✕</button>
+              </div>
+              <div class="building-input-wrapper">
+                <input type="text" id="buildingInput" placeholder="Буд...." data-i18n-placeholder="placeholderBld" autocomplete="off">
+              </div>
+              <button class="btn-find-address" id="btnFindAddress" data-i18n="btnFind">Знайти</button>
+            </div>
+            
+            <!-- Address Active Chip -->
+            <div class="active-address-chip" id="activeAddressChip" style="display: none;">
+              <span class="chip-pin">📍</span>
+              <span id="chipAddressText">вул. Мандриківська, 140 (м. Дніпро)</span>
+              <span class="chip-badge" id="chipGroupBadge">Підгрупа 5.1</span>
+              <button class="chip-remove-btn" id="btnRemoveSavedAddress" title="Очистити збережену адресу">✕</button>
+            </div>
+
+            <div class="search-results-dropdown" id="searchResults" style="display: none;"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Live Status Hero Card -->
+      <section class="live-status-section" id="liveStatusSection">
+        <div class="current-status-card" id="statusCard">
+          <div class="status-left">
+            <div class="status-indicator-badge" id="statusBadge">
+              <span class="status-icon" id="statusIcon">💡</span>
+              <span class="status-title" id="statusTitle">Світло зараз Є</span>
+            </div>
+            <div class="status-location-info">
+              <span id="activeProviderLabel">ДТЕК Дніпровські електромережі</span> • 
+              <strong id="activeGroupLabel" class="highlight-group">Підгрупа 5.1</strong> •
+              <span id="activeSourceLabel" class="source-tag">ДТЕК Live Дніпро</span>
+            </div>
+          </div>
+
+          <div class="status-right" id="statusRight">
+            <div class="countdown-block" id="countdownBlock">
+              <div class="countdown-label" id="countdownLabel">До відключення:</div>
+              <div class="countdown-timer" id="countdownTimer">00:00:00</div>
+              <div class="countdown-sub" id="countdownSub">Розрахунок часу...</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Day Selector & Schedule Timeline -->
+      <section class="schedule-section">
+        <div class="schedule-header">
+          <div class="day-tabs">
+            <button class="day-tab active" id="tabToday"><span id="tabTodayLabel" data-i18n="tabToday">Сьогодні</span>, <span id="todayDateStr">--.--</span></button>
+            <button class="day-tab" id="tabTomorrow"><span id="tabTomorrowLabel" data-i18n="tabTomorrow">Завтра</span>, <span id="tomorrowDateStr">--.--</span></button>
+          </div>
+          <div class="live-auto-update">
+            <span class="live-pulse"></span>
+            <span id="liveSyncStatusLabel" data-i18n="autoSyncLabel">Автоматичне оновлення з ДТЕК Дніпро</span>
+            <button class="btn-refresh" id="btnManualRefresh" title="Оновити зараз">🔄</button>
+          </div>
+        </div>
+
+        <!-- 24h Visual Timeline Bar -->
+        <div class="timeline-container">
+          <div class="timeline-meta-bar">
+            <span>00:00</span>
+            <span>04:00</span>
+            <span>08:00</span>
+            <span>12:00</span>
+            <span>16:00</span>
+            <span>20:00</span>
+            <span>24:00</span>
+          </div>
+
+          <div class="timeline-grid" id="timelineGrid">
+            <!-- 24 hourly blocks injected by JS -->
+          </div>
+
+          <!-- Current Time Needle Marker -->
+          <div class="current-time-marker" id="timeMarker" title="Поточний час">
+            <div class="marker-pin" data-i18n="markerNow">Зараз</div>
+            <div class="marker-line"></div>
+          </div>
+        </div>
+
+        <!-- Legend -->
+        <div class="timeline-legend">
+          <div class="legend-item">
+            <span class="legend-color color-on"></span>
+            <span data-i18n="legendOn">Світло є (гарантовано)</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-color color-maybe"></span>
+            <span data-i18n="legendMaybe">Можливе відключення / перехід (жовта зона)</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-color color-off"></span>
+            <span data-i18n="legendOff">Світло відсутнє (сіра зона)</span>
+          </div>
+        </div>
+
+        <!-- Statistics Widget -->
+        <div class="stats-row" id="statsRow">
+          <div class="stat-card">
+            <div class="stat-val color-text-on" id="statHoursOn">-- год</div>
+            <div class="stat-desc" data-i18n="statGuaranteed">Світло гарантовано</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-val color-text-maybe" id="statHoursMaybe">-- год</div>
+            <div class="stat-desc" data-i18n="statMaybe">Можливі відключення</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-val color-text-off" id="statHoursOff">-- год</div>
+            <div class="stat-desc" data-i18n="statOff">Відключено за графіком</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Interactive Outages Map of Dnipro -->
+      <section class="map-section">
+        <div class="map-card">
+          <div class="map-card-header">
+            <div class="map-title-area">
+              <span class="map-badge-icon">🗺️</span>
+              <div>
+                <h3 class="map-title" data-i18n="mapTitle">Інтерактивна карта відключень: м. Дніпро</h3>
+                <p class="map-subtitle" data-i18n="mapSubtitle">Переважаючі черги житлових масивів обох берегів. Для 100% точності за номером будинку використовуйте пошук вище</p>
+              </div>
+            </div>
+            <div class="map-district-pills" id="mapDistrictPills"></div>
+          </div>
+          <div id="dniproMap" class="dnipro-map-view"></div>
+          <div class="map-legend-bar">
+            <div class="legend-item"><span class="legend-color state-on"></span> <span data-i18n="legendOn">Світло є (гарантовано)</span></div>
+            <div class="legend-item"><span class="legend-color state-maybe"></span> <span data-i18n="legendMaybe">Можливе відключення (жовта зона)</span></div>
+            <div class="legend-item"><span class="legend-color state-off"></span> <span data-i18n="legendOff">Відключено за графіком (сіра зона)</span></div>
+            <div class="map-legend-hint" data-i18n="mapLegendHint">⚡ Клік по району автоматично перемикає розклад на відповідну підгрупу ДТЕК</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Matrix of ALL Subgroups (1.1 - 6.2) -->
+      <section class="matrix-section">
+        <details class="details-accordion" id="matrixAccordion" open>
+          <summary style="display:flex; align-items:center; flex-wrap:wrap; gap:8px;">
+            <span data-i18n="matrixTitle">Зведена таблиця всіх 12 підгруп Дніпропетровської області на 24 години</span>
+            <span id="matrixStatusBadge" class="hint-tag" style="background: rgba(16, 185, 129, 0.2); color: #34d399; font-size:11px;">🟢 Сьогодні: без відключень</span>
+          </summary>
+          <div class="matrix-scroll-wrapper">
+            <table class="dtek-matrix-table" id="allGroupsMatrixTable">
+              <thead>
+                <tr>
+                  <th class="sticky-col" data-i18n="matrixColGroup">Підгрупа</th>
+                  <th>00-01</th><th>01-02</th><th>02-03</th><th>03-04</th><th>04-05</th><th>05-06</th>
+                  <th>06-07</th><th>07-08</th><th>08-09</th><th>09-10</th><th>10-11</th><th>11-12</th>
+                  <th>12-13</th><th>13-14</th><th>14-15</th><th>15-16</th><th>16-17</th><th>17-18</th>
+                  <th>18-19</th><th>19-20</th><th>20-21</th><th>21-22</th><th>22-23</th><th>23-24</th>
+                </tr>
+              </thead>
+              <tbody id="matrixTableBody">
+                <!-- Injected by JS -->
+              </tbody>
+            </table>
+          </div>
+          <div class="timeline-legend" style="margin-top: 10px; justify-content: flex-start; padding: 6px 12px; background: rgba(255,255,255,0.02); border-radius: 6px;">
+            <div class="legend-item"><span class="legend-color state-on" style="display:inline-flex; align-items:center; justify-content:center; font-size:10px; font-weight:bold; color:#fff;">✓</span> <span data-i18n="legendOn">Світло є (гарантовано)</span></div>
+            <div class="legend-item"><span class="legend-color state-maybe" style="display:inline-flex; align-items:center; justify-content:center; font-size:10px; color:#fff;">⚡</span> <span data-i18n="legendMaybe">Можливе відключення (жовта зона)</span></div>
+            <div class="legend-item"><span class="legend-color state-off" style="display:inline-flex; align-items:center; justify-content:center; font-size:10px; color:#fff;">⚡</span> <span data-i18n="legendOff">Світло відсутнє (сіра зона)</span></div>
+            <div style="margin-left:auto; font-size:11px; color:#94a3b8;" data-i18n="matrixHint">* Натисніть на будь-який рядок для перегляду підгрупи</div>
+          </div>
+        </details>
+      </section>
+
+      <!-- SEO Informational & Authority Guide Section (Multilingual) -->
+      <section class="seo-content-section" id="seoSection">
+        
+        <!-- UKRAINIAN SEO BLOCK -->
+        <div class="seo-lang-block" data-lang="ua">
+          <div class="seo-badge-pill">⚡ Довідник та аналітика енергосистеми Дніпропетровщини</div>
+          <h2>Графік відключень світла у Дніпрі та Дніпропетровській області: все про черги ДТЕК, ЦЕК та YASNO</h2>
+          <p class="seo-lead">
+            Наш незалежний онлайн-сервіс здійснює щохвилинний моніторинг енергетичної ситуації у Дніпрі, Кривому Розі, Кам'янському, Нікополі, Павлограді та всіх районах Дніпропетровської області. Відстежуйте стабілізаційні розклади (ГПВ), екстрені аварійні відключення (ГАВ), знаходьте свою чергу за номером будинку та плануйте побутові справи без перебоїв.
+          </p>
+
+          <div class="seo-grid">
+            <div class="seo-card">
+              <h3>📐 Як влаштовані 12 підгруп ДТЕК (1.1 – 6.2)</h3>
+              <p>Для забезпечення соціальної справедливості та захисту високовольтного обладнання всі споживачі області поділені на 6 черг, кожна з яких має дві підгрупи (наприклад, 1.1 і 1.2, 5.1 і 5.2):</p>
+              <ul>
+                <li><strong>Біла (зелена) зона:</strong> світло гарантовано подається згідно з доведеними лімітами.</li>
+                <li><strong>Жовта зона:</strong> можливе відключення у години пікових навантажень за командою диспетчера.</li>
+                <li><strong>Сіра зона:</strong> гарантоване знеструмлення підгрупи для збалансування енергосистеми.</li>
+              </ul>
+            </div>
+
+            <div class="seo-card">
+              <h3>🚨 Що означає режим аварійних відключень (ГАВ)</h3>
+              <p>Графік аварійних відключень (ГАВ) та СГАВ вводяться виключно за прямим розпорядженням диспетчера НЕК «Укренерго» у разі раптового дисбалансу генерації або ворожих пошкоджень інфраструктури:</p>
+              <ul>
+                <li>Термін виконання команди — від 3 до 15 хвилин.</li>
+                <li>Погодинні стабілізаційні графіки у цей час <strong>не діють</strong>.</li>
+                <li>На нашому сайті миттєво вмикається червоний статус небезпеки, а таймер очікування приховується до відновлення планового режиму.</li>
+              </ul>
+            </div>
+
+            <div class="seo-card">
+              <h3>🏙️ Райони Дніпра та міста області</h3>
+              <p>Сервіс охоплює житлові масиви Правого та Лівого берегів Дніпра, а також великі промислові агломерації:</p>
+              <ul>
+                <li><strong>Дніпро:</strong> Перемога, Тополя, Сокіл, Центр, просп. Поля, Робоча, Калинова, Лівобережний, Парус, Покровський, Червоний Камінь, 12 Квартал, Слобожанський.</li>
+                <li><strong>Міста області:</strong> Кривий Ріг, Кам'янське, Павлоград, Нікополь, Новомосковськ, Жовті Води.</li>
+                <li><strong>Оператори:</strong> ДТЕК Дніпровські електромережі, ПрАТ ПЕЕМ «ЦЕК» та енергопостачальник YASNO.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="seo-faq-block">
+            <div class="seo-faq-title">❓ Часті запитання жителів Дніпра та області (FAQ)</div>
+            <div class="seo-faq-grid">
+              <div class="faq-item">
+                <div class="faq-question">Як швидко визначити свою підгрупу відключень?</div>
+                <div class="faq-answer">Скористайтеся рядком швидкого пошуку вище. Оберіть місто, почніть вводити назву вулиці та номер будинку. Система автоматично визначить підгрупу (від 1.1 до 6.2) та збереже її у пам'яті браузера для миттєвого доступу без повторного введення.</div>
+              </div>
+              <div class="faq-item">
+                <div class="faq-question">Чому в сусідньому будинку чи під'їзді є світло, а у нас немає?</div>
+                <div class="faq-answer">Сусідні будинки, під'їзди та навіть секції можуть живитися від різних трансформаторних підстанцій або різних високовольтних ліній передач. Також одна з ліній може бути заживлена разом із об'єктом критичної інфраструктури (лікарнею, насосною станцією водоканалу).</div>
+              </div>
+              <div class="faq-item">
+                <div class="faq-question">Чому після завершення сірої зони світло з'явилося із запізненням?</div>
+                <div class="faq-answer">Операторам ДТЕК/ЦЕК потрібен технічний інтервал до 30–40 хвилин для безпечного виїзду виїзних бригад або дистанційного телемеханічного перемикання високовольтних комірок, щоб запобігти короткому замиканню від пускових струмів.</div>
+              </div>
+              <div class="faq-item">
+                <div class="faq-question">Звідки сервіс отримує актуальні дані про графіки?</div>
+                <div class="faq-answer">Дані автоматично синхронізуються через відкриті API та цифрові шлюзи розподільчих компаній ДТЕК Дніпровські електромережі, ЦЕК та сервісу YASNO. Моніторинг працює цілодобово без вихідних.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="seo-tags-cloud">
+            <span class="seo-tag">графік відключень світла Дніпро</span>
+            <span class="seo-tag">ДТЕК Дніпровські електромережі</span>
+            <span class="seo-tag">черги відключень 1.1-6.2</span>
+            <span class="seo-tag">графіки ЦЕК Дніпро</span>
+            <span class="seo-tag">відключення світла Кривий Ріг</span>
+            <span class="seo-tag">аварійні відключення ГАВ</span>
+            <span class="seo-tag">YASNO Дніпро</span>
+            <span class="seo-tag">графік відключення світла за адресою</span>
+            <span class="seo-tag">світло онлайн Дніпро</span>
+            <span class="seo-tag">Кам'янське графік ДТЕК</span>
+            <span class="seo-tag">Павлоград Нікополь світло</span>
+          </div>
+        </div>
+
+        <!-- RUSSIAN SEO BLOCK -->
+        <div class="seo-lang-block" data-lang="ru" style="display: none;">
+          <div class="seo-badge-pill">⚡ Справочник и аналитика энергосистемы Днепропетровщины</div>
+          <h2>График отключений света в Днепре и Днепропетровской области: онлайн расписание ДТЭК, ЦЭК и YASNO</h2>
+          <p class="seo-lead">
+            Актуальный независимый онлайн-мониторинг стабилизационных (ГПВ) и экстренных (ГАО) отключений электроэнергии в Днепре, Кривом Роге, Каменском, Никополе, Павлограде и других населенных пунктах Днепропетровской области. Сервис позволяет мгновенно узнать свою подгруппу по адресу дома, посмотреть интерактивную карту отключений районов города и отслеживать точный таймер переключения очередей.
+          </p>
+
+          <div class="seo-grid">
+            <div class="seo-card">
+              <h3>📐 Как устроены 12 подгрупп ДТЭК (1.1 – 6.2)</h3>
+              <p>Для равномерной нагрузки на электросети потребители региона распределены по 6 основным очередям, каждая из которых делится на две подгруппы (1.1 и 1.2, 2.1 и 2.2 и т.д.):</p>
+              <ul>
+                <li><strong>Белая (зеленая) зона:</strong> гарантированная подача электроэнергии в рамках лимитов.</li>
+                <li><strong>Желтая зона:</strong> возможные отключения при росте дефицита мощности по команде диспетчера.</li>
+                <li><strong>Серая зона:</strong> плановое отключение подгруппы для стабилизации единой энергосистемы.</li>
+              </ul>
+            </div>
+
+            <div class="seo-card">
+              <h3>🚨 Что означает аварийный режим (ГАО / СГАО)</h3>
+              <p>График аварийных отключений (ГАО) и Специальный график (СГАО) применяются оперативно по распоряжению НЭК «Укрэнерго» при внезапных системных сбоях или повреждениях магистральных сетей:</p>
+              <ul>
+                <li>Команда диспетчера исполняется дежурными сменами за 3–15 минут.</li>
+                <li>Почасовые графики стабилизационных отключений в это время <strong>не действуют</strong>.</li>
+                <li>На нашем сайте мгновенно загорается красный индикатор экстренного режима, а таймер ожидания скрывается.</li>
+              </ul>
+            </div>
+
+            <div class="seo-card">
+              <h3>🏙️ Районы Днепра и города области</h3>
+              <p>Карта и поиск охватывают все жилые массивы Правого и Левого берегов Днепра, а также города области:</p>
+              <ul>
+                <li><strong>Днепр:</strong> Победа, Тополь, Сокол, Центр, просп. Поля (Кирова), Рабочая, Калиновая, Левобережный, Парус, Покровский (Коммунар), Красный Камень, 12 Квартал, Слобожанский.</li>
+                <li><strong>Города области:</strong> Кривой Рог, Каменское, Павлоград, Никополь, Новомосковск, Желтые Воды.</li>
+                <li><strong>Операторы сетей:</strong> ДТЭК Днепровские электросети, ЧАО ПЭЭМ «ЦЭК» и поставщик YASNO.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="seo-faq-block">
+            <div class="seo-faq-title">❓ Часто задаваемые вопросы жителей Днепра и области (FAQ)</div>
+            <div class="seo-faq-grid">
+              <div class="faq-item">
+                <div class="faq-question">Как узнать свою группу отключения по адресу?</div>
+                <div class="faq-answer">Воспользуйтесь строкой быстрого поиска вверху страницы. Выберите город, начните вводить улицу и номер дома. Алгоритм определит точную подгруппу ДТЭК или ЦЭК (1.1–6.2) и сохранит её в памяти браузера для последующих посещений.</div>
+              </div>
+              <div class="faq-item">
+                <div class="faq-question">Почему в соседнем доме есть свет, а у нас отключили?</div>
+                <div class="faq-answer">Дома по соседству или даже соседние подъезды могут быть подключены к разным трансформаторным подстанциям и кабельным линиям. Линия соседей также может питать объекты критической инфраструктуры (больницу, котельную или водоканал).</div>
+              </div>
+              <div class="faq-item">
+                <div class="faq-question">Почему свет включают с задержкой после окончания серой зоны?</div>
+                <div class="faq-answer">Диспетчерам и выездным бригадам ДТЭК/ЦЭК требуется технологический перерыв 20–40 минут для безопасного переключения высоковольтных ячеек и снижения пусковых токов бытовой техники в сети.</div>
+              </div>
+              <div class="faq-item">
+                <div class="faq-question">Откуда сайт получает расписание отключений?</div>
+                <div class="faq-answer">Расписания синхронизируются в реальном времени с открытых цифровых каналов ДТЭК Днепровские электросети, ЦЭК и YASNO. Данные обновляются непрерывно 24/7.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="seo-tags-cloud">
+            <span class="seo-tag">график отключений света Днепр</span>
+            <span class="seo-tag">ДТЭК Днепровские электросети</span>
+            <span class="seo-tag">очереди отключений 1.1-6.2</span>
+            <span class="seo-tag">графики ЦЭК Днепр</span>
+            <span class="seo-tag">отключения света Кривой Рог</span>
+            <span class="seo-tag">аварийные отключения ГАО</span>
+            <span class="seo-tag">YASNO Днепр</span>
+            <span class="seo-tag">график отключения света по адресу</span>
+            <span class="seo-tag">свет онлайн Днепр</span>
+            <span class="seo-tag">Каменское график ДТЭК</span>
+            <span class="seo-tag">Павлоград Никополь свет</span>
+          </div>
+        </div>
+
+        <!-- ENGLISH SEO BLOCK -->
+        <div class="seo-lang-block" data-lang="en" style="display: none;">
+          <div class="seo-badge-pill">⚡ Dnipropetrovsk Power Grid Intelligence & Analytics</div>
+          <h2>Power Outage Schedule in Dnipro & Region: Live DTEK, CEK & YASNO Monitoring</h2>
+          <p class="seo-lead">
+            Live community monitoring service for scheduled stabilization outages and emergency power cuts across Dnipro, Kryvyi Rih, Kamianske, Nikopol, Pavlohrad, and throughout the Dnipropetrovsk region. Find your exact outage subgroup by house address, inspect the interactive city district map, and track countdown timers to switching moments.
+          </p>
+
+          <div class="seo-grid">
+            <div class="seo-card">
+              <h3>📐 The 12 Subgroup System (1.1 – 6.2)</h3>
+              <p>To distribute load evenly and safeguard high-voltage transformers, consumers are split into 6 primary queues with two subcategories each (1.1–6.2):</p>
+              <ul>
+                <li><strong>White/Green Zone:</strong> Power is guaranteed under allocated regional limits.</li>
+                <li><strong>Yellow Zone:</strong> Potential outage during peak consumption hours upon Ukrenergo order.</li>
+                <li><strong>Grey Zone:</strong> Scheduled disconnection to stabilize the national grid.</li>
+              </ul>
+            </div>
+
+            <div class="seo-card">
+              <h3>🚨 Understanding Emergency Power Cuts (GAO)</h3>
+              <p>Emergency Power Cuts (GAO) are triggered directly by national grid operator NEC Ukrenergo when unexpected capacity deficits or transmission infrastructure damages occur:</p>
+              <ul>
+                <li>Command execution window is between 3 to 15 minutes.</li>
+                <li>Hourly stabilization timetables are <strong>suspended</strong> while GAO is active.</li>
+                <li>An immediate emergency banner is displayed on this site and switching countdowns pause until recovery.</li>
+              </ul>
+            </div>
+
+            <div class="seo-card">
+              <h3>🏙️ Coverage Across Dnipro & Regional Cities</h3>
+              <p>Our database covers major districts on both river banks of Dnipro as well as surrounding cities:</p>
+              <ul>
+                <li><strong>Dnipro City:</strong> Peremoga, Topol, Sokil, City Center, O. Polya Ave, Robocha, Kalynova, Livoberezhny, Parus, Pokrovsky, Chervony Kamin, 12th Kvartal, Slobozhansky.</li>
+                <li><strong>Regional Hubs:</strong> Kryvyi Rih, Kamianske, Pavlohrad, Nikopol, Novomoskovsk.</li>
+                <li><strong>Grid Operators:</strong> DTEK Dnipro Grids, CEK and electricity provider YASNO.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="seo-faq-block">
+            <div class="seo-faq-title">❓ Frequently Asked Questions (FAQ)</div>
+            <div class="seo-faq-grid">
+              <div class="faq-item">
+                <div class="faq-question">How do I find my outage subgroup by address?</div>
+                <div class="faq-answer">Use the address search tool at the top of the page. Select your municipality, type your street and building number. The system will look up your DTEK or CEK subgroup (1.1 to 6.2) and store it in your browser for seamless return visits.</div>
+              </div>
+              <div class="faq-item">
+                <div class="faq-question">Why does a neighboring building have electricity while ours is cut?</div>
+                <div class="faq-answer">Adjacent buildings or even nearby sections can be connected to distinct transformer substations and transmission lines. Nearby lines might also supply critical municipal infrastructure like hospitals or water pumping stations.</div>
+              </div>
+              <div class="faq-item">
+                <div class="faq-question">Why is power restoration sometimes delayed after the grey zone?</div>
+                <div class="faq-answer">Field crews and operators require a 20–40 minute operational buffer to perform high-voltage cell switching safely and avoid transformer trips triggered by sudden cumulative inrush currents.</div>
+              </div>
+              <div class="faq-item">
+                <div class="faq-question">Where does this service source outage data?</div>
+                <div class="faq-answer">All data is parsed directly from public digital channels and schedules published by DTEK Dnipro Grids, CEK, and YASNO. Automated synchronization runs 24/7.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="seo-tags-cloud">
+            <span class="seo-tag">Dnipro power outage schedule</span>
+            <span class="seo-tag">DTEK Dnipro Grids</span>
+            <span class="seo-tag">subgroups 1.1-6.2</span>
+            <span class="seo-tag">CEK schedules</span>
+            <span class="seo-tag">Kryvyi Rih power cuts</span>
+            <span class="seo-tag">emergency outages GAO</span>
+            <span class="seo-tag">YASNO Dnipro</span>
+            <span class="seo-tag">address outage lookup</span>
+            <span class="seo-tag">live electricity tracker Dnipro</span>
+          </div>
+        </div>
+
+      </section>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-container">
+      <div class="footer-left">
+        <strong>kray-digital</strong> — <span data-i18n="footerCopyright">неофіційний ресурс онлайн-моніторингу графіків відключень для Дніпропетровської області.</span>
+      </div>
+      <div class="footer-right" style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+        <span data-i18n="footerSource">Джерело даних: відкриті графіки ДТЕК Дніпровські електромережі / ЦЕК / YASNO</span>
+        <button id="btnFooterToggleEmergency" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.18); color: #94a3b8; border-radius: 6px; padding: 4px 10px; font-size: 11px; cursor: pointer;" title="Тестове перемикання між аварійним та стабілізаційним режимами">
+          ⚡ Тест: Аварійний / Стабілізаційний режим
+        </button>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./vendor/leaflet/leaflet.js"></script>
+  <script src="./i18n.js"></script>
+  <script src="./app.js"></script>
+  <script src="./map.js"></script>
+</body>
+</html>

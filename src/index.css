@@ -151,6 +151,31 @@ body {
   -webkit-backface-visibility: hidden;
 }
 
+@keyframes callback-pulse {
+  0% {
+    transform: scale3d(1, 1, 1);
+    opacity: 0.55;
+  }
+  70% {
+    transform: scale3d(1.55, 1.55, 1);
+    opacity: 0;
+  }
+  100% {
+    transform: scale3d(1.55, 1.55, 1);
+    opacity: 0;
+  }
+}
+
+.animate-callback-pulse {
+  animation: callback-pulse 2.2s cubic-bezier(0.24, 0, 0.38, 1) infinite;
+  will-change: transform, opacity;
+}
+
+.animate-callback-pulse-delay {
+  animation: callback-pulse 2.2s cubic-bezier(0.24, 0, 0.38, 1) 0.7s infinite;
+  will-change: transform, opacity;
+}
+
 /* Hide Netlify Drawer & Collaborative Feedback Badge completely */
 [data-netlify-deploy-id],
 #netlify-drawer,

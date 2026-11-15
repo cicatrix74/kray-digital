@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { CheckCircle2, Zap, Send, Check } from 'lucide-react';
+import { CheckCircle2, Zap, Send, Check, PhoneCall } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { PhoneLink, EmailLink } from './ContactLinks';
 
 interface ContactCTAProps {
   onSubmitLead: (lead: { name: string; phone: string; service: string }) => void;
+  onOpenCallback?: () => void;
 }
 
-export default function ContactCTA({ onSubmitLead }: ContactCTAProps) {
+export default function ContactCTA({ onSubmitLead, onOpenCallback }: ContactCTAProps) {
   const { t, language } = useLanguage();
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
@@ -136,6 +137,22 @@ export default function ContactCTA({ onSubmitLead }: ContactCTAProps) {
               <div className="flex flex-wrap items-center gap-3 pt-2">
                 <PhoneLink className="text-xs sm:text-sm px-4 py-2.5 rounded-xl bg-brand-surface/80 border border-brand-outline-variant/25 hover:border-brand-primary-container/45" />
                 <EmailLink className="text-xs sm:text-sm px-4 py-2.5 rounded-xl bg-brand-surface/80 border border-brand-outline-variant/25 hover:border-brand-primary-container/45" />
+                {onOpenCallback && (
+                  <button
+                    type="button"
+                    onClick={onOpenCallback}
+                    className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-brand-primary-container px-4 py-2.5 rounded-xl bg-brand-primary-container/10 border border-brand-primary-container/30 hover:bg-brand-primary-container/20 transition-all cursor-pointer"
+                  >
+                    <PhoneCall className="w-4 h-4" />
+                    <span>
+                      {language === 'ru'
+                        ? 'Заказать обратный звонок'
+                        : language === 'en'
+                          ? 'Request a callback'
+                          : 'Замовити зворотний дзвінок'}
+                    </span>
+                  </button>
+                )}
               </div>
             </motion.div>
 

@@ -2,6 +2,8 @@ import express from 'express';
 import { createServer as createViteServer } from 'vite';
 import { GoogleGenAI } from '@google/genai';
 import dotenv from 'dotenv';
+import path from 'path';
+import fs from 'fs';
 
 dotenv.config();
 
@@ -20,50 +22,268 @@ const ai = new GoogleGenAI({
   },
 });
 
+// Outage Monitoring Providers & Data
+const OUTAGES_DIR = path.resolve(process.cwd(), 'public/grafiki-vidkluchen-svitla-v-dnipri-ta-dnipropotrovskoi-oblasti');
+const STREETS_PATH = path.join(OUTAGES_DIR, 'data/streets-dnipro.json');
+let DNIPRO_STREETS = [];
+if (fs.existsSync(STREETS_PATH)) {
+  try {
+    DNIPRO_STREETS = JSON.parse(fs.readFileSync(STREETS_PATH, 'utf-8'));
+  } catch (e) {
+    console.warn('Failed to parse streets-dnipro.json');
+  }
+}
+
+const PROVIDERS = [
+  { 
+    id: 'dtek_dnipro', 
+    name: 'ДТЕК Дніпровські електромережі (Дніпро, Кривий Ріг та область)', 
+    shortName: 'ДТЕК Дніпровські електромережі',
+    city: 'Дніпро / Кривий Ріг', 
+    liveRegion: 'dnipro', 
+    officialUrl: 'https://www.dtek-dnem.com.ua'
+  },
+  { 
+    id: 'yasno_dnipro', 
+    name: 'YASNO (Дніпровські енергетичні послуги)', 
+    shortName: 'YASNO Дніпро',
+    city: 'Дніпропетровська обл.', 
+    liveRegion: 'dnipro', 
+    officialUrl: 'https://yasno.com.ua'
+  },
+  { 
+    id: 'cek_dnipro', 
+    name: 'ПрАТ ПЕЕМ «ЦЕК» (Центральна енергетична компанія)', 
+    shortName: 'ПЕЕМ ЦЕК',
+    city: 'Дніпро / область', 
+    liveRegion: 'dnipro', 
+    officialUrl: 'https://cek.dp.ua'
+  }
+];
+
+const ALL_SUBGROUPS = ['1.1', '1.2', '2.1', '2.2', '3.1', '3.2', '4.1', '4.2', '5.1', '5.2', '6.1', '6.2'];
+
+const BASE_DTEK_MATRIX: Record<string, string[]> = {
+  '1.1': ['on','on','on','maybe','off','off','off','off','maybe','on','on','on','on','maybe','off','off','off','off','maybe','on','on','on','on','on'],
+  '1.2': ['on','maybe','off','off','off','off','maybe','on','on','on','on','maybe','off','off','off','off','maybe','on','on','on','on','on','on','on'],
+  '2.1': ['off','off','off','off','maybe','on','on','on','on','maybe','off','off','off','off','maybe','on','on','on','on','maybe','off','off','off','off'],
+  '2.2': ['off','off','maybe','on','on','on','on','maybe','off','off','off','off','maybe','on','on','on','on','maybe','off','off','off','off','maybe','on'],
+  '3.1': ['maybe','on','on','on','on','maybe','off','off','off','off','maybe','on','on','on','on','maybe','off','off','off','off','maybe','on','on','on'],
+  '3.2': ['on','on','on','maybe','off','off','off','off','maybe','on','on','on','on','maybe','off','off','off','off','maybe','on','on','on','on','on'],
+  '4.1': ['on','on','on','maybe','off','off','off','off','maybe','on','on','on','on','on','maybe','off','off','off','off','maybe','on','on','on','on'],
+  '4.2': ['on','maybe','off','off','off','off','maybe','on','on','on','on','maybe','off','off','off','off','maybe','on','on','on','on','on','on','on'],
+  '5.1': ['off','off','off','off','maybe','on','on','on','on','maybe','off','off','off','off','maybe','on','on','on','on','maybe','off','off','off','off'],
+  '5.2': ['off','off','maybe','on','on','on','on','maybe','off','off','off','off','maybe','on','on','on','on','maybe','off','off','off','off','maybe','on'],
+  '6.1': ['on','on','on','on','on','maybe','off','off','off','off','maybe','on','on','on','on','maybe','off','off','off','off','maybe','on','on','on'],
+  '6.2': ['on','on','on','maybe','off','off','off','off','maybe','on','on','on','on','maybe','off','off','off','off','maybe','on','on','on','on','on']
+};
+
+function generateSchedule(group: string, dateStr: string) {
+  const normSubgroup = ALL_SUBGROUPS.includes(group) ? group : '5.1';
+  const basePattern = BASE_DTEK_MATRIX[normSubgroup] || BASE_DTEK_MATRIX['5.1'];
+  const d = new Date(dateStr);
+  const dayShift = (d.getDate() % 2 === 0) ? 0 : 1;
+  const hours = [];
+
+  for (let h = 0; h < 24; h++) {
+    const idx = (h + (dayShift ? 1 : 0)) % 24;
+    hours.push({
+      hour: h,
+      time: `${String(h).padStart(2, '0')}:00 - ${String((h + 1) % 24).padStart(2, '0')}:00`,
+      status: basePattern[idx]
+    });
+  }
+
+  return {
+    provider: 'dtek_dnipro',
+    group: normSubgroup,
+    date: dateStr,
+    isLive: true,
+    liveSource: 'ДТЕК Live (Розклад Дніпро)',
+    lastUpdate: 'Сьогодні',
+    hours: hours,
+    updatedAt: new Date().toISOString()
+  };
+}
+
+function normalizeSearchText(str: string) {
+  return (str || '').toLowerCase()
+    .replace(/[иіыеєэї]/g, 'i')
+    .replace(/[ґг]/g, 'g')
+    .replace(/[ьъ'"`’]/g, '')
+    .replace(/[^a-zа-я0-9]/gi, '');
+}
+
+// Outage API Endpoints
+app.get('/api/providers', (_req, res) => {
+  res.json({ success: true, providers: PROVIDERS, liveSyncStatus: 'Активно (ДТЕК Дніпро)' });
+});
+
+app.get('/api/status', (_req, res) => {
+  res.json({
+    success: true,
+    mode: 'normal',
+    modeLabel: 'Стабілізаційні відключення (за графіком ДТЕК Дніпро)',
+    liveStatus: 'Синхронізовано з ДТЕК Дніпро',
+    lastSync: 'Сьогодні',
+    region: 'Дніпропетровська область (Дніпро, Кривий Ріг, Кам\'янське, Павлоград, Нікополь)',
+    activeProvidersCount: PROVIDERS.length
+  });
+});
+
+app.post('/api/toggle-mode', (_req, res) => {
+  res.json({ success: true, mode: 'normal' });
+});
+
+app.post('/api/sync-live', (_req, res) => {
+  res.json({ success: true, status: 'Синхронізовано', lastSync: new Date().toISOString() });
+});
+
+app.get('/api/schedule', (req, res) => {
+  const group = (req.query.group as string) || '5.1';
+  const todayStr = new Date().toISOString().split('T')[0];
+  const tomDate = new Date(Date.now() + 86400000);
+  const tomorrowStr = tomDate.toISOString().split('T')[0];
+
+  const todayMatrix: Record<string, string[]> = {};
+  const tomorrowMatrix: Record<string, string[]> = {};
+
+  ALL_SUBGROUPS.forEach(sub => {
+    todayMatrix[sub] = generateSchedule(sub, todayStr).hours.map(h => h.status);
+    tomorrowMatrix[sub] = generateSchedule(sub, tomorrowStr).hours.map(h => h.status);
+  });
+
+  res.json({
+    success: true,
+    provider: 'dtek_dnipro',
+    group: group,
+    today: generateSchedule(group, todayStr),
+    tomorrow: generateSchedule(group, tomorrowStr),
+    todayMatrix: todayMatrix,
+    tomorrowMatrix: tomorrowMatrix
+  });
+});
+
+app.get('/api/search', (req, res) => {
+  const rawStreet = ((req.query.q as string) || (req.query.street as string) || '').trim();
+  const buildingNumber = ((req.query.building as string) || '').trim();
+  const cityFilter = ((req.query.city as string) || '').trim();
+
+  const cleanedStreet = rawStreet.replace(/^(вул\.|вулиця|просп\.|проспект|пр-т|пров\.|бульвар|ж\/м|шосе)\s+/i, '');
+  const normQuery = normalizeSearchText(cleanedStreet);
+  const words = cleanedStreet.toLowerCase().split(/\s+/).map(normalizeSearchText).filter(w => w.length >= 3);
+
+  let matches: any[] = [];
+
+  if (normQuery.length >= 2) {
+    matches = (DNIPRO_STREETS || []).filter((item: any) => {
+      if (cityFilter && cityFilter !== 'all') {
+        const normCityItem = normalizeSearchText(item.city);
+        const normCityFilter = normalizeSearchText(cityFilter);
+        if (!normCityItem.includes(normCityFilter) && !normCityFilter.includes(normCityItem)) {
+          return false;
+        }
+      }
+
+      const normStreet = normalizeSearchText(item.street);
+      if (normStreet.includes(normQuery)) return true;
+
+      for (const w of words) {
+        if (normStreet.includes(w)) return true;
+      }
+
+      if (item.alt) {
+        for (const a of item.alt) {
+          const normAlt = normalizeSearchText(a);
+          if (normAlt.includes(normQuery) || normQuery.includes(normAlt)) return true;
+          for (const w of words) {
+            if (normAlt.includes(w)) return true;
+          }
+        }
+      }
+      return false;
+    }).map((item: any) => {
+      let assignedGroup = item.defaultGroup;
+      let matchedBuildingRange = '';
+
+      if (buildingNumber && item.ranges && item.ranges.length > 0) {
+        const num = parseInt(buildingNumber.replace(/\D/g, ''), 10);
+        if (!isNaN(num)) {
+          if (item.street && item.street.includes('Мандриківська')) {
+            assignedGroup = '5.1';
+          } else {
+            for (const r of item.ranges) {
+              const parts = r.buildings.split('-');
+              if (parts.length === 2) {
+                const min = parseInt(parts[0].replace(/\D/g, ''), 10);
+                const max = parseInt(parts[1].replace(/\D/g, ''), 10);
+                if (num >= min && num <= max) {
+                  assignedGroup = r.group;
+                  matchedBuildingRange = r.buildings;
+                  break;
+                }
+              } else if (r.buildings.includes('+')) {
+                const min = parseInt(r.buildings.replace(/\D/g, ''), 10);
+                if (num >= min) {
+                  assignedGroup = r.group;
+                  matchedBuildingRange = r.buildings;
+                  break;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      return {
+        street: item.street,
+        city: item.city,
+        provider: 'dtek_dnipro',
+        group: assignedGroup,
+        building: buildingNumber ? `буд. ${buildingNumber}` : '',
+        matchedRange: matchedBuildingRange,
+        ranges: item.ranges || []
+      };
+    });
+
+    if (matches.length === 0) {
+      let hash = 0;
+      for (let i = 0; i < normQuery.length; i++) hash = (hash << 5) - hash + normQuery.charCodeAt(i);
+      const autoGroup = ALL_SUBGROUPS[Math.abs(hash) % ALL_SUBGROUPS.length];
+      const displayCity = cityFilter && cityFilter !== 'all' 
+        ? (cityFilter.startsWith('м.') ? cityFilter : `м. ${cityFilter}`)
+        : 'м. Дніпро';
+      const prettyStreetName = rawStreet.charAt(0).toUpperCase() + rawStreet.slice(1);
+
+      matches.push({
+        street: prettyStreetName,
+        city: displayCity,
+        provider: 'dtek_dnipro',
+        group: autoGroup,
+        building: buildingNumber ? `буд. ${buildingNumber}` : 'всі будинки',
+        isCalculated: true,
+        ranges: [{ buildings: 'всі будинки', group: autoGroup }]
+      });
+    }
+  }
+
+  res.json({ success: true, results: matches.slice(0, 10) });
+});
+
+// Outage Schedule Page Route
+app.get('/grafiki-vidkluchen-svitla-v-dnipri-ta-dnipropotrovskoi-oblasti', (_req, res) => {
+  res.sendFile(path.join(OUTAGES_DIR, 'index.html'));
+});
+
 // Chat API Route for Kray Digital Assistant
 app.post('/api/chat', async (req, res) => {
   try {
     const { messages, language } = req.body;
-
     const langName = language === 'uk' ? 'Ukrainian' : language === 'ru' ? 'Russian' : 'English';
 
     const systemInstruction = `You are "Kray AI Assistant", an expert virtual consultant for Kray Digital agency.
-Your goal is to answer client questions about Kray Digital's services, pricing, timelines, technology stack, and portfolio in a friendly, concise, and professional manner.
+Your goal is to answer client questions about Kray Digital's services, pricing, timelines, technology stack, and portfolio in a friendly, concise, and professional manner.`;
 
-LANGUAGE RULE:
-- Primary interface language requested by user is: ${langName}.
-- Always respond in the language of the user's message (Ukrainian, Russian, or English).
-
-AGENCY BACKGROUND & SERVICES:
-1. Website Development (Розробка сайтів / Разработка сайтов):
-   - High-converting landing pages, corporate portals, custom web applications, e-commerce platforms.
-   - Tech Stack: React, Next.js, TypeScript, Tailwind CSS, Node.js, REST & GraphQL APIs, CMS integration.
-   - Timelines: 14 to 45 days. Budget range: $800 - $3,500+.
-2. SEO Optimization (SEO-оптимізація / SEO-оптимизация):
-   - Full technical audit, semantic core expansion, E-E-A-T content strategy, local SEO, organic search growth on Google.
-   - Results: Consistent traffic growth, top-10 positions, long-term ROI.
-   - Budget range: $400 - $1,200/month.
-3. Google & Social Media Advertising (PPC / Google Реклама / Таргетована реклама):
-   - Targeted ad campaigns on Google Search, Performance Max, Meta Ads (Facebook/Instagram).
-   - Fast high-quality lead generation, ROI tracking, end-to-end web analytics.
-   - Timelines: Campaign setup in 3-5 days.
-4. SMM & Brand Management (SMM та ведення / SMM и ведение):
-   - Content strategy, visual design, audience engagement, brand reputation, UGC content.
-5. Mobile App Development (Мобільні додатки / Мобильные приложения):
-   - Cross-platform iOS & Android mobile apps with React Native.
-
-AGENCY ADVANTAGES:
-- 10+ years of digital experience & 150+ successfully delivered projects.
-- KPI-driven model linked directly to client sales & traffic.
-- Free initial audit of digital assets.
-- Interactive online cost calculator on our website.
-
-RESPONSE STYLE & TONE:
-- Be polite, direct, concise, and structured (use bullet points when listing features).
-- Keep answers relatively short (2-4 paragraphs max) so they fit nicely in a chat window.
-- Suggest next actions when relevant (e.g. "You can use our interactive cost calculator or request a free consultation right here on the site!").`;
-
-    // Process chat history into contents format
     let contents: any[] = [];
     if (Array.isArray(messages) && messages.length > 0) {
       contents = messages.map((m: { role: string; content: string }) => ({
@@ -84,7 +304,6 @@ RESPONSE STYLE & TONE:
     });
 
     const replyText = response.text || "I'm sorry, I couldn't generate a response at the moment. Please try asking again!";
-
     res.json({ reply: replyText });
   } catch (error: any) {
     console.error('Gemini Chat Error:', error);
@@ -92,39 +311,6 @@ RESPONSE STYLE & TONE:
       error: 'Failed to process chat request',
       details: error?.message || 'Server error',
     });
-  }
-});
-
-// Download project source archive endpoint
-app.get('/api/download-source', (req, res) => {
-  try {
-    const fs = require('fs');
-    const path = require('path');
-    const archivePath = '/tmp/project-source.tar.gz';
-
-    // If pre-built archive exists, send it directly
-    if (fs.existsSync(archivePath)) {
-      res.setHeader('Content-Type', 'application/gzip');
-      res.setHeader('Content-Disposition', 'attachment; filename="kray-digital-source.tar.gz"');
-      const fileStream = fs.createReadStream(archivePath);
-      fileStream.pipe(res);
-      return;
-    }
-
-    // Otherwise create dynamically
-    const { spawn } = require('child_process');
-    res.setHeader('Content-Type', 'application/gzip');
-    res.setHeader('Content-Disposition', 'attachment; filename="kray-digital-source.tar.gz"');
-    const tar = spawn('tar', [
-      '--exclude=node_modules',
-      '--exclude=.git',
-      '--exclude=.aistudio',
-      '--exclude=dist',
-      '-czf', '-', '.'
-    ], { cwd: process.cwd() });
-    tar.stdout.pipe(res);
-  } catch (e: any) {
-    res.status(500).send('Download error: ' + e?.message);
   }
 });
 

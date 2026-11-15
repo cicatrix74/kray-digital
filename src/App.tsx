@@ -4,6 +4,7 @@ import Hero from './components/Hero';
 import Footer from './components/Footer';
 import TechGridBackground from './components/TechGridBackground';
 import ScrollToTop from './components/ScrollToTop';
+import CallbackWidget from './components/CallbackWidget';
 import { LeadSubmission } from './types';
 
 // Code-split heavy below-the-fold and modal components for ultra-fast initial load
@@ -14,6 +15,7 @@ const Portfolio = lazy(() => import('./components/Portfolio'));
 const ProjectRoadmap = lazy(() => import('./components/ProjectRoadmap'));
 const CasesDrawer = lazy(() => import('./components/CasesDrawer'));
 const CalculatorModal = lazy(() => import('./components/CalculatorModal'));
+const CallbackModal = lazy(() => import('./components/CallbackModal'));
 const LeadPanel = lazy(() => import('./components/LeadPanel'));
 const QuickHelpChat = lazy(() => import('./components/QuickHelpChat'));
 const Testimonials = lazy(() => import('./components/Testimonials'));
@@ -56,6 +58,7 @@ const DEMO_LEADS: LeadSubmission[] = [
 
 export default function App() {
   const [isCalculatorOpen, setIsCalculatorOpen] = useState(false);
+  const [isCallbackOpen, setIsCallbackOpen] = useState(false);
   const [isCasesOpen, setIsCasesOpen] = useState(false);
   const [selectedCaseId, setSelectedCaseId] = useState<string | null>(null);
   const [isLeadPanelOpen, setIsLeadPanelOpen] = useState(false);
@@ -280,6 +283,7 @@ export default function App() {
       {/* Fixed top nav */}
       <Header 
         onOpenCalculator={() => handleOpenCalculatorWithService('')}
+        onOpenCallback={() => setIsCallbackOpen(true)}
         onScrollToSection={handleScrollToSection}
         onOpenCases={() => handleOpenCasesWithCase(null)}
       />
@@ -337,7 +341,10 @@ export default function App() {
 
             {/* Contact/Lead Capture Form Section */}
             <Suspense fallback={null}>
-              <ContactCTA onSubmitLead={handleAddLead} />
+              <ContactCTA
+                onSubmitLead={handleAddLead}
+                onOpenCallback={() => setIsCallbackOpen(true)}
+              />
             </Suspense>
           </>
         )}
@@ -382,6 +389,16 @@ export default function App() {
       </Suspense>
 
       <Suspense fallback={null}>
+        {isCallbackOpen && (
+          <CallbackModal
+            isOpen={isCallbackOpen}
+            onClose={() => setIsCallbackOpen(false)}
+            onSubmitLead={handleAddLead}
+          />
+        )}
+      </Suspense>
+
+      <Suspense fallback={null}>
         {isLeadPanelOpen && (
           <LeadPanel 
             isOpen={isLeadPanelOpen} 
@@ -394,6 +411,9 @@ export default function App() {
           />
         )}
       </Suspense>
+
+      {/* Floating Callback Widget */}
+      <CallbackWidget onClick={() => setIsCallbackOpen(true)} />
 
       {/* Floating Scroll to Top Action */}
       <ScrollToTop />

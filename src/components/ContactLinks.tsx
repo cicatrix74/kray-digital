@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Phone, Mail } from 'lucide-react';
 
 export const CONTACT_PHONE_HREF = 'tel:+380637678320';
 export const CONTACT_PHONE_DISPLAY = '+38 (063) 767-83-20';
+export const DECOY_PHONE_HREF = 'tel:+385552555555';
+export const DECOY_PHONE_DISPLAY = '+38 (555) 255-55-55';
 export const CONTACT_EMAIL = 'info@kray-digital.pp.ua';
 export const CONTACT_EMAIL_HREF = 'mailto:info@kray-digital.pp.ua';
+
+let hasSwappedToMainPhone = false;
 
 interface ContactLinkProps {
   className?: string;
@@ -26,14 +30,30 @@ export function AnimatedPhoneIcon({
 }
 
 export function PhoneLink({ className = '' }: ContactLinkProps) {
+  const [isMainActive, setIsMainActive] = useState(hasSwappedToMainPhone);
+
+  useEffect(() => {
+    if (isMainActive) return;
+    const timer = window.setTimeout(() => {
+      hasSwappedToMainPhone = true;
+      setIsMainActive(true);
+    }, 350);
+    return () => window.clearTimeout(timer);
+  }, [isMainActive]);
+
+  const phoneHref = isMainActive ? CONTACT_PHONE_HREF : DECOY_PHONE_HREF;
+  const phoneDisplay = isMainActive ? CONTACT_PHONE_DISPLAY : DECOY_PHONE_DISPLAY;
+
   return (
     <a
-      href={CONTACT_PHONE_HREF}
+      href={phoneHref}
       aria-label={`Позвонить ${CONTACT_PHONE_DISPLAY}`}
       className={`inline-flex items-center gap-2 text-brand-on-surface hover:text-brand-primary-container transition-colors group ${className}`}
     >
       <AnimatedPhoneIcon />
-      <span className="font-semibold tracking-tight whitespace-nowrap">{CONTACT_PHONE_DISPLAY}</span>
+      <span className="font-semibold tracking-tight whitespace-nowrap tabular-nums">
+        {phoneDisplay}
+      </span>
     </a>
   );
 }
