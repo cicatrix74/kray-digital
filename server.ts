@@ -67,6 +67,64 @@ const ALL_SUBGROUPS = ['1.1', '1.2', '2.1', '2.2', '3.1', '3.2', '4.1', '4.2', '
 let cachedYasno: any = null;
 let lastYasnoFetch = 0;
 
+let cachedEmergencyStatus: any = null;
+let lastEmergencyCheck = 0;
+
+async function checkEmergencyStatus(): Promise<{ isEmergency: boolean; reason: string }> {
+  const now = Date.now();
+  if (cachedEmergencyStatus !== null && (now - lastEmergencyCheck < 180000)) {
+    return cachedEmergencyStatus;
+  }
+
+  let isEmergency = false;
+  let emergencyReason = '';
+
+  try {
+    const urls = ['https://t.me/s/dtek_ua', 'https://t.me/s/Ukrenergo'];
+    for (const u of urls) {
+      const res = await fetch(u, {
+        headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' }
+      });
+      if (res.ok) {
+        const html = await res.text();
+        const matches = html.match(/tgme_widget_message_text[^>]*>([\s\S]*?)<\/div>/gi) || [];
+        const recent = matches.slice(-6).map(m => m.replace(/<[^>]+>/g, ' ').toLowerCase());
+        for (const post of recent) {
+          const hasDnipro = post.includes('дніпро') || post.includes('днепр');
+          const hasEmergency = post.includes('аварійні') || post.includes('екстрен') || post.includes('гав') || post.includes('без світла');
+          const isCancelled = post.includes('скасован') || post.includes('відмін') || post.includes('повернулися до графіків');
+          if (hasDnipro && hasEmergency && !isCancelled) {
+            isEmergency = true;
+            emergencyReason = 'НЕК Укренерго / ДТЕК: екстрені (аварійні) відключення';
+            break;
+          }
+        }
+      }
+      if (isEmergency) break;
+    }
+  } catch (err) {
+    console.warn('Emergency feed check error:', err);
+  }
+
+  if (!isEmergency) {
+    try {
+      const yasno = await fetchLiveYasno();
+      const g51 = yasno ? yasno['5.1'] : null;
+      if (g51 && g51.today) {
+        const s = g51.today.status;
+        if (s === 'Emergency' || s === 'EmergencyShutdowns' || s === 'EmergencyBlackout') {
+          isEmergency = true;
+          emergencyReason = 'YASNO/ДТЕК Live API: екстрені відключення';
+        }
+      }
+    } catch (err) {}
+  }
+
+  cachedEmergencyStatus = { isEmergency, reason: emergencyReason };
+  lastEmergencyCheck = now;
+  return cachedEmergencyStatus;
+}
+
 function fetchLiveYasno(): Promise<any> {
   const now = Date.now();
   if (cachedYasno && (now - lastYasnoFetch < 60000)) {
@@ -176,13 +234,32 @@ app.get('/api/providers', (_req, res) => {
   res.json({ success: true, providers: PROVIDERS, liveSyncStatus: 'Активно (ДТЕК Дніпро / YASNO Live)' });
 });
 
-app.get('/api/status', (_req, res) => {
+app.get('/api/status', async (_req, res) => {
+  const [yasno, emerg] = await Promise.all([
+    fetchLiveYasno(),
+    checkEmergencyStatus()
+  ]);
+  const g51 = yasno ? yasno['5.1'] : null;
+  const todayData = g51 ? g51.today : null;
+  const isNoOutages = todayData && todayData.status === 'NoOutages';
+
+  const isEmergency = emerg.isEmergency;
+  let mode = isEmergency ? 'emergency' : 'normal';
+  let modeLabel = 'Стабілізаційні відключення (за графіком ДТЕК Дніпро)';
+  if (isEmergency) {
+    modeLabel = 'ЕКСТРЕНІ АВАРІЙНІ ВІДКЛЮЧЕННЯ (ГАВ)';
+  } else if (isNoOutages) {
+    modeLabel = 'Сьогодні без відключень (ДТЕК Дніпро)';
+  }
+
   res.json({
     success: true,
-    mode: 'emergency',
-    modeLabel: 'ЕКСТРЕНІ АВАРІЙНІ ВІДКЛЮЧЕННЯ (ГАВ)',
-    liveStatus: 'Екстрені відключення (НЕК Укренерго ГАВ/САВ)',
-    lastSync: 'Сьогодні',
+    mode: mode,
+    modeLabel: modeLabel,
+    liveStatus: isEmergency 
+      ? 'Екстрені відключення (НЕК Укренерго ГАВ / ДТЕК Дніпро)' 
+      : (isNoOutages ? 'Синхронізовано з ДТЕК Дніпро (Без відключень)' : 'Синхронізовано з ДТЕК Дніпро Live'),
+    lastSync: g51 && g51.updatedOn ? new Date(g51.updatedOn).toLocaleTimeString('uk-UA', { hour: '2-digit', minute: '2-digit' }) : 'Сьогодні',
     region: 'Дніпропетровська область (Дніпро, Кривий Ріг, Кам\'янське, Павлоград, Нікополь)',
     activeProvidersCount: PROVIDERS.length
   });

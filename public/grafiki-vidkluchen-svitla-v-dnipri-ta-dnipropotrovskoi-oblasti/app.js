@@ -568,35 +568,6 @@ window.selectSubgroupExternal = function(group) {
   fetchSchedule();
 };
 
-window.toggleEmergencyMode = async () => {
-  try {
-    await fetch('/api/toggle-mode', { method: 'POST' });
-    await fetchSystemStatus();
-    renderActiveSchedule();
-    renderFullMatrixTable();
-    updateLiveStatusCard();
-    if (window.refreshDniproMap) window.refreshDniproMap();
-  } catch (e) {
-    console.error('Error toggling emergency mode:', e);
-  }
-};
-
-if (btnToggleEmergency) {
-  btnToggleEmergency.addEventListener('click', window.toggleEmergencyMode);
-}
-
-const liveApiTag = document.getElementById('liveApiTag');
-if (liveApiTag) {
-  liveApiTag.style.cursor = 'pointer';
-  liveApiTag.title = 'Клікніть для перемикання режиму (Аварійний / Стабілізаційний)';
-  liveApiTag.addEventListener('click', window.toggleEmergencyMode);
-}
-
-const btnFooterToggle = document.getElementById('btnFooterToggleEmergency');
-if (btnFooterToggle) {
-  btnFooterToggle.addEventListener('click', window.toggleEmergencyMode);
-}
-
 // Search Logic
 async function performAddressSearch() {
   const streetQuery = addressSearch.value.trim();
