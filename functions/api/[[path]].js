@@ -184,7 +184,7 @@ function parseDaySchedule(group, isTomorrow, yasnoData, dtekMirror) {
       }
 
       const updateTime = dtekMirror.lastUpdated 
-        ? new Date(dtekMirror.lastUpdated).toLocaleTimeString('uk-UA', { hour: '2-digit', minute: '2-digit' }) 
+        ? new Date(dtekMirror.lastUpdated).toLocaleTimeString('uk-UA', { timeZone: 'Europe/Kyiv', hour: '2-digit', minute: '2-digit' }) 
         : '21:20';
 
       return {
@@ -246,7 +246,7 @@ function parseDaySchedule(group, isTomorrow, yasnoData, dtekMirror) {
       isLive: true,
       liveSource: 'ДТЕК Дніпро / YASNO (Пряме Live API)',
       status: dayObj.status || 'Active',
-      lastUpdate: groupData.updatedOn ? new Date(groupData.updatedOn).toLocaleTimeString('uk-UA', { hour: '2-digit', minute: '2-digit' }) : 'Сьогодні',
+      lastUpdate: groupData.updatedOn ? new Date(groupData.updatedOn).toLocaleTimeString('uk-UA', { timeZone: 'Europe/Kyiv', hour: '2-digit', minute: '2-digit' }) : 'Сьогодні',
       hours: hours,
       updatedAt: new Date().toISOString()
     };
@@ -343,8 +343,7 @@ export async function onRequest(context) {
       }
     }
 
-    // Якщо ДТЕК опублікував графік (як о 21:20) — діє стабілізаційний режим!
-    const isEmergency = !dtekHasFactSchedule && emerg.isEmergency;
+    const isEmergency = emerg.isEmergency || (url.searchParams.get('mode') === 'emergency');
 
     let mode = isEmergency ? 'emergency' : 'normal';
     let modeLabel = 'Стабілізаційні відключення (за графіком ДТЕК Дніпро)';
@@ -355,7 +354,7 @@ export async function onRequest(context) {
     }
 
     const updateTime = (dtekMirror && dtekMirror.lastUpdated)
-      ? new Date(dtekMirror.lastUpdated).toLocaleTimeString('uk-UA', { hour: '2-digit', minute: '2-digit' })
+      ? new Date(dtekMirror.lastUpdated).toLocaleTimeString('uk-UA', { timeZone: 'Europe/Kyiv', hour: '2-digit', minute: '2-digit' })
       : '11:19';
 
     const reqGroup = url.searchParams.get('group') || '5.1';
