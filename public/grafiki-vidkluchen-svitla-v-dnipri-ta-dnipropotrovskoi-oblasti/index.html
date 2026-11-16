@@ -14,6 +14,7 @@
   <link rel="canonical" href="https://kray-digital.pp.ua/grafiki-vidkluchen-svitla-v-dnipri-ta-dnipropotrovskoi-oblasti">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <meta name="theme-color" content="#0f131e">
+  <base href="/grafiki-vidkluchen-svitla-v-dnipri-ta-dnipropotrovskoi-oblasti/">
   <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
 
   <!-- Google Analytics 4 (GA4: G-DXN3LJEFFF) & Google Tag Manager (GTM-5TLVJ2GK) -->
@@ -106,37 +107,59 @@
     ]
   }
   </script>
-  <link rel="stylesheet" href="./style.css?v=2.2">
+  <link rel="stylesheet" href="./style.css?v=3.0">
   <link rel="stylesheet" href="./vendor/leaflet/leaflet.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
+  <!-- PC Ambient Background: Glowing street lanterns (Desktop only) -->
+  <div class="pc-lanterns-bg" aria-hidden="true"></div>
+
   <!-- Header / Navigation -->
   <header class="site-header">
     <div class="container header-container">
       <div class="logo-area">
         <a href="/" class="brand-logo" title="На головну kray-digital">
-          <span class="logo-icon">⚡</span>
+          <div class="logo-favicon-icon" aria-hidden="true">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="100" height="100" rx="22" fill="#0f131e"/>
+              <rect x="2" y="2" width="96" height="96" rx="20" stroke="#00f2fe" stroke-width="3" stroke-opacity="0.4"/>
+              <path d="M54 18L26 56H48L44 82L74 44H50L54 18Z" fill="url(#header-bolt-grad)"/>
+              <defs>
+                <linearGradient id="header-bolt-grad" x1="26" y1="18" x2="74" y2="82" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#00f2fe"/>
+                  <stop offset="1" stop-color="#4facfe"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
           <div class="brand-text">
-            <span class="brand-name">kray-digital</span>
+            <span class="brand-name">KRAY <span class="brand-highlight">DIGITAL</span></span>
             <span class="page-badge" data-i18n="brandBadge">Дніпропетровська область • Live</span>
           </div>
         </a>
       </div>
-      <div class="header-action-area">
-        <a href="/" class="header-order-btn" title="Замовити сайт в kray-digital">
-          <span class="order-spark">✨</span>
-          <span data-i18n="orderSiteBtn">Замовити сайт</span>
-          <span class="order-arrow">→</span>
-        </a>
+      <div class="header-right-area">
+        <div class="lang-switch-group" aria-label="Вибір мови / Выбор языка / Language selection">
+          <button class="lang-btn active" data-lang="ua">UA</button>
+          <button class="lang-btn" data-lang="ru">RU</button>
+          <button class="lang-btn" data-lang="en">EN</button>
+        </div>
+        <div class="header-action-area">
+          <a href="/" class="header-order-btn" title="Замовити сайт в kray-digital">
+            <span class="order-spark">✨</span>
+            <span data-i18n="orderSiteBtn">Замовити сайт</span>
+            <span class="order-arrow">→</span>
+          </a>
+        </div>
       </div>
     </div>
   </header>
 
-  <!-- Emergency Banner -->
-  <div class="emergency-banner" id="emergencyBanner">
+  <!-- Emergency Banner (Hidden by default to avoid false flashing) -->
+  <div class="emergency-banner" id="emergencyBanner" style="display: none;">
     <div class="container">
       <span class="emergency-icon">⚠️</span>
       <div class="emergency-text">
@@ -237,20 +260,20 @@
           <div class="status-left">
             <div class="status-indicator-badge" id="statusBadge">
               <span class="status-icon" id="statusIcon">💡</span>
-              <span class="status-title" id="statusTitle">Світло зараз Є</span>
+              <span class="status-title" id="statusTitle" data-i18n="statusPowerOn">Світло зараз Є</span>
             </div>
             <div class="status-location-info">
-              <span id="activeProviderLabel">ДТЕК Дніпровські електромережі</span> • 
+              <span id="activeProviderLabel" data-i18n="providerDtek">ДТЕК Дніпровські електромережі</span> • 
               <strong id="activeGroupLabel" class="highlight-group">Підгрупа 5.1</strong> •
-              <span id="activeSourceLabel" class="source-tag">ДТЕК Live Дніпро</span>
+              <span id="activeSourceLabel" class="source-tag" data-i18n="sourceLive">ДТЕК Live Дніпро</span>
             </div>
           </div>
 
           <div class="status-right" id="statusRight">
             <div class="countdown-block" id="countdownBlock">
-              <div class="countdown-label" id="countdownLabel">До відключення:</div>
-              <div class="countdown-timer" id="countdownTimer">00:00:00</div>
-              <div class="countdown-sub" id="countdownSub">Розрахунок часу...</div>
+              <div class="countdown-label" id="countdownLabel" data-i18n="countdownPowerStatus">Статус електропостачання:</div>
+              <div class="countdown-timer" id="countdownTimer">--:--:--</div>
+              <div class="countdown-sub" id="countdownSub" data-i18n="countdownCalc">Розрахунок часу...</div>
             </div>
           </div>
         </div>
@@ -321,7 +344,7 @@
           </div>
           <div class="stat-card">
             <div class="stat-val color-text-off" id="statHoursOff">-- год</div>
-            <div class="stat-desc" data-i18n="statOff">Відключено за графіком</div>
+            <div class="stat-desc" id="statOffLabel" data-i18n="statOff">Відключено за графіком</div>
           </div>
         </div>
       </section>
@@ -598,8 +621,8 @@
   </button>
 
   <script src="./vendor/leaflet/leaflet.js"></script>
-  <script src="./i18n.js"></script>
-  <script src="./app.js?v=2.2"></script>
-  <script src="./map.js"></script>
+  <script src="./i18n.js?v=3.0"></script>
+  <script src="./app.js?v=3.0"></script>
+  <script src="./map.js?v=3.0"></script>
 </body>
 </html>

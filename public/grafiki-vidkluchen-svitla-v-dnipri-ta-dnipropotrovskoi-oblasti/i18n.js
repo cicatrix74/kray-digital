@@ -46,6 +46,9 @@
       statMaybe: 'Можливі відключення',
       statOff: 'Відключено за графіком',
       statEmergencyValue: 'Аварійні',
+      statEmergencyLabel: 'Аварійні роботи (поза графіком)',
+      sourceEmergencyRepairs: 'Аварійні роботи ДТЕК',
+      searchEmergencyBadge: 'Аварійні роботи',
       unitHour: 'год',
       markerNow: 'Зараз',
       mapTitle: 'Інтерактивна карта відключень: м. Дніпро',
@@ -81,7 +84,7 @@
       mapTooltipOff: '🔴 Відключено за графіком',
       mapTooltipMaybe: '🟠 Можливе відключення (жовта зона)',
       mapTooltipOn: '🟢 Світло є (гарантовано)',
-      months: ['січ', 'лют', 'бер', 'квіт', 'трав', 'черв', 'лип', 'серп', 'вер', 'жовт', 'лист', 'груд']
+      months: ['січ.', 'лют.', 'бер.', 'квіт.', 'трав.', 'черв.', 'лип.', 'серп.', 'вер.', 'жовт.', 'лист.', 'груд.']
     },
     ru: {
       orderSiteBtn: 'Заказать сайт',
@@ -128,6 +131,9 @@
       statMaybe: 'Возможные отключения',
       statOff: 'Отключено по графику',
       statEmergencyValue: 'Аварийные',
+      statEmergencyLabel: 'Аварийные работы (вне графика)',
+      sourceEmergencyRepairs: 'Аварийные работы ДТЭК',
+      searchEmergencyBadge: 'Аварийные работы',
       unitHour: 'ч',
       markerNow: 'Сейчас',
       mapTitle: 'Интерактивная карта отключений: г. Днепр',
@@ -163,7 +169,7 @@
       mapTooltipOff: '🔴 Отключено по графику',
       mapTooltipMaybe: '🟠 Возможное отключение (желтая зона)',
       mapTooltipOn: '🟢 Свет есть (гарантированно)',
-      months: ['янв', 'фев', 'мар', 'апр', 'май', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек']
+      months: ['янв.', 'фев.', 'мар.', 'апр.', 'мая', 'июн.', 'июл.', 'авг.', 'сент.', 'окт.', 'нояб.', 'дек.']
     },
     en: {
       orderSiteBtn: 'Order a Website',
@@ -210,6 +216,9 @@
       statMaybe: 'Possible cuts',
       statOff: 'Cut by schedule',
       statEmergencyValue: 'Emergency',
+      statEmergencyLabel: 'Emergency works (off-schedule)',
+      sourceEmergencyRepairs: 'DTEK Emergency Repairs',
+      searchEmergencyBadge: 'Emergency works',
       unitHour: 'hrs',
       markerNow: 'Now',
       mapTitle: 'Interactive Power Outages Map: Dnipro City',
@@ -283,6 +292,11 @@
     }
     metaDesc.content = dict.metaDesc;
 
+    // Emergency status check
+    const isEmerg = (window.isEmergencyModeActive && window.isEmergencyModeActive()) || 
+                    (window.systemStatus && window.systemStatus.mode === 'emergency') || 
+                    Boolean(window.currentAddressOutage && window.currentAddressOutage.hasOutage);
+
     // Elements with data-i18n
     document.querySelectorAll('[data-i18n]').forEach(el => {
       const key = el.getAttribute('data-i18n');
@@ -307,8 +321,101 @@
       provSelect.options[2].textContent = dict.providerCek;
     }
 
+    // Status Location Info (Active provider, subgroup, source)
+    const provLabel = document.getElementById('activeProviderLabel');
+    if (provLabel) {
+      const p = window.currentProvider || localStorage.getItem('kray_light_provider') || 'dtek_dnipro';
+      if (p === 'dtek_dnipro') provLabel.textContent = dict.providerDtek;
+      else if (p === 'yasno_dnipro') provLabel.textContent = dict.providerYasno;
+      else if (p === 'cek_dnipro') provLabel.textContent = dict.providerCek;
+    }
+    const groupLabel = document.getElementById('activeGroupLabel');
+    if (groupLabel) {
+      const grp = window.currentGroup || localStorage.getItem('kray_light_group') || '5.1';
+      groupLabel.textContent = `${dict.subgroupPrefix} ${grp}`;
+    }
+    const srcLabel = document.getElementById('activeSourceLabel');
+    if (srcLabel) {
+      const isAddr = Boolean(window.currentAddressOutage && window.currentAddressOutage.hasOutage);
+      if (isEmerg) {
+        srcLabel.textContent = isAddr ? (dict.sourceEmergencyRepairs || 'Аварійні роботи ДТЕК') : (dict.sourceEmergency || 'НЕК Укренерго (ГАВ/САВ)');
+        srcLabel.style.background = 'rgba(239, 68, 68, 0.25)';
+        srcLabel.style.color = '#f87171';
+      } else {
+        srcLabel.textContent = dict.sourceLive || 'ДТЕК Live Дніпро';
+        srcLabel.style.background = 'rgba(16, 185, 129, 0.2)';
+        srcLabel.style.color = 'var(--color-on)';
+      }
+    }
+
+    // Status Title and Banner update in active language
+    const statusTitleEl = document.getElementById('statusTitle');
+    if (statusTitleEl && isEmerg) {
+      const isAddr = Boolean(window.currentAddressOutage && window.currentAddressOutage.hasOutage);
+      if (isAddr && window.currentAddressOutage) {
+        const o = window.currentAddressOutage;
+        const reason = lang === 'en' ? (o.reasonEn || 'Emergency repairs') : (lang === 'ru' ? (o.reasonRu || 'Аварийные ремонтные работы') : (o.reasonUa || 'Аварійні ремонтні роботи'));
+        const powerCut = lang === 'en' ? 'Power Cut' : (lang === 'ru' ? 'Свет отсутствует' : 'Світло відсутнє');
+        statusTitleEl.textContent = `⚠️ ${reason} (${powerCut})`;
+      } else {
+        statusTitleEl.textContent = dict.statusEmergencyTitle;
+      }
+    }
+
+    const emergencyBannerEl = document.getElementById('emergencyBanner');
+    if (emergencyBannerEl && isEmerg) {
+      const bTitle = emergencyBannerEl.querySelector('strong');
+      const bSub = emergencyBannerEl.querySelector('span');
+      const isAddr = Boolean(window.currentAddressOutage && window.currentAddressOutage.hasOutage);
+      if (isAddr && window.currentAddressOutage) {
+        const o = window.currentAddressOutage;
+        const reason = lang === 'en' ? (o.reasonEn || 'Emergency repairs') : (lang === 'ru' ? (o.reasonRu || 'Аварийные ремонтные работы') : (o.reasonUa || 'Аварійні ремонтні роботи'));
+        const restore = o.estimatedRestore || 'до 12:25';
+        const street = localStorage.getItem('kray_light_street') || '';
+        const bld = localStorage.getItem('kray_light_building') || '';
+        const addrStr = bld ? `${street}, ${bld}` : (street || 'м. Дніпро');
+        if (bTitle) {
+          bTitle.textContent = lang === 'en'
+            ? `ATTENTION: ${reason.toUpperCase()} AT ${addrStr.toUpperCase()}!`
+            : (lang === 'ru'
+              ? `ВНИМАНИЕ: ПО АДРЕСУ ${addrStr.toUpperCase()} ВЕДУТСЯ ${reason.toUpperCase()}!`
+              : `УВАГА: ЗА АДРЕСОЮ ${addrStr.toUpperCase()} ТРИВАЮТЬ ${reason.toUpperCase()}!`);
+        }
+        if (bSub) {
+          bSub.textContent = lang === 'en'
+            ? `Estimated power restoration: ${restore}. Scheduled hourly outages do NOT apply.`
+            : (lang === 'ru'
+              ? `Ориентировочное время восстановления: ${restore}. Почасовые графики отключений НЕ ДЕЙСТВУЮТ.`
+              : `Орієнтовний час відновлення: ${restore}. Погодинні графіки відключень НЕ ДІЮТЬ.`);
+        }
+      } else {
+        if (bTitle) bTitle.textContent = dict.emergencyBannerTitle;
+        if (bSub) bSub.textContent = dict.emergencyBannerSub;
+      }
+    }
+
+    const matrixStatusBadgeEl = document.getElementById('matrixStatusBadge');
+    if (matrixStatusBadgeEl) {
+      if (isEmerg) {
+        matrixStatusBadgeEl.textContent = dict.matrixStatusEmergency;
+        matrixStatusBadgeEl.style.background = 'rgba(239, 68, 68, 0.25)';
+        matrixStatusBadgeEl.style.color = '#fca5a5';
+      } else {
+        matrixStatusBadgeEl.textContent = dict.matrixStatusNormal;
+        matrixStatusBadgeEl.style.background = 'rgba(16, 185, 129, 0.2)';
+        matrixStatusBadgeEl.style.color = '#34d399';
+      }
+    }
+
+    // Address chip group badge
+    const chipGroupBadgeEl = document.getElementById('chipGroupBadge');
+    if (chipGroupBadgeEl) {
+      const grp = window.currentGroup || localStorage.getItem('kray_light_group') || '5.1';
+      chipGroupBadgeEl.textContent = `${dict.subgroupPrefix} ${grp}`;
+    }
+
     // Needle marker text
-    const markerPin = document.querySelector('.marker-pin');
+    const markerPin = document.getElementById('markerPin') || document.querySelector('.marker-pin');
     if (markerPin) {
       markerPin.textContent = dict.markerNow;
     }
@@ -347,6 +454,7 @@
     if (window.onLanguageChange) {
       window.onLanguageChange(lang, dict);
     }
+    window.dispatchEvent(new CustomEvent('languageChanged', { detail: { lang, dict } }));
   }
 
   window.i18n = {

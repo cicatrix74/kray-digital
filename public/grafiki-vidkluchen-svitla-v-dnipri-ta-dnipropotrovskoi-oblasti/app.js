@@ -15,6 +15,22 @@ let savedBuilding = localStorage.getItem(CACHE_KEY_BUILDING) || '';
 let currentDayView = 'today';
 let scheduleData = null;
 let systemStatus = null;
+let currentAddressOutage = null;
+try {
+  const savedOutage = localStorage.getItem('kray_address_outage');
+  if (savedOutage) currentAddressOutage = JSON.parse(savedOutage);
+} catch (e) {}
+
+function isEmergencyModeActive() {
+  const isGlobalEmergency = Boolean(systemStatus && systemStatus.mode === 'emergency');
+  const isAddressEmergency = Boolean(currentAddressOutage && currentAddressOutage.hasOutage);
+  return isGlobalEmergency || isAddressEmergency;
+}
+window.isEmergencyModeActive = isEmergencyModeActive;
+window.currentAddressOutage = currentAddressOutage;
+window.currentProvider = currentProvider;
+window.currentGroup = currentGroup;
+
 let providersList = [];
 const allSubgroups = ['1.1', '1.2', '2.1', '2.2', '3.1', '3.2', '4.1', '4.2', '5.1', '5.2', '6.1', '6.2'];
 let countdownInterval = null;
@@ -174,6 +190,9 @@ async function fetchSystemStatus() {
     systemStatus = data;
     window.systemStatus = data;
     renderSystemStatus();
+    updateLocationInfo();
+    updateLiveStatusCard();
+    renderActiveSchedule();
     if (window.refreshDniproMap) window.refreshDniproMap();
   } catch (e) {
     console.error('Error fetching system status:', e);
@@ -233,36 +252,53 @@ function renderDates() {
 }
 
 function updateLocationInfo() {
-  const isEmergency = systemStatus && systemStatus.mode === 'emergency';
-  const subPrefix = window.i18n ? window.i18n.t('subgroupPrefix') : 'Підгрупа';
+  const isEmergency = isEmergencyModeActive();
+  const isAddressEmergency = Boolean(currentAddressOutage && currentAddressOutage.hasOutage);
+  const lang = (window.i18n && window.i18n.current) || 'ua';
+  const dict = (window.i18n && window.i18n.dict) || {};
+  const subPrefix = (dict && dict.subgroupPrefix) || (lang === 'en' ? 'Subgroup' : (lang === 'ru' ? 'Подгруппа' : 'Підгрупа'));
   
+  window.currentProvider = currentProvider;
+  window.currentGroup = currentGroup;
+  window.currentAddressOutage = currentAddressOutage;
+
   if (activeGroupLabel) {
     activeGroupLabel.textContent = `${subPrefix} ${currentGroup}`;
   }
 
-  if (activeProviderLabel && window.i18n) {
-    if (currentProvider === 'dtek_dnipro') activeProviderLabel.textContent = window.i18n.t('providerDtek');
-    else if (currentProvider === 'yasno_dnipro') activeProviderLabel.textContent = window.i18n.t('providerYasno');
-    else if (currentProvider === 'cek_dnipro') activeProviderLabel.textContent = window.i18n.t('providerCek');
+  if (activeProviderLabel) {
+    if (currentProvider === 'dtek_dnipro') {
+      activeProviderLabel.textContent = (dict && dict.providerDtek) || (lang === 'en' ? 'DTEK Dnipro Grids' : (lang === 'ru' ? 'ДТЭК Днепровские электросети' : 'ДТЕК Дніпровські електромережі'));
+    } else if (currentProvider === 'yasno_dnipro') {
+      activeProviderLabel.textContent = (dict && dict.providerYasno) || (lang === 'en' ? 'YASNO (Dnipro Energy Services)' : (lang === 'ru' ? 'YASNO (Днепровские энергетические услуги)' : 'YASNO (Дніпровські енергетичні послуги)'));
+    } else if (currentProvider === 'cek_dnipro') {
+      activeProviderLabel.textContent = (dict && dict.providerCek) || (lang === 'en' ? 'PJSC PEEM CEK' : (lang === 'ru' ? 'ЧАО «ПЭЭМ «ЦЭК»' : 'ПрАТ «ПЕЕМ «ЦЕК»'));
+    }
   }
 
   if (activeSourceLabel) {
     if (isEmergency) {
-      activeSourceLabel.textContent = window.i18n ? window.i18n.t('sourceEmergency') : 'НЕК Укренерго (ГАВ/САВ)';
+      if (isAddressEmergency && currentAddressOutage) {
+        activeSourceLabel.textContent = (dict && dict.sourceEmergencyRepairs) || (lang === 'en' ? 'DTEK Emergency Repairs' : (lang === 'ru' ? 'Аварийные работы ДТЭК' : 'Аварійні роботи ДТЕК'));
+      } else {
+        activeSourceLabel.textContent = (dict && dict.sourceEmergency) || (lang === 'en' ? 'NPC Ukrenergo (Emergency Outages)' : (lang === 'ru' ? 'НЭК Укрэнерго (ГАО/САО)' : 'НЕК Укренерго (ГАВ/САВ)'));
+      }
       activeSourceLabel.style.background = 'rgba(239, 68, 68, 0.25)';
       activeSourceLabel.style.color = '#f87171';
     } else {
-      activeSourceLabel.textContent = window.i18n ? window.i18n.t('sourceLive') : 'ДТЕК Live Дніпро';
+      activeSourceLabel.textContent = (dict && dict.sourceLive) || (lang === 'en' ? 'DTEK Live Dnipro' : (lang === 'ru' ? 'ДТЭК Live Днепр' : 'ДТЕК Live Дніпро'));
       activeSourceLabel.style.background = 'rgba(16, 185, 129, 0.2)';
       activeSourceLabel.style.color = 'var(--color-on)';
     }
   }
 }
+window.updateLocationInfo = updateLocationInfo;
 
 function renderActiveSchedule() {
   if (!scheduleData) return;
 
-  const isEmergency = systemStatus && systemStatus.mode === 'emergency';
+  const isEmergency = isEmergencyModeActive();
+  const isAddressEmergency = Boolean(currentAddressOutage && currentAddressOutage.hasOutage);
   const currentSchedule = currentDayView === 'today' ? scheduleData.today : scheduleData.tomorrow;
   const hours = currentSchedule.hours;
 
@@ -278,13 +314,22 @@ function renderActiveSchedule() {
     else countOff++;
 
     const block = document.createElement('div');
+    block.textContent = item.hour;
+    const lang = (window.i18n && window.i18n.current) || 'ua';
+
     if (isEmergency) {
-      block.className = 'hour-block state-emergency';
-      block.textContent = item.hour;
-      block.title = `${item.time}: Графік не діє (Аварійні відключення)`;
+      if (item.status === 'off') {
+        block.className = 'hour-block state-off';
+        block.title = `${item.time}: ${getStatusName('off')} (аварійний режим)`;
+      } else if (item.status === 'maybe') {
+        block.className = 'hour-block state-maybe';
+        block.title = `${item.time}: ${getStatusName('maybe')}`;
+      } else {
+        block.className = 'hour-block state-neutral';
+        block.title = `${item.time}: ${lang === 'en' ? 'Schedule suspended (emergency mode)' : (lang === 'ru' ? 'График не действует (аварийный режим)' : 'Графік не діє (аварійний режим)')}`;
+      }
     } else {
       block.className = `hour-block state-${item.status}`;
-      block.textContent = item.hour;
       block.title = `${item.time}: ${getStatusName(item.status)}`;
     }
     timelineGrid.appendChild(block);
@@ -292,14 +337,21 @@ function renderActiveSchedule() {
 
   // Stats
   const uHour = window.i18n ? window.i18n.t('unitHour') : 'год';
+  const statOffLabel = document.getElementById('statOffLabel') || document.querySelector('.stat-card:nth-child(3) .stat-desc');
   if (isEmergency) {
     statHoursOn.textContent = '—';
-    statHoursMaybe.textContent = '—';
-    statHoursOff.textContent = window.i18n ? window.i18n.t('statEmergencyValue') : 'Аварійні';
+    statHoursMaybe.textContent = countMaybe > 0 ? `${countMaybe} ${uHour}` : '—';
+    statHoursOff.textContent = `${countOff} ${uHour}`;
+    if (statOffLabel && window.i18n) {
+      statOffLabel.textContent = window.i18n.t('statOff');
+    }
   } else {
     statHoursOn.textContent = `${countOn} ${uHour}`;
     statHoursMaybe.textContent = `${countMaybe} ${uHour}`;
     statHoursOff.textContent = `${countOff} ${uHour}`;
+    if (statOffLabel && window.i18n) {
+      statOffLabel.textContent = window.i18n.t('statOff');
+    }
   }
 
   updateTimelineNeedle();
@@ -311,7 +363,7 @@ function renderFullMatrixTable() {
   if (!matrixTableBody || !scheduleData) return;
   matrixTableBody.innerHTML = '';
 
-  const isEmergency = systemStatus && systemStatus.mode === 'emergency';
+  const isEmergency = isEmergencyModeActive();
   const activeMatrix = currentDayView === 'today' ? scheduleData.todayMatrix : scheduleData.tomorrowMatrix;
   if (!activeMatrix) return;
 
@@ -340,8 +392,16 @@ function renderFullMatrixTable() {
 
     pattern.forEach((st, h) => {
       if (isEmergency) {
-        // У разі аварійних відключень галочки ПРИБИРАЄМО
-        cellsHtml += `<td class="matrix-cell-emergency" title="${h}:00 - Стабілізаційний графік не діє (екстрені відключення)"><span class="cell-icon-emergency">—</span></td>`;
+        if (st === 'off') {
+          hasAnyOff = true;
+          cellsHtml += `<td class="matrix-cell-off" title="${h}:00 - ${window.i18n ? window.i18n.t('mapTooltipOff') : 'Відключено за графіком'} (аварійний режим)"><span class="cell-icon-off">⚡</span></td>`;
+        } else if (st === 'maybe') {
+          cellsHtml += `<td class="matrix-cell-maybe" title="${h}:00 - ${window.i18n ? window.i18n.t('mapTooltipMaybe') : 'Можливе відключення'}"><span class="cell-icon-maybe">⚡</span></td>`;
+        } else {
+          // Пусті поля при аварійних відключеннях: галочки НЕ ставимо і зеленим НЕ підкрашуємо
+          const noScheduleText = (window.i18n && window.i18n.current === 'en') ? 'Schedule suspended' : ((window.i18n && window.i18n.current === 'ru') ? 'График не действует' : 'Графік не діє');
+          cellsHtml += `<td class="matrix-cell-neutral" title="${h}:00 - ${noScheduleText}"><span class="cell-icon-neutral">—</span></td>`;
+        }
       } else {
         if (st === 'off') {
           hasAnyOff = true;
@@ -407,15 +467,50 @@ function updateLiveStatusCard() {
   if (!scheduleData || !scheduleData.today) return;
 
   const countdownCol = document.getElementById('statusRight') || document.querySelector('.status-right');
-  const isEmergency = systemStatus && systemStatus.mode === 'emergency';
+  const isEmergency = isEmergencyModeActive();
+  const isAddressEmergency = Boolean(currentAddressOutage && currentAddressOutage.hasOutage);
+  const lang = (window.i18n && window.i18n.current) || 'ua';
 
   updateLocationInfo();
 
   if (isEmergency) {
-    if (emergencyBanner) emergencyBanner.style.display = 'block';
+    if (emergencyBanner) {
+      emergencyBanner.style.display = 'block';
+      const bTitle = emergencyBanner.querySelector('strong');
+      const bSub = emergencyBanner.querySelector('span');
+      if (isAddressEmergency && currentAddressOutage) {
+        const reason = lang === 'en' ? currentAddressOutage.reasonEn : (lang === 'ru' ? currentAddressOutage.reasonRu : currentAddressOutage.reasonUa);
+        const restore = currentAddressOutage.estimatedRestore || 'до 12:25';
+        const addrStr = savedBuilding ? `${savedStreet}, ${savedBuilding}` : (savedStreet || 'м. Дніпро');
+        if (bTitle) {
+          bTitle.textContent = lang === 'en' 
+            ? `ATTENTION: ${reason.toUpperCase()} AT ${addrStr.toUpperCase()}!` 
+            : (lang === 'ru' 
+              ? `ВНИМАНИЕ: ПО АДРЕСУ ${addrStr.toUpperCase()} ВЕДУТСЯ ${reason.toUpperCase()}!` 
+              : `УВАГА: ЗА АДРЕСОЮ ${addrStr.toUpperCase()} ТРИВАЮТЬ ${reason.toUpperCase()}!`);
+        }
+        if (bSub) {
+          bSub.textContent = lang === 'en'
+            ? `Estimated power restoration: ${restore}. Scheduled hourly outages do NOT apply.`
+            : (lang === 'ru'
+              ? `Ориентировочное время восстановления: ${restore}. Почасовые графики отключений НЕ ДЕЙСТВУЮТ.`
+              : `Орієнтовний час відновлення: ${restore}. Погодинні графіки відключень НЕ ДІЮТЬ.`);
+        }
+      } else {
+        if (bTitle && window.i18n) bTitle.textContent = window.i18n.t('emergencyBannerTitle');
+        if (bSub && window.i18n) bSub.textContent = window.i18n.t('emergencyBannerSub');
+      }
+    }
     statusCard.className = 'current-status-card status-off emergency-active';
     statusIcon.textContent = '⚠️';
-    statusTitle.textContent = window.i18n ? window.i18n.t('statusEmergencyTitle') : 'Аварійні та екстрені відключення (ГАВ)';
+    if (isAddressEmergency && currentAddressOutage) {
+      const reason = lang === 'en' ? currentAddressOutage.reasonEn : (lang === 'ru' ? currentAddressOutage.reasonRu : currentAddressOutage.reasonUa);
+      statusTitle.textContent = lang === 'en' 
+        ? `⚠️ ${reason} (Power Cut)` 
+        : (lang === 'ru' ? `⚠️ ${reason} (Свет отсутствует)` : `⚠️ ${reason} (Світло відсутнє)`);
+    } else {
+      statusTitle.textContent = window.i18n ? window.i18n.t('statusEmergencyTitle') : 'Аварійні та екстрені відключення (ГАВ)';
+    }
     
     // Приховуємо таймер в аварійному режимі
     if (countdownCol) {
@@ -590,11 +685,21 @@ async function performAddressSearch() {
         const div = document.createElement('div');
         div.className = 'search-result-item';
 
+        const isOutage = item.outage && item.outage.hasOutage;
+        const outageBadge = isOutage
+          ? `<span style="font-size:10px; padding:2px 7px; border-radius:4px; background:rgba(239,68,68,0.25); color:#f87171; border:1px solid #ef4444; font-weight:700; margin-left:6px;">🚨 ${window.i18n ? window.i18n.t('searchEmergencyBadge') : 'Аварійні роботи'} (${item.outage.estimatedRestore || 'до 12:25'})`
+          : '';
+        const lang = (window.i18n && window.i18n.current) || 'ua';
+        const providerName = (window.i18n && window.i18n.dict && window.i18n.dict.providerDtek) || 'ДТЕК Дніпровські електромережі';
+        const subPrefix = (window.i18n && window.i18n.dict && window.i18n.dict.subgroupPrefix) || 'Підгрупа';
+        const bldLabel = lang === 'en' ? 'bld.' : (lang === 'ru' ? 'д.' : 'буд.');
+
         let bldSubtitle = '';
         if (bldQuery) {
-          bldSubtitle = `<span style="color:#38bdf8; font-weight:600;">буд. ${bldQuery}</span> ${item.matchedRange ? '<span style="opacity:0.75; font-size:11px;">(' + item.matchedRange + ')</span>' : ''}`;
+          bldSubtitle = `<span style="color:#38bdf8; font-weight:600;">${bldLabel} ${bldQuery}</span> ${item.matchedRange ? '<span style="opacity:0.75; font-size:11px;">(' + item.matchedRange + ')</span>' : ''}`;
         } else if (item.ranges && item.ranges.length > 1) {
-          bldSubtitle = `<div style="font-size:11px; opacity:0.8; margin-top:2px;">Номери: ${item.ranges.map(r => `${r.buildings} → гр.${r.group}`).join(', ')}</div>`;
+          const numPrefix = lang === 'en' ? 'Numbers' : (lang === 'ru' ? 'Номера' : 'Номери');
+          bldSubtitle = `<div style="font-size:11px; opacity:0.8; margin-top:2px;">${numPrefix}: ${item.ranges.map(r => `${r.buildings} → гр.${r.group}`).join(', ')}</div>`;
         } else if (item.ranges && item.ranges.length === 1) {
           bldSubtitle = `<div style="font-size:11px; opacity:0.75; margin-top:1px;">${item.ranges[0].buildings}</div>`;
         }
@@ -606,11 +711,12 @@ async function performAddressSearch() {
             <div style="display:flex; align-items:center; flex-wrap:wrap; gap:4px;">
               <strong style="color:#f8fafc; font-size:13px;">${item.street}</strong>
               ${calculatedBadge}
+              ${outageBadge}
             </div>
             ${bldSubtitle ? `<div style="margin-top:2px;">${bldSubtitle}</div>` : ''}
-            <div style="color:var(--brand-cyan); font-size:11px; font-weight:600; margin-top:3px;">${item.city} • ДТЕК Дніпровські електромережі</div>
+            <div style="color:var(--brand-cyan); font-size:11px; font-weight:600; margin-top:3px;">${item.city} • ${providerName}</div>
           </div>
-          <span class="search-result-group" style="white-space:nowrap;">Підгрупа ${item.group}</span>
+          <span class="search-result-group" style="white-space:nowrap;">${subPrefix} ${item.group}</span>
         `;
 
         div.addEventListener('click', () => {
@@ -631,8 +737,19 @@ async function performAddressSearch() {
 
 function applyAddressSelection(item, buildingVal) {
   currentGroup = item.group;
+  window.currentGroup = currentGroup;
   savedStreet = item.street;
   savedBuilding = buildingVal || (buildingInput.value.trim());
+
+  if (item.outage && item.outage.hasOutage) {
+    currentAddressOutage = item.outage;
+    window.currentAddressOutage = item.outage;
+    localStorage.setItem('kray_address_outage', JSON.stringify(item.outage));
+  } else {
+    currentAddressOutage = null;
+    window.currentAddressOutage = null;
+    localStorage.removeItem('kray_address_outage');
+  }
 
   if (citySelect && item.city) {
     if (item.city.includes('Кривий Ріг')) citySelect.value = 'Кривий Ріг';
@@ -652,6 +769,10 @@ function applyAddressSelection(item, buildingVal) {
   renderSubgroupButtons();
   searchResults.style.display = 'none';
   addressSearch.value = item.street;
+  updateLocationInfo();
+  updateLiveStatusCard();
+  renderActiveSchedule();
+  renderFullMatrixTable();
   fetchSchedule();
   if (window.flyMapToAddress) {
     window.flyMapToAddress(savedStreet, currentGroup);
@@ -692,9 +813,16 @@ clearSearch.addEventListener('click', () => {
   searchResults.style.display = 'none';
   savedStreet = '';
   savedBuilding = '';
+  currentAddressOutage = null;
+  window.currentAddressOutage = null;
+  localStorage.removeItem('kray_address_outage');
   localStorage.removeItem(CACHE_KEY_STREET);
   localStorage.removeItem(CACHE_KEY_BUILDING);
   updateActiveAddressChip();
+  updateLocationInfo();
+  updateLiveStatusCard();
+  renderActiveSchedule();
+  renderFullMatrixTable();
   notifyCacheSaved();
 });
 
@@ -704,9 +832,16 @@ btnRemoveSavedAddress.addEventListener('click', () => {
   addressSearch.value = '';
   buildingInput.value = '';
   clearSearch.style.display = 'none';
+  currentAddressOutage = null;
+  window.currentAddressOutage = null;
+  localStorage.removeItem('kray_address_outage');
   localStorage.removeItem(CACHE_KEY_STREET);
   localStorage.removeItem(CACHE_KEY_BUILDING);
   updateActiveAddressChip();
+  updateLocationInfo();
+  updateLiveStatusCard();
+  renderActiveSchedule();
+  renderFullMatrixTable();
   notifyCacheSaved();
 });
 
@@ -733,6 +868,29 @@ setInterval(() => {
   fetchSystemStatus();
 }, 30000);
 
+// Emergency Toggle Button in Footer
+const btnFooterToggleEmergency = document.getElementById('btnFooterToggleEmergency');
+if (btnFooterToggleEmergency) {
+  btnFooterToggleEmergency.addEventListener('click', async () => {
+    try {
+      const res = await fetch('/api/toggle-mode', { method: 'POST' });
+      const data = await res.json();
+      if (data && data.success) {
+        if (!systemStatus) systemStatus = {};
+        systemStatus.mode = data.mode;
+        window.systemStatus = systemStatus;
+        updateLocationInfo();
+        updateLiveStatusCard();
+        renderActiveSchedule();
+        renderFullMatrixTable();
+        if (window.refreshDniproMap) window.refreshDniproMap();
+      }
+    } catch (e) {
+      console.error('Failed to toggle emergency mode:', e);
+    }
+  });
+}
+
 // Scroll to Top Button (Smooth RAF Scroll - Matching Main Landing Page)
 const scrollToTopBtn = document.getElementById('scrollToTopBtn');
 if (scrollToTopBtn) {
@@ -741,11 +899,9 @@ if (scrollToTopBtn) {
     if (!isTicking) {
       window.requestAnimationFrame(() => {
         if (window.scrollY > 350) {
-          scrollToTopBtn.style.display = 'flex';
           scrollToTopBtn.classList.add('visible');
         } else {
           scrollToTopBtn.classList.remove('visible');
-          scrollToTopBtn.style.display = 'none';
         }
         isTicking = false;
       });
@@ -753,16 +909,45 @@ if (scrollToTopBtn) {
     }
   }, { passive: true });
 
-  scrollToTopBtn.addEventListener('click', () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
+  const easeInOutQuad = (t, b, c, d) => {
+    t /= d / 2;
+    if (t < 1) return (c / 2) * t * t + b;
+    t--;
+    return (-c / 2) * (t * (t - 2) - 1) + b;
+  };
+
+  const smoothScrollToTop = () => {
+    const duration = 650;
+    const start = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
+    if (start <= 0) return;
+    const startTime = performance.now();
+
+    const animateScroll = (currentTime) => {
+      const elapsed = currentTime - startTime;
+      const progress = easeInOutQuad(elapsed, start, -start, duration);
+      window.scrollTo(0, progress);
+
+      if (elapsed < duration) {
+        requestAnimationFrame(animateScroll);
+      } else {
+        window.scrollTo(0, 0);
+      }
+    };
+
+    requestAnimationFrame(animateScroll);
+  };
+
+  scrollToTopBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    smoothScrollToTop();
   });
 }
 
 // Initialize
 (async () => {
+  if (window.i18n) {
+    window.i18n.setLanguage(window.i18n.current);
+  }
   updateLocationInfo();
   renderDates();
   await loadProviders();

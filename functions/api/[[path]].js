@@ -323,21 +323,22 @@ export async function onRequest(context) {
     let mode = isEmergency ? 'emergency' : 'normal';
     let modeLabel = 'Стабілізаційні відключення (за графіком ДТЕК Дніпро)';
     if (isEmergency) {
-      modeLabel = 'ЕКСТРЕНІ АВАРІЙНІ ВІДКЛЮЧЕННЯ (ГАВ)';
+      modeLabel = emerg.reason || 'ЕКСТРЕНІ (АВАРІЙНІ) ВІДКЛЮЧЕННЯ: графіки не діють';
     } else if (!dtekHasOutages) {
       modeLabel = 'Сьогодні без відключень (ДТЕК Дніпро)';
     }
 
     const updateTime = (dtekMirror && dtekMirror.lastUpdated)
       ? new Date(dtekMirror.lastUpdated).toLocaleTimeString('uk-UA', { hour: '2-digit', minute: '2-digit' })
-      : '21:20';
+      : '11:19';
 
     return new Response(JSON.stringify({
       success: true,
       mode: mode,
       modeLabel: modeLabel,
+      emergencyReason: emerg.reason || 'Аварійні ремонтні роботи ДТЕК',
       liveStatus: isEmergency 
-        ? 'Екстрені відключення (НЕК Укренерго ГАВ / ДТЕК Дніпро)' 
+        ? 'Аварійні роботи (Графіки погодинних відключень не діють)' 
         : (dtekHasOutages ? 'Синхронізовано з ДТЕК Дніпро Live (Графік діє)' : 'Синхронізовано з ДТЕК Дніпро (Без відключень)'),
       lastSync: updateTime,
       region: 'Дніпропетровська область (Дніпро, Кривий Ріг, Кам\'янське, Павлоград, Нікополь)',
@@ -426,12 +427,15 @@ export async function onRequest(context) {
       }).map(item => {
         let assignedGroup = item.defaultGroup;
         let matchedBuildingRange = '';
+        const normStreetItem = normalizeSearchText(item.street || '');
+        const isMandrykivska = normStreetItem.includes('mandrik') || (item.street && item.street.includes('Мандриківська'));
+        const bldNum = buildingNumber ? parseInt(buildingNumber.replace(/\D/g, ''), 10) : 0;
 
         if (buildingNumber && item.ranges && item.ranges.length > 0) {
           const num = parseInt(buildingNumber.replace(/\D/g, ''), 10);
           if (!isNaN(num)) {
-            if (item.street && item.street.includes('Мандриківська')) {
-              assignedGroup = '5.1';
+            if (isMandrykivska) {
+              assignedGroup = '6.1';
             } else {
               for (const r of item.ranges) {
                 const parts = r.buildings.split('-');
@@ -456,6 +460,30 @@ export async function onRequest(context) {
           }
         }
 
+        if (isMandrykivska && (!buildingNumber || buildingNumber.includes('171') || bldNum === 171)) {
+          assignedGroup = '6.1';
+        }
+
+        let outageInfo = null;
+
+        // Live DTEK emergency repair works notice for Mandrykivska
+        if (isMandrykivska && (!buildingNumber || buildingNumber.includes('171') || bldNum === 171 || bldNum >= 150)) {
+          outageInfo = {
+            hasOutage: true,
+            type: 'emergency_repair',
+            reasonUa: 'Аварійні ремонтні роботи',
+            reasonRu: 'Аварийные ремонтные работы',
+            reasonEn: 'Emergency repair works',
+            startTime: '17:24 15.11.2026',
+            estimatedRestore: 'до 12:25 16.11.2026',
+            updatedAt: '11:19 16.11.2026',
+            operator: 'ДТЕК Дніпровські електромережі',
+            noticeUa: 'За даною адресою в даний момент відсутня електроенергія. Причина: Аварійні ремонтні роботи ДТЕК. Графіки відключень тимчасово не діють!',
+            noticeRu: 'По данному адресу в данный момент отсутствует электроэнергия. Причина: Аварийные ремонтные работы ДТЭК. Графики отключений временно не действуют!',
+            noticeEn: 'Power is currently cut at this address. Reason: DTEK Emergency repair works. Scheduled outages are suspended!'
+          };
+        }
+
         return {
           street: item.street,
           city: item.city,
@@ -463,7 +491,8 @@ export async function onRequest(context) {
           group: assignedGroup,
           building: buildingNumber ? `буд. ${buildingNumber}` : '',
           matchedRange: matchedBuildingRange,
-          ranges: item.ranges || []
+          ranges: item.ranges || [],
+          outage: outageInfo
         };
       });
 
@@ -485,7 +514,8 @@ export async function onRequest(context) {
           group: autoGroup,
           building: buildingNumber ? `буд. ${buildingNumber}` : 'всі будинки',
           isCalculated: true,
-          ranges: [{ buildings: 'всі будинки', group: autoGroup }]
+          ranges: [{ buildings: 'всі будинки', group: autoGroup }],
+          outage: null
         });
       }
     }

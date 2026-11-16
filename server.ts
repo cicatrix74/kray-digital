@@ -312,7 +312,9 @@ app.get('/api/providers', (_req, res) => {
   res.json({ success: true, providers: PROVIDERS, liveSyncStatus: 'Активно (ДТЕК Дніпро / YASNO Live)' });
 });
 
-app.get('/api/status', async (_req, res) => {
+let manualEmergencyMode: boolean | null = null;
+
+app.get('/api/status', async (req, res) => {
   const [yasno, dtekMirror, emerg] = await Promise.all([
     fetchLiveYasno(),
     fetchLiveDtekMirror(),
@@ -333,26 +335,29 @@ app.get('/api/status', async (_req, res) => {
     }
   }
 
-  const isEmergency = !dtekHasFactSchedule && emerg.isEmergency;
+  const isEmergency = manualEmergencyMode !== null 
+    ? manualEmergencyMode 
+    : (emerg.isEmergency || (req.query.mode === 'emergency'));
 
   let mode = isEmergency ? 'emergency' : 'normal';
   let modeLabel = 'Стабілізаційні відключення (за графіком ДТЕК Дніпро)';
   if (isEmergency) {
-    modeLabel = 'ЕКСТРЕНІ АВАРІЙНІ ВІДКЛЮЧЕННЯ (ГАВ)';
+    modeLabel = emerg.reason || 'ЕКСТРЕНІ (АВАРІЙНІ) ВІДКЛЮЧЕННЯ: графіки не діють';
   } else if (!dtekHasOutages) {
     modeLabel = 'Сьогодні без відключень (ДТЕК Дніпро)';
   }
 
   const updateTime = (dtekMirror && dtekMirror.lastUpdated)
     ? new Date(dtekMirror.lastUpdated).toLocaleTimeString('uk-UA', { hour: '2-digit', minute: '2-digit' })
-    : '21:20';
+    : '11:19';
 
   res.json({
     success: true,
     mode: mode,
     modeLabel: modeLabel,
+    emergencyReason: emerg.reason || 'Аварійні ремонтні роботи ДТЕК',
     liveStatus: isEmergency 
-      ? 'Екстрені відключення (НЕК Укренерго ГАВ / ДТЕК Дніпро)' 
+      ? 'Аварійні роботи (Графіки погодинних відключень не діють)' 
       : (dtekHasOutages ? 'Синхронізовано з ДТЕК Дніпро Live (Графік діє)' : 'Синхронізовано з ДТЕК Дніпро (Без відключень)'),
     lastSync: updateTime,
     region: 'Дніпропетровська область (Дніпро, Кривий Ріг, Кам\'янське, Павлоград, Нікополь)',
@@ -360,8 +365,13 @@ app.get('/api/status', async (_req, res) => {
   });
 });
 
-app.post('/api/toggle-mode', (_req, res) => {
-  res.json({ success: true, mode: 'normal' });
+app.post('/api/toggle-mode', (req, res) => {
+  if (manualEmergencyMode === null) {
+    manualEmergencyMode = true;
+  } else {
+    manualEmergencyMode = !manualEmergencyMode;
+  }
+  res.json({ success: true, mode: manualEmergencyMode ? 'emergency' : 'normal' });
 });
 
 app.post('/api/sync-live', async (_req, res) => {
@@ -438,12 +448,15 @@ app.get('/api/search', (req, res) => {
     }).map((item: any) => {
       let assignedGroup = item.defaultGroup;
       let matchedBuildingRange = '';
+      const normStreetItem = normalizeSearchText(item.street || '');
+      const isMandrykivska = normStreetItem.includes('mandrik') || (item.street && item.street.includes('Мандриківська'));
+      const bldNum = buildingNumber ? parseInt(buildingNumber.replace(/\D/g, ''), 10) : 0;
 
       if (buildingNumber && item.ranges && item.ranges.length > 0) {
         const num = parseInt(buildingNumber.replace(/\D/g, ''), 10);
         if (!isNaN(num)) {
-          if (item.street && item.street.includes('Мандриківська')) {
-            assignedGroup = '5.1';
+          if (isMandrykivska) {
+            assignedGroup = '6.1';
           } else {
             for (const r of item.ranges) {
               const parts = r.buildings.split('-');
@@ -468,6 +481,30 @@ app.get('/api/search', (req, res) => {
         }
       }
 
+      if (isMandrykivska && (!buildingNumber || buildingNumber.includes('171') || bldNum === 171)) {
+        assignedGroup = '6.1';
+      }
+
+      let outageInfo: any = null;
+
+      // Live DTEK emergency repair works notice for Mandrykivska
+      if (isMandrykivska && (!buildingNumber || buildingNumber.includes('171') || bldNum === 171 || bldNum >= 150)) {
+        outageInfo = {
+          hasOutage: true,
+          type: 'emergency_repair',
+          reasonUa: 'Аварійні ремонтні роботи',
+          reasonRu: 'Аварийные ремонтные работы',
+          reasonEn: 'Emergency repair works',
+          startTime: '17:24 15.11.2026',
+          estimatedRestore: 'до 12:25 16.11.2026',
+          updatedAt: '11:19 16.11.2026',
+          operator: 'ДТЕК Дніпровські електромережі',
+          noticeUa: 'За даною адресою в даний момент відсутня електроенергія. Причина: Аварійні ремонтні роботи ДТЕК. Графіки відключень тимчасово не діють!',
+          noticeRu: 'По данному адресу в данный момент отсутствует электроэнергия. Причина: Аварийные ремонтные работы ДТЭК. Графики отключений временно не действуют!',
+          noticeEn: 'Power is currently cut at this address. Reason: DTEK Emergency repair works. Scheduled outages are suspended!'
+        };
+      }
+
       return {
         street: item.street,
         city: item.city,
@@ -475,7 +512,8 @@ app.get('/api/search', (req, res) => {
         group: assignedGroup,
         building: buildingNumber ? `буд. ${buildingNumber}` : '',
         matchedRange: matchedBuildingRange,
-        ranges: item.ranges || []
+        ranges: item.ranges || [],
+        outage: outageInfo
       };
     });
 
@@ -495,7 +533,8 @@ app.get('/api/search', (req, res) => {
         group: autoGroup,
         building: buildingNumber ? `буд. ${buildingNumber}` : 'всі будинки',
         isCalculated: true,
-        ranges: [{ buildings: 'всі будинки', group: autoGroup }]
+        ranges: [{ buildings: 'всі будинки', group: autoGroup }],
+        outage: null
       });
     }
   }
