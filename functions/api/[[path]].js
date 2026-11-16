@@ -66,7 +66,9 @@ function mapDtekHourStatus(val) {
   const v = String(val).toLowerCase();
   if (v === 'yes') return 'on';
   if (v === 'no') return 'off';
-  if (['maybe', 'first', 'second', 'mfirst', 'msecond', 'probable'].includes(v)) return 'maybe';
+  if (v === 'first') return 'off-first';
+  if (v === 'second') return 'off-second';
+  if (['maybe', 'mfirst', 'msecond', 'probable'].includes(v)) return 'maybe';
   return 'on';
 }
 
@@ -207,19 +209,27 @@ function parseDaySchedule(group, isTomorrow, yasnoData, dtekMirror) {
     const isNoOutages = dayObj.status === 'NoOutages' || dayObj.status === 'WaitingForSchedule';
     const slots = dayObj.slots || [];
 
+    const getHalfStatus = (min) => {
+      for (const slot of slots) {
+        if (min >= slot.start && min < slot.end) {
+          if (slot.type === 'Definite') return 'off';
+          if (slot.type === 'Probable') return 'maybe';
+        }
+      }
+      return 'on';
+    };
+
     for (let h = 0; h < 24; h++) {
-      const mid = h * 60 + 30;
       let slotStatus = 'on';
 
       if (!isNoOutages && slots.length > 0) {
-        for (const slot of slots) {
-          if (mid >= slot.start && mid < slot.end) {
-            if (slot.type === 'Definite') slotStatus = 'off';
-            else if (slot.type === 'Probable') slotStatus = 'maybe';
-            else slotStatus = 'on';
-            break;
-          }
-        }
+        const h1 = getHalfStatus(h * 60 + 15);
+        const h2 = getHalfStatus(h * 60 + 45);
+        if (h1 === 'off' && h2 === 'off') slotStatus = 'off';
+        else if (h1 === 'off' && h2 !== 'off') slotStatus = 'off-first';
+        else if (h1 !== 'off' && h2 === 'off') slotStatus = 'off-second';
+        else if (h1 === 'maybe' || h2 === 'maybe') slotStatus = 'maybe';
+        else slotStatus = 'on';
       }
 
       hours.push({
@@ -261,6 +271,22 @@ function parseDaySchedule(group, isTomorrow, yasnoData, dtekMirror) {
     hours: hours,
     updatedAt: new Date().toISOString()
   };
+}
+
+function formatKyivDateTime(isoStr) {
+  const d = isoStr ? new Date(isoStr) : new Date();
+  if (isNaN(d.getTime())) return '';
+  const parts = new Intl.DateTimeFormat('uk-UA', {
+    timeZone: 'Europe/Kyiv',
+    hour: '2-digit',
+    minute: '2-digit',
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour12: false
+  }).formatToParts(d);
+  const get = (type) => (parts.find(p => p.type === type) || {}).value || '';
+  return `${get('hour')}:${get('minute')} ${get('day')}.${get('month')}.${get('year')}`;
 }
 
 function normalizeSearchText(str) {
@@ -332,11 +358,28 @@ export async function onRequest(context) {
       ? new Date(dtekMirror.lastUpdated).toLocaleTimeString('uk-UA', { hour: '2-digit', minute: '2-digit' })
       : '11:19';
 
+    const reqGroup = url.searchParams.get('group') || '5.1';
+    const yasnoGroup = yasno && yasno[reqGroup] ? yasno[reqGroup] : (yasno ? yasno['5.1'] : null);
+    const startIso = (yasnoGroup && yasnoGroup.updatedOn) || (dtekMirror && dtekMirror.lastUpdated);
+    const updatedIso = (dtekMirror && dtekMirror.lastUpdated) || (yasnoGroup && yasnoGroup.updatedOn);
+
+    const emergencyDetails = isEmergency ? {
+      reasonUa: 'Екстрені відключення (Аварійне без застосування графіку погодинних відключень)',
+      reasonRu: 'Экстренные отключения (Аварийное без применения графика почасовых отключений)',
+      reasonEn: 'Emergency shutdowns (Emergency outage without hourly schedule)',
+      startTime: formatKyivDateTime(startIso),
+      estimatedRestoreUa: 'уточнюється (за командою НЕК Укренерго)',
+      estimatedRestoreRu: 'уточняется (по команде НЭК Укрэнерго)',
+      estimatedRestoreEn: 'pending grid stabilization (per NEC Ukrenergo)',
+      updatedAt: formatKyivDateTime(updatedIso)
+    } : null;
+
     return new Response(JSON.stringify({
       success: true,
       mode: mode,
       modeLabel: modeLabel,
       emergencyReason: emerg.reason || 'Аварійні ремонтні роботи ДТЕК',
+      emergencyDetails: emergencyDetails,
       liveStatus: isEmergency 
         ? 'Аварійні роботи (Графіки погодинних відключень не діють)' 
         : (dtekHasOutages ? 'Синхронізовано з ДТЕК Дніпро Live (Графік діє)' : 'Синхронізовано з ДТЕК Дніпро (Без відключень)'),
@@ -387,100 +430,134 @@ export async function onRequest(context) {
   }
 
   if (pathname.endsWith('/search')) {
+    const [yasno, dtekMirror] = await Promise.all([
+      fetchLiveYasno(),
+      fetchLiveDtekMirror()
+    ]);
     const rawStreet = (url.searchParams.get('q') || url.searchParams.get('street') || '').trim();
     const buildingNumber = (url.searchParams.get('building') || '').trim();
     const cityFilter = (url.searchParams.get('city') || '').trim();
 
-    const cleanedStreet = rawStreet.replace(/^(вул\.|вулиця|просп\.|проспект|пр-т|пров\.|бульвар|ж\/м|шосе)\s+/i, '');
+    const streetPrefixRegex = /^(вул\.|вулиця|просп\.|проспект|пр-т|пров\.|провулок|бул\.|бульвар|ж\/м|шосе|пл\.|площа)\s+/i;
+    const cleanedStreet = rawStreet.replace(streetPrefixRegex, '').trim();
     const normQuery = normalizeSearchText(cleanedStreet);
-    const words = cleanedStreet.toLowerCase().split(/\s+/).map(normalizeSearchText).filter(w => w.length >= 3);
+    const queryWords = cleanedStreet.toLowerCase().split(/\s+/).map(normalizeSearchText).filter(w => w.length >= 2);
 
     let matches = [];
 
     if (normQuery.length >= 2) {
-      matches = (streetsData || []).filter(item => {
+      const scoredMatches = [];
+
+      for (const item of (streetsData || [])) {
         if (cityFilter && cityFilter !== 'all') {
           const normCityItem = normalizeSearchText(item.city);
           const normCityFilter = normalizeSearchText(cityFilter);
           if (!normCityItem.includes(normCityFilter) && !normCityFilter.includes(normCityItem)) {
-            return false;
+            continue;
           }
         }
 
-        const normStreet = normalizeSearchText(item.street);
-        if (normStreet.includes(normQuery)) return true;
+        const rawStreetNoPrefix = (item.street || '').replace(streetPrefixRegex, '');
+        const normStreet = normalizeSearchText(rawStreetNoPrefix);
+        const streetWords = rawStreetNoPrefix.toLowerCase().split(/[\s\(\)\-\/]+/).map(normalizeSearchText).filter(Boolean);
 
-        for (const w of words) {
-          if (normStreet.includes(w)) return true;
+        let score = 0;
+
+        if (normStreet === normQuery) {
+          score = 1000;
+        } else if (normStreet.startsWith(normQuery)) {
+          score = 800;
+        } else if (streetWords.some(w => w.startsWith(normQuery))) {
+          score = 650;
+        } else if (normStreet.includes(normQuery)) {
+          score = 450;
         }
 
-        if (item.alt) {
+        if (queryWords.length > 1) {
+          const allInStreet = queryWords.every(qw => streetWords.some(sw => sw.startsWith(qw) || sw.includes(qw)));
+          if (allInStreet) score = Math.max(score, 700);
+        }
+
+        if (item.alt && Array.isArray(item.alt)) {
           for (const a of item.alt) {
             const normAlt = normalizeSearchText(a);
-            if (normAlt.includes(normQuery) || normQuery.includes(normAlt)) return true;
-            for (const w of words) {
-              if (normAlt.includes(w)) return true;
+            if (!normAlt) continue;
+            const altWords = a.toLowerCase().split(/[\s\(\)\-\/]+/).map(normalizeSearchText).filter(Boolean);
+
+            if (normAlt === normQuery) {
+              score = Math.max(score, 550);
+            } else if (normAlt.startsWith(normQuery)) {
+              score = Math.max(score, 400);
+            } else if (altWords.some(w => w.startsWith(normQuery))) {
+              score = Math.max(score, 300);
+            } else if (normQuery.length >= 3 && normAlt.includes(normQuery)) {
+              score = Math.max(score, 150);
+            }
+
+            if (queryWords.length > 1) {
+              const allInAlt = queryWords.every(qw => altWords.some(aw => aw.startsWith(qw) || aw.includes(qw)));
+              if (allInAlt) score = Math.max(score, 420);
             }
           }
         }
-        return false;
-      }).map(item => {
+
+        if (score > 0) {
+          scoredMatches.push({ item, score });
+        }
+      }
+
+      scoredMatches.sort((a, b) => b.score - a.score);
+      matches = scoredMatches.slice(0, 20).map(m => m.item).map(item => {
         let assignedGroup = item.defaultGroup;
         let matchedBuildingRange = '';
-        const normStreetItem = normalizeSearchText(item.street || '');
-        const isMandrykivska = normStreetItem.includes('mandrik') || (item.street && item.street.includes('Мандриківська'));
-        const bldNum = buildingNumber ? parseInt(buildingNumber.replace(/\D/g, ''), 10) : 0;
 
         if (buildingNumber && item.ranges && item.ranges.length > 0) {
           const num = parseInt(buildingNumber.replace(/\D/g, ''), 10);
           if (!isNaN(num)) {
-            if (isMandrykivska) {
-              assignedGroup = '6.1';
-            } else {
-              for (const r of item.ranges) {
-                const parts = r.buildings.split('-');
-                if (parts.length === 2) {
-                  const min = parseInt(parts[0].replace(/\D/g, ''), 10);
-                  const max = parseInt(parts[1].replace(/\D/g, ''), 10);
-                  if (num >= min && num <= max) {
-                    assignedGroup = r.group;
-                    matchedBuildingRange = r.buildings;
-                    break;
-                  }
-                } else if (r.buildings.includes('+')) {
-                  const min = parseInt(r.buildings.replace(/\D/g, ''), 10);
-                  if (num >= min) {
-                    assignedGroup = r.group;
-                    matchedBuildingRange = r.buildings;
-                    break;
-                  }
+            for (const r of item.ranges) {
+              const parts = r.buildings.split('-');
+              if (parts.length === 2) {
+                const min = parseInt(parts[0].replace(/\D/g, ''), 10);
+                const max = parseInt(parts[1].replace(/\D/g, ''), 10);
+                if (num >= min && num <= max) {
+                  assignedGroup = r.group;
+                  matchedBuildingRange = r.buildings;
+                  break;
+                }
+              } else if (r.buildings.includes('+')) {
+                const min = parseInt(r.buildings.replace(/\D/g, ''), 10);
+                if (num >= min) {
+                  assignedGroup = r.group;
+                  matchedBuildingRange = r.buildings;
+                  break;
                 }
               }
             }
           }
         }
 
-        if (isMandrykivska && (!buildingNumber || buildingNumber.includes('171') || bldNum === 171)) {
-          assignedGroup = '6.1';
-        }
-
         let outageInfo = null;
+        const yasnoGroup = yasno && yasno[assignedGroup] ? yasno[assignedGroup] : null;
+        const isGroupEmergency = yasnoGroup && yasnoGroup.today && yasnoGroup.today.status === 'EmergencyShutdowns';
 
-        // Live DTEK emergency repair works notice for Mandrykivska
-        if (isMandrykivska && (!buildingNumber || buildingNumber.includes('171') || bldNum === 171 || bldNum >= 150)) {
+        if (isGroupEmergency) {
+          const startIso = (yasnoGroup && yasnoGroup.updatedOn) || (dtekMirror && dtekMirror.lastUpdated);
+          const updatedIso = (dtekMirror && dtekMirror.lastUpdated) || (yasnoGroup && yasnoGroup.updatedOn);
           outageInfo = {
             hasOutage: true,
-            type: 'emergency_repair',
-            reasonUa: 'Аварійні ремонтні роботи',
-            reasonRu: 'Аварийные ремонтные работы',
-            reasonEn: 'Emergency repair works',
-            startTime: '17:24 15.11.2026',
-            estimatedRestore: 'до 12:25 16.11.2026',
-            updatedAt: '11:19 16.11.2026',
+            type: 'emergency_shutdown',
+            reasonUa: 'Екстрені відключення (Аварійне без застосування графіку погодинних відключень)',
+            reasonRu: 'Экстренные отключения (Аварийное без применения графика почасовых отключений)',
+            reasonEn: 'Emergency shutdowns (Emergency outage without hourly schedule)',
+            startTime: formatKyivDateTime(startIso),
+            estimatedRestore: 'уточнюється (за командою НЕК Укренерго)',
+            estimatedRestoreRu: 'уточняется (по команде НЭК Укрэнерго)',
+            estimatedRestoreEn: 'pending grid stabilization (per NEC Ukrenergo)',
+            updatedAt: formatKyivDateTime(updatedIso),
             operator: 'ДТЕК Дніпровські електромережі',
-            noticeUa: 'За даною адресою в даний момент відсутня електроенергія. Причина: Аварійні ремонтні роботи ДТЕК. Графіки відключень тимчасово не діють!',
-            noticeRu: 'По данному адресу в данный момент отсутствует электроэнергия. Причина: Аварийные ремонтные работы ДТЭК. Графики отключений временно не действуют!',
-            noticeEn: 'Power is currently cut at this address. Reason: DTEK Emergency repair works. Scheduled outages are suspended!'
+            noticeUa: 'За даною адресою в даний момент відсутня електроенергія. Причина: Екстрені відключення. Графіки стабілізаційних відключень не діють!',
+            noticeRu: 'По данному адресу в данный момент отсутствует электроэнергия. Причина: Экстренные отключения. Графики стабилизационных отключений не действуют!',
+            noticeEn: 'Power is currently cut at this address. Reason: Emergency shutdowns. Scheduled outages are suspended!'
           };
         }
 

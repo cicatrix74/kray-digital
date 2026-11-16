@@ -10,50 +10,50 @@
       id: 'mandrykivka',
       name: 'Мандриківка / Набережна Перемоги',
       subgroup: '5.1',
-      center: [48.435, 35.075],
+      center: [48.438, 35.062],
       polygon: [
-        [48.448, 35.068],
-        [48.440, 35.080],
-        [48.428, 35.088],
-        [48.425, 35.075],
-        [48.436, 35.060],
-        [48.446, 35.063]
+        [48.449, 35.058],
+        [48.448, 35.065],
+        [48.438, 35.069],
+        [48.427, 35.070],
+        [48.427, 35.056],
+        [48.438, 35.054]
       ]
     },
     {
       id: 'peremoga_1_3',
       name: 'ж/м Перемога (1 - 3)',
       subgroup: '2.1',
-      center: [48.442, 35.065],
+      center: [48.442, 35.059],
       polygon: [
-        [48.455, 35.058],
-        [48.448, 35.068],
-        [48.438, 35.062],
-        [48.445, 35.050]
+        [48.453, 35.055],
+        [48.450, 35.064],
+        [48.438, 35.067],
+        [48.441, 35.051]
       ]
     },
     {
       id: 'peremoga_4_5',
       name: 'ж/м Перемога (4 - 5)',
       subgroup: '5.1',
-      center: [48.421, 35.080],
+      center: [48.420, 35.065],
       polygon: [
-        [48.428, 35.088],
-        [48.416, 35.092],
-        [48.412, 35.080],
-        [48.424, 35.074]
+        [48.427, 35.059],
+        [48.427, 35.070],
+        [48.414, 35.073],
+        [48.414, 35.058]
       ]
     },
     {
       id: 'peremoga_6',
       name: 'ж/м Перемога-6 / Пд. міст',
       subgroup: '1.2',
-      center: [48.406, 35.086],
+      center: [48.406, 35.069],
       polygon: [
-        [48.416, 35.092],
-        [48.398, 35.095],
-        [48.395, 35.078],
-        [48.412, 35.080]
+        [48.414, 35.061],
+        [48.414, 35.074],
+        [48.399, 35.077],
+        [48.399, 35.062]
       ]
     },
     {
@@ -84,12 +84,12 @@
       id: 'nagirny',
       name: 'Нагірний / Парк Шевченка / ДНУ',
       subgroup: '2.1',
-      center: [48.455, 35.068],
+      center: [48.458, 35.062],
       polygon: [
-        [48.465, 35.062],
-        [48.460, 35.082],
-        [48.448, 35.076],
-        [48.452, 35.056]
+        [48.465, 35.056],
+        [48.463, 35.070],
+        [48.451, 35.067],
+        [48.453, 35.054]
       ]
     },
     {
@@ -240,12 +240,12 @@
       id: 'sonyachny',
       name: 'ж/м Сонячний / ТРЦ Вавилон',
       subgroup: '2.1',
-      center: [48.478, 35.062],
+      center: [48.482, 35.062],
       polygon: [
-        [48.486, 35.048],
-        [48.484, 35.078],
-        [48.470, 35.074],
-        [48.472, 35.045]
+        [48.488, 35.050],
+        [48.487, 35.076],
+        [48.476, 35.074],
+        [48.478, 35.048]
       ]
     },
     {
@@ -288,18 +288,126 @@
       id: 'prydniprovsk',
       name: 'ж/м Придніпровськ',
       subgroup: '2.2',
-      center: [48.405, 35.125],
+      center: [48.405, 35.130],
       polygon: [
-        [48.418, 35.110],
+        [48.416, 35.120],
         [48.415, 35.145],
-        [48.392, 35.140],
-        [48.395, 35.105]
+        [48.393, 35.140],
+        [48.395, 35.118]
+      ]
+    },
+    {
+      id: 'lomyvsky_kamyansky',
+      name: 'ж/м Ломівський / Кам\'янський (Фрунзенський)',
+      subgroup: '3.1',
+      center: [48.511, 34.978],
+      polygon: [
+        [48.522, 34.962],
+        [48.520, 34.995],
+        [48.501, 34.992],
+        [48.503, 34.960]
+      ]
+    },
+    {
+      id: 'amur_peredova',
+      name: 'Амур / вул. Передова / Мануйлівський',
+      subgroup: '3.1',
+      center: [48.496, 35.020],
+      polygon: [
+        [48.508, 35.000],
+        [48.506, 35.042],
+        [48.486, 35.038],
+        [48.488, 34.998]
+      ]
+    },
+    {
+      id: 'klochko_berezynka',
+      name: 'ж/м Клочко-6 / Березинка / Янтарна',
+      subgroup: '3.2',
+      center: [48.516, 35.038],
+      polygon: [
+        [48.526, 35.025],
+        [48.525, 35.052],
+        [48.506, 35.048],
+        [48.508, 35.022]
+      ]
+    },
+    {
+      id: 'kaidaky_svobody',
+      name: 'Кайдаки / просп. Свободи',
+      subgroup: '4.1',
+      center: [48.479, 34.992],
+      polygon: [
+        [48.486, 34.978],
+        [48.484, 35.008],
+        [48.472, 35.005],
+        [48.474, 34.976]
+      ]
+    },
+    {
+      id: 'pivnichny',
+      name: 'ж/м Північний / Нижньодніпровськ-Вузол',
+      subgroup: '3.2',
+      center: [48.508, 35.118],
+      polygon: [
+        [48.520, 35.096],
+        [48.518, 35.140],
+        [48.496, 35.136],
+        [48.498, 35.094]
+      ]
+    },
+    {
+      id: 'nyzhnodniprovsk_malynovskoho',
+      name: 'Нижньодніпровськ / Сонячна Набережна',
+      subgroup: '2.1',
+      center: [48.485, 35.096],
+      polygon: [
+        [48.495, 35.078],
+        [48.494, 35.118],
+        [48.477, 35.114],
+        [48.476, 35.076]
+      ]
+    },
+    {
+      id: 'igren',
+      name: 'Стара Ігрень / Рибальське',
+      subgroup: '2.2',
+      center: [48.449, 35.160],
+      polygon: [
+        [48.462, 35.142],
+        [48.460, 35.180],
+        [48.436, 35.176],
+        [48.438, 35.138]
+      ]
+    },
+    {
+      id: 'zakhidny',
+      name: 'ж/м Західний',
+      subgroup: '4.2',
+      center: [48.460, 34.952],
+      polygon: [
+        [48.470, 34.936],
+        [48.468, 34.968],
+        [48.450, 34.965],
+        [48.452, 34.934]
+      ]
+    },
+    {
+      id: 'myrny',
+      name: 'ж/м Мирний / Краснопілля',
+      subgroup: '5.1',
+      center: [48.389, 35.000],
+      polygon: [
+        [48.400, 34.988],
+        [48.399, 35.014],
+        [48.378, 35.012],
+        [48.380, 34.985]
       ]
     }
   ];
 
   function getStatusColor(status) {
-    if (status === 'off') return { fill: '#ef4444', stroke: '#dc2626' };
+    if (status === 'off' || status === 'off-first' || status === 'off-second') return { fill: '#ef4444', stroke: '#dc2626' };
     if (status === 'maybe') return { fill: '#f59e0b', stroke: '#d97706' };
     return { fill: '#10b981', stroke: '#059669' };
   }
@@ -501,21 +609,31 @@
     let matched = null;
 
     if (lower.includes('мандрик')) matched = DNIPRO_DISTRICTS.find(d => d.id === 'mandrykivka');
+    else if (lower.includes('героїв') && !lower.includes('крут') && !lower.includes('рятувальник')) matched = DNIPRO_DISTRICTS.find(d => d.id === 'peremoga_4_5');
+    else if (lower.includes('слави') || lower.includes('косміч')) matched = DNIPRO_DISTRICTS.find(d => d.id === 'peremoga_4_5');
     else if (lower.includes('перемога') && (lower.includes('6') || lower.includes('півден'))) matched = DNIPRO_DISTRICTS.find(d => d.id === 'peremoga_6');
     else if (lower.includes('перемог')) matched = DNIPRO_DISTRICTS.find(d => d.id === 'peremoga_4_5');
     else if (lower.includes('топол') && (lower.includes('2') || lower.includes('3') || lower.includes('терра'))) matched = DNIPRO_DISTRICTS.find(d => d.id === 'topolya_2_3');
-    else if (lower.includes('топол')) matched = DNIPRO_DISTRICTS.find(d => d.id === 'topolya_1');
-    else if (lower.includes('придніпр')) matched = DNIPRO_DISTRICTS.find(d => d.id === 'prydniprovsk');
-    else if (lower.includes('покровськ') || lower.includes('комунар')) matched = DNIPRO_DISTRICTS.find(d => d.id === 'pokrovsky');
-    else if (lower.includes('червоний кам') || lower.includes('красный кам')) matched = DNIPRO_DISTRICTS.find(d => d.id === 'chervony_kamin');
-    else if (lower.includes('парус')) matched = DNIPRO_DISTRICTS.find(d => d.id === 'parus');
-    else if (lower.includes('соняч')) matched = DNIPRO_DISTRICTS.find(d => d.id === 'sonyachny');
-    else if (lower.includes('яворниц') || lower.includes('карла маркса')) matched = DNIPRO_DISTRICTS.find(d => d.id === 'centre_yavornytsky');
+    else if (lower.includes('топол') || lower.includes('паніках')) matched = DNIPRO_DISTRICTS.find(d => d.id === 'topolya_1');
+    else if (lower.includes('придніпр') || lower.includes('космонавт') || lower.includes('роторн')) matched = DNIPRO_DISTRICTS.find(d => d.id === 'prydniprovsk');
+    else if (lower.includes('покровськ') || lower.includes('комунар') || lower.includes('кондратюк')) matched = DNIPRO_DISTRICTS.find(d => d.id === 'pokrovsky');
+    else if (lower.includes('червоний кам') || lower.includes('красный кам') || lower.includes('діївськ')) matched = DNIPRO_DISTRICTS.find(d => d.id === 'chervony_kamin');
+    else if (lower.includes('парус') || lower.includes('метробуд') || lower.includes('монітор') || lower.includes('гідропарк')) matched = DNIPRO_DISTRICTS.find(d => d.id === 'parus');
+    else if (lower.includes('соняч') || lower.includes('малиновськ')) matched = DNIPRO_DISTRICTS.find(d => d.id === 'sonyachny');
+    else if (lower.includes('яворниц') || lower.includes('карла маркса') || lower.includes('короленк') || lower.includes('воскресен') || lower.includes('харківськ') || lower.includes('січеслав')) matched = DNIPRO_DISTRICTS.find(d => d.id === 'centre_yavornytsky');
     else if (lower.includes('поля') || lower.includes('кірова')) matched = DNIPRO_DISTRICTS.find(d => d.id === 'polya_kirova');
-    else if (lower.includes('робоч')) matched = DNIPRO_DISTRICTS.find(d => d.id === 'robocha');
-    else if (lower.includes('титов')) matched = DNIPRO_DISTRICTS.find(d => d.id === 'titova');
-    else if (lower.includes('слобожан') || lower.includes('правд')) matched = DNIPRO_DISTRICTS.find(d => d.id === 'slobozhansky');
+    else if (lower.includes('робоч') || lower.includes('криворізьк') || lower.includes('алексєєнко')) matched = DNIPRO_DISTRICTS.find(d => d.id === 'robocha');
+    else if (lower.includes('титов') || lower.includes('незалеж') || lower.includes('новокрим') || lower.includes('макаров') || lower.includes('будівельник')) matched = DNIPRO_DISTRICTS.find(d => d.id === 'titova');
+    else if (lower.includes('слобожан') || lower.includes('правд') || lower.includes('батум')) matched = DNIPRO_DISTRICTS.find(d => d.id === 'slobozhansky');
     else if (lower.includes('калин')) matched = DNIPRO_DISTRICTS.find(d => d.id === 'kalynova_kosiora');
+    else if (lower.includes('березин') || lower.includes('янтар') || lower.includes('клочко') || lower.includes('старочумацьк')) matched = DNIPRO_DISTRICTS.find(d => d.id === 'klochko_berezynka');
+    else if (lower.includes('донецьк') || lower.includes('ломів') || lower.includes('фрунзен')) matched = DNIPRO_DISTRICTS.find(d => d.id === 'lomyvsky_kamyansky');
+    else if (lower.includes('передов') || lower.includes('амур')) matched = DNIPRO_DISTRICTS.find(d => d.id === 'amur_peredova');
+    else if (lower.includes('свобод') || lower.includes('кайдак') || lower.includes('набережна завод')) matched = DNIPRO_DISTRICTS.find(d => d.id === 'kaidaky_svobody');
+    else if (lower.includes('північн')) matched = DNIPRO_DISTRICTS.find(d => d.id === 'pivnichny');
+    else if (lower.includes('ігрен')) matched = DNIPRO_DISTRICTS.find(d => d.id === 'igren');
+    else if (lower.includes('західн')) matched = DNIPRO_DISTRICTS.find(d => d.id === 'zakhidny');
+    else if (lower.includes('мирн')) matched = DNIPRO_DISTRICTS.find(d => d.id === 'myrny');
     else if (lower.includes('лівобереж')) matched = DNIPRO_DISTRICTS.find(d => d.id === 'livoberezhny');
     else if (lower.includes('сокіл')) matched = DNIPRO_DISTRICTS.find(d => d.id === 'sokil');
     else {

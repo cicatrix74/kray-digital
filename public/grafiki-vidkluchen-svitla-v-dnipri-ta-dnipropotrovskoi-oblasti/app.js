@@ -7,10 +7,14 @@ const CACHE_KEY_BUILDING = 'kray_light_building';
 
 // State with cache restoration
 let currentProvider = localStorage.getItem(CACHE_KEY_PROVIDER) || 'dtek_dnipro';
-let currentGroup = localStorage.getItem(CACHE_KEY_GROUP) || '5.1';
+let currentGroup = localStorage.getItem(CACHE_KEY_GROUP) || '';
 let currentCity = localStorage.getItem(CACHE_KEY_CITY) || 'Дніпро';
 let savedStreet = localStorage.getItem(CACHE_KEY_STREET) || '';
 let savedBuilding = localStorage.getItem(CACHE_KEY_BUILDING) || '';
+if (savedStreet && savedStreet.toLowerCase().includes('мандрик') && currentGroup === '6.1') {
+  currentGroup = '5.1';
+  localStorage.setItem(CACHE_KEY_GROUP, '5.1');
+}
 
 let currentDayView = 'today';
 let scheduleData = null;
@@ -47,6 +51,14 @@ const timeMarker = document.getElementById('timeMarker');
 const btnManualRefresh = document.getElementById('btnManualRefresh');
 const btnToggleEmergency = document.getElementById('btnToggleEmergency');
 const emergencyBanner = document.getElementById('emergencyBanner');
+const emergencyBannerClose = document.getElementById('emergencyBannerClose');
+let isEmergencyBannerDismissed = false;
+if (emergencyBannerClose && emergencyBanner) {
+  emergencyBannerClose.addEventListener('click', () => {
+    isEmergencyBannerDismissed = true;
+    emergencyBanner.style.display = 'none';
+  });
+}
 const gridStatusChip = document.getElementById('gridStatusChip');
 const gridStatusText = document.getElementById('gridStatusText');
 const storageIndicator = document.getElementById('storageIndicator');
@@ -54,6 +66,16 @@ const liveDtekStatusText = document.getElementById('liveDtekStatusText');
 const activeSourceLabel = document.getElementById('activeSourceLabel');
 
 // Status card DOM
+const statusSectionEl = document.querySelector('.status-section');
+const scheduleSectionEl = document.querySelector('.schedule-section');
+
+function updateGroupSelectionVisibility() {
+  const hasSelection = Boolean(currentGroup || savedStreet);
+  if (statusSectionEl) statusSectionEl.style.display = hasSelection ? 'block' : 'none';
+  if (scheduleSectionEl) scheduleSectionEl.style.display = hasSelection ? 'block' : 'none';
+}
+updateGroupSelectionVisibility();
+
 const statusCard = document.getElementById('statusCard');
 const statusIcon = document.getElementById('statusIcon');
 const statusTitle = document.getElementById('statusTitle');
@@ -185,7 +207,7 @@ function renderSubgroupButtons() {
 // Fetch System Status (Ukrenergo / DTEK Dnipro)
 async function fetchSystemStatus() {
   try {
-    const res = await fetch('/api/status');
+    const res = await fetch(`/api/status?group=${encodeURIComponent(currentGroup || '5.1')}`);
     const data = await res.json();
     systemStatus = data;
     window.systemStatus = data;
@@ -202,7 +224,7 @@ async function fetchSystemStatus() {
 function renderSystemStatus() {
   if (!systemStatus) return;
   const isEmergency = systemStatus.mode === 'emergency';
-  if (emergencyBanner) emergencyBanner.style.display = isEmergency ? 'block' : 'none';
+  if (emergencyBanner) emergencyBanner.style.display = (isEmergency && !isEmergencyBannerDismissed && Boolean(currentGroup || savedStreet)) ? 'block' : 'none';
   if (gridStatusText) gridStatusText.textContent = systemStatus.modeLabel || systemStatus.modeTitle || 'Стабілізаційні відключення (ДТЕК Дніпро)';
   if (btnToggleEmergency) btnToggleEmergency.textContent = isEmergency ? 'Вимкнути Аварійний тест' : 'Тест: Аварійний режим';
 
@@ -225,11 +247,12 @@ async function fetchSchedule() {
     btnManualRefresh.style.transform = 'rotate(360deg)';
     setTimeout(() => { btnManualRefresh.style.transform = 'none'; }, 400);
 
-    const res = await fetch(`/api/schedule?provider=${currentProvider}&group=${currentGroup}`);
+    const res = await fetch(`/api/schedule?provider=${currentProvider}&group=${encodeURIComponent(currentGroup || '5.1')}`);
     const data = await res.json();
     scheduleData = data;
     window.scheduleData = data;
     window.currentGroup = currentGroup;
+    updateGroupSelectionVisibility();
     renderDates();
     renderActiveSchedule();
     renderFullMatrixTable();
@@ -295,6 +318,11 @@ function updateLocationInfo() {
 window.updateLocationInfo = updateLocationInfo;
 
 function renderActiveSchedule() {
+  updateGroupSelectionVisibility();
+  if (!currentGroup && !savedStreet) {
+    if (emergencyBanner) emergencyBanner.style.display = 'none';
+    return;
+  }
   if (!scheduleData) return;
 
   const isEmergency = isEmergencyModeActive();
@@ -309,9 +337,13 @@ function renderActiveSchedule() {
   let countOn = 0, countMaybe = 0, countOff = 0;
 
   hours.forEach(item => {
-    if (item.status === 'on') countOn++;
-    else if (item.status === 'maybe') countMaybe++;
-    else countOff++;
+    if (item.status === 'on') countOn += 1;
+    else if (item.status === 'maybe') countMaybe += 1;
+    else if (item.status === 'off-first' || item.status === 'off-second') {
+      countOff += 0.5;
+      countOn += 0.5;
+    }
+    else countOff += 1;
 
     const block = document.createElement('div');
     block.textContent = item.hour;
@@ -321,6 +353,9 @@ function renderActiveSchedule() {
       if (item.status === 'off') {
         block.className = 'hour-block state-off';
         block.title = `${item.time}: ${getStatusName('off')} (аварійний режим)`;
+      } else if (item.status === 'off-first' || item.status === 'off-second') {
+        block.className = `hour-block state-${item.status}-neutral`;
+        block.title = `${item.time}: ${getStatusName(item.status)} (аварійний режим)`;
       } else if (item.status === 'maybe') {
         block.className = 'hour-block state-maybe';
         block.title = `${item.time}: ${getStatusName('maybe')}`;
@@ -340,10 +375,10 @@ function renderActiveSchedule() {
   const statOffLabel = document.getElementById('statOffLabel') || document.querySelector('.stat-card:nth-child(3) .stat-desc');
   if (isEmergency) {
     statHoursOn.textContent = '—';
-    statHoursMaybe.textContent = countMaybe > 0 ? `${countMaybe} ${uHour}` : '—';
-    statHoursOff.textContent = `${countOff} ${uHour}`;
+    statHoursMaybe.textContent = '—';
+    statHoursOff.textContent = '—';
     if (statOffLabel && window.i18n) {
-      statOffLabel.textContent = window.i18n.t('statOff');
+      statOffLabel.textContent = window.i18n.t('statEmergencyLabel');
     }
   } else {
     statHoursOn.textContent = `${countOn} ${uHour}`;
@@ -395,6 +430,9 @@ function renderFullMatrixTable() {
         if (st === 'off') {
           hasAnyOff = true;
           cellsHtml += `<td class="matrix-cell-off" title="${h}:00 - ${window.i18n ? window.i18n.t('mapTooltipOff') : 'Відключено за графіком'} (аварійний режим)"><span class="cell-icon-off">⚡</span></td>`;
+        } else if (st === 'off-first' || st === 'off-second') {
+          hasAnyOff = true;
+          cellsHtml += `<td class="matrix-cell-${st}-neutral" title="${h}:00 - ${getStatusName(st)} (аварійний режим)"><span class="cell-icon-off">⚡</span></td>`;
         } else if (st === 'maybe') {
           cellsHtml += `<td class="matrix-cell-maybe" title="${h}:00 - ${window.i18n ? window.i18n.t('mapTooltipMaybe') : 'Можливе відключення'}"><span class="cell-icon-maybe">⚡</span></td>`;
         } else {
@@ -406,6 +444,9 @@ function renderFullMatrixTable() {
         if (st === 'off') {
           hasAnyOff = true;
           cellsHtml += `<td class="matrix-cell-off" title="${h}:00 - Відключення"><span class="cell-icon-off">⚡</span></td>`;
+        } else if (st === 'off-first' || st === 'off-second') {
+          hasAnyOff = true;
+          cellsHtml += `<td class="matrix-cell-${st}" title="${h}:00 - ${getStatusName(st)}"><span class="cell-icon-off">⚡</span></td>`;
         } else if (st === 'maybe') {
           cellsHtml += `<td class="matrix-cell-maybe" title="${h}:00 - Можливе відключення"><span class="cell-icon-maybe">⚡</span></td>`;
         } else {
@@ -442,8 +483,11 @@ function renderFullMatrixTable() {
 }
 
 function getStatusName(status) {
+  const lang = (window.i18n && window.i18n.current) || 'ua';
   if (status === 'on') return window.i18n ? window.i18n.t('legendOn') : 'Світло є (гарантовано)';
   if (status === 'maybe') return window.i18n ? window.i18n.t('legendMaybe') : 'Можливе відключення (жовта зона)';
+  if (status === 'off-first') return lang === 'en' ? 'No power first 30 min' : (lang === 'ru' ? 'Света не будет первые 30 мин' : 'Світла не буде перші 30 хв');
+  if (status === 'off-second') return lang === 'en' ? 'No power second 30 min' : (lang === 'ru' ? 'Света не будет вторые 30 мин' : 'Світла не буде другі 30 хв');
   return window.i18n ? window.i18n.t('legendOff') : 'Відключено за графіком';
 }
 
@@ -464,6 +508,13 @@ function updateTimelineNeedle() {
 }
 
 function updateLiveStatusCard() {
+  updateGroupSelectionVisibility();
+  if (!currentGroup && !savedStreet) {
+    if (emergencyBanner) emergencyBanner.style.display = 'none';
+    const dtekNotice = document.getElementById('dtekOfficialNotice');
+    if (dtekNotice) dtekNotice.style.display = 'none';
+    return;
+  }
   if (!scheduleData || !scheduleData.today) return;
 
   const countdownCol = document.getElementById('statusRight') || document.querySelector('.status-right');
@@ -475,9 +526,9 @@ function updateLiveStatusCard() {
 
   if (isEmergency) {
     if (emergencyBanner) {
-      emergencyBanner.style.display = 'block';
-      const bTitle = emergencyBanner.querySelector('strong');
-      const bSub = emergencyBanner.querySelector('span');
+      emergencyBanner.style.display = isEmergencyBannerDismissed ? 'none' : 'block';
+      const bTitle = emergencyBanner.querySelector('.emergency-text strong') || emergencyBanner.querySelector('strong');
+      const bSub = emergencyBanner.querySelector('.emergency-text span');
       if (isAddressEmergency && currentAddressOutage) {
         const reason = lang === 'en' ? currentAddressOutage.reasonEn : (lang === 'ru' ? currentAddressOutage.reasonRu : currentAddressOutage.reasonUa);
         const restore = currentAddressOutage.estimatedRestore || 'до 12:25';
@@ -503,13 +554,59 @@ function updateLiveStatusCard() {
     }
     statusCard.className = 'current-status-card status-off emergency-active';
     statusIcon.textContent = '⚠️';
-    if (isAddressEmergency && currentAddressOutage) {
-      const reason = lang === 'en' ? currentAddressOutage.reasonEn : (lang === 'ru' ? currentAddressOutage.reasonRu : currentAddressOutage.reasonUa);
-      statusTitle.textContent = lang === 'en' 
-        ? `⚠️ ${reason} (Power Cut)` 
-        : (lang === 'ru' ? `⚠️ ${reason} (Свет отсутствует)` : `⚠️ ${reason} (Світло відсутнє)`);
-    } else {
-      statusTitle.textContent = window.i18n ? window.i18n.t('statusEmergencyTitle') : 'Аварійні та екстрені відключення (ГАВ)';
+    statusTitle.textContent = window.i18n ? window.i18n.t('statusEmergencyTitle') : 'Аварійні та екстрені відключення (ГАВ)';
+
+    // Render dynamic DTEK-style detailed notice block
+    const dtekNotice = document.getElementById('dtekOfficialNotice');
+    if (dtekNotice) {
+      const details = (isAddressEmergency && currentAddressOutage)
+        ? currentAddressOutage
+        : (systemStatus && systemStatus.emergencyDetails ? systemStatus.emergencyDetails : null);
+
+      const reason = details
+        ? (lang === 'en' ? details.reasonEn : (lang === 'ru' ? details.reasonRu : details.reasonUa))
+        : (lang === 'en' ? 'Emergency shutdowns (Emergency outage without hourly schedule)' : (lang === 'ru' ? 'Экстренные отключения (Аварийное без применения графика почасовых отключений)' : 'Екстрені відключення (Аварійне без застосування графіку погодинних відключень)'));
+      const startTime = (details && details.startTime) || '—';
+      const restore = details
+        ? (lang === 'en' ? (details.estimatedRestoreEn || details.estimatedRestore) : (lang === 'ru' ? (details.estimatedRestoreRu || details.estimatedRestore) : (details.estimatedRestoreUa || details.estimatedRestore)))
+        : (lang === 'en' ? 'pending grid stabilization' : (lang === 'ru' ? 'уточняется (по команде НЭК Укрэнерго)' : 'уточнюється (за командою НЕК Укренерго)'));
+      const updated = (details && details.updatedAt) || '—';
+
+      const leadEl = document.getElementById('dtekNoticeLead');
+      const lReason = document.getElementById('dtekLabelReason');
+      const vReason = document.getElementById('dtekValReason');
+      const lStart = document.getElementById('dtekLabelStart');
+      const vStart = document.getElementById('dtekValStart');
+      const lRestore = document.getElementById('dtekLabelRestore');
+      const vRestore = document.getElementById('dtekValRestore');
+      const updEl = document.getElementById('dtekNoticeUpdated');
+      const attTitle = document.getElementById('dtekAttentionTitle');
+      const attText = document.getElementById('dtekAttentionText');
+
+      if (leadEl) {
+        leadEl.textContent = lang === 'en'
+          ? (savedStreet ? 'Power is currently cut at your address' : 'Emergency shutdowns are currently active for this subgroup')
+          : (lang === 'ru'
+            ? (savedStreet ? 'По вашему адресу в данный момент отсутствует электроэнергия' : 'По выбранной подгруппе в данный момент действуют экстренные отключения')
+            : (savedStreet ? 'За вашою адресою в даний момент відсутня електроенергія' : 'За обраною підгрупою в даний момент діють екстрені відключення'));
+      }
+      if (lReason) lReason.textContent = lang === 'en' ? 'Reason:' : 'Причина:';
+      if (vReason) vReason.textContent = reason;
+      if (lStart) lStart.textContent = lang === 'en' ? 'Start time –' : (lang === 'ru' ? 'Время начала –' : 'Час початку –');
+      if (vStart) vStart.textContent = startTime;
+      if (lRestore) lRestore.textContent = lang === 'en' ? 'Estimated restoration time –' : (lang === 'ru' ? 'Ориентировочное время восстановления электроэнергии –' : 'Орієнтовний час відновлення електроенергії –');
+      if (vRestore) vRestore.textContent = restore;
+      if (updEl) updEl.textContent = lang === 'en' ? `Information updated – ${updated}` : (lang === 'ru' ? `Дата обновления информации – ${updated}` : `Дата оновлення інформації – ${updated}`);
+      if (attTitle) attTitle.textContent = lang === 'en' ? 'Attention!' : (lang === 'ru' ? 'Внимание!' : 'Увага!');
+      if (attText) {
+        attText.textContent = lang === 'en'
+          ? 'Stabilization outage schedules are not in effect. Power restoration time may change depending on the grid situation and NEC Ukrenergo commands.'
+          : (lang === 'ru'
+            ? 'Графики стабилизационных отключений не действуют. Время восстановления света может меняться в зависимости от ситуации в энергосистеме и команд НЭК Укрэнерго.'
+            : 'Графіки стабілізаційних відключень не діють. Час відновлення світла може змінюватись відповідно до ситуації в енергосистемі та команд НЕК Укренерго');
+      }
+
+      dtekNotice.style.display = 'block';
     }
     
     // Приховуємо таймер в аварійному режимі
@@ -519,7 +616,9 @@ function updateLiveStatusCard() {
     return;
   }
 
-  // Як тільки графіки стають стабілізаційні — приховуємо червоний банер і ОДРАЗУ виводимо таймер
+  // Як тільки графіки стають стабілізаційні — приховуємо червоний банер, детальну картку і ОДРАЗУ виводимо таймер
+  const dtekNotice = document.getElementById('dtekOfficialNotice');
+  if (dtekNotice) dtekNotice.style.display = 'none';
   if (emergencyBanner) emergencyBanner.style.display = 'none';
   if (countdownCol) {
     countdownCol.style.display = 'block';
@@ -527,14 +626,22 @@ function updateLiveStatusCard() {
 
   const now = new Date();
   const currentHour = now.getHours();
+  const currentMin = now.getMinutes();
   const currentSlot = scheduleData.today.hours[currentHour];
 
+  let effectiveStatus = currentSlot.status;
+  if (effectiveStatus === 'off-first') {
+    effectiveStatus = currentMin < 30 ? 'off' : 'on';
+  } else if (effectiveStatus === 'off-second') {
+    effectiveStatus = currentMin < 30 ? 'on' : 'off';
+  }
+
   statusCard.className = 'current-status-card';
-  if (currentSlot.status === 'on') {
+  if (effectiveStatus === 'on') {
     statusCard.classList.add('status-on');
     statusIcon.textContent = '💡';
     statusTitle.textContent = window.i18n ? window.i18n.t('statusPowerOn') : 'Світло зараз Є';
-  } else if (currentSlot.status === 'maybe') {
+  } else if (effectiveStatus === 'maybe') {
     statusCard.classList.add('status-maybe');
     statusIcon.textContent = '⚡';
     statusTitle.textContent = window.i18n ? window.i18n.t('statusPowerMaybe') : 'Можливе відключення';
@@ -736,6 +843,7 @@ async function performAddressSearch() {
 }
 
 function applyAddressSelection(item, buildingVal) {
+  isEmergencyBannerDismissed = false;
   currentGroup = item.group;
   window.currentGroup = currentGroup;
   savedStreet = item.street;

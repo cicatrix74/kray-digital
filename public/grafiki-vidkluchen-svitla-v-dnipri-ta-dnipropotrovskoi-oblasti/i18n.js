@@ -42,7 +42,8 @@
       legendOn: 'Світло є (гарантовано)',
       legendMaybe: 'Можливе відключення / перехід (жовта зона)',
       legendOff: 'Світло відсутнє (сіра зона)',
-      statGuaranteed: 'Світло гарантовано',
+      legendOffHalf: 'Відключення на 30 хв (півблоку)',
+      statGuaranteed: 'Світло є',
       statMaybe: 'Можливі відключення',
       statOff: 'Відключено за графіком',
       statEmergencyValue: 'Аварійні',
@@ -127,7 +128,8 @@
       legendOn: 'Свет есть (гарантированно)',
       legendMaybe: 'Возможное отключение / переход (желтая зона)',
       legendOff: 'Свет отсутствует (серая зона)',
-      statGuaranteed: 'Свет гарантирован',
+      legendOffHalf: 'Отключение на 30 мин (полблока)',
+      statGuaranteed: 'Свет есть',
       statMaybe: 'Возможные отключения',
       statOff: 'Отключено по графику',
       statEmergencyValue: 'Аварийные',
@@ -212,7 +214,8 @@
       legendOn: 'Power guaranteed (green)',
       legendMaybe: 'Possible outage (yellow zone)',
       legendOff: 'Power cut (grey zone)',
-      statGuaranteed: 'Guaranteed power',
+      legendOffHalf: '30 min power cut (half block)',
+      statGuaranteed: 'Power on',
       statMaybe: 'Possible cuts',
       statOff: 'Cut by schedule',
       statEmergencyValue: 'Emergency',
@@ -261,9 +264,6 @@
   const STORAGE_KEY = 'kray_digital_lang';
 
   function detectInitialLanguage() {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved && TRANSLATIONS[saved]) return saved;
-
     const navLang = (navigator.languages && navigator.languages[0]) || navigator.language || '';
     const code = navLang.toLowerCase();
 
@@ -356,7 +356,7 @@
         const o = window.currentAddressOutage;
         const reason = lang === 'en' ? (o.reasonEn || 'Emergency repairs') : (lang === 'ru' ? (o.reasonRu || 'Аварийные ремонтные работы') : (o.reasonUa || 'Аварійні ремонтні роботи'));
         const powerCut = lang === 'en' ? 'Power Cut' : (lang === 'ru' ? 'Свет отсутствует' : 'Світло відсутнє');
-        statusTitleEl.textContent = `⚠️ ${reason} (${powerCut})`;
+        statusTitleEl.textContent = `${reason} (${powerCut})`;
       } else {
         statusTitleEl.textContent = dict.statusEmergencyTitle;
       }
