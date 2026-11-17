@@ -8,28 +8,28 @@
   const DNIPRO_DISTRICTS = [
     {
       id: 'mandrykivka',
-      name: 'Мандриківка / Набережна Перемоги',
+      name: 'Мандриківка / Перемога-3',
       subgroup: '5.1',
-      center: [48.438, 35.062],
+      center: [48.436, 35.062],
       polygon: [
-        [48.449, 35.058],
-        [48.448, 35.065],
-        [48.438, 35.069],
+        [48.445, 35.056],
+        [48.445, 35.067],
+        [48.436, 35.069],
         [48.427, 35.070],
         [48.427, 35.056],
-        [48.438, 35.054]
+        [48.436, 35.054]
       ]
     },
     {
       id: 'peremoga_1_3',
-      name: 'ж/м Перемога (1 - 3)',
+      name: 'ж/м Перемога (1 - 2)',
       subgroup: '2.1',
-      center: [48.442, 35.059],
+      center: [48.449, 35.059],
       polygon: [
-        [48.453, 35.055],
-        [48.450, 35.064],
-        [48.438, 35.067],
-        [48.441, 35.051]
+        [48.454, 35.054],
+        [48.451, 35.065],
+        [48.445, 35.066],
+        [48.445, 35.053]
       ]
     },
     {
@@ -191,7 +191,7 @@
     {
       id: 'pokrovsky',
       name: 'ж/м Покровський (Комунар)',
-      subgroup: '6.1',
+      subgroup: '1.1',
       center: [48.484, 34.945],
       polygon: [
         [48.496, 34.936],
@@ -299,7 +299,7 @@
     {
       id: 'lomyvsky_kamyansky',
       name: 'ж/м Ломівський / Кам\'янський (Фрунзенський)',
-      subgroup: '3.1',
+      subgroup: '3.2',
       center: [48.511, 34.978],
       polygon: [
         [48.522, 34.962],
@@ -335,7 +335,7 @@
     {
       id: 'kaidaky_svobody',
       name: 'Кайдаки / просп. Свободи',
-      subgroup: '4.1',
+      subgroup: '6.1',
       center: [48.479, 34.992],
       polygon: [
         [48.486, 34.978],
@@ -447,7 +447,6 @@
     }).addTo(map);
 
     renderDistrictPolygons();
-    renderDistrictPills();
   }
 
   function renderDistrictPolygons() {
@@ -458,7 +457,7 @@
     polygonLayers = [];
 
     const isEmergency = window.systemStatus && window.systemStatus.mode === 'emergency';
-    const activeSubgroup = window.currentGroup || '5.1';
+    const activeSubgroup = window.currentGroup || '';
 
     DNIPRO_DISTRICTS.forEach(d => {
       const status = isEmergency ? 'emergency' : getSubgroupCurrentStatus(d.subgroup);

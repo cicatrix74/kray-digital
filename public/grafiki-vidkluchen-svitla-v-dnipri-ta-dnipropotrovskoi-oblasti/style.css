@@ -1121,6 +1121,18 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
+.legend-color.state-on {
+  background: var(--color-on);
+}
+
+.legend-color.state-maybe {
+  background: var(--color-maybe);
+}
+
+.legend-color.state-off {
+  background: var(--color-off);
+}
+
 .legend-color.state-off-half {
   background: linear-gradient(90deg, rgba(255, 255, 255, 0.08) 50%, var(--color-off) 50%) no-repeat;
   background-origin: border-box;

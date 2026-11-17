@@ -66,7 +66,7 @@ const liveDtekStatusText = document.getElementById('liveDtekStatusText');
 const activeSourceLabel = document.getElementById('activeSourceLabel');
 
 // Status card DOM
-const statusSectionEl = document.querySelector('.status-section');
+const statusSectionEl = document.getElementById('liveStatusSection') || document.querySelector('.live-status-section');
 const scheduleSectionEl = document.querySelector('.schedule-section');
 
 function updateGroupSelectionVisibility() {
@@ -197,6 +197,7 @@ function renderSubgroupButtons() {
       localStorage.setItem(CACHE_KEY_GROUP, currentGroup);
       notifyCacheSaved();
       updateActiveAddressChip();
+      updateGroupSelectionVisibility();
       fetchSchedule();
     });
 
@@ -224,7 +225,7 @@ async function fetchSystemStatus() {
 function renderSystemStatus() {
   if (!systemStatus) return;
   const isEmergency = systemStatus.mode === 'emergency';
-  if (emergencyBanner) emergencyBanner.style.display = (isEmergency && !isEmergencyBannerDismissed && Boolean(currentGroup || savedStreet)) ? 'block' : 'none';
+  if (emergencyBanner) emergencyBanner.style.display = (isEmergency && !isEmergencyBannerDismissed) ? 'block' : 'none';
   if (gridStatusText) gridStatusText.textContent = systemStatus.modeLabel || systemStatus.modeTitle || 'Стабілізаційні відключення (ДТЕК Дніпро)';
   if (btnToggleEmergency) btnToggleEmergency.textContent = isEmergency ? 'Вимкнути Аварійний тест' : 'Тест: Аварійний режим';
 
@@ -320,7 +321,6 @@ window.updateLocationInfo = updateLocationInfo;
 function renderActiveSchedule() {
   updateGroupSelectionVisibility();
   if (!currentGroup && !savedStreet) {
-    if (emergencyBanner) emergencyBanner.style.display = 'none';
     return;
   }
   if (!scheduleData) return;
@@ -462,6 +462,7 @@ function renderFullMatrixTable() {
       localStorage.setItem(CACHE_KEY_GROUP, currentGroup);
       notifyCacheSaved();
       updateActiveAddressChip();
+      updateGroupSelectionVisibility();
       renderSubgroupButtons();
       fetchSchedule();
     });
@@ -510,7 +511,6 @@ function updateTimelineNeedle() {
 function updateLiveStatusCard() {
   updateGroupSelectionVisibility();
   if (!currentGroup && !savedStreet) {
-    if (emergencyBanner) emergencyBanner.style.display = 'none';
     const dtekNotice = document.getElementById('dtekOfficialNotice');
     if (dtekNotice) dtekNotice.style.display = 'none';
     return;
@@ -762,6 +762,7 @@ window.selectSubgroupExternal = function(group) {
   currentGroup = group;
   window.currentGroup = group;
   localStorage.setItem(CACHE_KEY_GROUP, currentGroup);
+  updateGroupSelectionVisibility();
   notifyCacheSaved();
   updateActiveAddressChip();
   document.querySelectorAll('.subgroup-btn').forEach(b => {
@@ -871,6 +872,7 @@ function applyAddressSelection(item, buildingVal) {
   localStorage.setItem(CACHE_KEY_GROUP, currentGroup);
   localStorage.setItem(CACHE_KEY_STREET, savedStreet);
   localStorage.setItem(CACHE_KEY_BUILDING, savedBuilding);
+  updateGroupSelectionVisibility();
   notifyCacheSaved();
 
   updateActiveAddressChip();
