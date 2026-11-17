@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Карта повітряних тривог України онлайн зараз (Live) — Червона, жовта, зелена зони | KRAY DIGITAL</title>
+  <meta name="description" content="Актуальна онлайн карта повітряних тривог України зараз: червона, жовта та зелена зони по областях і районах у реальному часі. Оновлення кожні 20 секунд: Київ, Дніпро, Харків, Одеса, Львів та вся Україна.">
+  <meta name="keywords" content="карта повітряних тривог, карта тривог України онлайн, повітряна тривога зараз, карта тревог Украина онлайн, воздушная тревога сейчас, тривога по областях">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+  <meta name="theme-color" content="#0c111d">
+  <link rel="canonical" href="https://kray-digital.pp.ua/karta-trevog">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://kray-digital.pp.ua/karta-trevog">
+  <meta property="og:title" content="Карта повітряних тривог України онлайн зараз (Live) — KRAY DIGITAL">
+  <meta property="og:description" content="Жива карта повітряних тривог по всіх областях та районах України: червона, жовта і зелена зони з оновленням кожні 20 секунд.">
+
+  <!-- Schema.org Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://kray-digital.pp.ua/karta-trevog#webpage",
+        "url": "https://kray-digital.pp.ua/karta-trevog",
+        "name": "Карта повітряних тривог України онлайн зараз (Live)",
+        "description": "Онлайн карта повітряних тривог України в реальному часі з поділом на червону, жовту та зелену зони.",
+        "inLanguage": ["uk", "ru", "en"]
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Що означають червона, жовта та зелена зони на карті тривог України?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Червона зона означає активну повітряну тривогу по всій області. Жовта зона — часткову тривогу в окремих районах області. Зелена зона — тривоги немає."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Як часто оновлюється онлайн карта тривог?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Дані на карті оновлюються автоматично кожні 20 секунд з урахуванням порайонного статусу по всій Україні."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <!-- Performance Preloads & Non-blocking Styles -->
+  <link rel="preload" as="fetch" href="./ukraine-regions.json" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"></noscript>
+
+  <link rel="stylesheet" href="/grafiki-vidkluchen-svitla-v-dnipri-ta-dnipropotrovskoi-oblasti/vendor/leaflet/leaflet.css" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="/grafiki-vidkluchen-svitla-v-dnipri-ta-dnipropotrovskoi-oblasti/vendor/leaflet/leaflet.css"></noscript>
+
+  <link rel="stylesheet" href="./style.css?v=1.2">
+</head>
+<body>
+  <!-- PC Ambient Radar Background (Desktop only) -->
+  <div class="pc-radar-bg" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="container header-container">
+      <div class="logo-area">
+        <a href="/" class="brand-logo" title="KRAY DIGITAL">
+          <div class="logo-favicon-icon" aria-hidden="true">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="100" height="100" rx="22" fill="#0f131e"/>
+              <rect x="2" y="2" width="96" height="96" rx="20" stroke="#00f2fe" stroke-width="3" stroke-opacity="0.4"/>
+              <path d="M54 18L26 56H48L44 82L74 44H50L54 18Z" fill="url(#header-bolt-grad)"/>
+              <defs>
+                <linearGradient id="header-bolt-grad" x1="26" y1="18" x2="74" y2="82" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#00f2fe"/>
+                  <stop offset="1" stop-color="#4facfe"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+          <div class="brand-text">
+            <span class="brand-name">KRAY <span class="brand-highlight">DIGITAL</span></span>
+            <span class="page-badge" id="i18nBadge">УКРАЇНА • МОНІТОРИНГ ТРИВОГ LIVE</span>
+          </div>
+        </a>
+      </div>
+      <div class="header-right-area">
+        <a href="/grafiki-vidkluchen-svitla-v-dnipri-ta-dnipropotrovskoi-oblasti/" class="header-nav-link" id="i18nLinkOutages">⚡ Графік світла (Дніпро)</a>
+        <a href="/" class="header-order-btn" id="i18nOrderBtn">
+          <span>✨</span>
+          <span id="i18nOrderText">Замовити сайт</span>
+          <span>→</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="container">
+      <!-- Top Title & Live Controls -->
+      <section class="hero-card">
+        <div class="hero-top">
+          <div>
+            <h1 id="i18nTitle">Карта повітряних тривог України онлайн — моніторинг у реальному часі</h1>
+            <p class="hero-subtitle" id="i18nSubtitle">Актуальний статус повітряної небезпеки по областях та районах України зараз: червона, жовта та зелена зони з автооновленням кожні 20 секунд.</p>
+          </div>
+          <div class="live-status-pill">
+            <span class="live-dot"></span>
+            <span id="syncTimeLabel">Оновлення...</span>
+            <button type="button" class="btn-refresh" id="btnRefresh" title="Оновити зараз">🔄</button>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-box stat-red">
+            <div class="stat-num" id="countRed">—</div>
+            <div class="stat-label" id="i18nStatRed">Червона зона (Вся область)</div>
+          </div>
+          <div class="stat-box stat-yellow">
+            <div class="stat-num" id="countYellow">—</div>
+            <div class="stat-label" id="i18nStatYellow">Жовта зона (Окремі райони)</div>
+          </div>
+          <div class="stat-box stat-green">
+            <div class="stat-num" id="countGreen">—</div>
+            <div class="stat-label" id="i18nStatGreen">Зелена зона (Спокійно)</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Map + Regions Sidebar -->
+      <section class="map-layout">
+        <div class="map-panel">
+          <div id="ukraineAlertsMap" class="alerts-map-view"></div>
+          <div class="map-legend">
+            <div class="legend-item"><span class="dot dot-red"></span> <span id="i18nLegRed">Червона — тривога по всій області</span></div>
+            <div class="legend-item"><span class="dot dot-yellow"></span> <span id="i18nLegYellow">Жовта — часткова тривога (окремі райони)</span></div>
+            <div class="legend-item"><span class="dot dot-green"></span> <span id="i18nLegGreen">Зелена — тривоги немає</span></div>
+          </div>
+        </div>
+
+        <aside class="regions-panel">
+          <div class="regions-header">
+            <h2 id="i18nListTitle">Регіони зараз</h2>
+            <span class="regions-hint" id="i18nListHint">Натисніть на область</span>
+          </div>
+          <div class="regions-list" id="regionsList">
+            <div class="loading-placeholder">Завантаження карти...</div>
+          </div>
+        </aside>
+      </section>
+
+      <!-- Official Air Force & Honest Disclaimer -->
+      <section class="info-note-card">
+        <div class="info-note-icon">ℹ️</div>
+        <div class="info-note-body">
+          <strong id="i18nNoteTitle">Офіційні джерела та безпека:</strong>
+          <p id="i18nNoteText">Карта відображає реальний статус повітряних тривог по областях та районах України з відкритого API моніторигу. Координати цілей ППО не публікуються у відкритому доступі з міркувань безпеки — актуальні повідомлення про загрози читайте в офіційному каналі Повітряних Сил ЗСУ (<a href="https://t.me/kpszsu" target="_blank" rel="noopener noreferrer">@kpszsu</a>).</p>
+        </div>
+      </section>
+
+      <!-- SEO Text & FAQ Section -->
+      <article class="seo-article-card" id="seoArticleCard">
+        <h2 id="i18nSeoH2">Онлайн карта повітряних тривог України зараз: як читати зони та отримувати точні дані</h2>
+        <p id="i18nSeoP1">Оперативна <strong>карта повітряних тривог України онлайн</strong> дозволяє в один клік перевірити поточну ситуацію у всіх 24 областях України, м. Києві та АР Крим. Сервіс працює в режимі реального часу та синхронізується з порайонними даними оповіщення, щоб ви одразу бачили, де оголошено сирену по всій області, а де загроза стосується лише окремих районів.</p>
+        <div class="seo-columns">
+          <div class="seo-col">
+            <h3 id="i18nSeoC1Title">🔴 Червона зона — повна тривога</h3>
+            <p id="i18nSeoC1Text">Позначає області, де сигнал повітряної тривоги активований на всій території регіону (усі райони області). За такого статусу необхідно негайно пройти до найближчого укриття та дотримуватися правила «двох стін».</p>
+          </div>
+          <div class="seo-col">
+            <h3 id="i18nSeoC2Title">🟡 Жовта зона — часткова тривога по районах</h3>
+            <p id="i18nSeoC2Text">Відображає області, де небезпека оголошена точково — лише в окремих районах (наприклад, при загрозі ударних БПЛА чи артилерійських обстрілів). Наведіть курсор на область або перегляньте список праворуч, щоб дізнатися перелік активних районів.</p>
+          </div>
+          <div class="seo-col">
+            <h3 id="i18nSeoC3Title">🟢 Зелена зона — відбій тривоги</h3>
+            <p id="i18nSeoC3Text">Означає відсутність активного сигналу повітряної тривоги в усіх районах області. Система автоматично оновлює статуси кожні 20 секунд без необхідності перезавантажувати сторінку.</p>
+          </div>
+        </div>
+        <div class="seo-links-row">
+          <span id="i18nSeoLinksLabel">Корисні сервіси:</span>
+          <a href="/grafiki-vidkluchen-svitla-v-dnipri-ta-dnipropotrovskoi-oblasti/" id="i18nSeoLinkOutages">Графік відключень світла Дніпро та область (ДТЕК / ЦЕК / YASNO)</a>
+        </div>
+      </article>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2026 KRAY DIGITAL • <a href="/">kray-digital.pp.ua</a> • <a href="/grafiki-vidkluchen-svitla-v-dnipri-ta-dnipropotrovskoi-oblasti/" id="i18nFooterOutages">Графіки відключень світла</a></p>
+    </div>
+  </footer>
+
+  <script defer src="/grafiki-vidkluchen-svitla-v-dnipri-ta-dnipropotrovskoi-oblasti/vendor/leaflet/leaflet.js"></script>
+  <script defer src="./app.js?v=1.2"></script>
+</body>
+</html>

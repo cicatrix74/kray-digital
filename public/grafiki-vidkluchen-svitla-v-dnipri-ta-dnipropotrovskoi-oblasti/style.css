@@ -212,6 +212,30 @@ body {
 }
 
 /* Language Switcher */
+.header-nav-link {
+  color: #cbd5e1;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border-color);
+  background: rgba(255, 255, 255, 0.03);
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.header-nav-link:hover {
+  border-color: rgba(6, 182, 212, 0.5);
+  color: #ffffff;
+}
+
+@media (max-width: 640px) {
+  .header-nav-link {
+    display: none;
+  }
+}
+
 .lang-switch-group {
   display: inline-flex;
   align-items: center;

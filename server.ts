@@ -627,6 +627,101 @@ app.get('/grafiki-vidkluchen-svitla-v-dnipri-ta-dnipropotrovskoi-oblasti', (_req
   res.sendFile(path.join(OUTAGES_DIR, 'index.html'));
 });
 
+// Air Raid Alerts Live API (/api/air-alerts) with raion-level red/yellow/green support
+let cachedAirAlerts: any = null;
+let lastAirAlertsFetch = 0;
+
+function fetchLiveAirAlerts(): Promise<any> {
+  const now = Date.now();
+  if (cachedAirAlerts && (now - lastAirAlertsFetch < 15000)) {
+    return Promise.resolve(cachedAirAlerts);
+  }
+  return new Promise((resolve) => {
+    https.get('https://vadimklimenko.com/map/statuses.json', {
+      headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' }
+    }, (res) => {
+      let raw = '';
+      res.on('data', chunk => raw += chunk);
+      res.on('end', () => {
+        try {
+          const parsed = JSON.parse(raw);
+          if (parsed && parsed.states) {
+            cachedAirAlerts = parsed;
+            lastAirAlertsFetch = now;
+            return resolve(parsed);
+          }
+          resolve(cachedAirAlerts);
+        } catch {
+          resolve(cachedAirAlerts);
+        }
+      });
+    }).on('error', () => resolve(cachedAirAlerts));
+  });
+}
+
+app.get('/api/air-alerts', async (_req, res) => {
+  const data = await fetchLiveAirAlerts();
+  if (!data || !data.states) {
+    return res.status(503).json({ success: false, error: 'Air alerts feed temporarily unavailable' });
+  }
+
+  const regions: Record<string, {
+    status: 'red' | 'yellow' | 'green';
+    alertNow: boolean;
+    changed: string;
+    activeDistricts: string[];
+    totalDistricts: number;
+  }> = {};
+
+  for (const [rawName, info] of Object.entries(data.states) as any) {
+    // Normalize Crimea name to match GeoJSON
+    const regionName = rawName === 'АР Крим' ? 'Автономна Республіка Крим' : rawName;
+    const distEntries = Object.entries(info.districts || {}) as [string, any][];
+    const totalDistricts = distEntries.length;
+    const activeDistricts = distEntries.filter(([, dv]) => dv && dv.enabled).map(([dn]) => dn);
+    const activeCount = activeDistricts.length;
+
+    const stateEnabled = Boolean(info && info.enabled);
+    const allDistrictsActive = totalDistricts > 0 && activeCount === totalDistricts;
+
+    let status: 'red' | 'yellow' | 'green' = 'green';
+    if (stateEnabled || allDistrictsActive || info.alert_level === 'red') {
+      status = 'red';
+    } else if (activeCount > 0 || info.alert_level === 'yellow') {
+      status = 'yellow';
+    }
+
+    const changedRaw = info.enabled_at || info.disabled_at || '';
+    let changed = '';
+    if (changedRaw) {
+      changed = formatKyivDateTime(changedRaw);
+    }
+
+    regions[regionName] = {
+      status,
+      alertNow: status !== 'green',
+      changed,
+      activeDistricts,
+      totalDistricts
+    };
+  }
+
+  res.json({
+    success: true,
+    source: 'Ukraine Air Alerts Live (Raion-level)',
+    cachedAt: new Date().toISOString(),
+    regions
+  });
+});
+
+const KARTA_TREVOG_DIR = path.resolve(process.cwd(), 'public/karta-trevog');
+app.get('/karta-trevog', (req, res) => {
+  if (!req.originalUrl.split('?')[0].endsWith('/')) {
+    return res.redirect(301, '/karta-trevog/');
+  }
+  res.sendFile(path.join(KARTA_TREVOG_DIR, 'index.html'));
+});
+
 // Chat API Route for Kray Digital Assistant
 app.post('/api/chat', async (req, res) => {
   try {

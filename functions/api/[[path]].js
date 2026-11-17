@@ -39,6 +39,34 @@ let lastDtekMirrorFetch = 0;
 let cachedEmergencyStatus = null;
 let lastEmergencyCheck = 0;
 
+let cachedAirAlerts = null;
+let lastAirAlertsFetch = 0;
+
+async function fetchLiveAirAlerts() {
+  const now = Date.now();
+  if (cachedAirAlerts && (now - lastAirAlertsFetch < 15000)) {
+    return cachedAirAlerts;
+  }
+  try {
+    const res = await fetch('https://vadimklimenko.com/map/statuses.json', {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+      }
+    });
+    if (res.ok) {
+      const parsed = await res.json();
+      if (parsed && parsed.states) {
+        cachedAirAlerts = parsed;
+        lastAirAlertsFetch = now;
+        return cachedAirAlerts;
+      }
+    }
+  } catch (e) {
+    console.error('Air alerts fetch error:', e);
+  }
+  return cachedAirAlerts;
+}
+
 async function fetchLiveDtekMirror() {
   const now = Date.now();
   if (cachedDtekMirror && (now - lastDtekMirrorFetch < 60000)) {
@@ -597,6 +625,53 @@ export async function onRequest(context) {
     }
 
     return new Response(JSON.stringify({ success: true, results: matches.slice(0, 10) }), { headers: corsHeaders });
+  }
+
+  if (pathname.endsWith('/air-alerts')) {
+    const data = await fetchLiveAirAlerts();
+    if (!data || !data.states) {
+      return new Response(JSON.stringify({ success: false, error: 'Air alerts feed temporarily unavailable' }), {
+        status: 503,
+        headers: corsHeaders
+      });
+    }
+
+    const regions = {};
+    for (const [rawName, info] of Object.entries(data.states)) {
+      const regionName = rawName === 'АР Крим' ? 'Автономна Республіка Крим' : rawName;
+      const distEntries = Object.entries(info.districts || {});
+      const totalDistricts = distEntries.length;
+      const activeDistricts = distEntries.filter(([, dv]) => dv && dv.enabled).map(([dn]) => dn);
+      const activeCount = activeDistricts.length;
+
+      const stateEnabled = Boolean(info && info.enabled);
+      const allDistrictsActive = totalDistricts > 0 && activeCount === totalDistricts;
+
+      let status = 'green';
+      if (stateEnabled || allDistrictsActive || info.alert_level === 'red') {
+        status = 'red';
+      } else if (activeCount > 0 || info.alert_level === 'yellow') {
+        status = 'yellow';
+      }
+
+      const changedRaw = info.enabled_at || info.disabled_at || '';
+      const changed = changedRaw ? formatKyivDateTime(changedRaw) : '';
+
+      regions[regionName] = {
+        status,
+        alertNow: status !== 'green',
+        changed,
+        activeDistricts,
+        totalDistricts
+      };
+    }
+
+    return new Response(JSON.stringify({
+      success: true,
+      source: 'Ukraine Air Alerts Live (Raion-level)',
+      cachedAt: new Date().toISOString(),
+      regions
+    }), { headers: corsHeaders });
   }
 
   return new Response(JSON.stringify({ error: 'Endpoint not found' }), { status: 404, headers: corsHeaders });
