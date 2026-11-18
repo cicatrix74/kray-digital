@@ -693,7 +693,9 @@ function updateLiveStatusCard() {
       const secsLeft = String(diffSec % 60).padStart(2, '0');
       countdownTimer.textContent = `${hoursLeft}:${minsLeft}:${secsLeft}`;
       const hourFmt = String(nextTransitionHour % 24).padStart(2, '0');
-      const stName = getStatusName(nextStatus).toLowerCase();
+      const nextStatusKey = nextStatus === 'off' ? 'countdownNextOff' : (nextStatus === 'maybe' ? 'countdownNextMaybe' : 'countdownNextOn');
+      const fallbackNextName = nextStatus === 'off' ? 'відключення світла (червона зона)' : (nextStatus === 'maybe' ? 'можливе відключення (жовта зона)' : 'увімкнення світла (біла зона)');
+      const stName = window.i18n ? (window.i18n.t(nextStatusKey) || getStatusName(nextStatus).toLowerCase()) : fallbackNextName;
       if (window.i18n) {
         countdownSub.textContent = (window.i18n.t('countdownExpectedAt') || 'О {time}:00 очікується {status}').replace('{time}', hourFmt).replace('{status}', stName);
       } else {
