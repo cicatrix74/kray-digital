@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Конвертер зображень JPG, PNG, GIF у WebP та AVIF онлайн — Стиснення без втрати якості | KRAY DIGITAL</title>
+  <meta name="description" content="Безкоштовний онлайн конвертер картинок із JPG, PNG та GIF у сучасні формати WebP і AVIF з регульованим рівнем стиснення (1–100%). Миттєва оптимізація зображень для сайту та PageSpeed.">
+  <meta name="keywords" content="конвертер в webp, конвертер в avif, jpg в webp, png в webp, gif в webp, сжать фото онлайн, конвертировать картинку в webp">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+  <meta name="theme-color" content="#0c111d">
+  <base href="/konvertor-webp/">
+  <link rel="canonical" href="https://kray-digital.pp.ua/konvertor-webp">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://kray-digital.pp.ua/konvertor-webp">
+  <meta property="og:title" content="Конвертер JPG, PNG, GIF у WebP та AVIF онлайн — KRAY DIGITAL">
+  <meta property="og:description" content="Конвертуйте зображення у WebP і AVIF з гнучким регулюванням стиснення. Економія ваги до 85% для високого Google PageSpeed.">
+
+  <!-- Schema.org WebApplication -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "KRAY DIGITAL Image Converter (WebP & AVIF)",
+    "url": "https://kray-digital.pp.ua/konvertor-webp",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "All",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "UAH"
+    },
+    "inLanguage": ["uk", "ru", "en"]
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"></noscript>
+  <link rel="stylesheet" href="./style.css?v=1.0">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-container">
+      <div class="logo-area">
+        <a href="/" class="brand-logo" title="KRAY DIGITAL">
+          <div class="logo-favicon-icon" aria-hidden="true">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="100" height="100" rx="22" fill="#0f131e"/>
+              <rect x="2" y="2" width="96" height="96" rx="20" stroke="#00f2fe" stroke-width="3" stroke-opacity="0.4"/>
+              <path d="M54 18L26 56H48L44 82L74 44H50L54 18Z" fill="url(#header-bolt-grad)"/>
+              <defs>
+                <linearGradient id="header-bolt-grad" x1="26" y1="18" x2="74" y2="82" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#00f2fe"/>
+                  <stop offset="1" stop-color="#4facfe"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+          <div class="brand-text">
+            <span class="brand-name">KRAY <span class="brand-highlight">DIGITAL</span></span>
+            <span class="page-badge" id="i18nBadge">WEB TOOLS • WEBP &amp; AVIF CONVERTER</span>
+          </div>
+        </a>
+      </div>
+      <div class="header-right-area">
+        <a href="/grafiki-vidkluchen-svitla-v-dnipri-ta-dnipropotrovskoi-oblasti/" class="header-nav-link" id="i18nLinkOutages">⚡ Графік світла</a>
+        <a href="/karta-trevog/" class="header-nav-link" id="i18nLinkAlerts">🚨 Карта тривог</a>
+        <a href="/" class="header-order-btn">
+          <span>✨</span>
+          <span id="i18nOrderText">Замовити сайт</span>
+          <span>→</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="container">
+      <!-- Hero & Controls -->
+      <section class="converter-hero">
+        <div class="hero-header">
+          <div>
+            <h1 id="i18nTitle">Конвертер JPG, PNG, GIF у WebP та AVIF онлайн</h1>
+            <p class="hero-subtitle" id="i18nSubtitle">Миттєва оптимізація зображень для вашого сайту з гнучким налаштуванням стиснення. Підтримується пакетне завантаження та анімовані GIF.</p>
+          </div>
+          <div class="format-badges">
+            <span class="fmt-pill">JPG → WebP / AVIF</span>
+            <span class="fmt-pill">PNG → WebP / AVIF</span>
+            <span class="fmt-pill">GIF → WebP / AVIF</span>
+          </div>
+        </div>
+
+        <!-- Studio Compression & Presets Panel (Reference Layout) -->
+        <div class="studio-panel">
+          <!-- Left Column: Gear Progress + Compression Controls -->
+          <div class="studio-left">
+            <div class="studio-top-row">
+              <div class="studio-card-title" id="i18nStudioTitle">Стиснення файлу</div>
+              <div class="format-switch-compact" id="formatSwitch">
+                <button type="button" class="fmt-btn active" data-fmt="webp">WebP</button>
+                <button type="button" class="fmt-btn" data-fmt="avif">AVIF</button>
+              </div>
+            </div>
+
+            <!-- Glowing Gear + Circular Progress Ring + Drop Zone Inside Left Panel -->
+            <div class="gear-stage drop-zone-inline" id="dropZone">
+              <input type="file" id="fileInput" accept=".jpg,.jpeg,.png,.gif,image/jpeg,image/png,image/gif" multiple hidden>
+              <div class="gear-ring-box">
+                <svg class="gear-ring-svg" viewBox="0 0 160 160" aria-hidden="true">
+                  <defs>
+                    <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#00f0ff"/>
+                      <stop offset="55%" stop-color="#3b82f6"/>
+                      <stop offset="100%" stop-color="#a855f7"/>
+                    </linearGradient>
+                    <linearGradient id="gearGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#38bdf8"/>
+                      <stop offset="55%" stop-color="#60a5fa"/>
+                      <stop offset="100%" stop-color="#a855f7"/>
+                    </linearGradient>
+                  </defs>
+                  <circle class="ring-track" cx="80" cy="80" r="70" />
+                  <circle class="ring-progress" id="ringProgressCircle" cx="80" cy="80" r="70" stroke="url(#ringGrad)" stroke-dasharray="439.82" stroke-dashoffset="439.82" />
+                </svg>
+
+                <div class="gear-core" id="genGearWrap">
+                  <svg class="gear-core-svg" viewBox="0 0 24 24" fill="none" stroke="url(#gearGrad)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="3" y="3" width="18" height="18" rx="4" ry="4" fill="rgba(59, 130, 246, 0.14)"></rect>
+                    <circle cx="8.5" cy="8.5" r="1.5" fill="url(#gearGrad)" stroke="none"></circle>
+                    <path d="M21 15l-5-5L5 21"></path>
+                  </svg>
+                  <div class="gear-pct-overlay" id="genPercentBadge" style="display: none;"></div>
+                </div>
+              </div>
+
+              <div class="gear-linear-track">
+                <div class="gear-linear-fill" id="genProgressFill" style="width: 0%;"></div>
+              </div>
+              <div class="gear-status-line" id="genProgressTitle">Перетягніть зображення сюди або натисніть для вибору</div>
+              <div class="drop-hint-inline" id="i18nDropHint">JPG, PNG, GIF (зокрема анімовані) • Пакетне завантаження</div>
+              <button type="button" class="btn-choose-files btn-choose-inline" id="btnChooseFiles">Обрати файли</button>
+            </div>
+
+            <!-- Compression Slider Area -->
+            <div class="compression-area">
+              <div class="quality-head">
+                <label for="qualitySlider" id="i18nQualityLabel">Рівень стиснення та якості:</label>
+                <label class="lossless-toggle">
+                  <input type="checkbox" id="losslessCheck">
+                  <span id="i18nLossless">Lossless</span>
+                </label>
+              </div>
+              <input type="range" id="qualitySlider" min="10" max="100" value="80" step="1">
+              <div class="slider-scale-labels">
+                <span id="i18nScaleLow">Сильне стиснення</span>
+                <span class="scale-current" id="qualityValueBadge">Оптимально (80%)</span>
+                <span id="i18nScaleHigh">Макс. якість</span>
+              </div>
+            </div>
+
+            <!-- Bottom File Size Info -->
+            <div class="studio-size-footer">
+              <span class="size-footer-label" id="i18nSizeInfoLabel">Інформація про розмір</span>
+              <div class="size-footer-values" id="studioSizeValues">—</div>
+            </div>
+          </div>
+
+          <!-- Right Column: My Presets -->
+          <div class="studio-right">
+            <div class="presets-header" id="i18nMyPresetsTitle">Мої пресети</div>
+
+            <div class="presets-actions-stack">
+              <button type="button" class="btn-preset-action" id="btnSaveCurrent">
+                <span>+</span>
+                <span id="i18nSaveCurrent">Зберегти поточні налаштування</span>
+              </button>
+              <button type="button" class="btn-preset-action" id="btnSaveAsPreset">
+                <span>🔖</span>
+                <span id="i18nSaveAsPreset">Зберегти як пресет</span>
+              </button>
+            </div>
+
+            <div class="new-preset-form" id="newPresetForm" style="display: none;">
+              <input type="text" id="newPresetNameInput" maxlength="32" placeholder="Назва пресету...">
+              <button type="button" class="btn-confirm-preset" id="btnConfirmPreset">✓</button>
+            </div>
+
+            <div class="presets-subhead" id="i18nUserPresetsTitle">Користувацькі пресети</div>
+            <div class="user-presets-list" id="userPresetsList"></div>
+
+            <div class="studio-right-footer">
+              <button type="button" class="btn-studio-secondary" id="btnResetDefault">
+                <span id="i18nResetDefault">Скинути</span>
+              </button>
+              <button type="button" class="btn-studio-primary" id="btnSaveAndApply">
+                <span id="i18nSaveAndApply">Зберегти та застосувати</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Toolbar (Visible when files exist) -->
+        <div class="results-toolbar" id="resultsToolbar" style="display: none;">
+          <div class="toolbar-stats" id="toolbarStats">Оброблено: 0</div>
+          <div class="toolbar-actions">
+            <button type="button" class="btn-reconvert" id="btnReconvert">🔄 <span id="i18nReconvert">Переконвертувати з новими налаштуваннями</span></button>
+            <button type="button" class="btn-download-all" id="btnDownloadAll">⬇️ <span id="i18nDownloadAll">Завантажити всі</span></button>
+            <button type="button" class="btn-clear-all" id="btnClearAll">✕ <span id="i18nClearAll">Очистити</span></button>
+          </div>
+        </div>
+
+        <!-- Results List -->
+        <div class="results-grid" id="resultsGrid"></div>
+      </section>
+
+      <!-- SEO Info Section -->
+      <article class="seo-article-card">
+        <h2 id="i18nSeoH2">Навіщо конвертувати JPG, PNG та GIF у WebP і AVIF?</h2>
+        <p id="i18nSeoP1">Сучасні формати <strong>WebP</strong> та <strong>AVIF</strong> стискають зображення на 40–85% ефективніше за класичні JPEG, PNG і GIF при збереженні тієї самої візуальної якості. Це критично важливо для показників Google PageSpeed Insights, швидкого завантаження на мобільних пристроях та виходу сайту в ТОП пошуку.</p>
+        <div class="seo-columns">
+          <div class="seo-col">
+            <h3 id="i18nSeoC1Title">⚡ WebP — універсальний стандарт</h3>
+            <p id="i18nSeoC1Text">Підтримується 98%+ браузерів, зберігає прозорість (альфа-канал з PNG) та підтримує анімацію з GIF при значно меншій вазі файлу.</p>
+          </div>
+          <div class="seo-col">
+            <h3 id="i18nSeoC2Title">🚀 AVIF — максимальне стиснення</h3>
+            <p id="i18nSeoC2Text">Новітній формат на базі кодека AV1, який дає ще на 20–30% менший розмір файлу порівняно з WebP. Ідеально для великих банерів та фотогалерей.</p>
+          </div>
+          <div class="seo-col">
+            <h3 id="i18nSeoC3Title">🎚️ Гнучке керування якістю</h3>
+            <p id="i18nSeoC3Text">Регулюйте повзунок якості від 10% до 100% або увімкніть режим Lossless без втрат. Для більшості сайтів оптимальним балансом є 75–85%.</p>
+          </div>
+        </div>
+
+        <div class="seo-subblock">
+          <h3 id="i18nSeoGuideTitle">Як обрати оптимальний рівень стиснення для сайту та PageSpeed</h3>
+          <p id="i18nSeoGuideIntro">Правильний баланс між вагою файлу та чіткістю картинки безпосередньо впливає на метрику <strong>Largest Contentful Paint (LCP)</strong> у Google PageSpeed Insights. Замість завантаження важких 2–5 МБ фотографій із камери або Figma, оптимізуйте їх перед публікацією:</p>
+          <div class="seo-steps">
+            <div class="seo-step-card">
+              <strong id="i18nSeoStep1Title">1. 50–70% — для прев’ю та мобільних галерей</strong>
+              <span id="i18nSeoStep1Text">Максимальна економія трафіку та миттєве завантаження карток товарів в інтернет-магазинах на слабкому 4G.</span>
+            </div>
+            <div class="seo-step-card">
+              <strong id="i18nSeoStep2Title">2. 75–85% — золотий стандарт для сайтів</strong>
+              <span id="i18nSeoStep2Text">Оптимальне співвідношення: зменшення ваги на 65–80% без помітних артефактів для банерів, блогів і лендінгів.</span>
+            </div>
+            <div class="seo-step-card">
+              <strong id="i18nSeoStep3Title">3. 90–100% або Lossless — для UI та портфоліо</strong>
+              <span id="i18nSeoStep3Text">Ідеально для скріншотів інтерфейсів, логотипів, текстів на зображеннях та фотографій з дрібними деталями.</span>
+            </div>
+            <div class="seo-step-card">
+              <strong id="i18nSeoStep4Title">4. Збереження власних пресетів</strong>
+              <span id="i18nSeoStep4Text">Збережіть свої улюблені комбінації формату та стиснення в панелі «Мої пресети», щоб застосовувати їх в один клік.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="seo-subblock">
+          <h3 id="i18nSeoFaqTitle">Часті запитання про конвертацію у WebP та AVIF</h3>
+          <div class="seo-faq-grid">
+            <div class="seo-faq-item">
+              <h4 id="i18nFaq1Q">Чи зберігається прозорість при конвертації PNG у WebP/AVIF?</h4>
+              <p id="i18nFaq1A">Так, і WebP, і AVIF повністю підтримують альфа-канал (прозорий фон) при кратно меншому розмірі файлу порівняно з PNG.</p>
+            </div>
+            <div class="seo-faq-item">
+              <h4 id="i18nFaq2Q">Чи можна конвертувати анімовані GIF у WebP?</h4>
+              <p id="i18nFaq2A">Так! При виборі формату WebP наш конвертер автоматично зберігає всі кадри анімації GIF, зменшуючи вагу файлу на 50–80%.</p>
+            </div>
+            <div class="seo-faq-item">
+              <h4 id="i18nFaq3Q">Що краще для SEO — WebP чи AVIF?</h4>
+              <p id="i18nFaq3A">Обидва формати рекомендовані Google PageSpeed. WebP має універсальну підтримку 98%+ браузерів, а AVIF стискає ще сильніше на 20–30%.</p>
+            </div>
+            <div class="seo-faq-item">
+              <h4 id="i18nFaq4Q">Чи зберігаються мої зображення на сервері?</h4>
+              <p id="i18nFaq4A">Ні. Картинки обробляються в оперативній пам’яті виключно під час запиту на конвертацію і ніде не зберігаються.</p>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2026 KRAY DIGITAL • <a href="/">kray-digital.pp.ua</a> • <a href="/grafiki-vidkluchen-svitla-v-dnipri-ta-dnipropotrovskoi-oblasti/" id="i18nFooterOutages">Графіки світла</a> • <a href="/karta-trevog/" id="i18nFooterAlerts">Карта тривог</a></p>
+    </div>
+  </footer>
+
+  <script defer src="./app.js?v=1.1"></script>
+</body>
+</html>

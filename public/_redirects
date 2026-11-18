@@ -2,4 +2,6 @@
 /grafiki-vidkluchen-svitla-v-dnipri-ta-dnipropotrovskoi-oblasti/*    /grafiki-vidkluchen-svitla-v-dnipri-ta-dnipropotrovskoi-oblasti/:splat    200
 /karta-trevog    /karta-trevog/index.html    200
 /karta-trevog/*    /karta-trevog/:splat    200
+/konvertor-webp    /konvertor-webp/index.html    200
+/konvertor-webp/*    /konvertor-webp/:splat    200
 /*    /index.html    200
