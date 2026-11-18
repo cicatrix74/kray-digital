@@ -79,6 +79,7 @@ export interface TranslationSchema {
     link_why: string;
     link_contacts: string;
     crm_panel: string;
+    resources_title: string;
     copyright: string;
   };
   portfolio: {
@@ -212,9 +213,9 @@ const TRANSLATIONS: Record<Language, TranslationSchema> = {
       years_val: '10+',
       years_title: 'Років досвіду',
       years_desc: 'У digital-маркетингу та розробці високонавантажених систем',
-      kpi_val: '10%',
-      kpi_title: 'Символічна передоплата',
-      kpi_desc: 'Лише 10% для старту проєкту. Решта 90% оплачуються виключно за фактом здачі та прийому робіт.',
+      kpi_val: '0%',
+      kpi_title: 'Без передоплати',
+      kpi_desc: 'Жодних авансів на старті. Оплата здійснюється виключно за фактом здачі та прийому робіт.',
       reports_val: '24/7',
       reports_title: 'Звітність',
       reports_desc: 'Повністю прозора наскрізна веб-аналітика та звіти в реальному часі'
@@ -251,6 +252,7 @@ const TRANSLATIONS: Record<Language, TranslationSchema> = {
       link_why: 'Чому ми',
       link_contacts: 'Контакти',
       crm_panel: 'Панель лідів CRM',
+      resources_title: 'Корисні ресурси',
       copyright: '© 2026 Kray Digital. Усі права захищено.'
     },
     portfolio: {
@@ -382,9 +384,9 @@ const TRANSLATIONS: Record<Language, TranslationSchema> = {
       years_val: '10+',
       years_title: 'Лет опыта',
       years_desc: 'В digital-маркетинге и разработке высоконагруженных систем',
-      kpi_val: '10%',
-      kpi_title: 'Символическая предоплата',
-      kpi_desc: 'Всего 10% для старта проекта. Остальные 90% оплачиваются исключительно по факту сдачи и приёмки работ.',
+      kpi_val: '0%',
+      kpi_title: 'Без предоплаты',
+      kpi_desc: 'Никаких авансов на старте. Оплата производится исключительно по факту сдачи и приёмки работ.',
       reports_val: '24/7',
       reports_title: 'Отчетность',
       reports_desc: 'Полностью прозрачная сквозная веб-аналитика и отчеты в реальном времени'
@@ -421,6 +423,7 @@ const TRANSLATIONS: Record<Language, TranslationSchema> = {
       link_why: 'Почему мы',
       link_contacts: 'Контакты',
       crm_panel: 'Панель лидов CRM',
+      resources_title: 'Полезные ресурсы',
       copyright: '© 2026 Kray Digital. Все права защищены.'
     },
     portfolio: {
@@ -552,9 +555,9 @@ const TRANSLATIONS: Record<Language, TranslationSchema> = {
       years_val: '10+',
       years_title: 'Years of Experience',
       years_desc: 'In digital marketing and highly scalable systems engineering',
-      kpi_val: '10%',
-      kpi_title: 'Minimal Deposit',
-      kpi_desc: 'Only 10% down payment to kick off. The remaining 90% is paid strictly upon milestone delivery and approval.',
+      kpi_val: '0%',
+      kpi_title: 'Zero Prepayment',
+      kpi_desc: 'No upfront deposit required. Payment is made strictly upon milestone delivery and final approval.',
       reports_val: '24/7',
       reports_title: 'Reporting',
       reports_desc: 'Fully transparent end-to-end web analytics and live custom reports'
@@ -591,6 +594,7 @@ const TRANSLATIONS: Record<Language, TranslationSchema> = {
       link_why: 'Why Us',
       link_contacts: 'Contacts',
       crm_panel: 'CRM Leads Panel',
+      resources_title: 'Useful Resources',
       copyright: '© 2026 Kray Digital. All rights reserved.'
     },
     portfolio: {

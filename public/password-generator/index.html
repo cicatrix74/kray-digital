@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Генератор надійних паролів онлайн — Створити складний пароль безкоштовно | KRAY DIGITAL</title>
+  <meta name="description" content="Безкоштовний онлайн генератор складних та криптостійких паролів. Локальна генерація у браузері через Web Crypto API без передачі на сервер. Налаштування довжини, символів та масова генерація.">
+  <meta name="keywords" content="генератор паролей, создать пароль онлайн, надежный пароль, генератор складних паролів, random password generator, криптостойкий пароль">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+  <meta name="theme-color" content="#0c111d">
+  <base href="/password-generator/">
+  <link rel="canonical" href="https://kray-digital.pp.ua/password-generator">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://kray-digital.pp.ua/password-generator">
+  <meta property="og:title" content="Генератор надійних паролів онлайн — KRAY DIGITAL">
+  <meta property="og:description" content="Миттєва генерація криптостійких паролів прямо у браузері з оцінкою ентропії та захистом від перехоплення.">
+
+  <!-- Schema.org WebApplication -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "KRAY DIGITAL Password Generator",
+    "url": "https://kray-digital.pp.ua/password-generator",
+    "applicationCategory": "SecurityApplication",
+    "operatingSystem": "All",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "UAH"
+    },
+    "inLanguage": ["uk", "ru", "en"]
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap"></noscript>
+  <link rel="stylesheet" href="./style.css?v=1.0">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-container">
+      <div class="logo-area">
+        <a href="/" class="brand-logo" title="KRAY DIGITAL">
+          <div class="logo-favicon-icon" aria-hidden="true">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="100" height="100" rx="22" fill="#0f131e"/>
+              <rect x="2" y="2" width="96" height="96" rx="20" stroke="#00f2fe" stroke-width="3" stroke-opacity="0.4"/>
+              <path d="M54 18L26 56H48L44 82L74 44H50L54 18Z" fill="url(#header-bolt-grad)"/>
+              <defs>
+                <linearGradient id="header-bolt-grad" x1="26" y1="18" x2="74" y2="82" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#00f2fe"/>
+                  <stop offset="1" stop-color="#4facfe"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+          <div class="brand-text">
+            <span class="brand-name">KRAY <span class="brand-highlight">DIGITAL</span></span>
+            <span class="page-badge" id="i18nBadge">WEB TOOLS • CRYPTO PASSWORD GENERATOR</span>
+          </div>
+        </a>
+      </div>
+      <div class="header-right-area">
+        <a href="/konvertor-webp/" class="header-nav-link" id="i18nLinkConverter">🖼️ Конвертер WebP</a>
+        <a href="/photoeditor/" class="header-nav-link" id="i18nLinkEditor">🎨 Фоторедактор</a>
+        <a href="/karta-trevog/" class="header-nav-link" id="i18nLinkAlerts">🚨 Карта тривог</a>
+        <a href="/" class="header-order-btn">
+          <span>✨</span>
+          <span id="i18nOrderText">Замовити сайт</span>
+          <span>→</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="container">
+      <section class="generator-hero">
+        <div class="hero-header">
+          <div>
+            <h1 id="i18nTitle">Генератор надійних паролів онлайн</h1>
+            <p class="hero-subtitle" id="i18nSubtitle">Створюйте криптостійкі паролі будь-якої складності локально у вашому браузері за допомогою Web Crypto API. Жоден пароль не передається на сервер і не зберігається в мережі.</p>
+          </div>
+          <div class="format-badges">
+            <span class="fmt-pill">Web Crypto API</span>
+            <span class="fmt-pill">100% Client-Side</span>
+            <span class="fmt-pill">6–64 символи</span>
+          </div>
+        </div>
+
+        <!-- Main Password Output Box -->
+        <div class="password-display-card">
+          <div class="password-output-row">
+            <input type="text" id="passwordOutput" class="password-input" readonly aria-label="Generated password">
+            <div class="password-actions">
+              <button type="button" class="btn-icon-regen" id="btnRegen" title="Згенерувати новий">🔄</button>
+              <button type="button" class="btn-copy-main" id="btnCopyMain">📋 <span id="i18nCopyBtn">Копіювати</span></button>
+            </div>
+          </div>
+
+          <div class="strength-bar-row">
+            <div class="strength-track">
+              <div class="strength-fill" id="strengthFill" style="width: 85%;"></div>
+            </div>
+            <div class="strength-meta">
+              <span class="strength-badge" id="strengthBadge">Криптостійкий</span>
+              <span class="entropy-text" id="entropyText">~104 bits</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Controls Grid -->
+        <div class="controls-grid">
+          <!-- Left: Length & Presets -->
+          <div class="control-card">
+            <div class="control-head">
+              <label for="lengthSlider" id="i18nLengthLabel">Довжина пароля:</label>
+              <span class="length-val-badge" id="lengthValueBadge">16</span>
+            </div>
+            <input type="range" id="lengthSlider" min="6" max="64" value="16" step="1">
+            <div class="length-presets">
+              <button type="button" class="len-btn" data-len="8">8</button>
+              <button type="button" class="len-btn" data-len="12">12</button>
+              <button type="button" class="len-btn active" data-len="16">16</button>
+              <button type="button" class="len-btn" data-len="24">24</button>
+              <button type="button" class="len-btn" data-len="32">32</button>
+              <button type="button" class="len-btn" data-len="48">48</button>
+            </div>
+
+            <div class="batch-actions-row">
+              <button type="button" class="btn-batch" id="btnBatchGen">⚡ <span id="i18nBatchBtn">Згенерувати 5 паролів</span></button>
+            </div>
+          </div>
+
+          <!-- Right: Character Sets -->
+          <div class="control-card">
+            <div class="control-head">
+              <span class="control-title" id="i18nCharsTitle">Використовувані символи:</span>
+            </div>
+            <div class="toggles-grid">
+              <label class="char-toggle">
+                <input type="checkbox" id="chkUpper" checked>
+                <span id="i18nChkUpper">Великі літери (A–Z)</span>
+              </label>
+              <label class="char-toggle">
+                <input type="checkbox" id="chkLower" checked>
+                <span id="i18nChkLower">Малі літери (a–z)</span>
+              </label>
+              <label class="char-toggle">
+                <input type="checkbox" id="chkNumbers" checked>
+                <span id="i18nChkNumbers">Цифри (0–9)</span>
+              </label>
+              <label class="char-toggle">
+                <input type="checkbox" id="chkSymbols" checked>
+                <span id="i18nChkSymbols">Спецсимволи (!@#$%^&*)</span>
+              </label>
+              <label class="char-toggle full-span">
+                <input type="checkbox" id="chkExcludeSimilar">
+                <span id="i18nChkExclude">Виключити схожі символи (0, O, l, 1, I)</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Batch Results (Hidden until requested) -->
+        <div class="batch-results-card" id="batchResultsCard" style="display: none;">
+          <div class="batch-head">
+            <span id="i18nBatchTitle">Згенерований список (5 паролів):</span>
+            <button type="button" class="btn-close-batch" id="btnCloseBatch">✕</button>
+          </div>
+          <div class="batch-list" id="batchList"></div>
+        </div>
+      </section>
+
+      <!-- SEO Info Section -->
+      <article class="seo-article-card">
+        <h2 id="i18nSeoH2">Як створити справді надійний пароль і захистити акаунти?</h2>
+        <p id="i18nSeoP1">Сучасні відеокарти та хмарні кластери здатні перебирати мільярди простих комбінацій на секунду. Короткий пароль із дати народження чи слова зі словника зламується за лічені секунди. Наш <strong>онлайн генератор паролів</strong> використовує криптографічно стійкий генератор випадкових чисел браузера (<code>window.crypto.getRandomValues</code>), створюючи непередбачувані комбінації з високою ентропією.</p>
+
+        <div class="seo-columns">
+          <div class="seo-col">
+            <h3 id="i18nSeoC1Title">🔐 Локальна генерація (Zero-Knowledge)</h3>
+            <p id="i18nSeoC1Text">Усі паролі створюються виключно на вашому пристрої. Інтернет-з’єднання після завантаження сторінки навіть не потрібне — дані нікуди не надсилаються.</p>
+          </div>
+          <div class="seo-col">
+            <h3 id="i18nSeoC2Title">📏 Оптимальна довжина від 16 символів</h3>
+            <p id="i18nSeoC2Text">Для пошти, банкінгу та адмін-панелей рекомендуємо довжину 16–24 символи з літерами різного регістру, цифрами та спецсимволами.</p>
+          </div>
+          <div class="seo-col">
+            <h3 id="i18nSeoC3Title">🛡️ Унікальність для кожного сайту</h3>
+            <p id="i18nSeoC3Text">Ніколи не використовуйте один пароль на різних сервісах. Витік бази одного форуму не має ставити під загрозу вашу пошту чи криптогаманець.</p>
+          </div>
+        </div>
+
+        <div class="seo-subblock">
+          <h3 id="i18nSeoFaqTitle">Часті запитання про генератор паролів</h3>
+          <div class="seo-faq-grid">
+            <div class="seo-faq-item">
+              <h4 id="i18nFaq1Q">Чи безпечно користуватися онлайн-генератором?</h4>
+              <p id="i18nFaq1A">Так, якщо генерація відбувається локально через Web Crypto API у вашому браузері. Ви можете перевірити це у вкладці Network — жодних запитів під час створення пароля немає.</p>
+            </div>
+            <div class="seo-faq-item">
+              <h4 id="i18nFaq2Q">Що означає ентропія пароля в бітах?</h4>
+              <p id="i18nFaq2A">Ентропія показує математичну складність підбору. Значення від 80 біт вважається надійним, а понад 100 біт — практично неможливим для прямого перебору (brute-force).</p>
+            </div>
+            <div class="seo-faq-item">
+              <h4 id="i18nFaq3Q">Навіщо виключати схожі символи (0, O, l, 1, I)?</h4>
+              <p id="i18nFaq3A">Якщо пароль потрібно диктувати голосом або вводити вручну з екрана на іншому пристрої, виключення візуально схожих символів допоможе уникнути помилок.</p>
+            </div>
+            <div class="seo-faq-item">
+              <h4 id="i18nFaq4Q">Де найкраще зберігати створені паролі?</h4>
+              <p id="i18nFaq4A">Використовуйте перевірені менеджери паролів (Bitwarden, 1Password, KeePass або вбудований менеджер браузера) і обов’язково вмикайте двофакторну автентифікацію (2FA).</p>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2026 KRAY DIGITAL • <a href="/">kray-digital.pp.ua</a> • <a href="/konvertor-webp/" id="i18nFooterConverter">Конвертер WebP/AVIF</a> • <a href="/photoeditor/" id="i18nFooterEditor">Фоторедактор</a> • <a href="/karta-trevog/" id="i18nFooterAlerts">Карта тривог</a></p>
+    </div>
+  </footer>
+
+  <script defer src="./app.js?v=1.0"></script>
+</body>
+</html>

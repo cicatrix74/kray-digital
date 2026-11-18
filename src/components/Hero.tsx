@@ -207,7 +207,7 @@ export default function Hero({ onOpenCalculator, onOpenCases }: HeroProps) {
               <div className="bg-[#080b12] rounded-xl p-3.5 border border-white/5 font-mono text-[12px] leading-relaxed text-gray-300 space-y-1">
                 <div className="text-gray-500">// Kray Digital Model:</div>
                 <div>
-                  <span className="text-cyan-300">const</span> <span className="text-indigo-300">payment</span> = <span className="text-emerald-300">'10% Deposit / 90% on Delivery'</span>;
+                  <span className="text-cyan-300">const</span> <span className="text-indigo-300">payment</span> = <span className="text-emerald-300">'0% Deposit / 100% on Delivery'</span>;
                 </div>
                 <div>
                   <span className="text-cyan-300">const</span> <span className="text-indigo-300">pricing</span> = &#123; landing: <span className="text-amber-300">'від 5 000 ₴'</span>, corp: <span className="text-amber-300">'від 15 000 ₴'</span> &#125;;

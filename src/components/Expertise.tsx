@@ -45,7 +45,7 @@ export default function Expertise({ onSelectService }: ExpertiseProps) {
     ru: {
       web: {
         priceBadge: 'от 5 000 ₴ • от 3–5 дней',
-        prepayBadge: '10% предоплата — 90% по факту',
+        prepayBadge: '0% предоплата — оплата по факту',
         terminalFile: 'production.config.ts',
         metricSpeed: 'Скорость PageSpeed',
         metricMobile: 'Mobile First 100%',
@@ -88,7 +88,7 @@ export default function Expertise({ onSelectService }: ExpertiseProps) {
     uk: {
       web: {
         priceBadge: 'від 5 000 ₴ • від 3–5 днів',
-        prepayBadge: '10% передоплата — 90% за фактом',
+        prepayBadge: '0% передоплата — оплата за фактом',
         terminalFile: 'production.config.ts',
         metricSpeed: 'Швидкість PageSpeed',
         metricMobile: 'Mobile First 100%',
@@ -131,7 +131,7 @@ export default function Expertise({ onSelectService }: ExpertiseProps) {
     en: {
       web: {
         priceBadge: 'from $120 • from 3–5 days',
-        prepayBadge: '10% deposit — 90% on delivery',
+        prepayBadge: '0% deposit — pay on delivery',
         terminalFile: 'production.config.ts',
         metricSpeed: 'PageSpeed Score',
         metricMobile: 'Mobile First 100%',

@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Генератор відео в GIF онлайн (до 30 сек) — MP4, WebM, MOV у GIF безкоштовно | KRAY DIGITAL</title>
+  <meta name="description" content="Безкоштовний онлайн генератор GIF з відео (MP4, WebM, MOV, AVI) тривалістю до 30 секунд. Налаштування початку фрагмента, FPS та ширини кадру з високою якістю палітри.">
+  <meta name="keywords" content="видео в gif, сделать гифку из видео, mp4 в gif, генератор gif онлайн, конвертировать видео в gif, відео в gif">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+  <meta name="theme-color" content="#0c111d">
+  <base href="/generator-gif/">
+  <link rel="canonical" href="https://kray-digital.pp.ua/generator-gif">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://kray-digital.pp.ua/generator-gif">
+  <meta property="og:title" content="Генератор відео в GIF онлайн (до 30 сек) — KRAY DIGITAL">
+  <meta property="og:description" content="Швидке перетворення відеороликів MP4, WebM і MOV у якісну анімовану GIF-картинку до 30 секунд.">
+
+  <!-- Schema.org WebApplication -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "KRAY DIGITAL Video to GIF Generator",
+    "url": "https://kray-digital.pp.ua/generator-gif",
+    "applicationCategory": "MultimediaApplication",
+    "operatingSystem": "All",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "UAH"
+    },
+    "inLanguage": ["uk", "ru", "en"]
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"></noscript>
+  <link rel="stylesheet" href="./style.css?v=1.0">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-container">
+      <div class="logo-area">
+        <a href="/" class="brand-logo" title="KRAY DIGITAL">
+          <div class="logo-favicon-icon" aria-hidden="true">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="100" height="100" rx="22" fill="#0f131e"/>
+              <rect x="2" y="2" width="96" height="96" rx="20" stroke="#00f2fe" stroke-width="3" stroke-opacity="0.4"/>
+              <path d="M54 18L26 56H48L44 82L74 44H50L54 18Z" fill="url(#header-bolt-grad)"/>
+              <defs>
+                <linearGradient id="header-bolt-grad" x1="26" y1="18" x2="74" y2="82" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#00f2fe"/>
+                  <stop offset="1" stop-color="#4facfe"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+          <div class="brand-text">
+            <span class="brand-name">KRAY <span class="brand-highlight">DIGITAL</span></span>
+            <span class="page-badge" id="i18nBadge">WEB TOOLS • VIDEO TO GIF (MAX 30S)</span>
+          </div>
+        </a>
+      </div>
+      <div class="header-right-area">
+        <a href="/konvertor-webp/" class="header-nav-link" id="i18nLinkConverter">🖼️ Конвертер WebP</a>
+        <a href="/photoeditor/" class="header-nav-link" id="i18nLinkEditor">🎨 Фоторедактор</a>
+        <a href="/password-generator/" class="header-nav-link" id="i18nLinkPass">🔐 Паролі</a>
+        <a href="/" class="header-order-btn">
+          <span>✨</span>
+          <span id="i18nOrderText">Замовити сайт</span>
+          <span>→</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="container">
+      <section class="gif-hero">
+        <div class="hero-header">
+          <div>
+            <h1 id="i18nTitle">Генератор відео в GIF онлайн (до 30 секунд)</h1>
+            <p class="hero-subtitle" id="i18nSubtitle">Перетворюйте ролики MP4, WebM, MOV або AVI у чітку GIF-анімацію з оптимізованою 256-кольоровою палітрою. Обирайте точний фрагмент до 30 секунд, частоту кадрів (FPS) та ширину.</p>
+          </div>
+          <div class="format-badges">
+            <span class="fmt-pill">MP4 / WebM / MOV</span>
+            <span class="fmt-pill" id="i18nMaxBadge">Макс. довжина: 30 сек</span>
+            <span class="fmt-pill">HD Palette GIF</span>
+          </div>
+        </div>
+
+        <!-- Two-Column Studio -->
+        <div class="gif-studio-grid">
+          <!-- Left: Video Drop / Preview -->
+          <div class="gif-left-col">
+            <div class="video-drop-zone" id="videoDropZone">
+              <input type="file" id="videoInput" accept="video/*,.mp4,.webm,.mov,.m4v,.avi,.mkv" hidden>
+              <div class="drop-icon">🎬</div>
+              <div class="drop-title" id="i18nDropTitle">Перетягніть відео сюди або натисніть для вибору</div>
+              <div class="drop-hint" id="i18nDropHint">MP4, WebM, MOV, AVI • Максимальна довжина GIF: 30 секунд</div>
+              <button type="button" class="btn-choose-video" id="btnChooseVideo">Обрати відео</button>
+            </div>
+
+            <div class="video-preview-wrap" id="videoPreviewWrap" style="display: none;">
+              <video id="videoPlayer" controls playsinline muted></video>
+              <div class="video-file-bar">
+                <span class="video-file-name" id="videoFileName">video.mp4</span>
+                <button type="button" class="btn-change-video" id="btnChangeVideo">🔄 <span id="i18nChangeVideo">Інше відео</span></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Trim & GIF Settings -->
+          <div class="gif-right-col">
+            <div class="settings-title" id="i18nSettingsTitle">Налаштування GIF (макс. 30 сек)</div>
+
+            <div class="trim-grid">
+              <div class="field-box">
+                <div class="field-head">
+                  <label for="startInput" id="i18nStartLabel">Початок (сек):</label>
+                  <span class="val-pill" id="startValBadge">0.0s</span>
+                </div>
+                <input type="range" id="startSlider" min="0" max="60" value="0" step="0.5" disabled>
+              </div>
+
+              <div class="field-box">
+                <div class="field-head">
+                  <label for="durationSlider" id="i18nDurationLabel">Тривалість (макс. 30с):</label>
+                  <span class="val-pill" id="durationValBadge">10.0s</span>
+                </div>
+                <input type="range" id="durationSlider" min="1" max="30" value="10" step="0.5">
+              </div>
+            </div>
+
+            <div class="field-box">
+              <div class="field-head">
+                <span class="field-label" id="i18nFpsLabel">Частота кадрів (FPS):</span>
+                <span class="val-pill" id="fpsValBadge">12 FPS</span>
+              </div>
+              <div class="pill-group" id="fpsGroup">
+                <button type="button" class="opt-pill" data-fps="8">8 FPS</button>
+                <button type="button" class="opt-pill active" data-fps="12">12 FPS</button>
+                <button type="button" class="opt-pill" data-fps="15">15 FPS</button>
+                <button type="button" class="opt-pill" data-fps="20">20 FPS</button>
+              </div>
+            </div>
+
+            <div class="field-box">
+              <div class="field-head">
+                <span class="field-label" id="i18nWidthLabel">Ширина GIF:</span>
+                <span class="val-pill" id="widthValBadge">480 px</span>
+              </div>
+              <div class="pill-group" id="widthGroup">
+                <button type="button" class="opt-pill" data-w="320">320 px</button>
+                <button type="button" class="opt-pill active" data-w="480">480 px</button>
+                <button type="button" class="opt-pill" data-w="640">640 px</button>
+                <button type="button" class="opt-pill" data-w="800">800 px</button>
+              </div>
+            </div>
+
+            <div class="gen-progress-inline" id="gifProgressBox" style="display: none;">
+              <div class="gen-progress-head">
+                <span id="gifProgressText">Створення GIF...</span>
+                <span id="gifProgressPct">0%</span>
+              </div>
+              <div class="gen-progress-track">
+                <div class="gen-progress-fill" id="gifProgressFill" style="width: 0%;"></div>
+              </div>
+            </div>
+
+            <button type="button" class="btn-generate-gif" id="btnGenerateGif" disabled>
+              🎬 <span id="i18nGenerateBtn">Створити GIF</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Output GIF Result -->
+        <div class="gif-result-card" id="gifResultCard" style="display: none;">
+          <div class="gif-result-head">
+            <div>
+              <h3 id="i18nResultTitle">Готовий GIF готовий до завантаження</h3>
+              <div class="gif-result-meta" id="gifResultMeta">—</div>
+            </div>
+            <a href="#" download="animation.gif" class="btn-download-gif" id="btnDownloadGif">⬇️ <span id="i18nDownloadGif">Завантажити GIF</span></a>
+          </div>
+          <div class="gif-result-preview">
+            <img id="gifResultImg" src="" alt="Generated GIF preview">
+          </div>
+        </div>
+      </section>
+
+      <!-- SEO Info Section -->
+      <article class="seo-article-card">
+        <h2 id="i18nSeoH2">Навіщо робити GIF із відео та як отримати найкращу якість?</h2>
+        <p id="i18nSeoP1">Анімовані <strong>GIF-зображення</strong> автоматично відтворюються у Telegram, месенджерах, презентаціях, статтях та соцмережах без натискання кнопки «Play». Наш генератор використовує двопрохідну оптимізацію палітри (<code>palettegen</code> + <code>paletteuse</code>), щоб кожен кадр виглядав чітко, без зайвого шуму та з компактною вагою файлу.</p>
+
+        <div class="seo-columns">
+          <div class="seo-col">
+            <h3 id="i18nSeoC1Title">⏱️ Точна обрізка до 30 секунд</h3>
+            <p id="i18nSeoC1Text">Обирайте стартову секунду та точну тривалість фрагмента (від 1 до 30 секунд). Обмеження в 30 секунд дозволяє уникнути гігантських файлів по 50+ МБ.</p>
+          </div>
+          <div class="seo-col">
+            <h3 id="i18nSeoC2Title">🎞️ Гнучкий вибір FPS і роздільності</h3>
+            <p id="i18nSeoC2Text">Для мемів та інструкцій достатньо 10–12 FPS і ширини 480 px, а для плавних презентацій інтерфейсу обирайте 15–20 FPS і 640–800 px.</p>
+          </div>
+          <div class="seo-col">
+            <h3 id="i18nSeoC3Title">⚡ Оптимізація для сайту в WebP</h3>
+            <p id="i18nSeoC3Text">Якщо ви робите анімацію для вебсайту, після створення GIF ви можете додатково стиснути її в анімований WebP через наш <a href="/konvertor-webp/">конвертер WebP</a>.</p>
+          </div>
+        </div>
+
+        <div class="seo-subblock">
+          <h3 id="i18nSeoFaqTitle">Часті запитання про генератор відео в GIF</h3>
+          <div class="seo-faq-grid">
+            <div class="seo-faq-item">
+              <h4 id="i18nFaq1Q">Які формати відео підтримуються?</h4>
+              <p id="i18nFaq1A">Підтримуються MP4, WebM, MOV (відео з iPhone), M4V, AVI та MKV.</p>
+            </div>
+            <div class="seo-faq-item">
+              <h4 id="i18nFaq2Q">Чому максимальна довжина GIF обмежена 30 секундами?</h4>
+              <p id="i18nFaq2A">Формат GIF не використовує між­кадрове стиснення як MP4, тому ролики довші за 30 секунд важать десятки мегабайтів і погано відкриваються у браузері та месенджерах.</p>
+            </div>
+            <div class="seo-faq-item">
+              <h4 id="i18nFaq3Q">Як зменшити розмір готової гіфки?</h4>
+              <p id="i18nFaq3A">Зменште ширину до 320–480 px або частоту кадрів до 8–12 FPS — це одразу скоротить вагу файлу у 2–4 рази.</p>
+            </div>
+            <div class="seo-faq-item">
+              <h4 id="i18nFaq4Q">Чи зберігаються мої відео на сервері?</h4>
+              <p id="i18nFaq4A">Ні. Відео обробляється тимчасово лише на час генерації GIF і автоматично видаляється одразу після завершення конвертації.</p>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2026 KRAY DIGITAL • <a href="/">kray-digital.pp.ua</a> • <a href="/konvertor-webp/" id="i18nFooterConverter">Конвертер WebP/AVIF</a> • <a href="/photoeditor/" id="i18nFooterEditor">Фоторедактор</a> • <a href="/password-generator/" id="i18nFooterPass">Генератор паролів</a></p>
+    </div>
+  </footer>
+
+  <script defer src="./app.js?v=1.1"></script>
+</body>
+</html>

@@ -5,13 +5,18 @@ import dotenv from 'dotenv';
 import path from 'path';
 import fs from 'fs';
 import https from 'https';
+import crypto from 'crypto';
+import sharp from 'sharp';
+import os from 'os';
+import { execFile } from 'child_process';
+import ffmpegPath from 'ffmpeg-static';
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
 
 // Initialize Gemini SDK with telemetry header
 const ai = new GoogleGenAI({
@@ -758,6 +763,289 @@ Your goal is to answer client questions about Kray Digital's services, pricing, 
       error: 'Failed to process chat request',
       details: error?.message || 'Server error',
     });
+  }
+});
+
+// Telegram Phone Verification (Option 2 - Local/Bot integration)
+const TG_BOT_TOKEN = (process.env.TELEGRAM_BOT_TOKEN || '').trim();
+const TG_BOT_USERNAME = (process.env.TELEGRAM_BOT_USERNAME || '').replace(/^@/, '').trim();
+
+interface PhoneVerificationSession {
+  status: 'pending' | 'verified';
+  enteredPhone: string;
+  verifiedPhone: string | null;
+  chatId?: number;
+  createdAt: number;
+}
+
+const phoneVerifications = new Map<string, PhoneVerificationSession>();
+const chatIdToToken = new Map<number, string>();
+
+// Clean up expired sessions (> 15 min) periodically
+setInterval(() => {
+  const cutoff = Date.now() - 15 * 60 * 1000;
+  for (const [tok, sess] of phoneVerifications.entries()) {
+    if (sess.createdAt < cutoff) phoneVerifications.delete(tok);
+  }
+}, 60000);
+
+async function tgApiCall(method: string, payload: Record<string, any>) {
+  if (!TG_BOT_TOKEN) return null;
+  const res = await fetch(`https://api.telegram.org/bot${TG_BOT_TOKEN}/${method}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  });
+  return res.json();
+}
+
+let tgLastUpdateId = 0;
+async function pollTelegramUpdates() {
+  if (!TG_BOT_TOKEN) return;
+  try {
+    const res = await fetch(`https://api.telegram.org/bot${TG_BOT_TOKEN}/getUpdates?offset=${tgLastUpdateId + 1}&timeout=15`);
+    if (res.ok) {
+      const data: any = await res.json();
+      if (data.ok && Array.isArray(data.result)) {
+        for (const upd of data.result) {
+          tgLastUpdateId = Math.max(tgLastUpdateId, upd.update_id);
+          const msg = upd.message;
+          if (!msg || !msg.chat) continue;
+          const chatId = msg.chat.id;
+          const text = (msg.text || '').trim();
+
+          if (text.startsWith('/start')) {
+            const parts = text.split(/\s+/);
+            const token = parts[1] || '';
+            if (token && phoneVerifications.has(token)) {
+              chatIdToToken.set(chatId, token);
+              const sess = phoneVerifications.get(token)!;
+              sess.chatId = chatId;
+              await tgApiCall('sendMessage', {
+                chat_id: chatId,
+                text: 'Натисніть кнопку нижче, щоб підтвердити ваш номер телефону для заявки на сайті KRAY DIGITAL:',
+                reply_markup: {
+                  keyboard: [[{ text: '📱 Поділитися номером телефону', request_contact: true }]],
+                  resize_keyboard: true,
+                  one_time_keyboard: true
+                }
+              });
+            } else {
+              await tgApiCall('sendMessage', {
+                chat_id: chatId,
+                text: 'Будь ласка, перейдіть за посиланням підтвердження безпосередньо з форми на сайті.'
+              });
+            }
+          } else if (msg.contact && msg.contact.phone_number) {
+            // Ensure contact belongs to the Telegram sender
+            if (msg.contact.user_id && msg.from && msg.contact.user_id !== msg.from.id) {
+              await tgApiCall('sendMessage', {
+                chat_id: chatId,
+                text: '⚠️ Будь ласка, надішліть саме свій власний контакт.'
+              });
+              continue;
+            }
+            const token = chatIdToToken.get(chatId);
+            if (token && phoneVerifications.has(token)) {
+              const sess = phoneVerifications.get(token)!;
+              const rawPhone = String(msg.contact.phone_number);
+              sess.verifiedPhone = rawPhone.startsWith('+') ? rawPhone : `+${rawPhone}`;
+              sess.status = 'verified';
+              await tgApiCall('sendMessage', {
+                chat_id: chatId,
+                text: `✅ Номер ${sess.verifiedPhone} підтверджено! Поверніться на сайт — заявка відправиться автоматично.`,
+                reply_markup: { remove_keyboard: true }
+              });
+            }
+          }
+        }
+      }
+    }
+  } catch (err) {
+    console.error('TG polling error:', err);
+  }
+  setTimeout(pollTelegramUpdates, 1000);
+}
+
+if (TG_BOT_TOKEN) {
+  pollTelegramUpdates();
+}
+
+app.post('/api/verify-phone/start', (req, res) => {
+  const enteredPhone = String((req.body && req.body.phone) || '').trim();
+  if (!TG_BOT_TOKEN || !TG_BOT_USERNAME) {
+    return res.json({
+      success: false,
+      needsBotConfig: true,
+      message: 'Telegram Bot не налаштований у .env (потрібні TELEGRAM_BOT_TOKEN та TELEGRAM_BOT_USERNAME)'
+    });
+  }
+
+  const token = crypto.randomBytes(12).toString('hex');
+  phoneVerifications.set(token, {
+    status: 'pending',
+    enteredPhone,
+    verifiedPhone: null,
+    createdAt: Date.now()
+  });
+
+  res.json({
+    success: true,
+    token,
+    botUrl: `https://t.me/${TG_BOT_USERNAME}?start=${token}`
+  });
+});
+
+app.get('/api/verify-phone/status', (req, res) => {
+  const token = String(req.query.token || '').trim();
+  if (!token || !phoneVerifications.has(token)) {
+    return res.status(404).json({ success: false, status: 'expired' });
+  }
+  const sess = phoneVerifications.get(token)!;
+  res.json({
+    success: true,
+    status: sess.status,
+    verifiedPhone: sess.verifiedPhone
+  });
+});
+
+// Image Converter Page & API (/konvertor-webp -> WebP & AVIF)
+const KONVERTOR_DIR = path.resolve(process.cwd(), 'public/konvertor-webp');
+app.get('/konvertor-webp', (req, res) => {
+  if (!req.originalUrl.split('?')[0].endsWith('/')) {
+    return res.redirect(301, '/konvertor-webp/');
+  }
+  res.sendFile(path.join(KONVERTOR_DIR, 'index.html'));
+});
+
+// Online Photo Editor Page (/photoeditor)
+const PHOTOEDITOR_DIR = path.resolve(process.cwd(), 'public/photoeditor');
+app.get('/photoeditor', (req, res) => {
+  if (!req.originalUrl.split('?')[0].endsWith('/')) {
+    return res.redirect(301, '/photoeditor/');
+  }
+  res.sendFile(path.join(PHOTOEDITOR_DIR, 'index.html'));
+});
+
+// Password Generator Page (/password-generator)
+const PASSGEN_DIR = path.resolve(process.cwd(), 'public/password-generator');
+app.get('/password-generator', (req, res) => {
+  if (!req.originalUrl.split('?')[0].endsWith('/')) {
+    return res.redirect(301, '/password-generator/');
+  }
+  res.sendFile(path.join(PASSGEN_DIR, 'index.html'));
+});
+
+// Video to GIF Generator Page & API (/generator-gif, max 30s)
+const GIFGEN_DIR = path.resolve(process.cwd(), 'public/generator-gif');
+app.get('/generator-gif', (req, res) => {
+  if (!req.originalUrl.split('?')[0].endsWith('/')) {
+    return res.redirect(301, '/generator-gif/');
+  }
+  res.sendFile(path.join(GIFGEN_DIR, 'index.html'));
+});
+
+app.post('/api/video-to-gif', express.raw({ type: '*/*', limit: '100mb' }), async (req, res) => {
+  if (!ffmpegPath) {
+    return res.status(500).json({ success: false, error: 'FFmpeg binary not found' });
+  }
+  const inputBuf = req.body;
+  if (!Buffer.isBuffer(inputBuf) || inputBuf.length === 0) {
+    return res.status(400).json({ success: false, error: 'Empty video payload' });
+  }
+
+  const startSec = Math.max(0, parseFloat(String(req.query.start || '0')) || 0);
+  const durationSec = Math.min(30, Math.max(0.5, parseFloat(String(req.query.duration || '10')) || 10));
+  const fps = Math.min(25, Math.max(5, parseInt(String(req.query.fps || '12'), 10) || 12));
+  const width = Math.min(960, Math.max(200, parseInt(String(req.query.width || '480'), 10) || 480));
+  const rawExt = String(req.query.ext || 'mp4').replace(/[^a-z0-9]/gi, '').slice(0, 6) || 'mp4';
+
+  const id = crypto.randomBytes(8).toString('hex');
+  const inFile = path.join(os.tmpdir(), `kray_in_${id}.${rawExt}`);
+  const outFile = path.join(os.tmpdir(), `kray_out_${id}.gif`);
+
+  try {
+    await fs.promises.writeFile(inFile, inputBuf);
+
+    const vf = `fps=${fps},scale=${width}:-1:flags=lanczos,split[s0][s1];[s0]palettegen=max_colors=256:stats_mode=diff[p];[s1][p]paletteuse=dither=bayer:bayer_scale=5`;
+    await new Promise<void>((resolve, reject) => {
+      execFile(
+        ffmpegPath as string,
+        ['-y', '-ss', String(startSec), '-t', String(durationSec), '-i', inFile, '-vf', vf, '-loop', '0', outFile],
+        { timeout: 120000, maxBuffer: 10 * 1024 * 1024 },
+        (err) => (err ? reject(err) : resolve())
+      );
+    });
+
+    const outBuf = await fs.promises.readFile(outFile);
+    res.json({
+      success: true,
+      originalSize: inputBuf.length,
+      gifSize: outBuf.length,
+      duration: durationSec,
+      fps,
+      width,
+      dataUrl: `data:image/gif;base64,${outBuf.toString('base64')}`
+    });
+  } catch (err: any) {
+    console.error('Video to GIF error:', err);
+    res.status(500).json({ success: false, error: err?.message || 'Conversion failed' });
+  } finally {
+    fs.promises.unlink(inFile).catch(() => {});
+    fs.promises.unlink(outFile).catch(() => {});
+  }
+});
+
+app.post('/api/convert-image', async (req, res) => {
+  try {
+    const { dataUrl, filename, format, quality, lossless } = req.body || {};
+    if (!dataUrl || typeof dataUrl !== 'string') {
+      return res.status(400).json({ success: false, error: 'Missing image data' });
+    }
+
+    const match = dataUrl.match(/^data:([^;]+);base64,(.+)$/);
+    if (!match) {
+      return res.status(400).json({ success: false, error: 'Invalid base64 dataUrl' });
+    }
+
+    const mimeIn = match[1].toLowerCase();
+    const inputBuf = Buffer.from(match[2], 'base64');
+    const targetFmt = format === 'avif' ? 'avif' : 'webp';
+    const q = Math.min(100, Math.max(1, parseInt(quality, 10) || 80));
+    const isLossless = Boolean(lossless);
+    const isGif = mimeIn.includes('gif');
+
+    let pipeline = sharp(inputBuf, { animated: isGif && targetFmt === 'webp', limitInputPixels: false });
+    const meta = await pipeline.metadata();
+
+    let outBuf: Buffer;
+    if (targetFmt === 'avif') {
+      outBuf = await pipeline.avif({ quality: q, lossless: isLossless, effort: 4 }).toBuffer();
+    } else {
+      outBuf = await pipeline.webp({ quality: q, lossless: isLossless, effort: 4 }).toBuffer();
+    }
+
+    const baseName = String(filename || 'image').replace(/\.[^/.]+$/, '');
+    const outName = `${baseName}.${targetFmt}`;
+    const outMime = targetFmt === 'avif' ? 'image/avif' : 'image/webp';
+    const savingsPercent = inputBuf.length > 0
+      ? Math.round(((inputBuf.length - outBuf.length) / inputBuf.length) * 100)
+      : 0;
+
+    res.json({
+      success: true,
+      filename: outName,
+      format: targetFmt,
+      originalSize: inputBuf.length,
+      convertedSize: outBuf.length,
+      savingsPercent,
+      width: meta.width || 0,
+      height: meta.height || 0,
+      dataUrl: `data:${outMime};base64,${outBuf.toString('base64')}`
+    });
+  } catch (err: any) {
+    console.error('Image convert error:', err);
+    res.status(500).json({ success: false, error: err?.message || 'Conversion failed' });
   }
 });
 

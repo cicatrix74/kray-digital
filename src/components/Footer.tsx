@@ -12,9 +12,61 @@ interface FooterProps {
 export default function Footer({ onOpenCases, onScrollToSection, onOpenLeadPanel }: FooterProps) {
   const { t, language } = useLanguage();
 
+  const usefulResources = [
+    {
+      href: '/grafiki-vidkluchen-svitla-v-dnipri-ta-dnipropotrovskoi-oblasti/',
+      label: language === 'ru'
+        ? '⚡ Графики отключений света (Днепр)'
+        : language === 'en'
+          ? '⚡ Power Outage Schedules (Dnipro)'
+          : '⚡ Графіки відключень світла (Дніпро)'
+    },
+    {
+      href: '/karta-trevog/',
+      label: language === 'ru'
+        ? '🚨 Карта воздушных тревог'
+        : language === 'en'
+          ? '🚨 Air Raid Alerts Map'
+          : '🚨 Карта повітряних тривог'
+    },
+    {
+      href: '/konvertor-webp/',
+      label: language === 'ru'
+        ? '🖼️ Конвертер JPG/PNG/GIF в WebP и AVIF'
+        : language === 'en'
+          ? '🖼️ Image Converter (WebP & AVIF)'
+          : '🖼️ Конвертер JPG/PNG/GIF у WebP та AVIF'
+    },
+    {
+      href: '/photoeditor/',
+      label: language === 'ru'
+        ? '🎨 Онлайн фоторедактор (Photopea)'
+        : language === 'en'
+          ? '🎨 Online Photo Editor (Photopea)'
+          : '🎨 Онлайн фоторедактор (Photopea)'
+    },
+    {
+      href: '/password-generator/',
+      label: language === 'ru'
+        ? '🔐 Генератор надёжных паролей'
+        : language === 'en'
+          ? '🔐 Strong Password Generator'
+          : '🔐 Генератор надійних паролів'
+    },
+    {
+      href: '/generator-gif/',
+      label: language === 'ru'
+        ? '🎬 Генератор видео в GIF (до 30 сек)'
+        : language === 'en'
+          ? '🎬 Video to GIF Generator (Max 30s)'
+          : '🎬 Генератор відео в GIF (до 30 сек)'
+    }
+  ];
+
   return (
-    <footer className="bg-brand-surface-container-lowest/30 backdrop-blur-md border-t border-[#3b494b]/20 py-12 relative z-20">
-      <div className="max-w-7xl mx-auto px-4 md:px-10 flex flex-col md:flex-row justify-between items-center gap-8">
+    <footer className="bg-brand-surface-container-lowest/30 backdrop-blur-md border-t border-[#3b494b]/20 pt-12 pb-24 relative z-20">
+      <div className="max-w-7xl mx-auto px-4 md:px-10 flex flex-col gap-8">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-8">
         
         {/* Brand Logo */}
         <div className="flex items-center gap-3 font-display text-lg md:text-xl font-black tracking-tight text-white">
@@ -79,6 +131,26 @@ export default function Footer({ onOpenCases, onScrollToSection, onOpenLeadPanel
           </div>
         </div>
 
+        </div>
+
+        {/* Useful Resources List Menu */}
+        <div className="border-t border-[#3b494b]/20 pt-6">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-brand-primary-container mb-3 text-center md:text-left">
+            {t.footer.resources_title}
+          </h3>
+          <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-2 list-none">
+            {usefulResources.map((item) => (
+              <li key={item.href}>
+                <a
+                  href={item.href}
+                  className="inline-flex items-center text-xs sm:text-sm text-brand-on-surface-variant hover:text-brand-primary-container transition-colors py-1"
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </footer>
   );

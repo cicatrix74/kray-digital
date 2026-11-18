@@ -18,12 +18,42 @@ export default function ContactCTA({ onSubmitLead, onOpenCallback }: ContactCTAP
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
+  const [verifyStep, setVerifyStep] = useState<'idle' | 'pending' | 'needs_config' | 'verified'>('idle');
+  const [verifyToken, setVerifyToken] = useState<string | null>(null);
+  const [verifyBotUrl, setVerifyBotUrl] = useState<string | null>(null);
+
   // Initialize service choice on language load or change
   useEffect(() => {
     setService(t.contact.opt1);
   }, [t]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Poll Telegram verification status while pending
+  useEffect(() => {
+    if (verifyStep !== 'pending' || !verifyToken) return;
+    const interval = setInterval(async () => {
+      try {
+        const res = await fetch(`/api/verify-phone/status?token=${encodeURIComponent(verifyToken)}`);
+        const data = await res.json();
+        if (data && data.status === 'verified' && data.verifiedPhone) {
+          clearInterval(interval);
+          setPhone(data.verifiedPhone);
+          setVerifyStep('verified');
+          onSubmitLead({
+            name,
+            phone: data.verifiedPhone,
+            service
+          });
+          setIsSubmitting(false);
+          setIsSuccess(true);
+        }
+      } catch {
+        // ignore transient network errors during polling
+      }
+    }, 2000);
+    return () => clearInterval(interval);
+  }, [verifyStep, verifyToken, name, service, onSubmitLead]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const newErrors: Record<string, string> = {};
 
@@ -45,18 +75,38 @@ export default function ContactCTA({ onSubmitLead, onOpenCallback }: ContactCTAP
     }
 
     setErrors({});
-    setIsSubmitting(true);
 
-    // Simulate network delay
-    setTimeout(() => {
-      onSubmitLead({
-        name,
-        phone,
-        service
-      });
+    if (verifyStep === 'verified') {
+      setIsSubmitting(true);
+      onSubmitLead({ name, phone, service });
       setIsSubmitting(false);
       setIsSuccess(true);
-    }, 1200);
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const res = await fetch('/api/verify-phone/start', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone })
+      });
+      const data = await res.json();
+      setIsSubmitting(false);
+
+      if (data && data.needsBotConfig) {
+        setVerifyStep('needs_config');
+        return;
+      }
+
+      if (data && data.success && data.token && data.botUrl) {
+        setVerifyToken(data.token);
+        setVerifyBotUrl(data.botUrl);
+        setVerifyStep('pending');
+      }
+    } catch {
+      setIsSubmitting(false);
+    }
   };
 
   const bullets = [
@@ -229,19 +279,88 @@ export default function ContactCTA({ onSubmitLead, onOpenCallback }: ContactCTAP
                       </div>
                     </div>
 
-                    <button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className="w-full mt-6 bg-brand-primary-container text-[#00363a] font-bold text-xs sm:text-sm py-4 rounded hover:brightness-110 active:scale-[0.98] transition-all shadow-glow flex items-center justify-center gap-2 cursor-pointer"
-                    >
-                      {isSubmitting ? (
-                        <div className="w-4 h-4 border-2 border-[#00363a] border-t-transparent rounded-full animate-spin" />
-                      ) : (
-                        <>
-                          <Send className="w-4 h-4" /> {t.contact.btn_submit}
-                        </>
-                      )}
-                    </button>
+                    {verifyStep === 'pending' && verifyBotUrl ? (
+                      <div className="mt-4 p-4 rounded-xl bg-[#0f172a]/90 border border-brand-primary-container/40 space-y-3">
+                        <div className="text-xs font-bold text-brand-primary-container">
+                          {language === 'ru'
+                            ? '📱 Подтверждение номера через Telegram'
+                            : language === 'en'
+                            ? '📱 Verify your phone via Telegram'
+                            : '📱 Підтвердження номера через Telegram'}
+                        </div>
+                        <p className="text-[11px] text-brand-on-surface-variant leading-relaxed">
+                          {language === 'ru'
+                            ? 'Нажмите кнопку ниже, перейдите в Telegram-бота и нажмите «Поделиться номером». Заявка отправится автоматически.'
+                            : language === 'en'
+                            ? 'Click below to open our Telegram bot and tap "Share phone number". Your request will submit automatically.'
+                            : 'Натисніть кнопку нижче, перейдіть до Telegram-бота та натисніть «Поділитися номером». Заявка відправиться автоматично.'}
+                        </p>
+                        <a
+                          href={verifyBotUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-full py-3 px-4 rounded-lg bg-[#229ED9] hover:brightness-110 text-white font-bold text-xs flex items-center justify-center gap-2 transition-all"
+                        >
+                          <Send className="w-4 h-4" />
+                          {language === 'ru'
+                            ? 'Открыть Telegram и подтвердить'
+                            : language === 'en'
+                            ? 'Open Telegram & Verify'
+                            : 'Відкрити Telegram і підтвердити'}
+                        </a>
+                        <div className="flex items-center justify-between text-[11px] text-brand-on-surface-variant pt-1">
+                          <span className="flex items-center gap-1.5">
+                            <span className="w-2 h-2 rounded-full bg-brand-primary-container animate-pulse" />
+                            {language === 'ru' ? 'Ожидание подтверждения...' : language === 'en' ? 'Waiting for verification...' : 'Очікування підтвердження...'}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => { setVerifyStep('idle'); setVerifyToken(null); }}
+                            className="text-brand-primary-container hover:underline cursor-pointer"
+                          >
+                            {language === 'ru' ? 'Отмена' : language === 'en' ? 'Cancel' : 'Скасувати'}
+                          </button>
+                        </div>
+                      </div>
+                    ) : verifyStep === 'needs_config' ? (
+                      <div className="mt-4 p-4 rounded-xl bg-amber-500/10 border border-amber-400/40 space-y-2 text-[11px] text-amber-200">
+                        <div className="font-bold">
+                          {language === 'ru'
+                            ? '⚙️ Требуется токен Telegram-бота (.env)'
+                            : language === 'en'
+                            ? '⚙️ Telegram Bot token required in .env'
+                            : '⚙️ Потрібен токен Telegram-бота у .env'}
+                        </div>
+                        <p className="leading-relaxed opacity-90">
+                          {language === 'ru'
+                            ? 'Создайте бота через @BotFather и добавьте в локальный файл .env переменные TELEGRAM_BOT_TOKEN и TELEGRAM_BOT_USERNAME, затем перезапустите сервер.'
+                            : language === 'en'
+                            ? 'Create a bot via @BotFather and add TELEGRAM_BOT_TOKEN and TELEGRAM_BOT_USERNAME to your local .env file, then restart the server.'
+                            : 'Створіть бота через @BotFather і додайте в локальний файл .env змінні TELEGRAM_BOT_TOKEN та TELEGRAM_BOT_USERNAME, після чого перезапустіть сервер.'}
+                        </p>
+                        <button
+                          type="button"
+                          onClick={() => setVerifyStep('idle')}
+                          className="text-brand-primary-container font-semibold hover:underline cursor-pointer"
+                        >
+                          {language === 'ru' ? 'Закрыть' : language === 'en' ? 'Close' : 'Закрити'}
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className="w-full mt-6 bg-brand-primary-container text-[#00363a] font-bold text-xs sm:text-sm py-4 rounded hover:brightness-110 active:scale-[0.98] transition-all shadow-glow flex items-center justify-center gap-2 cursor-pointer"
+                      >
+                        {isSubmitting ? (
+                          <div className="w-4 h-4 border-2 border-[#00363a] border-t-transparent rounded-full animate-spin" />
+                        ) : (
+                          <>
+                            <Send className="w-4 h-4" /> {t.contact.btn_submit}
+                          </>
+                        )}
+                      </button>
+                    )}
 
                     <p className="text-[10px] text-brand-on-surface-variant text-center mt-3 opacity-75 leading-relaxed">
                       {disclaimerText}
@@ -273,6 +392,9 @@ export default function ContactCTA({ onSubmitLead, onOpenCallback }: ContactCTAP
                       type="button"
                       onClick={() => {
                         setIsSuccess(false);
+                        setVerifyStep('idle');
+                        setVerifyToken(null);
+                        setVerifyBotUrl(null);
                         setName('');
                         setPhone('');
                       }}

@@ -1,17 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Phone, Mail } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
-export const CONTACT_PHONE_HREF = 'tel:+380637678320';
-export const CONTACT_PHONE_DISPLAY = '+38 (063) 767-83-20';
-export const DECOY_PHONE_HREF = 'tel:+385552555555';
-export const DECOY_PHONE_DISPLAY = '+38 (555) 255-55-55';
+const PHONE_PARTS = ['+38', '063', '767', '83', '20'];
 export const CONTACT_EMAIL = 'info@kray-digital.pp.ua';
 export const CONTACT_EMAIL_HREF = 'mailto:info@kray-digital.pp.ua';
 
-let hasSwappedToMainPhone = false;
-
 interface ContactLinkProps {
   className?: string;
+}
+
+function getPhoneHref() {
+  return `tel:${PHONE_PARTS.join('')}`;
+}
+
+function getPhoneDisplay() {
+  return `${PHONE_PARTS[0]} (${PHONE_PARTS[1]}) ${PHONE_PARTS[2]}-${PHONE_PARTS[3]}-${PHONE_PARTS[4]}`;
 }
 
 /**
@@ -30,31 +34,49 @@ export function AnimatedPhoneIcon({
 }
 
 export function PhoneLink({ className = '' }: ContactLinkProps) {
-  const [isMainActive, setIsMainActive] = useState(hasSwappedToMainPhone);
+  const [revealed, setRevealed] = useState(false);
+  const { language } = useLanguage();
 
-  useEffect(() => {
-    if (isMainActive) return;
-    const timer = window.setTimeout(() => {
-      hasSwappedToMainPhone = true;
-      setIsMainActive(true);
-    }, 350);
-    return () => window.clearTimeout(timer);
-  }, [isMainActive]);
+  const callLabel =
+    language === 'ru'
+      ? 'Позвонить'
+      : language === 'en'
+        ? 'Call us'
+        : 'Зателефонувати';
 
-  const phoneHref = isMainActive ? CONTACT_PHONE_HREF : DECOY_PHONE_HREF;
-  const phoneDisplay = isMainActive ? CONTACT_PHONE_DISPLAY : DECOY_PHONE_DISPLAY;
+  const handleCallClick = () => {
+    setRevealed(true);
+    window.location.href = getPhoneHref();
+  };
+
+  if (revealed) {
+    const phoneDisplay = getPhoneDisplay();
+    return (
+      <a
+        href={getPhoneHref()}
+        aria-label={`${callLabel} ${phoneDisplay}`}
+        className={`inline-flex items-center gap-2 text-brand-on-surface hover:text-brand-primary-container transition-colors group ${className}`}
+      >
+        <AnimatedPhoneIcon />
+        <span className="font-semibold tracking-tight whitespace-nowrap tabular-nums">
+          {phoneDisplay}
+        </span>
+      </a>
+    );
+  }
 
   return (
-    <a
-      href={phoneHref}
-      aria-label={`Позвонить ${CONTACT_PHONE_DISPLAY}`}
-      className={`inline-flex items-center gap-2 text-brand-on-surface hover:text-brand-primary-container transition-colors group ${className}`}
+    <button
+      type="button"
+      onClick={handleCallClick}
+      aria-label={callLabel}
+      className={`inline-flex items-center gap-2 text-brand-on-surface hover:text-brand-primary-container transition-colors group cursor-pointer ${className}`}
     >
       <AnimatedPhoneIcon />
-      <span className="font-semibold tracking-tight whitespace-nowrap tabular-nums">
-        {phoneDisplay}
+      <span className="font-semibold tracking-tight whitespace-nowrap">
+        {callLabel}
       </span>
-    </a>
+    </button>
   );
 }
 

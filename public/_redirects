@@ -4,4 +4,10 @@
 /karta-trevog/*    /karta-trevog/:splat    200
 /konvertor-webp    /konvertor-webp/index.html    200
 /konvertor-webp/*    /konvertor-webp/:splat    200
+/generator-gif    /generator-gif/index.html    200
+/generator-gif/*    /generator-gif/:splat    200
+/password-generator    /password-generator/index.html    200
+/password-generator/*    /password-generator/:splat    200
+/photoeditor    /photoeditor/index.html    200
+/photoeditor/*    /photoeditor/:splat    200
 /*    /index.html    200

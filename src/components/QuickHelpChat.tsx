@@ -109,18 +109,18 @@ function getLocalAssistantReply(
   ) {
     if (lang === 'uk') {
       return {
-        text: "**Вартість та терміни розробки сайтів (Kray Digital):**\n\n• **1. Лендинг (Landing Page):** від 5 000 ₴ (3–5 днів)\n• **2. Сайт-візитка:** від 10 000 ₴ (10–14 днів)\n• **3. Корпоративний сайт:** від 15 000 ₴ (14–25 днів)\n• **4. Інтернет-магазин:** від 20 000 ₴ (14–30 днів)\n• **5. Складний портал / Сервіс:** від 30 000 ₴ (20–40 днів)\n\n🛡️ **Головна перевага: лише 10% передоплати!**\nСимволічні 10% для старту робіт, а решта 90% оплачуються виключно за фактом здачі та прийому кожного кроку робіт. Ви перевіряєте результат і лише потім платите.\n\nВи можете відкрити наш інтерактивний калькулятор і розрахувати точну вартість під ваш проект!",
+        text: "**Вартість та терміни розробки сайтів (Kray Digital):**\n\n• **1. Лендинг (Landing Page):** від 5 000 ₴ (3–5 днів)\n• **2. Сайт-візитка:** від 10 000 ₴ (10–14 днів)\n• **3. Корпоративний сайт:** від 15 000 ₴ (14–25 днів)\n• **4. Інтернет-магазин:** від 20 000 ₴ (14–30 днів)\n• **5. Складний портал / Сервіс:** від 30 000 ₴ (20–40 днів)\n\n🛡️ **Головна перевага: 0% передоплати!**\nЖодних авансів на старті — оплата здійснюється виключно за фактом здачі та прийому робіт. Ви перевіряєте результат і лише потім платите.\n\nВи можете відкрити наш інтерактивний калькулятор і розрахувати точну вартість під ваш проект!",
         cta: 'calculator'
       };
     }
     if (lang === 'ru') {
       return {
-        text: "**Стоимость и сроки разработки сайтов (Kray Digital):**\n\n• **1. Лендинг (Landing Page):** от 5 000 ₴ (3–5 дней)\n• **2. Сайт-визитка:** от 10 000 ₴ (10–14 дней)\n• **3. Корпоративный сайт:** от 15 000 ₴ (14–25 дней)\n• **4. Интернет-магазин:** от 20 000 ₴ (14–30 дней)\n• **5. Сложный портал / Сервис:** от 30 000 ₴ (20–40 дней)\n\n🛡️ **Главное преимущество: всего 10% предоплаты!**\nСимволические 10% для фиксации старта проекта, а остальные 90% оплачиваются исключительно по факту выполнения и приёмки работ. Вы сначала проверяете результат, и только потом оплачиваете.\n\nВы можете открыть наш онлайн-калькулятор и быстро рассчитать точную стоимость под ваши задачи!",
+        text: "**Стоимость и сроки разработки сайтов (Kray Digital):**\n\n• **1. Лендинг (Landing Page):** от 5 000 ₴ (3–5 дней)\n• **2. Сайт-визитка:** от 10 000 ₴ (10–14 дней)\n• **3. Корпоративный сайт:** от 15 000 ₴ (14–25 дней)\n• **4. Интернет-магазин:** от 20 000 ₴ (14–30 дней)\n• **5. Сложный портал / Сервис:** от 30 000 ₴ (20–40 дней)\n\n🛡️ **Главное преимущество: 0% предоплаты!**\nНикаких авансов на старте — оплата производится исключительно по факту выполнения и приёмки работ. Вы сначала проверяете результат, и только потом оплачиваете.\n\nВы можете открыть наш онлайн-калькулятор и быстро рассчитать точную стоимость под ваши задачи!",
         cta: 'calculator'
       };
     }
     return {
-      text: "**Web Development Pricing & Timelines (Kray Digital):**\n\n• **1. Landing Page:** from $120 (3–5 days)\n• **2. Business Card Website:** from $240 (10–14 days)\n• **3. Corporate Website:** from $360 (14–25 days)\n• **4. E-commerce Store:** from $480 (14–30 days)\n• **5. Complex Web Portal / Service:** from $730 (20–40 days)\n\n🛡️ **Key Advantage: Only 10% Initial Deposit!**\nJust 10% down payment to kick off, with the remaining 90% paid milestone by milestone strictly upon your review and approval.\n\nUse our interactive cost calculator below to get a custom breakdown for your project!",
+      text: "**Web Development Pricing & Timelines (Kray Digital):**\n\n• **1. Landing Page:** from $120 (3–5 days)\n• **2. Business Card Website:** from $240 (10–14 days)\n• **3. Corporate Website:** from $360 (14–25 days)\n• **4. E-commerce Store:** from $480 (14–30 days)\n• **5. Complex Web Portal / Service:** from $730 (20–40 days)\n\n🛡️ **Key Advantage: 0% Prepayment!**\nNo upfront deposit required — payment is made strictly upon milestone delivery and your approval.\n\nUse our interactive cost calculator below to get a custom breakdown for your project!",
       cta: 'calculator'
     };
   }
@@ -132,18 +132,18 @@ function getLocalAssistantReply(
   ) {
     if (lang === 'uk') {
       return {
-        text: "**Послуги та вартість SEO-оптимізації (Kray Digital):**\n\n• **1. Внутрішня SEO-оптимізація сайту:** від 5 000 ₴ (разово)\n• **2. SEO-тексти (Копірайтинг):** 100 ₴ за 1000 символів\n• **3. Оптимізація картинок:** 20 ₴ за 1 картинку\n• **4. Оптимізація швидкості завантаження:** від 2 000 ₴\n\n🛡️ Також діє наше правило: **лише 10% передоплати**, решта 90% — за фактом виконання та прийому робіт!\n\nВи можете відкрити калькулятор та розрахувати бюджет прямо зараз.",
+        text: "**Послуги та вартість SEO-оптимізації (Kray Digital):**\n\n• **1. Внутрішня SEO-оптимізація сайту:** від 5 000 ₴ (разово)\n• **2. SEO-тексти (Копірайтинг):** 100 ₴ за 1000 символів\n• **3. Оптимізація картинок:** 20 ₴ за 1 картинку\n• **4. Оптимізація швидкості завантаження:** від 2 000 ₴\n\n🛡️ Також діє наше правило: **0% передоплати**, оплата — за фактом виконання та прийому робіт!\n\nВи можете відкрити калькулятор та розрахувати бюджет прямо зараз.",
         cta: 'calculator'
       };
     }
     if (lang === 'ru') {
       return {
-        text: "**Услуги и стоимость SEO-оптимизации (Kray Digital):**\n\n• **1. Внутренняя SEO-оптимизация сайта:** от 5 000 ₴ (единоразово)\n• **2. SEO-тексты (Копирайтинг):** 100 ₴ за 1000 символов\n• **3. Оптимизация картинок:** 20 ₴ за 1 картинку\n• **4. Оптимизация скорости загрузки сайта:** от 2 000 ₴\n\n🛡️ Действует гарантия: **всего 10% предоплаты**, а остальные 90% — строго по факту выполнения работ!\n\nВы можете перейти в онлайн-калькулятор и выбрать нужные услуги.",
+        text: "**Услуги и стоимость SEO-оптимизации (Kray Digital):**\n\n• **1. Внутренняя SEO-оптимизация сайта:** от 5 000 ₴ (единоразово)\n• **2. SEO-тексты (Копирайтинг):** 100 ₴ за 1000 символов\n• **3. Оптимизация картинок:** 20 ₴ за 1 картинку\n• **4. Оптимизация скорости загрузки сайта:** от 2 000 ₴\n\n🛡️ Действует гарантия: **0% предоплаты**, оплата — строго по факту выполнения работ!\n\nВы можете перейти в онлайн-калькулятор и выбрать нужные услуги.",
         cta: 'calculator'
       };
     }
     return {
-      text: "**SEO Optimization Services & Rates (Kray Digital):**\n\n• **1. On-Page SEO Optimization:** from $120 (one-time)\n• **2. SEO Copywriting & Articles:** $3 per 1,000 chars\n• **3. Image Compression & Optimization:** $0.50 per image\n• **4. Page Speed Optimization:** from $50\n\n🛡️ Only 10% initial deposit required, with 90% paid upon milestone delivery!\n\nYou can use our calculator to configure your custom plan.",
+      text: "**SEO Optimization Services & Rates (Kray Digital):**\n\n• **1. On-Page SEO Optimization:** from $120 (one-time)\n• **2. SEO Copywriting & Articles:** $3 per 1,000 chars\n• **3. Image Compression & Optimization:** $0.50 per image\n• **4. Page Speed Optimization:** from $50\n\n🛡️ 0% upfront deposit required — payment is made strictly upon milestone delivery!\n\nYou can use our calculator to configure your custom plan.",
       cta: 'calculator'
     };
   }
@@ -179,18 +179,18 @@ function getLocalAssistantReply(
   ) {
     if (lang === 'uk') {
       return {
-        text: "**Додаткові послуги та технічна підтримка (Kray Digital):**\n\n• **1. Модернізація сайту:** від 2 000 ₴\n• **2. Перенесення сайту на Хостинг:** 1 000 ₴\n• **3. Перенесення сайту на WordPress:** 3 000 ₴\n• **4. Додавання форм та корисних інструментів:** від 200 ₴\n• **5. Оптимізація навантаження на сервер:** від 2 000 ₴\n• **6. Відновлення роботи сайту:** від 1 000 ₴ (терміново від 2 годин)\n\n🛡️ **Лише 10% передоплати!** Решта 90% оплачується після повної перевірки результату.\n\nВи можете відкрити калькулятор та розрахувати точну вартість під ваші потреби!",
+        text: "**Додаткові послуги та технічна підтримка (Kray Digital):**\n\n• **1. Модернізація сайту:** від 2 000 ₴\n• **2. Перенесення сайту на Хостинг:** 1 000 ₴\n• **3. Перенесення сайту на WordPress:** 3 000 ₴\n• **4. Додавання форм та корисних інструментів:** від 200 ₴\n• **5. Оптимізація навантаження на сервер:** від 2 000 ₴\n• **6. Відновлення роботи сайту:** від 1 000 ₴ (терміново від 2 годин)\n\n🛡️ **0% передоплати!** Оплата здійснюється після повної перевірки результату.\n\nВи можете відкрити калькулятор та розрахувати точну вартість під ваші потреби!",
         cta: 'calculator'
       };
     }
     if (lang === 'ru') {
       return {
-        text: "**Дополнительные услуги и техподдержка (Kray Digital):**\n\n• **1. Модернизация сайта:** от 2 000 ₴\n• **2. Перенос сайта на Хостинг:** 1 000 ₴\n• **3. Перенос сайта на WordPress:** 3 000 ₴\n• **4. Добавление форм и полезных инструментов:** от 200 ₴\n• **5. Оптимизация нагрузки на сервер:** от 2 000 ₴\n• **6. Восстановление работы сайта:** от 1 000 ₴ (срочно от 2 часов)\n\n🛡️ **Всего 10% предоплаты!** Остальные 90% оплачиваются строго по факту сдачи и проверки работ.\n\nОткройте онлайн-калькулятор, чтобы сразу выбрать нужную услугу!",
+        text: "**Дополнительные услуги и техподдержка (Kray Digital):**\n\n• **1. Модернизация сайта:** от 2 000 ₴\n• **2. Перенос сайта на Хостинг:** 1 000 ₴\n• **3. Перенос сайта на WordPress:** 3 000 ₴\n• **4. Добавление форм и полезных инструментов:** от 200 ₴\n• **5. Оптимизация нагрузки на сервер:** от 2 000 ₴\n• **6. Восстановление работы сайта:** от 1 000 ₴ (срочно от 2 часов)\n\n🛡️ **0% предоплаты!** Оплата производится строго по факту сдачи и проверки работ.\n\nОткройте онлайн-калькулятор, чтобы сразу выбрать нужную услугу!",
         cta: 'calculator'
       };
     }
     return {
-      text: "**Additional Services & Website Maintenance (Kray Digital):**\n\n• **1. Website modernization:** from $50\n• **2. Hosting migration:** $25\n• **3. WordPress migration:** $75\n• **4. Custom forms & widgets:** from $5\n• **5. Server load optimization:** from $50\n• **6. Emergency website recovery:** from $25 (urgent from 2 hours)\n\n🛡️ **10% initial deposit only!** Remaining 90% paid upon milestone verification.\n\nOpen our calculator to estimate your maintenance package!",
+      text: "**Additional Services & Website Maintenance (Kray Digital):**\n\n• **1. Website modernization:** from $50\n• **2. Hosting migration:** $25\n• **3. WordPress migration:** $75\n• **4. Custom forms & widgets:** from $5\n• **5. Server load optimization:** from $50\n• **6. Emergency website recovery:** from $25 (urgent from 2 hours)\n\n🛡️ **0% upfront deposit!** Payment is made strictly upon milestone verification.\n\nOpen our calculator to estimate your maintenance package!",
       cta: 'calculator'
     };
   }
