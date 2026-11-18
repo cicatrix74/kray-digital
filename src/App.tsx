@@ -16,6 +16,7 @@ const ProjectRoadmap = lazy(() => import('./components/ProjectRoadmap'));
 const CasesDrawer = lazy(() => import('./components/CasesDrawer'));
 const CalculatorModal = lazy(() => import('./components/CalculatorModal'));
 const CallbackModal = lazy(() => import('./components/CallbackModal'));
+const MessageModal = lazy(() => import('./components/MessageModal'));
 const LeadPanel = lazy(() => import('./components/LeadPanel'));
 const QuickHelpChat = lazy(() => import('./components/QuickHelpChat'));
 const Testimonials = lazy(() => import('./components/Testimonials'));
@@ -63,8 +64,15 @@ export default function App() {
   const [selectedCaseId, setSelectedCaseId] = useState<string | null>(null);
   const [isLeadPanelOpen, setIsLeadPanelOpen] = useState(false);
   const [calculatorService, setCalculatorService] = useState('');
+  const [isMessageModalOpen, setIsMessageModalOpen] = useState(false);
   const [leads, setLeads] = useState<LeadSubmission[]>([]);
   const [showBelowFold, setShowBelowFold] = useState(false);
+
+  useEffect(() => {
+    const onOpenMsg = () => setIsMessageModalOpen(true);
+    window.addEventListener('kray:open-message-form', onOpenMsg);
+    return () => window.removeEventListener('kray:open-message-form', onOpenMsg);
+  }, []);
 
   // Defer below-the-fold lazy chunks until first interaction or idle fallback
   // so initial mobile paint isn't competing with vendor-motion & 8 section bundles.
@@ -73,7 +81,7 @@ export default function App() {
     const reveal = () => setShowBelowFold(true);
     const events = ['scroll', 'touchstart', 'pointerdown', 'keydown'] as const;
     events.forEach((ev) => window.addEventListener(ev, reveal, { once: true, passive: true }));
-    const timer = window.setTimeout(reveal, 4500);
+    const timer = window.setTimeout(reveal, 15000);
 
     return () => {
       events.forEach((ev) => window.removeEventListener(ev, reveal));
@@ -393,6 +401,16 @@ export default function App() {
           <CallbackModal
             isOpen={isCallbackOpen}
             onClose={() => setIsCallbackOpen(false)}
+            onSubmitLead={handleAddLead}
+          />
+        )}
+      </Suspense>
+
+      <Suspense fallback={null}>
+        {isMessageModalOpen && (
+          <MessageModal
+            isOpen={isMessageModalOpen}
+            onClose={() => setIsMessageModalOpen(false)}
             onSubmitLead={handleAddLead}
           />
         )}

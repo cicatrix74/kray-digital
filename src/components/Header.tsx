@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Menu, X, ArrowRight, PhoneCall } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { PhoneLink, EmailLink } from './ContactLinks';
@@ -40,6 +40,30 @@ const NAV_ITEMS = {
 export default function Header({ onOpenCalculator, onOpenCallback, onScrollToSection, onOpenCases }: HeaderProps) {
   const { language, t } = useLanguage();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  useEffect(() => {
+    let rafId = 0;
+    const updateProgress = () => {
+      rafId = 0;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = docHeight > 0 ? Math.min(100, Math.max(0, (window.scrollY / docHeight) * 100)) : 0;
+      setScrollProgress(pct);
+    };
+    const onScroll = () => {
+      if (!rafId) {
+        rafId = window.requestAnimationFrame(updateProgress);
+      }
+    };
+    updateProgress();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    return () => {
+      if (rafId) window.cancelAnimationFrame(rafId);
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+    };
+  }, []);
 
   const callbackLabel = {
     uk: 'Замовити дзвінок',
@@ -57,7 +81,7 @@ export default function Header({ onOpenCalculator, onOpenCallback, onScrollToSec
   };
 
   return (
-    <header className="fixed top-0 w-full z-50 bg-[#0f131e]/90 backdrop-blur-xl border-b border-[#3b494b]/20">
+    <header className="fixed top-0 w-full z-50 bg-[#0f131e]/95 md:bg-[#0f131e]/90 md:backdrop-blur-xl border-b border-[#3b494b]/20">
       <div className="max-w-7xl mx-auto px-4 md:px-10 h-20 flex items-center justify-between">
         
         {/* Brand Logo */}
@@ -185,6 +209,18 @@ export default function Header({ onOpenCalculator, onOpenCallback, onScrollToSec
           </nav>
         </div>
       )}
+
+      {/* Scroll Progress Line */}
+      <div
+        aria-hidden="true"
+        className="absolute left-0 right-0 bottom-0 h-[2.5px] bg-white/5 pointer-events-none"
+      >
+        <div
+          id="header-scroll-progress"
+          className="h-full bg-gradient-to-r from-cyan-400 via-blue-500 to-emerald-400 shadow-[0_0_10px_rgba(0,240,255,0.65)] transition-[width] duration-75 ease-out"
+          style={{ width: `${scrollProgress}%` }}
+        />
+      </div>
     </header>
   );
 }

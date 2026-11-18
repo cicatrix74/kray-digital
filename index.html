@@ -6,7 +6,7 @@
     <title>Kray Digital — Розробка сайтів та digital-маркетинг</title>
     
     <!-- SEO Meta Tags -->
-    <meta name="description" content="Digital-агентство Kray Digital. Розробка швидких веб-сайтів від 5 000 ₴, SEO-оптимізація та Google реклама. Символічна передоплата 10% — 90% за фактом робіт." />
+    <meta name="description" content="Digital-агентство Kray Digital. Розробка швидких веб-сайтів від 5 000 ₴, SEO-оптимізація та Google реклама. Без передоплати — оплата виключно за фактом робіт." />
     <meta name="robots" content="index, follow" />
     <meta name="theme-color" content="#0f131e" />
     <link rel="canonical" href="https://kray-digital.pp.ua/" />
@@ -16,7 +16,7 @@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://kray-digital.pp.ua/" />
     <meta property="og:title" content="Kray Digital — Розробка сайтів та digital-маркетинг" />
-    <meta property="og:description" content="Розробка швидких сайтів, SEO та Google реклама. 10% передоплати, 90% за фактом здачі робіт." />
+    <meta property="og:description" content="Розробка швидких сайтів, SEO та Google реклама. Без передоплати — оплата за фактом здачі робіт." />
 
     <!-- Non-blocking Google Fonts: Inter and Montserrat -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -50,11 +50,12 @@
         document.head.appendChild(gtm);
       }
 
-      ['scroll', 'touchstart', 'click', 'keydown'].forEach(function(e) {
+      ['scroll', 'touchstart', 'pointerdown', 'click', 'keydown'].forEach(function(e) {
         window.addEventListener(e, loadAnalytics, { once: true, passive: true });
       });
-      setTimeout(loadAnalytics, 5000);
+      setTimeout(loadAnalytics, 15000);
     </script>
+    <style>body{background:#0f131e;color:#dfe2f2;margin:0}</style>
   </head>
   <body class="bg-[#0f131e] text-[#dfe2f2]">
     <div id="root"></div>

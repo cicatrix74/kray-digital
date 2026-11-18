@@ -64,7 +64,7 @@ export default function Footer({ onOpenCases, onScrollToSection, onOpenLeadPanel
   ];
 
   return (
-    <footer className="bg-brand-surface-container-lowest/30 backdrop-blur-md border-t border-[#3b494b]/20 pt-12 pb-24 relative z-20">
+    <footer className="bg-brand-surface-container-lowest/95 md:bg-brand-surface-container-lowest/30 md:backdrop-blur-md border-t border-[#3b494b]/20 pt-12 pb-24 relative z-20">
       <div className="max-w-7xl mx-auto px-4 md:px-10 flex flex-col gap-8">
         <div className="flex flex-col md:flex-row justify-between items-center gap-8">
         
@@ -131,7 +131,7 @@ export default function Footer({ onOpenCases, onScrollToSection, onOpenLeadPanel
         {/* Direct Contacts, Copyright & Security */}
         <div className="flex flex-col items-center md:items-end gap-2">
           <div className="flex flex-wrap items-center justify-center md:justify-end gap-x-4 gap-y-2 text-xs sm:text-sm">
-            <PhoneLink className="py-1" />
+            <PhoneLink className="py-1" popoverPosition="top" />
             <EmailLink className="py-1" />
           </div>
           <span className="text-xs text-brand-on-surface-variant text-center md:text-right">
@@ -146,9 +146,9 @@ export default function Footer({ onOpenCases, onScrollToSection, onOpenLeadPanel
 
         {/* Useful Resources List Menu */}
         <div className="border-t border-[#3b494b]/20 pt-6">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-brand-primary-container mb-3 text-center md:text-left">
+          <h2 className="text-xs font-bold uppercase tracking-wider text-brand-primary-container mb-3 text-center md:text-left">
             {t.footer.resources_title}
-          </h3>
+          </h2>
           <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-2 list-none">
             {usefulResources.map((item) => (
               <li key={item.href}>

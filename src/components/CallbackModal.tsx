@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, PhoneCall, Clock, CheckCircle2, Sparkles } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import { getKyivScheduleProgress } from './ContactLinks';
 
 interface CallbackModalProps {
   isOpen: boolean;
@@ -77,9 +78,141 @@ const CALLBACK_TEXTS = {
   },
 };
 
+function getKyivTimeDetails() {
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'Europe/Kyiv',
+    weekday: 'short',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  }).formatToParts(new Date());
+  const map: Record<string, string> = {};
+  for (const p of parts) map[p.type] = p.value;
+  const dayMap: Record<string, number> = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
+  const day = dayMap[map.weekday || 'Mon'] ?? 1;
+  const hour = parseInt(map.hour || '0', 10) % 24;
+  const minute = parseInt(map.minute || '0', 10);
+  const mins = hour * 60 + minute;
+  const remainingWorkMinutes = day >= 1 && day <= 5 && mins < 18 * 60 ? 18 * 60 - mins : 0;
+  return { day, hour, minute, mins, remainingWorkMinutes };
+}
+
+function getDynamicSlots(language: 'uk' | 'ru' | 'en', isWorking: boolean, remainingWorkMinutes: number) {
+  const { day, hour } = getKyivTimeDetails();
+
+  const isWeekendNext = (day === 5 && (hour >= 18 || remainingWorkMinutes < 5)) || day === 6 || day === 0;
+  const isEarlyWeekday = day >= 1 && day <= 5 && hour < 9;
+
+  if (isWorking && remainingWorkMinutes >= 5) {
+    if (language === 'ru') {
+      return [
+        'Сейчас (5–10 мин)',
+        'В течение часа',
+        'Сегодня до 18:00',
+        day === 5 ? 'В понедельник утром' : 'Завтра утром',
+      ];
+    }
+    if (language === 'en') {
+      return [
+        'Right now (5–10 min)',
+        'Within 1 hour',
+        'Today before 18:00',
+        day === 5 ? 'Monday morning' : 'Tomorrow morning',
+      ];
+    }
+    return [
+      'Зараз (5–10 хв)',
+      'Протягом години',
+      'Сьогодні до 18:00',
+      day === 5 ? 'У понеділок вранці' : 'Завтра вранці',
+    ];
+  }
+
+  if (isWeekendNext) {
+    if (language === 'ru') {
+      return ['В понедельник 09:00–12:00', 'В понедельник 12:00–15:00', 'В понедельник 15:00–18:00', 'Во вторник утром'];
+    }
+    if (language === 'en') {
+      return ['Monday 09:00–12:00', 'Monday 12:00–15:00', 'Monday 15:00–18:00', 'Tuesday morning'];
+    }
+    return ['У понеділок 09:00–12:00', 'У понеділок 12:00–15:00', 'У понеділок 15:00–18:00', 'У вівторок вранці'];
+  }
+
+  if (isEarlyWeekday) {
+    if (language === 'ru') {
+      return ['Сегодня 09:00–12:00', 'Сегодня 12:00–15:00', 'Сегодня 15:00–18:00', 'Завтра утром'];
+    }
+    if (language === 'en') {
+      return ['Today 09:00–12:00', 'Today 12:00–15:00', 'Today 15:00–18:00', 'Tomorrow morning'];
+    }
+    return ['Сьогодні 09:00–12:00', 'Сьогодні 12:00–15:00', 'Сьогодні 15:00–18:00', 'Завтра вранці'];
+  }
+
+  // Mon-Thu after 18:00
+  if (language === 'ru') {
+    return ['Завтра 09:00–12:00', 'Завтра 12:00–15:00', 'Завтра 15:00–18:00', 'Через день утром'];
+  }
+  if (language === 'en') {
+    return ['Tomorrow 09:00–12:00', 'Tomorrow 12:00–15:00', 'Tomorrow 15:00–18:00', 'Later this week'];
+  }
+  return ['Завтра 09:00–12:00', 'Завтра 12:00–15:00', 'Завтра 15:00–18:00', 'Через день вранці'];
+}
+
+const OFF_HOURS_COPY = {
+  uk: {
+    badge: 'Неробочий час',
+    title: 'Передзвонимо у робочий час',
+    subtitle: 'Зараз неробочий час — залиште номер, і ми зв’яжемося з вами одразу після відкриття (Пн–Пт з 09:00).',
+    submit: 'Запланувати дзвінок',
+  },
+  ru: {
+    badge: 'Нерабочее время',
+    title: 'Перезвоним в рабочее время',
+    subtitle: 'Сейчас нерабочее время — оставьте номер, и мы свяжемся с вами сразу после открытия (Пн–Пт с 09:00).',
+    submit: 'Запланировать звонок',
+  },
+  en: {
+    badge: 'After hours',
+    title: 'We’ll call back during business hours',
+    subtitle: 'We are currently offline — leave your number and we’ll reach out as soon as we open (Mon–Fri from 09:00).',
+    submit: 'Schedule Callback',
+  },
+};
+
 export default function CallbackModal({ isOpen, onClose, onSubmitLead }: CallbackModalProps) {
   const { language } = useLanguage();
-  const texts = CALLBACK_TEXTS[language] || CALLBACK_TEXTS.uk;
+  const baseTexts = CALLBACK_TEXTS[language] || CALLBACK_TEXTS.uk;
+  const [isWorking, setIsWorking] = useState(() => getKyivScheduleProgress().isWorkingHours);
+  const [timeDetails, setTimeDetails] = useState(() => getKyivTimeDetails());
+
+  useEffect(() => {
+    if (!isOpen) return;
+    setIsWorking(getKyivScheduleProgress().isWorkingHours);
+    setTimeDetails(getKyivTimeDetails());
+    const id = window.setInterval(() => {
+      setIsWorking(getKyivScheduleProgress().isWorkingHours);
+      setTimeDetails(getKyivTimeDetails());
+    }, 15000);
+    return () => window.clearInterval(id);
+  }, [isOpen]);
+
+  const isLessThanHour = isWorking && timeDetails.remainingWorkMinutes > 0 && timeDetails.remainingWorkMinutes < 60;
+  const isLessThan5Min = isWorking && timeDetails.remainingWorkMinutes > 0 && timeDetails.remainingWorkMinutes < 5;
+
+  const dynamicTimes = getDynamicSlots(language, isWorking, timeDetails.remainingWorkMinutes);
+  const offCopy = OFF_HOURS_COPY[language] || OFF_HOURS_COPY.uk;
+  const tomorrowTitle =
+    language === 'ru'
+      ? (timeDetails.day === 5 ? 'Перезвоним в понедельник' : 'Перезвоним завтра')
+      : language === 'en'
+        ? (timeDetails.day === 5 ? 'We’ll call back on Monday' : 'We’ll call back tomorrow')
+        : (timeDetails.day === 5 ? 'Передзвонимо у понеділок' : 'Передзвонимо завтра');
+
+  const texts = !isWorking
+    ? { ...baseTexts, ...offCopy, times: dynamicTimes }
+    : isLessThan5Min
+      ? { ...baseTexts, title: tomorrowTitle, times: dynamicTimes }
+      : { ...baseTexts, times: dynamicTimes };
 
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
@@ -89,7 +222,7 @@ export default function CallbackModal({ isOpen, onClose, onSubmitLead }: Callbac
 
   useEffect(() => {
     setSelectedTime(texts.times[0]);
-  }, [language]);
+  }, [language, isWorking, isOpen]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -223,17 +356,21 @@ export default function CallbackModal({ isOpen, onClose, onSubmitLead }: Callbac
                   {texts.timeLabel}
                 </span>
                 <div className="grid grid-cols-2 gap-2">
-                  {texts.times.map((timeOption) => {
+                  {texts.times.map((timeOption, idx) => {
                     const active = selectedTime === timeOption;
+                    const isWithinHourDisabled = isWorking && !isLessThan5Min && isLessThanHour && idx === 1;
                     return (
                       <button
                         key={timeOption}
                         type="button"
-                        onClick={() => setSelectedTime(timeOption)}
-                        className={`text-xs px-3 py-2 rounded-xl border transition-all text-left cursor-pointer ${
-                          active
-                            ? 'bg-brand-primary-container/15 border-brand-primary-container text-brand-primary-container font-semibold'
-                            : 'bg-brand-surface-container/60 border-brand-outline-variant/30 text-brand-on-surface-variant hover:border-brand-outline-variant/60'
+                        disabled={isWithinHourDisabled}
+                        onClick={() => !isWithinHourDisabled && setSelectedTime(timeOption)}
+                        className={`text-xs px-3 py-2 rounded-xl border transition-all text-left ${
+                          isWithinHourDisabled
+                            ? 'bg-brand-surface-container/30 border-brand-outline-variant/20 text-brand-on-surface-variant/40 cursor-not-allowed opacity-50'
+                            : active
+                              ? 'bg-brand-primary-container/15 border-brand-primary-container text-brand-primary-container font-semibold cursor-pointer'
+                              : 'bg-brand-surface-container/60 border-brand-outline-variant/30 text-brand-on-surface-variant hover:border-brand-outline-variant/60 cursor-pointer'
                         }`}
                       >
                         {timeOption}

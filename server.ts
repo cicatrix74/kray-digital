@@ -1,4 +1,5 @@
 import express from 'express';
+import compression from 'compression';
 import { createServer as createViteServer } from 'vite';
 import { GoogleGenAI } from '@google/genai';
 import dotenv from 'dotenv';
@@ -16,6 +17,7 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+app.use(compression());
 app.use(express.json({ limit: '50mb' }));
 
 // Initialize Gemini SDK with telemetry header
@@ -996,6 +998,42 @@ app.post('/api/video-to-gif', express.raw({ type: '*/*', limit: '100mb' }), asyn
   }
 });
 
+function getKyivWorkHoursState(now = new Date()) {
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'Europe/Kyiv',
+    weekday: 'short',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false
+  }).formatToParts(now);
+
+  const map: Record<string, string> = {};
+  for (const p of parts) map[p.type] = p.value;
+
+  const dayMap: Record<string, number> = { Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6, Sun: 0 };
+  const day = dayMap[map.weekday || 'Mon'] ?? 1;
+  const hour = parseInt(map.hour || '0', 10) % 24;
+  const minute = parseInt(map.minute || '0', 10);
+  const mins = hour * 60 + minute;
+
+  const isWorkDay = day >= 1 && day <= 5;
+  const isWorkingHours = isWorkDay && mins >= 9 * 60 && mins < 18 * 60;
+  return { isWorkingHours, day, mins };
+}
+
+app.get('/api/contact-phone', (_req, res) => {
+  const state = getKyivWorkHoursState();
+  if (!state.isWorkingHours) {
+    return res.json({ isWorkingHours: false });
+  }
+  const parts = ['+38', '063', '767', '83', '20'];
+  return res.json({
+    isWorkingHours: true,
+    display: `${parts[0]} (${parts[1]}) ${parts[2]}-${parts[3]}-${parts[4]}`,
+    href: `tel:${parts.join('')}`
+  });
+});
+
 app.post('/api/convert-image', async (req, res) => {
   try {
     const { dataUrl, filename, format, quality, lossless } = req.body || {};
@@ -1058,6 +1096,37 @@ async function startServer() {
     });
     app.use(vite.middlewares);
   } else {
+    const detectAcceptLang = (header?: string): 'uk' | 'ru' | 'en' => {
+      if (!header) return 'uk';
+      const parts = header
+        .split(',')
+        .map((part) => {
+          const [tag, qPart] = part.trim().split(';');
+          const q = qPart && qPart.trim().startsWith('q=') ? parseFloat(qPart.trim().slice(2)) : 1;
+          return { tag: tag.toLowerCase().trim(), q: Number.isFinite(q) ? q : 1 };
+        })
+        .sort((a, b) => b.q - a.q);
+
+      for (const { tag } of parts) {
+        if (tag.startsWith('uk') || tag.startsWith('ua')) return 'uk';
+        if (tag.startsWith('ru') || tag.startsWith('be') || tag.startsWith('kk')) return 'ru';
+        if (tag.startsWith('en')) return 'en';
+      }
+      return 'uk';
+    };
+
+    app.get(['/', '/index.html'], (req, res, next) => {
+      const lang = detectAcceptLang(req.headers['accept-language']);
+      const fileName = lang === 'uk' ? 'index.html' : `index.${lang}.html`;
+      const filePath = path.resolve(process.cwd(), 'dist', fileName);
+      if (fs.existsSync(filePath)) {
+        res.setHeader('Vary', 'Accept-Language');
+        return res.sendFile(filePath);
+      }
+      return next();
+    });
+
+    app.use('/assets', express.static('dist/assets', { maxAge: '1y', immutable: true }));
     app.use(express.static('dist'));
   }
 

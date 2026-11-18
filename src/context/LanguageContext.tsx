@@ -719,10 +719,30 @@ function detectBrowserLanguage(): Language {
   return 'uk';
 }
 
-export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguageState] = useState<Language>(() => detectBrowserLanguage());
+function getInitialLanguage(initialLanguage?: Language): Language {
+  if (initialLanguage) return initialLanguage;
+  if (typeof document !== 'undefined') {
+    const ssrLang = document.documentElement.dataset.ssrLang;
+    if (ssrLang === 'uk' || ssrLang === 'ru' || ssrLang === 'en') {
+      return ssrLang;
+    }
+  }
+  return 'uk';
+}
+
+export function LanguageProvider({
+  children,
+  initialLanguage,
+}: {
+  children: ReactNode;
+  initialLanguage?: Language;
+}) {
+  const [language, setLanguageState] = useState<Language>(() => getInitialLanguage(initialLanguage));
 
   useEffect(() => {
+    const detected = detectBrowserLanguage();
+    setLanguageState((prev) => (prev === detected ? prev : detected));
+
     try {
       localStorage.removeItem('kray_digital_lang');
     } catch {
