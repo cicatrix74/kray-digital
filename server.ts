@@ -86,6 +86,7 @@ async function checkEmergencyStatus(): Promise<{ isEmergency: boolean; reason: s
   let isEmergency = false;
   let emergencyReason = '';
 
+  // 1. Primary source: Telegram feeds (newest -> oldest)
   try {
     const urls = ['https://t.me/s/dtek_ua', 'https://t.me/s/Ukrenergo'];
     for (const u of urls) {
@@ -95,12 +96,21 @@ async function checkEmergencyStatus(): Promise<{ isEmergency: boolean; reason: s
       if (res.ok) {
         const html = await res.text();
         const matches = html.match(/tgme_widget_message_text[^>]*>([\s\S]*?)<\/div>/gi) || [];
-        const recent = matches.slice(-6).map(m => m.replace(/<[^>]+>/g, ' ').toLowerCase());
+        const recent = matches.slice(-6).reverse().map(m => m.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').toLowerCase());
         for (const post of recent) {
           const hasDnipro = post.includes('дніпро') || post.includes('днепр');
-          const hasEmergency = post.includes('аварійні') || post.includes('екстрен') || post.includes('гав') || post.includes('без світла');
+          if (!hasDnipro) continue;
           const isCancelled = post.includes('скасован') || post.includes('відмін') || post.includes('повернулися до графіків');
-          if (hasDnipro && hasEmergency && !isCancelled) {
+          if (isCancelled) break;
+
+          // Check sentence-by-sentence so "аварійні відключення у Харківській/Сумській" in another sentence doesn't trigger for Dnipro
+          const sentences = post.split(/[.!?\n]+/);
+          const hasDniproEmergency = sentences.some((s) => {
+            if (!s.includes('дніпро') && !s.includes('днепр')) return false;
+            if (s.includes('уникнути екстрених')) return false;
+            return /екстрені\s+відключення|аварійні\s+відключення|графіки\s+не\s+діють|введено\s+гав/.test(s);
+          });
+          if (hasDniproEmergency) {
             isEmergency = true;
             emergencyReason = 'НЕК Укренерго / ДТЕК: екстрені (аварійні) відключення';
             break;
@@ -113,6 +123,7 @@ async function checkEmergencyStatus(): Promise<{ isEmergency: boolean; reason: s
     console.warn('Emergency feed check error:', err);
   }
 
+  // 2. Fallback: YASNO / DTEK Live API
   if (!isEmergency) {
     try {
       const yasno = await fetchLiveYasno();
