@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Code2, Menu, X, ArrowRight, PhoneCall } from 'lucide-react';
+import { Menu, X, ArrowRight, PhoneCall } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { PhoneLink, EmailLink } from './ContactLinks';
 
@@ -69,13 +69,22 @@ export default function Header({ onOpenCalculator, onOpenCallback, onScrollToSec
           className="flex items-center gap-3 cursor-pointer hover:opacity-95 transition-all duration-200 group shrink-0"
           id="header-logo-brand"
         >
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500/20 via-brand-primary-container/10 to-indigo-500/20 border border-brand-primary-container/30 flex items-center justify-center text-brand-primary-container relative group-hover:border-brand-primary-container/60 group-hover:shadow-[0_0_20px_rgba(77,208,225,0.35)] transition-all duration-300 overflow-hidden shadow-lg shadow-cyan-950/40">
-            <Code2 className="w-5 h-5 stroke-[2] text-brand-primary-container group-hover:scale-110 transition-transform duration-300" />
-            <div className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.9)]" />
+          <div className="w-10 h-10 rounded-lg bg-[#0b162a] border border-blue-500/30 flex items-center justify-center relative overflow-hidden shadow-lg shadow-blue-950/50 shrink-0">
+            <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-[#2563eb]" />
+            <span className="pl-1 font-display text-sm font-black tracking-tight text-white">KD</span>
           </div>
-          <span className="font-display text-lg md:text-xl font-extrabold tracking-tight text-white group-hover:text-brand-primary-container transition-colors">
-            KRAY <span className="text-brand-primary-container">DIGITAL</span>
-          </span>
+          <div className="flex flex-col leading-none">
+            <span className="font-display text-base md:text-lg font-black tracking-tight text-white group-hover:text-brand-primary-container transition-colors">
+              KRAY <span className="text-brand-primary-container">DIGITAL</span>
+            </span>
+            <span className="text-[10px] md:text-[11px] font-medium text-brand-on-surface-variant mt-0.5 hidden sm:block">
+              {language === 'ru'
+                ? 'Разработка сайтов и digital-маркетинг'
+                : language === 'en'
+                  ? 'Web development & digital marketing'
+                  : 'Розробка сайтів та digital-маркетинг'}
+            </span>
+          </div>
         </div>
 
         {/* Desktop Navigation Menu (hidden on mobile, visible on lg screens) */}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShieldCheck, Code2 } from 'lucide-react';
+import { ShieldCheck } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { PhoneLink, EmailLink } from './ContactLinks';
 
@@ -69,12 +69,23 @@ export default function Footer({ onOpenCases, onScrollToSection, onOpenLeadPanel
         <div className="flex flex-col md:flex-row justify-between items-center gap-8">
         
         {/* Brand Logo */}
-        <div className="flex items-center gap-3 font-display text-lg md:text-xl font-black tracking-tight text-white">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-cyan-500/20 via-brand-primary-container/10 to-indigo-500/20 border border-brand-primary-container/30 flex items-center justify-center text-brand-primary-container relative overflow-hidden shadow-md shadow-cyan-950/30">
-            <Code2 className="w-4 h-4 stroke-[2] text-brand-primary-container" />
-            <div className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.9)]" />
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-lg bg-[#0b162a] border border-blue-500/30 flex items-center justify-center relative overflow-hidden shadow-md shadow-blue-950/40 shrink-0">
+            <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-[#2563eb]" />
+            <span className="pl-1 font-display text-xs font-black tracking-tight text-white">KD</span>
           </div>
-          <span>KRAY <span className="text-brand-primary-container">DIGITAL</span></span>
+          <div className="flex flex-col leading-none">
+            <span className="font-display text-base md:text-lg font-black tracking-tight text-white">
+              KRAY <span className="text-brand-primary-container">DIGITAL</span>
+            </span>
+            <span className="text-[10px] font-medium text-brand-on-surface-variant mt-0.5">
+              {language === 'ru'
+                ? 'Разработка сайтов и digital-маркетинг'
+                : language === 'en'
+                  ? 'Web development & digital marketing'
+                  : 'Розробка сайтів та digital-маркетинг'}
+            </span>
+          </div>
         </div>
 
         {/* Links Navigation */}
