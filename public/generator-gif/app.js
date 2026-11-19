@@ -3,9 +3,10 @@
     ua: {
       pageTitle: 'Генератор відео в GIF онлайн (до 30 сек) — MP4, WebM, MOV у GIF безкоштовно | KRAY DIGITAL',
       badge: 'WEB TOOLS • VIDEO TO GIF (MAX 30S)',
-      linkConverter: '🖼️ Конвертер WebP',
       linkEditor: '🎨 Фоторедактор',
+      linkPdf: '📄 PDF у JPG',
       linkPass: '🔐 Паролі',
+      linkConverter: '🖼️ Конвертер WebP',
       orderText: 'Замовити сайт',
       title: 'Генератор відео в GIF онлайн (до 30 секунд)',
       subtitle: 'Перетворюйте ролики MP4, WebM, MOV або AVI у чітку GIF-анімацію з оптимізованою 256-кольоровою палітрою. Обирайте точний фрагмент до 30 секунд, частоту кадрів (FPS) та ширину.',
@@ -49,9 +50,10 @@
     ru: {
       pageTitle: 'Генератор видео в GIF онлайн (до 30 сек) — MP4, WebM, MOV в GIF бесплатно | KRAY DIGITAL',
       badge: 'WEB TOOLS • VIDEO TO GIF (MAX 30S)',
-      linkConverter: '🖼️ Конвертер WebP',
       linkEditor: '🎨 Фоторедактор',
+      linkPdf: '📄 PDF в JPG',
       linkPass: '🔐 Пароли',
+      linkConverter: '🖼️ Конвертер WebP',
       orderText: 'Заказать сайт',
       title: 'Генератор видео в GIF онлайн (до 30 секунд)',
       subtitle: 'Превращайте ролики MP4, WebM, MOV или AVI в чёткую GIF-анимацию с оптимизированной 256-цветной палитрой. Выбирайте точный фрагмент до 30 секунд, частоту кадров (FPS) и ширину.',
@@ -95,9 +97,10 @@
     en: {
       pageTitle: 'Video to GIF Generator Online (Max 30s) — Convert MP4, WebM, MOV to GIF | KRAY DIGITAL',
       badge: 'WEB TOOLS • VIDEO TO GIF (MAX 30S)',
-      linkConverter: '🖼️ WebP Converter',
       linkEditor: '🎨 Photo Editor',
+      linkPdf: '📄 PDF to JPG',
       linkPass: '🔐 Passwords',
+      linkConverter: '🖼️ WebP Converter',
       orderText: 'Order Website',
       title: 'Online Video to GIF Generator (Up to 30 Seconds)',
       subtitle: 'Convert MP4, WebM, MOV, or AVI clips into crisp animated GIFs with an optimized 256-color palette. Trim start time, duration up to 30 seconds, FPS, and width.',
@@ -157,9 +160,10 @@
     const setHtml = (id, v) => { const el = document.getElementById(id); if (el) el.innerHTML = v; };
 
     setText('i18nBadge', dict.badge);
-    setText('i18nLinkConverter', dict.linkConverter);
     setText('i18nLinkEditor', dict.linkEditor);
+    setText('i18nLinkPdf', dict.linkPdf);
     setText('i18nLinkPass', dict.linkPass);
+    setText('i18nLinkConverter', dict.linkConverter);
     setText('i18nOrderText', dict.orderText);
     setText('i18nTitle', dict.title);
     setText('i18nSubtitle', dict.subtitle);
@@ -486,4 +490,22 @@
       btnGenerateGif.disabled = false;
     }
   });
+})();
+
+(function initMobileMenu() {
+  const bind = () => {
+    const btn = document.getElementById('mobileMenuBtn');
+    const nav = document.getElementById('headerNav');
+    if (!btn || !nav) return;
+    btn.addEventListener('click', () => {
+      const isOpen = nav.classList.toggle('is-open');
+      btn.classList.toggle('is-open', isOpen);
+      btn.setAttribute('aria-expanded', String(isOpen));
+    });
+  };
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bind);
+  } else {
+    bind();
+  }
 })();

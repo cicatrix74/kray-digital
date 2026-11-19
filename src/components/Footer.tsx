@@ -1,5 +1,5 @@
-import React from 'react';
-import { ShieldCheck } from 'lucide-react';
+import React, { useState } from 'react';
+import { ShieldCheck, ChevronDown } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { PhoneLink, EmailLink } from './ContactLinks';
 
@@ -11,6 +11,7 @@ interface FooterProps {
 
 export default function Footer({ onOpenCases, onScrollToSection, onOpenLeadPanel }: FooterProps) {
   const { t, language } = useLanguage();
+  const [isResourcesOpen, setIsResourcesOpen] = useState(false);
 
   const usefulResources = [
     {
@@ -60,6 +61,14 @@ export default function Footer({ onOpenCases, onScrollToSection, onOpenLeadPanel
         : language === 'en'
           ? '🎬 Video to GIF Generator (Max 30s)'
           : '🎬 Генератор відео в GIF (до 30 сек)'
+    },
+    {
+      href: '/pdf-to-jpg/',
+      label: language === 'ru'
+        ? '📄 Конвертер PDF в JPG и PNG'
+        : language === 'en'
+          ? '📄 PDF to JPG & PNG Converter'
+          : '📄 Конвертер PDF у JPG та PNG'
     }
   ];
 
@@ -146,12 +155,32 @@ export default function Footer({ onOpenCases, onScrollToSection, onOpenLeadPanel
 
         {/* Useful Resources List Menu */}
         <div className="border-t border-[#3b494b]/20 pt-6">
-          <h2 className="text-xs font-bold uppercase tracking-wider text-brand-primary-container mb-3 text-center md:text-left">
-            {t.footer.resources_title}
+          <h2 className="text-center md:text-left">
+            <button
+              type="button"
+              onClick={() => setIsResourcesOpen((prev) => !prev)}
+              aria-expanded={isResourcesOpen}
+              aria-controls="useful-resources-list"
+              className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-brand-primary-container hover:text-white transition-colors cursor-pointer"
+            >
+              <span>{t.footer.resources_title}</span>
+              <ChevronDown
+                className={`w-4 h-4 transition-transform duration-200 ${isResourcesOpen ? 'rotate-180' : ''}`}
+                aria-hidden="true"
+              />
+            </button>
           </h2>
-          <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-2 list-none">
+          <ul
+            id="useful-resources-list"
+            hidden={!isResourcesOpen}
+            className={
+              isResourcesOpen
+                ? 'mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-2 list-none'
+                : 'hidden'
+            }
+          >
             {usefulResources.map((item) => (
-              <li key={item.href}>
+              <li key={item.href} className={item.href === '/photoeditor/' ? 'hidden md:block' : ''}>
                 <a
                   href={item.href}
                   className="inline-flex items-center text-xs sm:text-sm text-brand-on-surface-variant hover:text-brand-primary-container transition-colors py-1"

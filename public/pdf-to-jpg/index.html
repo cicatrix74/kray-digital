@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Конвертер PDF у JPG та PNG онлайн безкоштовно — Без завантаження на сервер | KRAY DIGITAL</title>
+  <meta name="description" content="Безкоштовний онлайн конвертер PDF у JPG та PNG. Перетворюйте сторінки PDF у якісні зображення прямо в браузері (100–300 DPI), завантажуйте окремо або одним ZIP-архівом.">
+  <meta name="keywords" content="pdf в jpg, pdf у jpg, конвертер pdf в jpg, перевести pdf в картинку, pdf to jpg, pdf в png онлайн">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+  <meta name="theme-color" content="#0c111d">
+  <base href="/pdf-to-jpg/">
+  <link rel="canonical" href="https://kray-digital.pp.ua/pdf-to-jpg">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://kray-digital.pp.ua/pdf-to-jpg">
+  <meta property="og:title" content="Конвертер PDF у JPG та PNG онлайн — KRAY DIGITAL">
+  <meta property="og:description" content="Конвертуйте багатосторінкові PDF у JPG або PNG прямо у браузері з вибором DPI та миттєвим ZIP-архівом.">
+
+  <!-- Schema.org WebApplication -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "KRAY DIGITAL PDF to JPG Converter",
+    "url": "https://kray-digital.pp.ua/pdf-to-jpg",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "All",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "UAH"
+    },
+    "inLanguage": ["uk", "ru", "en"]
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-container">
+      <div class="logo-area">
+        <a href="/" class="brand-logo" title="KRAY DIGITAL">
+          <div class="logo-favicon-icon" aria-hidden="true">
+            <img src="/favicon.svg" alt="KRAY DIGITAL" style="width:100%;height:100%;display:block;" />
+          </div>
+          <div class="brand-text">
+            <span class="brand-name">KRAY <span class="brand-highlight">DIGITAL</span></span>
+            <span class="page-badge" id="i18nBadge">WEB TOOLS • PDF TO JPG CONVERTER</span>
+          </div>
+        </a>
+      </div>
+      <button type="button" class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu" aria-expanded="false" aria-controls="headerNav">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+      <nav class="header-right-area" id="headerNav" aria-label="Tools navigation">
+        <a href="/photoeditor/" class="header-nav-link" id="i18nLinkEditor">🎨 Фоторедактор</a>
+        <a href="/password-generator/" class="header-nav-link" id="i18nLinkPass">🔐 Паролі</a>
+        <a href="/konvertor-webp/" class="header-nav-link" id="i18nLinkWebp">🖼️ Конвертер WebP</a>
+        <a href="/generator-gif/" class="header-nav-link" id="i18nLinkGif">🎬 Відео в GIF</a>
+        <a href="/" class="header-order-btn">
+          <span>✨</span>
+          <span id="i18nOrderText">Замовити сайт</span>
+          <span>→</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="container">
+      <section class="converter-hero">
+        <div class="hero-header">
+          <div>
+            <h1 id="i18nTitle">Конвертер PDF у JPG та PNG онлайн</h1>
+            <p class="hero-subtitle" id="i18nSubtitle">Миттєве перетворення сторінок PDF у якісні зображення прямо у вашому браузері. Документи не передаються на сервер — 100% приватність і жодних обмежень.</p>
+          </div>
+          <div class="format-badges">
+            <span class="fmt-pill">100% Client-Side</span>
+            <span class="fmt-pill">PDF → JPG / PNG</span>
+            <span class="fmt-pill">ZIP Export</span>
+          </div>
+        </div>
+
+        <div class="studio-grid">
+          <!-- Left: Dropzone & File Summary -->
+          <div class="panel-card">
+            <div class="panel-top">
+              <h2 class="panel-title" id="i18nDropTitle">1. Завантажте PDF-файл</h2>
+              <button type="button" class="btn-ghost-sm" id="resetBtn" hidden>✕ <span id="i18nResetBtn">Очистити</span></button>
+            </div>
+
+            <div class="drop-zone" id="dropZone" tabindex="0" role="button" aria-label="Select PDF file">
+              <input type="file" id="fileInput" accept=".pdf,application/pdf" hidden>
+              <div class="drop-icon" aria-hidden="true">📄</div>
+              <div class="drop-main-text" id="i18nDropMain">Перетягніть PDF сюди або натисніть для вибору</div>
+              <div class="drop-sub-text" id="i18nDropSub">Підтримуються багатосторінкові PDF будь-якого розміру</div>
+              <button type="button" class="btn-primary-sm" id="pickFileBtn">
+                <span id="i18nPickBtn">Обрати PDF-файл</span>
+              </button>
+            </div>
+
+            <div class="file-meta-card" id="fileMetaCard" hidden>
+              <div class="file-meta-row">
+                <span class="file-meta-name" id="fileNameLabel">document.pdf</span>
+                <span class="file-meta-badge" id="filePagesBadge">0 сторінок</span>
+              </div>
+              <div class="file-meta-sub">
+                <span id="fileSizeLabel">0 KB</span>
+                <span>•</span>
+                <span id="i18nLocalBadge">🔒 Обробка локально в браузері</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Conversion Settings -->
+          <div class="panel-card">
+            <div class="panel-top">
+              <h2 class="panel-title" id="i18nSettingsTitle">2. Налаштування експорту</h2>
+              <div class="format-switch" id="formatSwitch" role="group" aria-label="Output format">
+                <button type="button" class="fmt-btn active" data-fmt="jpeg">JPG</button>
+                <button type="button" class="fmt-btn" data-fmt="png">PNG</button>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <div class="control-label-row">
+                <span id="i18nDpiLabel">Роздільна здатність (DPI)</span>
+                <span class="mono-val" id="dpiHint">150 DPI</span>
+              </div>
+              <div class="dpi-pills" id="dpiSwitch">
+                <button type="button" class="dpi-btn" data-dpi="100">100 DPI</button>
+                <button type="button" class="dpi-btn active" data-dpi="150">150 DPI</button>
+                <button type="button" class="dpi-btn" data-dpi="200">200 DPI</button>
+                <button type="button" class="dpi-btn" data-dpi="300">300 DPI</button>
+              </div>
+            </div>
+
+            <div class="control-group" id="qualityGroup">
+              <div class="control-label-row">
+                <label for="qualitySlider" id="i18nQualityLabel">Якість JPG</label>
+                <span class="mono-val" id="qualityValue">90%</span>
+              </div>
+              <input type="range" id="qualitySlider" min="50" max="100" value="90" class="range-slider">
+            </div>
+
+            <div class="action-buttons">
+              <button type="button" class="btn-primary" id="convertBtn" disabled>
+                ⚡ <span id="i18nConvertBtn">Конвертувати сторінки</span>
+              </button>
+              <button type="button" class="btn-secondary" id="downloadZipBtn" disabled>
+                📦 <span id="i18nDownloadZipBtn">Завантажити ZIP</span>
+              </button>
+            </div>
+
+            <div class="progress-wrap" id="progressWrap" hidden>
+              <div class="progress-bar-bg">
+                <div class="progress-bar-fill" id="progressFill"></div>
+              </div>
+              <div class="progress-text" id="progressText">0 / 0</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Results Grid -->
+      <section class="results-section" id="resultsSection" hidden>
+        <div class="results-header">
+          <div>
+            <h2 class="results-title" id="i18nResultsTitle">Готові сторінки</h2>
+            <p class="results-sub" id="resultsSummary"></p>
+          </div>
+          <div class="results-actions">
+            <button type="button" class="btn-ghost-sm" id="selectAllBtn">✓ <span id="i18nSelectAll">Обрати всі</span></button>
+            <button type="button" class="btn-ghost-sm" id="deselectAllBtn">☐ <span id="i18nDeselectAll">Зняти вибір</span></button>
+          </div>
+        </div>
+        <div class="pages-grid" id="pagesGrid"></div>
+      </section>
+
+      <!-- Features & FAQ -->
+      <section class="info-section">
+        <div class="features-grid">
+          <article class="feature-card">
+            <div class="feature-icon">🔒</div>
+            <h3 id="i18nFeat1Title">100% Конфіденційність</h3>
+            <p id="i18nFeat1Desc">PDF-документ обробляється виключно в пам'яті вашого браузера через PDF.js. Договори, паспорти та рахунки не покидають ваш пристрій.</p>
+          </article>
+          <article class="feature-card">
+            <div class="feature-icon">🎯</div>
+            <h3 id="i18nFeat2Title">Чіткість до 300 DPI</h3>
+            <p id="i18nFeat2Desc">Обирайте 100–150 DPI для легкої відправки в месенджерах або 200–300 DPI для чіткого тексту, сканів та друку.</p>
+          </article>
+          <article class="feature-card">
+            <div class="feature-icon">📦</div>
+            <h3 id="i18nFeat3Title">Поодинці або в ZIP</h3>
+            <p id="i18nFeat3Desc">Завантажуйте окремі потрібні сторінки одним кліком або зберіть увесь документ в один ZIP-архів.</p>
+          </article>
+        </div>
+
+        <div class="faq-box">
+          <h2 class="faq-heading" id="i18nFaqTitle">Часті запитання</h2>
+          <div class="faq-list">
+            <details class="faq-item" open>
+              <summary id="i18nFaq1Q">Як конвертувати PDF у JPG онлайн?</summary>
+              <p id="i18nFaq1A">Перетягніть PDF у вікно завантаження, оберіть формат (JPG або PNG) та потрібне DPI, після чого натисніть «Конвертувати сторінки». Готові картинки з'являться нижче.</p>
+            </details>
+            <details class="faq-item">
+              <summary id="i18nFaq2Q">Чи безпечно завантажувати конфіденційні документи?</summary>
+              <p id="i18nFaq2A">Так. На відміну від більшості сервісів, наші файли не передаються на сервер. Уся конвертація відбувається локально у вашому браузері.</p>
+            </details>
+            <details class="faq-item">
+              <summary id="i18nFaq3Q">Який DPI обрати для тексту та документів?</summary>
+              <p id="i18nFaq3A">Для екрану та месенджерів оптимально 150 DPI. Для дрібного тексту, креслень або подальшого друку обирайте 200 або 300 DPI.</p>
+            </details>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">© 2026 KRAY DIGITAL — Web Tools</div>
+      <div class="footer-links">
+        <a href="/" id="i18nFootHome">Головна</a>
+        <a href="/konvertor-webp/" id="i18nFootWebp">Конвертер WebP</a>
+        <a href="/photoeditor/" id="i18nFootPhoto">Фоторедактор</a>
+        <a href="/password-generator/" id="i18nFootPass">Генератор паролів</a>
+        <a href="/generator-gif/" id="i18nFootGif">GIF Генератор</a>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

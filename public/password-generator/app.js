@@ -3,9 +3,10 @@
     ua: {
       pageTitle: 'Генератор надійних паролів онлайн — Створити складний пароль безкоштовно | KRAY DIGITAL',
       badge: 'WEB TOOLS • CRYPTO PASSWORD GENERATOR',
-      linkConverter: '🖼️ Конвертер WebP',
       linkEditor: '🎨 Фоторедактор',
-      linkAlerts: '🚨 Карта тривог',
+      linkPdf: '📄 PDF у JPG',
+      linkConverter: '🖼️ Конвертер WebP',
+      linkGif: '🎬 Відео в GIF',
       orderText: 'Замовити сайт',
       title: 'Генератор надійних паролів онлайн',
       subtitle: 'Створюйте криптостійкі паролі будь-якої складності локально у вашому браузері за допомогою Web Crypto API. Жоден пароль не передається на сервер і не зберігається в мережі.',
@@ -49,9 +50,10 @@
     ru: {
       pageTitle: 'Генератор надёжных паролей онлайн — Создать сложный пароль бесплатно | KRAY DIGITAL',
       badge: 'WEB TOOLS • CRYPTO PASSWORD GENERATOR',
-      linkConverter: '🖼️ Конвертер WebP',
       linkEditor: '🎨 Фоторедактор',
-      linkAlerts: '🚨 Карта тревог',
+      linkPdf: '📄 PDF в JPG',
+      linkConverter: '🖼️ Конвертер WebP',
+      linkGif: '🎬 Видео в GIF',
       orderText: 'Заказать сайт',
       title: 'Генератор надёжных паролей онлайн',
       subtitle: 'Создавайте криптостойкие пароли любой сложности локально в вашем браузере с помощью Web Crypto API. Ни один пароль не передаётся на сервер и не сохраняется в сети.',
@@ -95,9 +97,10 @@
     en: {
       pageTitle: 'Secure Password Generator Online — Create Strong Random Passwords | KRAY DIGITAL',
       badge: 'WEB TOOLS • CRYPTO PASSWORD GENERATOR',
-      linkConverter: '🖼️ WebP Converter',
       linkEditor: '🎨 Photo Editor',
-      linkAlerts: '🚨 Air Alerts Map',
+      linkPdf: '📄 PDF to JPG',
+      linkConverter: '🖼️ WebP Converter',
+      linkGif: '🎬 Video to GIF',
       orderText: 'Order Website',
       title: 'Online Strong Password Generator',
       subtitle: 'Create cryptographically secure passwords of any length locally in your browser via Web Crypto API. No password is ever sent to a server or stored online.',
@@ -157,9 +160,10 @@
     const setHtml = (id, v) => { const el = document.getElementById(id); if (el) el.innerHTML = v; };
 
     setText('i18nBadge', dict.badge);
-    setText('i18nLinkConverter', dict.linkConverter);
     setText('i18nLinkEditor', dict.linkEditor);
-    setText('i18nLinkAlerts', dict.linkAlerts);
+    setText('i18nLinkPdf', dict.linkPdf);
+    setText('i18nLinkConverter', dict.linkConverter);
+    setText('i18nLinkGif', dict.linkGif);
     setText('i18nOrderText', dict.orderText);
     setText('i18nTitle', dict.title);
     setText('i18nSubtitle', dict.subtitle);
@@ -385,4 +389,22 @@
   });
 
   refreshPassword();
+})();
+
+(function initMobileMenu() {
+  const bind = () => {
+    const btn = document.getElementById('mobileMenuBtn');
+    const nav = document.getElementById('headerNav');
+    if (!btn || !nav) return;
+    btn.addEventListener('click', () => {
+      const isOpen = nav.classList.toggle('is-open');
+      btn.classList.toggle('is-open', isOpen);
+      btn.setAttribute('aria-expanded', String(isOpen));
+    });
+  };
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bind);
+  } else {
+    bind();
+  }
 })();

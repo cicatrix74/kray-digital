@@ -10,4 +10,6 @@
 /password-generator/*    /password-generator/:splat    200
 /photoeditor    /photoeditor/index.html    200
 /photoeditor/*    /photoeditor/:splat    200
+/pdf-to-jpg    /pdf-to-jpg/index.html    200
+/pdf-to-jpg/*    /pdf-to-jpg/:splat    200
 /*    /index.html    200

@@ -3,9 +3,10 @@
     ua: {
       pageTitle: 'Онлайн фоторедактор безкоштовно — Редактор фото та PSD у браузері (аналог Photoshop) | KRAY DIGITAL',
       badge: 'WEB TOOLS • ONLINE PHOTO EDITOR',
+      linkPdf: '📄 PDF у JPG',
+      linkPass: '🔐 Паролі',
       linkConverter: '🖼️ Конвертер WebP',
-      linkOutages: '⚡ Графік світла',
-      linkAlerts: '🚨 Карта тривог',
+      linkGif: '🎬 Відео в GIF',
       orderText: 'Замовити сайт',
       title: 'Онлайн фоторедактор — безкоштовний редактор фото та PSD у браузері',
       subtitle: 'Повноцінний графічний редактор рівня Photoshop прямо у браузері. Працюйте з шарами, масками, текстом, фільтрами та відкривайте файли PSD, RAW, SVG, Sketch, PNG, JPG і WebP без встановлення програм.',
@@ -48,9 +49,10 @@
     ru: {
       pageTitle: 'Онлайн фоторедактор бесплатно — Редактор фото и PSD в браузере (аналог Photoshop) | KRAY DIGITAL',
       badge: 'WEB TOOLS • ONLINE PHOTO EDITOR',
+      linkPdf: '📄 PDF в JPG',
+      linkPass: '🔐 Пароли',
       linkConverter: '🖼️ Конвертер WebP',
-      linkOutages: '⚡ График света',
-      linkAlerts: '🚨 Карта тревог',
+      linkGif: '🎬 Видео в GIF',
       orderText: 'Заказать сайт',
       title: 'Онлайн фоторедактор — бесплатный редактор фото и PSD в браузере',
       subtitle: 'Полноценный графический редактор уровня Photoshop прямо в браузере. Работайте со слоями, масками, текстом, фильтрами и открывайте файлы PSD, RAW, SVG, Sketch, PNG, JPG и WebP без установки программ.',
@@ -93,9 +95,10 @@
     en: {
       pageTitle: 'Free Online Photo Editor — Edit Photos & PSD in Browser (Photoshop Alternative) | KRAY DIGITAL',
       badge: 'WEB TOOLS • ONLINE PHOTO EDITOR',
+      linkPdf: '📄 PDF to JPG',
+      linkPass: '🔐 Passwords',
       linkConverter: '🖼️ WebP Converter',
-      linkOutages: '⚡ Power Outages',
-      linkAlerts: '🚨 Air Alerts Map',
+      linkGif: '🎬 Video to GIF',
       orderText: 'Order Website',
       title: 'Online Photo Editor — Free Photo & PSD Editor in Your Browser',
       subtitle: 'Full-featured Photoshop-grade graphic editor right in your browser. Work with layers, masks, typography, filters, and open PSD, RAW, SVG, Sketch, PNG, JPG, and WebP files without installing software.',
@@ -154,9 +157,10 @@
     const setHtml = (id, v) => { const el = document.getElementById(id); if (el) el.innerHTML = v; };
 
     setText('i18nBadge', dict.badge);
+    setText('i18nLinkPdf', dict.linkPdf);
+    setText('i18nLinkPass', dict.linkPass);
     setText('i18nLinkConverter', dict.linkConverter);
-    setText('i18nLinkOutages', dict.linkOutages);
-    setText('i18nLinkAlerts', dict.linkAlerts);
+    setText('i18nLinkGif', dict.linkGif);
     setText('i18nOrderText', dict.orderText);
     setText('i18nTitle', dict.title);
     setText('i18nSubtitle', dict.subtitle);
@@ -259,4 +263,22 @@
       setFullscreenState(false);
     }
   });
+})();
+
+(function initMobileMenu() {
+  const bind = () => {
+    const btn = document.getElementById('mobileMenuBtn');
+    const nav = document.getElementById('headerNav');
+    if (!btn || !nav) return;
+    btn.addEventListener('click', () => {
+      const isOpen = nav.classList.toggle('is-open');
+      btn.classList.toggle('is-open', isOpen);
+      btn.setAttribute('aria-expanded', String(isOpen));
+    });
+  };
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bind);
+  } else {
+    bind();
+  }
 })();

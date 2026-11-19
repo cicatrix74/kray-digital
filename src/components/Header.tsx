@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, ArrowRight, PhoneCall } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
-import { PhoneLink, EmailLink } from './ContactLinks';
+import { PhoneLink } from './ContactLinks';
 
 interface HeaderProps {
   onOpenCalculator: () => void;
@@ -90,18 +90,18 @@ export default function Header({ onOpenCalculator, onOpenCallback, onScrollToSec
             setIsMobileMenuOpen(false);
             onScrollToSection('hero-section');
           }}
-          className="flex items-center gap-3 cursor-pointer hover:opacity-95 transition-all duration-200 group shrink-0"
+          className="flex items-center gap-2.5 sm:gap-3 cursor-pointer hover:opacity-95 transition-all duration-200 group min-w-0"
           id="header-logo-brand"
         >
           <div className="w-10 h-10 rounded-lg bg-[#0b162a] border border-blue-500/30 flex items-center justify-center relative overflow-hidden shadow-lg shadow-blue-950/50 shrink-0">
             <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-[#2563eb]" />
             <span className="pl-1 font-display text-sm font-black tracking-tight text-white">KD</span>
           </div>
-          <div className="flex flex-col leading-none">
+          <div className="flex flex-col leading-none min-w-0">
             <span className="font-display text-base md:text-lg font-black tracking-tight text-white group-hover:text-brand-primary-container transition-colors">
               KRAY <span className="text-brand-primary-container">DIGITAL</span>
             </span>
-            <span className="text-[10px] md:text-[11px] font-medium text-brand-on-surface-variant mt-0.5 hidden sm:block">
+            <span className="text-[10px] md:text-[11px] font-medium text-brand-on-surface-variant mt-0.5 block truncate">
               {language === 'ru'
                 ? 'Разработка сайтов и digital-маркетинг'
                 : language === 'en'
@@ -177,25 +177,8 @@ export default function Header({ onOpenCalculator, onOpenCallback, onScrollToSec
               </button>
             ))}
 
-            {/* Mobile Direct Contacts & CTA inside Drawer */}
+            {/* Mobile CTA inside Drawer */}
             <div className="pt-4 mt-2 border-t border-brand-outline-variant/15 flex flex-col gap-3">
-              <div className="flex flex-col gap-2 px-1">
-                <PhoneLink className="text-sm py-1.5" />
-                <EmailLink className="text-sm py-1.5" />
-              </div>
-              {onOpenCallback && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    setIsMobileMenuOpen(false);
-                    onOpenCallback();
-                  }}
-                  className="w-full border border-brand-primary-container/40 bg-brand-primary-container/10 text-brand-primary-container font-bold text-sm py-3 rounded-xl text-center transition-all hover:bg-brand-primary-container/20 flex items-center justify-center gap-2 cursor-pointer"
-                >
-                  <PhoneCall className="w-4 h-4" />
-                  <span>{callbackLabel}</span>
-                </button>
-              )}
               <button
                 onClick={() => {
                   setIsMobileMenuOpen(false);

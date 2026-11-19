@@ -958,6 +958,15 @@ app.get('/generator-gif', (req, res) => {
   res.sendFile(path.join(GIFGEN_DIR, 'index.html'));
 });
 
+// PDF to JPG & PNG Converter Page (/pdf-to-jpg)
+const PDFTOJPG_DIR = path.resolve(process.cwd(), 'public/pdf-to-jpg');
+app.get('/pdf-to-jpg', (req, res) => {
+  if (!req.originalUrl.split('?')[0].endsWith('/')) {
+    return res.redirect(301, '/pdf-to-jpg/');
+  }
+  res.sendFile(path.join(PDFTOJPG_DIR, 'index.html'));
+});
+
 app.post('/api/video-to-gif', express.raw({ type: '*/*', limit: '100mb' }), async (req, res) => {
   if (!ffmpegPath) {
     return res.status(500).json({ success: false, error: 'FFmpeg binary not found' });

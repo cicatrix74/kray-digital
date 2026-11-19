@@ -1067,3 +1067,21 @@ if (scrollToTopBtn) {
   await fetchSystemStatus();
   await fetchSchedule();
 })();
+
+(function initMobileMenu() {
+  const bind = () => {
+    const btn = document.getElementById('mobileMenuBtn');
+    const nav = document.getElementById('headerNav');
+    if (!btn || !nav) return;
+    btn.addEventListener('click', () => {
+      const isOpen = nav.classList.toggle('is-open');
+      btn.classList.toggle('is-open', isOpen);
+      btn.setAttribute('aria-expanded', String(isOpen));
+    });
+  };
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bind);
+  } else {
+    bind();
+  }
+})();

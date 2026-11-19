@@ -3,8 +3,10 @@
     ua: {
       pageTitle: 'Конвертер зображень JPG, PNG, GIF у WebP та AVIF онлайн — Стиснення без втрати якості | KRAY DIGITAL',
       badge: 'WEB TOOLS • WEBP & AVIF CONVERTER',
-      linkOutages: '⚡ Графік світла',
-      linkAlerts: '🚨 Карта тривог',
+      linkEditor: '🎨 Фоторедактор',
+      linkPdf: '📄 PDF у JPG',
+      linkPass: '🔐 Паролі',
+      linkGif: '🎬 Відео в GIF',
       orderText: 'Замовити сайт',
       title: 'Конвертер JPG, PNG, GIF у WebP та AVIF онлайн',
       subtitle: 'Миттєва оптимізація зображень для вашого сайту з гнучким налаштуванням стиснення. Підтримується пакетне завантаження та анімовані GIF.',
@@ -75,8 +77,10 @@
     ru: {
       pageTitle: 'Конвертер картинок JPG, PNG, GIF в WebP и AVIF онлайн — Регулируемое сжатие | KRAY DIGITAL',
       badge: 'WEB TOOLS • WEBP & AVIF CONVERTER',
-      linkOutages: '⚡ График света',
-      linkAlerts: '🚨 Карта тревог',
+      linkEditor: '🎨 Фоторедактор',
+      linkPdf: '📄 PDF в JPG',
+      linkPass: '🔐 Пароли',
+      linkGif: '🎬 Видео в GIF',
       orderText: 'Заказать сайт',
       title: 'Конвертер JPG, PNG, GIF в WebP и AVIF онлайн',
       subtitle: 'Мгновенная оптимизация изображений для вашего сайта с гибкой настройкой сжатия. Поддерживается пакетная загрузка и анимированные GIF.',
@@ -147,8 +151,10 @@
     en: {
       pageTitle: 'Online JPG, PNG, GIF to WebP & AVIF Converter — Adjustable Compression | KRAY DIGITAL',
       badge: 'WEB TOOLS • WEBP & AVIF CONVERTER',
-      linkOutages: '⚡ Power Outages',
-      linkAlerts: '🚨 Air Alerts Map',
+      linkEditor: '🎨 Photo Editor',
+      linkPdf: '📄 PDF to JPG',
+      linkPass: '🔐 Passwords',
+      linkGif: '🎬 Video to GIF',
       orderText: 'Order Website',
       title: 'Online JPG, PNG, GIF to WebP & AVIF Converter',
       subtitle: 'Instant image optimization for your website with adjustable compression quality. Supports batch uploads and animated GIFs.',
@@ -234,8 +240,10 @@
     const setText = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
     const setHtml = (id, v) => { const el = document.getElementById(id); if (el) el.innerHTML = v; };
     setText('i18nBadge', dict.badge);
-    setText('i18nLinkOutages', dict.linkOutages);
-    setText('i18nLinkAlerts', dict.linkAlerts);
+    setText('i18nLinkEditor', dict.linkEditor);
+    setText('i18nLinkPdf', dict.linkPdf);
+    setText('i18nLinkPass', dict.linkPass);
+    setText('i18nLinkGif', dict.linkGif);
     setText('i18nOrderText', dict.orderText);
     setText('i18nTitle', dict.title);
     setText('i18nSubtitle', dict.subtitle);
@@ -877,4 +885,22 @@
     sourceItems = [];
     renderResults();
   });
+})();
+
+(function initMobileMenu() {
+  const bind = () => {
+    const btn = document.getElementById('mobileMenuBtn');
+    const nav = document.getElementById('headerNav');
+    if (!btn || !nav) return;
+    btn.addEventListener('click', () => {
+      const isOpen = nav.classList.toggle('is-open');
+      btn.classList.toggle('is-open', isOpen);
+      btn.setAttribute('aria-expanded', String(isOpen));
+    });
+  };
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bind);
+  } else {
+    bind();
+  }
 })();
