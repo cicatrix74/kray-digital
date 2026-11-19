@@ -683,5 +683,36 @@ export async function onRequest(context) {
     }), { headers: corsHeaders });
   }
 
+  if (pathname.endsWith('/contact-phone')) {
+    const parts = new Intl.DateTimeFormat('en-US', {
+      timeZone: 'Europe/Kyiv',
+      weekday: 'short',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false
+    }).formatToParts(new Date());
+
+    const map = {};
+    for (const p of parts) map[p.type] = p.value;
+
+    const dayMap = { Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6, Sun: 0 };
+    const day = dayMap[map.weekday || 'Mon'] ?? 1;
+    const hour = parseInt(map.hour || '0', 10) % 24;
+    const minute = parseInt(map.minute || '0', 10);
+    const mins = hour * 60 + minute;
+    const isWorkingHours = day >= 1 && day <= 5 && mins >= 9 * 60 && mins < 18 * 60;
+
+    if (!isWorkingHours) {
+      return new Response(JSON.stringify({ isWorkingHours: false }), { headers: corsHeaders });
+    }
+
+    const phoneParts = ['+38', '063', '767', '83', '20'];
+    return new Response(JSON.stringify({
+      isWorkingHours: true,
+      display: `${phoneParts[0]} (${phoneParts[1]}) ${phoneParts[2]}-${phoneParts[3]}-${phoneParts[4]}`,
+      href: `tel:${phoneParts.join('')}`
+    }), { headers: corsHeaders });
+  }
+
   return new Response(JSON.stringify({ error: 'Endpoint not found' }), { status: 404, headers: corsHeaders });
 }
