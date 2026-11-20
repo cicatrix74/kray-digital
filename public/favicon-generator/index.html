@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Генератор Favicon онлайн безкоштовно — ICO, PNG, Apple Touch Icon | KRAY DIGITAL</title>
+  <meta name="description" content="Безкоштовний онлайн генератор favicon.ico, PNG (16×16, 32×32, 192×192, 512×512), Apple Touch Icon (180×180) та site.webmanifest з картинки або тексту прямо у браузері.">
+  <meta name="keywords" content="генератор favicon, створити favicon.ico, фавікон для сайту онлайн, favicon generator png ico, apple touch icon">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+  <meta name="theme-color" content="#0c111d">
+  <base href="/favicon-generator/">
+  <link rel="canonical" href="https://kray-digital.pp.ua/favicon-generator/">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://kray-digital.pp.ua/favicon-generator/">
+  <meta property="og:title" content="Генератор Favicon онлайн (ICO, PNG, Apple Touch Icon) — KRAY DIGITAL">
+  <meta property="og:description" content="Створіть повний пакет іконок для сайту (favicon.ico, PNG, Apple Touch Icon, WebManifest) за 1 клік прямо у браузері.">
+
+  <!-- Schema.org WebApplication -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "KRAY DIGITAL Favicon Generator",
+    "url": "https://kray-digital.pp.ua/favicon-generator/",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "All",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "UAH"
+    },
+    "inLanguage": ["uk", "ru", "en"]
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-container">
+      <div class="logo-area">
+        <a href="/" class="brand-logo" title="KRAY DIGITAL">
+          <div class="logo-favicon-icon" aria-hidden="true">
+            <img src="/favicon.svg" alt="KRAY DIGITAL" style="width:100%;height:100%;display:block;" />
+          </div>
+          <div class="brand-text">
+            <span class="brand-name">KRAY <span class="brand-highlight">DIGITAL</span></span>
+            <span class="page-badge" id="i18nBadge">WEB TOOLS • FAVICON GENERATOR</span>
+          </div>
+        </a>
+      </div>
+      <button type="button" class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu" aria-expanded="false" aria-controls="headerNav">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+      <nav class="header-right-area" id="headerNav" aria-label="Tools navigation">
+        <a href="/qr-generator/" class="header-nav-link" id="i18nLinkQr">📱 QR-код</a>
+        <a href="/pdf-to-jpg/" class="header-nav-link" id="i18nLinkPdf">📄 PDF у JPG</a>
+        <a href="/konvertor-webp/" class="header-nav-link" id="i18nLinkWebp">🖼️ Конвертер WebP</a>
+        <a href="/password-generator/" class="header-nav-link" id="i18nLinkPass">🔐 Паролі</a>
+        <a href="/photoeditor/" class="header-nav-link" id="i18nLinkEditor">🎨 Фоторедактор</a>
+        <a href="/" class="header-order-btn">
+          <span>✨</span>
+          <span id="i18nOrderText">Замовити сайт</span>
+          <span>→</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="container">
+      <section class="tool-hero">
+        <div class="hero-header">
+          <div>
+            <h1 id="i18nTitle">Генератор Favicon онлайн — ICO, PNG, Apple Touch Icon</h1>
+            <p class="hero-subtitle" id="i18nSubtitle">Створіть повний набір іконок для сайту (favicon.ico 16/32/48px, Apple Touch Icon 180px, Android Chrome 192/512px та site.webmanifest) з логотипу або тексту прямо у браузері.</p>
+          </div>
+          <div class="format-badges">
+            <span class="fmt-pill">favicon.ico (Multi-Size)</span>
+            <span class="fmt-pill">16px – 512px PNG</span>
+            <span class="fmt-pill">ZIP + HTML</span>
+          </div>
+        </div>
+
+        <div class="studio-grid">
+          <!-- Left: Source & Settings -->
+          <div class="panel-card">
+            <div class="panel-top">
+              <h2 class="panel-title" id="i18nSourceTitle">1. Джерело іконки</h2>
+              <div class="type-tabs" id="modeTabs">
+                <button type="button" class="tab-btn active" data-mode="image" id="i18nTabImage">🖼️ Зображення</button>
+                <button type="button" class="tab-btn" data-mode="text" id="i18nTabText">🔤 Текст / Емодзі</button>
+              </div>
+            </div>
+
+            <!-- Image Mode -->
+            <div id="pane-image" class="mode-pane">
+              <div class="drop-zone" id="dropZone" tabindex="0" role="button">
+                <input type="file" id="fileInput" accept="image/png,image/jpeg,image/webp,image/svg+xml" hidden>
+                <div class="drop-icon">🖼️</div>
+                <div class="drop-main" id="i18nDropMain">Перетягніть логотип сюди або натисніть</div>
+                <div class="drop-sub" id="i18nDropSub">PNG, SVG, JPG або WebP (бажано квадрат 512×512)</div>
+              </div>
+            </div>
+
+            <!-- Text Mode -->
+            <div id="pane-text" class="mode-pane" hidden>
+              <div class="two-cols">
+                <div>
+                  <label class="field-label" for="favText" id="i18nFavTextLabel">Текст або емодзі (1–3 символи)</label>
+                  <input type="text" id="favText" class="text-input" maxlength="3" value="KD">
+                </div>
+                <div>
+                  <label class="field-label" for="favTextColor" id="i18nTextColorLabel">Колір тексту</label>
+                  <div class="color-row">
+                    <input type="color" id="favTextColor" value="#ffffff" class="color-picker">
+                    <span class="mono-val" id="textHex">#ffffff</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- Shared Style Controls -->
+            <div class="two-cols">
+              <div>
+                <label class="field-label" for="favBgColor" id="i18nBgColorLabel">Колір фону</label>
+                <div class="color-row">
+                  <input type="color" id="favBgColor" value="#0b162a" class="color-picker">
+                  <span class="mono-val" id="bgHex">#0b162a</span>
+                </div>
+              </div>
+              <label class="check-row" id="transparentRow">
+                <input type="checkbox" id="transparentBg">
+                <span id="i18nTransparentBg">Прозорий фон</span>
+              </label>
+            </div>
+
+            <div>
+              <div class="range-head">
+                <label class="field-label" for="radiusSlider" id="i18nRadiusLabel">Скруглення кутів</label>
+                <span class="mono-val" id="radiusVal">20%</span>
+              </div>
+              <input type="range" id="radiusSlider" min="0" max="50" value="20" class="range-slider">
+            </div>
+          </div>
+
+          <!-- Right: Live Preview & Export -->
+          <div class="panel-card">
+            <div class="panel-top">
+              <h2 class="panel-title" id="i18nPreviewTitle">2. Попередній перегляд та пакет</h2>
+              <span class="fmt-pill">7 файлів у ZIP</span>
+            </div>
+
+            <!-- Browser Tab Mockup -->
+            <div class="browser-tab-mock">
+              <div class="tab-pill">
+                <canvas id="preview16" width="16" height="16"></canvas>
+                <span>Kray Digital — Website</span>
+                <span class="tab-close">×</span>
+              </div>
+            </div>
+
+            <!-- Large Preview -->
+            <div class="preview-stage">
+              <div class="preview-item">
+                <canvas id="preview180" width="180" height="180"></canvas>
+                <span class="mono-val">180×180</span>
+              </div>
+              <div class="preview-item">
+                <canvas id="preview48" width="48" height="48"></canvas>
+                <span class="mono-val">48×48</span>
+              </div>
+              <div class="preview-item">
+                <canvas id="preview32" width="32" height="32"></canvas>
+                <span class="mono-val">32×32</span>
+              </div>
+            </div>
+
+            <div class="action-buttons">
+              <button type="button" class="btn-primary" id="downloadZipBtn">
+                📦 <span id="i18nDlZip">Завантажити все (ZIP)</span>
+              </button>
+              <button type="button" class="btn-secondary" id="downloadIcoBtn">
+                ⬇ <span id="i18nDlIco">Завантажити favicon.ico</span>
+              </button>
+            </div>
+
+            <div class="code-box">
+              <div class="code-head">
+                <span id="i18nHtmlCodeTitle">Код для &lt;head&gt; вашого сайту</span>
+                <button type="button" class="btn-ghost-sm" id="copyHtmlBtn">📋 <span id="i18nCopyHtml">Копіювати</span></button>
+              </div>
+              <pre id="htmlSnippet" class="code-pre"></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SEO Content & FAQ -->
+      <section class="info-section">
+        <article class="seo-box">
+          <h2 id="i18nSeoTitle">Навіщо сайту повний комплект Favicon у форматах ICO та PNG</h2>
+          <p id="i18nSeoIntro">Favicon — це обличчя вашого сайту у вкладках браузера, закладках та пошуковій видачі Google. Якісна іконка підвищує впізнаваність бренду та клікабельність (CTR) у результатах пошуку на мобільних і десктопних пристроях.</p>
+          <div class="seo-grid">
+            <div class="seo-col">
+              <h3 id="i18nSeoCol1Title">Які файли входять у ZIP-пакет?</h3>
+              <p id="i18nSeoCol1Text">Генератор автоматично створює мульти-розмірний favicon.ico (16×16, 32×32, 48×48), PNG-іконки для десктопів, apple-touch-icon.png (180×180) для iPhone/iPad, іконки 192×192 і 512×512 для Android/PWA та готовий файл site.webmanifest.</p>
+            </div>
+            <div class="seo-col">
+              <h3 id="i18nSeoCol2Title">Як правильно підключити фавікон на сайт?</h3>
+              <p id="i18nSeoCol2Text">Розпакуйте архів у кореневу папку сайту (public/ або корінь домену) і вставте згенеровані рядки &lt;link&gt; всередину тега &lt;head&gt;. Для пошукових систем важливо, щоб іконка була квадратною і добре читалася навіть у розмірі 16×16 px.</p>
+            </div>
+          </div>
+        </article>
+
+        <div class="faq-box">
+          <h2 id="i18nFaqTitle">Часті запитання</h2>
+          <div class="faq-list">
+            <details class="faq-item" open>
+              <summary id="i18nFaq1Q">Навіщо потрібні одночасно favicon.ico і PNG-іконки?</summary>
+              <p id="i18nFaq1A">Файл favicon.ico забезпечує сумісність із класичними браузерами та пошуковими ботами, а PNG 180×180, 192×192 і 512×512 потрібні для високої чіткості на Retina-екранах, iOS, Android та у видачі Google.</p>
+            </details>
+            <details class="faq-item">
+              <summary id="i18nFaq2Q">Який розмір картинки краще завантажувати?</summary>
+              <p id="i18nFaq2A">Оптимально завантажувати квадратний логотип у форматі PNG або SVG розміром від 512×512 px — тоді всі похідні іконки будуть максимально чіткими без розмиття.</p>
+            </details>
+            <details class="faq-item">
+              <summary id="i18nFaq3Q">Чи можна зробити фавікон без картинки?</summary>
+              <p id="i18nFaq3A">Так. Перейдіть на вкладку «Текст / Емодзі», введіть 1–3 літери бренду або емодзі, оберіть колір фону та скруглення кутів — і миттєво отримаєте готовий набір іконок.</p>
+            </details>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">© 2026 KRAY DIGITAL — Web Tools</div>
+      <div class="footer-links">
+        <a href="/" id="i18nFootHome">Головна</a>
+        <a href="/qr-generator/" id="i18nFootQr">QR Генератор</a>
+        <a href="/pdf-to-jpg/" id="i18nFootPdf">PDF у JPG</a>
+        <a href="/konvertor-webp/" id="i18nFootWebp">Конвертер WebP</a>
+        <a href="/password-generator/" id="i18nFootPass">Генератор паролів</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./vendor/jszip.min.js"></script>
+  <script defer src="/shared/tools-menu.js"></script>
+  <script src="./app.js" defer></script>
+</body>
+</html>

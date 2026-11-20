@@ -12,4 +12,8 @@
 /photoeditor/*    /photoeditor/:splat    200
 /pdf-to-jpg    /pdf-to-jpg/index.html    200
 /pdf-to-jpg/*    /pdf-to-jpg/:splat    200
+/qr-generator    /qr-generator/index.html    200
+/qr-generator/*    /qr-generator/:splat    200
+/favicon-generator    /favicon-generator/index.html    200
+/favicon-generator/*    /favicon-generator/:splat    200
 /*    /index.html    200

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Генератор QR-кодів онлайн безкоштовно — PNG та SVG без реєстрації | KRAY DIGITAL</title>
+  <meta name="description" content="Безкоштовний онлайн генератор QR-кодів у PNG та векторному SVG. Створюйте QR-коди для сайтів, Wi-Fi, Telegram, телефону та тексту з вибором кольору й розміру до 2048 px.">
+  <meta name="keywords" content="генератор qr коду, створити qr код онлайн, qr код для сайту, qr код wifi, qr code generator svg png">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+  <meta name="theme-color" content="#0c111d">
+  <base href="/qr-generator/">
+  <link rel="canonical" href="https://kray-digital.pp.ua/qr-generator/">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://kray-digital.pp.ua/qr-generator/">
+  <meta property="og:title" content="Генератор QR-кодів онлайн (PNG & SVG) — KRAY DIGITAL">
+  <meta property="og:description" content="Миттєве створення QR-кодів для посилань, Wi-Fi, контактів і тексту прямо у браузері у форматах PNG та SVG.">
+
+  <!-- Schema.org WebApplication -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "KRAY DIGITAL QR Code Generator",
+    "url": "https://kray-digital.pp.ua/qr-generator/",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "All",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "UAH"
+    },
+    "inLanguage": ["uk", "ru", "en"]
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-container">
+      <div class="logo-area">
+        <a href="/" class="brand-logo" title="KRAY DIGITAL">
+          <div class="logo-favicon-icon" aria-hidden="true">
+            <img src="/favicon.svg" alt="KRAY DIGITAL" style="width:100%;height:100%;display:block;" />
+          </div>
+          <div class="brand-text">
+            <span class="brand-name">KRAY <span class="brand-highlight">DIGITAL</span></span>
+            <span class="page-badge" id="i18nBadge">WEB TOOLS • QR CODE GENERATOR</span>
+          </div>
+        </a>
+      </div>
+      <button type="button" class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu" aria-expanded="false" aria-controls="headerNav">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+      <nav class="header-right-area" id="headerNav" aria-label="Tools navigation">
+        <a href="/favicon-generator/" class="header-nav-link" id="i18nLinkFavicon">✨ Favicon</a>
+        <a href="/pdf-to-jpg/" class="header-nav-link" id="i18nLinkPdf">📄 PDF у JPG</a>
+        <a href="/konvertor-webp/" class="header-nav-link" id="i18nLinkWebp">🖼️ Конвертер WebP</a>
+        <a href="/password-generator/" class="header-nav-link" id="i18nLinkPass">🔐 Паролі</a>
+        <a href="/photoeditor/" class="header-nav-link" id="i18nLinkEditor">🎨 Фоторедактор</a>
+        <a href="/" class="header-order-btn">
+          <span>✨</span>
+          <span id="i18nOrderText">Замовити сайт</span>
+          <span>→</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="container">
+      <section class="tool-hero">
+        <div class="hero-header">
+          <div>
+            <h1 id="i18nTitle">Генератор QR-кодів онлайн — PNG та SVG</h1>
+            <p class="hero-subtitle" id="i18nSubtitle">Миттєво створюйте статичні QR-коди без терміну дії для сайтів, Wi-Fi, візиток, Telegram та текстів. Працює локально у браузері без реєстрації.</p>
+          </div>
+          <div class="format-badges">
+            <span class="fmt-pill">PNG &amp; Vector SVG</span>
+            <span class="fmt-pill">Wi-Fi / URL / Text</span>
+            <span class="fmt-pill">100% Client-Side</span>
+          </div>
+        </div>
+
+        <div class="studio-grid">
+          <!-- Left: Input & Styling -->
+          <div class="panel-card">
+            <div class="panel-top">
+              <h2 class="panel-title" id="i18nInputTitle">1. Вміст QR-коду</h2>
+              <div class="type-tabs" id="typeTabs" role="tablist">
+                <button type="button" class="tab-btn active" data-type="url" id="i18nTabUrl">🔗 URL</button>
+                <button type="button" class="tab-btn" data-type="text" id="i18nTabText">📝 Текст</button>
+                <button type="button" class="tab-btn" data-type="wifi" id="i18nTabWifi">📶 Wi-Fi</button>
+                <button type="button" class="tab-btn" data-type="contact" id="i18nTabContact">📱 Тел / TG</button>
+              </div>
+            </div>
+
+            <!-- URL Panel -->
+            <div class="input-pane" id="pane-url">
+              <label class="field-label" for="qrUrlInput" id="i18nUrlLabel">Посилання (URL)</label>
+              <input type="url" id="qrUrlInput" class="text-input" value="https://kray-digital.pp.ua/" placeholder="https://example.com">
+            </div>
+
+            <!-- Text Panel -->
+            <div class="input-pane" id="pane-text" hidden>
+              <label class="field-label" for="qrTextInput" id="i18nTextLabel">Довільний текст</label>
+              <textarea id="qrTextInput" class="text-area" rows="4" placeholder="Введіть текст або промокод..."></textarea>
+            </div>
+
+            <!-- Wi-Fi Panel -->
+            <div class="input-pane" id="pane-wifi" hidden>
+              <div class="two-cols">
+                <div>
+                  <label class="field-label" for="wifiSsid" id="i18nWifiSsid">Назва мережі (SSID)</label>
+                  <input type="text" id="wifiSsid" class="text-input" placeholder="MyWiFi">
+                </div>
+                <div>
+                  <label class="field-label" for="wifiPass" id="i18nWifiPass">Пароль</label>
+                  <input type="text" id="wifiPass" class="text-input" placeholder="********">
+                </div>
+              </div>
+              <div class="two-cols">
+                <div>
+                  <label class="field-label" for="wifiEnc" id="i18nWifiEnc">Шифрування</label>
+                  <select id="wifiEnc" class="text-input">
+                    <option value="WPA">WPA / WPA2</option>
+                    <option value="WEP">WEP</option>
+                    <option value="nopass">Без пароля</option>
+                  </select>
+                </div>
+                <label class="check-row">
+                  <input type="checkbox" id="wifiHidden">
+                  <span id="i18nWifiHidden">Прихована мережа</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Contact / TG Panel -->
+            <div class="input-pane" id="pane-contact" hidden>
+              <div class="two-cols">
+                <div>
+                  <label class="field-label" for="contactKind" id="i18nContactKind">Тип</label>
+                  <select id="contactKind" class="text-input">
+                    <option value="tel">Телефон (tel:)</option>
+                    <option value="tg">Telegram (@username)</option>
+                    <option value="mailto">Email (mailto:)</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="field-label" for="contactVal" id="i18nContactVal">Значення</label>
+                  <input type="text" id="contactVal" class="text-input" placeholder="+380671234567">
+                </div>
+              </div>
+            </div>
+
+            <!-- Design Options -->
+            <div class="divider"></div>
+            <div class="two-cols">
+              <div>
+                <label class="field-label" for="fgColor" id="i18nFgColor">Колір QR-коду</label>
+                <div class="color-row">
+                  <input type="color" id="fgColor" value="#0f172a" class="color-picker">
+                  <span class="mono-val" id="fgHex">#0f172a</span>
+                </div>
+              </div>
+              <div>
+                <label class="field-label" for="bgColor" id="i18nBgColor">Колір фону</label>
+                <div class="color-row">
+                  <input type="color" id="bgColor" value="#ffffff" class="color-picker">
+                  <span class="mono-val" id="bgHex">#ffffff</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="two-cols">
+              <div>
+                <label class="field-label" for="qrSize" id="i18nSizeLabel">Розмір PNG</label>
+                <select id="qrSize" class="text-input">
+                  <option value="256">256 × 256 px</option>
+                  <option value="512" selected>512 × 512 px</option>
+                  <option value="1024">1024 × 1024 px</option>
+                  <option value="2048">2048 × 2048 px</option>
+                </select>
+              </div>
+              <div>
+                <label class="field-label" for="qrEcc" id="i18nEccLabel">Корекція помилок</label>
+                <select id="qrEcc" class="text-input">
+                  <option value="L">L — 7% (компактний)</option>
+                  <option value="M" selected>M — 15% (стандарт)</option>
+                  <option value="Q">Q — 25% (надійний)</option>
+                  <option value="H">H — 30% (максимум)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Live Preview & Download -->
+          <div class="panel-card preview-panel">
+            <div class="panel-top">
+              <h2 class="panel-title" id="i18nPreviewTitle">2. Попередній перегляд</h2>
+              <span class="fmt-pill" id="qrStatusBadge">SVG + PNG</span>
+            </div>
+
+            <div class="qr-stage">
+              <canvas id="qrCanvas" width="320" height="320" aria-label="QR Code Preview"></canvas>
+            </div>
+
+            <div class="action-buttons">
+              <button type="button" class="btn-primary" id="dlPngBtn">
+                ⬇ <span id="i18nDlPng">Завантажити PNG</span>
+              </button>
+              <button type="button" class="btn-secondary" id="dlSvgBtn">
+                ⬇ <span id="i18nDlSvg">Завантажити SVG</span>
+              </button>
+            </div>
+            <button type="button" class="btn-ghost-full" id="copySvgBtn">
+              📋 <span id="i18nCopySvg">Скопіювати SVG-код</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Features & FAQ -->
+      <section class="info-section">
+        <div class="features-grid">
+          <article class="feature-card">
+            <div class="feature-icon">♾️</div>
+            <h3 id="i18nFeat1Title">Вічні статичні QR-коди</h3>
+            <p id="i18nFeat1Desc">Дані кодуються напряму в зображення без сторонніх редиректів. Такий QR-код працюватиме завжди і ніколи не заблокується.</p>
+          </article>
+          <article class="feature-card">
+            <div class="feature-icon">📐</div>
+            <h3 id="i18nFeat2Title">Векторний SVG та HD PNG</h3>
+            <p id="i18nFeat2Desc">Завантажуйте SVG для поліграфії, вивісок і Figma або готовий PNG до 2048×2048 px для сайту та соцмереж.</p>
+          </article>
+          <article class="feature-card">
+            <div class="feature-icon">🔒</div>
+            <h3 id="i18nFeat3Title">100% у браузері</h3>
+            <p id="i18nFeat3Desc">Паролі від Wi-Fi, телефони та посилання не передаються на сервер — уся генерація відбувається миттєво на вашому пристрої.</p>
+          </article>
+        </div>
+
+        <article class="seo-box">
+          <h2 id="i18nSeoTitle">Як створити якісний QR-код для бізнесу, сайту та поліграфії</h2>
+          <p id="i18nSeoIntro">Онлайн генератор QR-кодів KRAY DIGITAL формує прямі статичні QR-коди без прихованих редиректів і підписок. Ваші посилання, контакти або налаштування Wi-Fi записуються безпосередньо в матрицю коду, тому згенерований QR-код працюватиме роками.</p>
+          <div class="seo-grid">
+            <div class="seo-col">
+              <h3 id="i18nSeoCol1Title">PNG чи векторний SVG — що обрати?</h3>
+              <p id="i18nSeoCol1Text">Формат PNG (від 256 до 2048 px) підходить для соцмереж, презентацій, сайтів і месенджерів. Якщо ви готуєте візитки, банери, наліпки, меню чи упаковку — завантажуйте SVG: векторний файл масштабується без втрати чіткості у Figma, Illustrator або CorelDRAW.</p>
+            </div>
+            <div class="seo-col">
+              <h3 id="i18nSeoCol2Title">Рівень корекції помилок і контраст</h3>
+              <p id="i18nSeoCol2Text">Для стандартних посилань достатньо корекції M (15%). Якщо QR-код друкуватиметься на упаковці або поверхні, що може затиратися, оберіть Q (25%) або H (30%). Завжди залишайте світлий фон і темний малюнок для швидкого сканування камерою смартфона.</p>
+            </div>
+          </div>
+        </article>
+
+        <div class="faq-box">
+          <h2 id="i18nFaqTitle">Часті запитання</h2>
+          <div class="faq-list">
+            <details class="faq-item" open>
+              <summary id="i18nFaq1Q">Чи мають створені QR-коди термін дії?</summary>
+              <p id="i18nFaq1A">Ні. Це статичні QR-коди, які не залежать від сторонніх серверів. Вони працюватимуть безстроково та без будь-яких лімітів на кількість сканувань.</p>
+            </details>
+            <details class="faq-item">
+              <summary id="i18nFaq2Q">Як створити QR-код для підключення до Wi-Fi?</summary>
+              <p id="i18nFaq2A">Оберіть вкладку «Wi-Fi», введіть назву мережі (SSID), пароль і тип шифрування (зазвичай WPA/WPA2). Гості зможуть підключатися до вашого Wi-Fi одним наведенням камери.</p>
+            </details>
+            <details class="faq-item">
+              <summary id="i18nFaq3Q">Чи безпечно вводити тут паролі від Wi-Fi?</summary>
+              <p id="i18nFaq3A">Так, 100% безпечно. Уся генерація відбувається локально у вашому браузері через JavaScript — дані нікуди не передаються і не зберігаються.</p>
+            </details>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">© 2026 KRAY DIGITAL — Web Tools</div>
+      <div class="footer-links">
+        <a href="/" id="i18nFootHome">Головна</a>
+        <a href="/favicon-generator/" id="i18nFootFavicon">Favicon Генератор</a>
+        <a href="/pdf-to-jpg/" id="i18nFootPdf">PDF у JPG</a>
+        <a href="/konvertor-webp/" id="i18nFootWebp">Конвертер WebP</a>
+        <a href="/password-generator/" id="i18nFootPass">Генератор паролів</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./vendor/qrcode.min.js"></script>
+  <script defer src="/shared/tools-menu.js"></script>
+  <script src="./app.js" defer></script>
+</body>
+</html>

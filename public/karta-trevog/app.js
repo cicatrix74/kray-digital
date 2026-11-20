@@ -450,3 +450,24 @@
     bind();
   }
 })();
+
+(function initScrollToTop() {
+  const bind = () => {
+    if (document.getElementById('krayScrollTopBtn') || document.getElementById('scrollToTopBtn')) return;
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.id = 'krayScrollTopBtn';
+    btn.setAttribute('aria-label', 'Вгору');
+    btn.style.cssText = 'position:fixed;bottom:24px;right:24px;z-index:9998;width:48px;height:48px;border-radius:9999px;background:rgba(25,35,59,0.88);backdrop-filter:blur(12px);border:1px solid rgba(59,73,75,0.55);color:#22d3ee;display:none;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 12px 30px rgba(0,0,0,0.45);';
+    btn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>';
+    document.body.appendChild(btn);
+    window.addEventListener('scroll', () => {
+      btn.style.display = window.scrollY > 300 ? 'flex' : 'none';
+    }, { passive: true });
+    btn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bind);
+  else bind();
+})();

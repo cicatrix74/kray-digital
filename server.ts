@@ -967,6 +967,24 @@ app.get('/pdf-to-jpg', (req, res) => {
   res.sendFile(path.join(PDFTOJPG_DIR, 'index.html'));
 });
 
+// QR Code Generator Page (/qr-generator)
+const QRGEN_DIR = path.resolve(process.cwd(), 'public/qr-generator');
+app.get('/qr-generator', (req, res) => {
+  if (!req.originalUrl.split('?')[0].endsWith('/')) {
+    return res.redirect(301, '/qr-generator/');
+  }
+  res.sendFile(path.join(QRGEN_DIR, 'index.html'));
+});
+
+// Favicon Generator Page (/favicon-generator)
+const FAVGEN_DIR = path.resolve(process.cwd(), 'public/favicon-generator');
+app.get('/favicon-generator', (req, res) => {
+  if (!req.originalUrl.split('?')[0].endsWith('/')) {
+    return res.redirect(301, '/favicon-generator/');
+  }
+  res.sendFile(path.join(FAVGEN_DIR, 'index.html'));
+});
+
 app.post('/api/video-to-gif', express.raw({ type: '*/*', limit: '100mb' }), async (req, res) => {
   if (!ffmpegPath) {
     return res.status(500).json({ success: false, error: 'FFmpeg binary not found' });
