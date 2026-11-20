@@ -39,22 +39,45 @@ if (cssMatch) {
   console.warn('[prerender] No matching index-*.css <link> found in dist/index.html');
 }
 
-const langs: { lang: Lang; fileName: string }[] = [
-  { lang: 'uk', fileName: 'index.html' },
-  { lang: 'ru', fileName: 'index.ru.html' },
-  { lang: 'en', fileName: 'index.en.html' },
+const langs: { lang: Lang; fileName: string; notFoundFileName: string }[] = [
+  { lang: 'uk', fileName: 'index.html', notFoundFileName: '404.html' },
+  { lang: 'ru', fileName: 'index.ru.html', notFoundFileName: '404.ru.html' },
+  { lang: 'en', fileName: 'index.en.html', notFoundFileName: '404.en.html' },
 ];
 
-for (const { lang, fileName } of langs) {
+const notFoundTitles: Record<Lang, string> = {
+  uk: '404 — Сторінку не знайдено | Kray Digital',
+  ru: '404 — Страница не найдена | Kray Digital',
+  en: '404 — Page Not Found | Kray Digital',
+};
+
+for (const { lang, fileName, notFoundFileName } of langs) {
   const appHtml = renderToString(
     React.createElement(LanguageProvider, { initialLanguage: lang }, React.createElement(App)),
   );
 
-  let html = template
+  const html = template
     .replace(/<html\b([^>]*)\blang=["'][^"']*["']/i, `<html$1lang="${lang}" data-ssr-lang="${lang}"`)
     .replace(rootPlaceholder, () => `<div id="root">${appHtml}</div>`);
 
   const outPath = path.join(distDir, fileName);
   fs.writeFileSync(outPath, html, 'utf-8');
   console.log(`[prerender] Wrote ${fileName} (${lang}, ${html.length} bytes)`);
+
+  const notFoundHtmlContent = renderToString(
+    React.createElement(
+      LanguageProvider,
+      { initialLanguage: lang },
+      React.createElement(App, { initialIsNotFound: true }),
+    ),
+  );
+
+  const notFoundHtml = template
+    .replace(/<html\b([^>]*)\blang=["'][^"']*["']/i, `<html$1lang="${lang}" data-ssr-lang="${lang}"`)
+    .replace(/<title>[\s\S]*?<\/title>/i, `<title>${notFoundTitles[lang]}</title>\n    <meta name="robots" content="noindex, nofollow" />`)
+    .replace(rootPlaceholder, () => `<div id="root">${notFoundHtmlContent}</div>`);
+
+  const notFoundOutPath = path.join(distDir, notFoundFileName);
+  fs.writeFileSync(notFoundOutPath, notFoundHtml, 'utf-8');
+  console.log(`[prerender] Wrote ${notFoundFileName} (${lang}, ${notFoundHtml.length} bytes)`);
 }

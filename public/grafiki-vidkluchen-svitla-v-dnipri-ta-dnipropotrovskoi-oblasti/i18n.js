@@ -376,8 +376,8 @@
 
     const emergencyBannerEl = document.getElementById('emergencyBanner');
     if (emergencyBannerEl && isEmerg) {
-      const bTitle = emergencyBannerEl.querySelector('strong');
-      const bSub = emergencyBannerEl.querySelector('span');
+      const bTitle = emergencyBannerEl.querySelector('.emergency-text strong') || emergencyBannerEl.querySelector('strong');
+      const bSub = emergencyBannerEl.querySelector('.emergency-text span');
       const isAddr = Boolean(window.currentAddressOutage && window.currentAddressOutage.hasOutage);
       if (isAddr && window.currentAddressOutage) {
         const o = window.currentAddressOutage;

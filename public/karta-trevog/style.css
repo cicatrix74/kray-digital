@@ -623,7 +623,7 @@ body {
     min-height: 76px;
   }
   .header-container {
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     gap: 10px;
   }
   .logo-area {

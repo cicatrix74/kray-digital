@@ -2,6 +2,7 @@ import React, { useState, useEffect, Suspense, lazy } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import Footer from './components/Footer';
+import NotFoundPage from './components/NotFoundPage';
 import TechGridBackground from './components/TechGridBackground';
 import ScrollToTop from './components/ScrollToTop';
 import CallbackWidget from './components/CallbackWidget';
@@ -57,7 +58,17 @@ const DEMO_LEADS: LeadSubmission[] = [
   }
 ];
 
-export default function App() {
+interface AppProps {
+  initialIsNotFound?: boolean;
+}
+
+export default function App({ initialIsNotFound }: AppProps = {}) {
+  const isNotFound =
+    initialIsNotFound ??
+    (typeof window !== 'undefined' &&
+      window.location.pathname !== '/' &&
+      window.location.pathname !== '/index.html');
+
   const [isCalculatorOpen, setIsCalculatorOpen] = useState(false);
   const [isCallbackOpen, setIsCallbackOpen] = useState(false);
   const [isCasesOpen, setIsCasesOpen] = useState(false);
@@ -213,6 +224,11 @@ export default function App() {
 
   // Utility to scroll to section smoothly with cubic easing & fixed header offset
   const handleScrollToSection = (elementId: string) => {
+    if (isNotFound && typeof window !== 'undefined') {
+      window.location.href = `/#${elementId}`;
+      return;
+    }
+
     if (!showBelowFold) {
       setShowBelowFold(true);
     }
@@ -298,16 +314,19 @@ export default function App() {
 
        {/* Main layout */}
       <main className="pt-20 relative z-20 overflow-x-hidden w-full max-w-full">
-        
-        {/* Hero Banner section */}
-        <Hero 
-          onOpenCalculator={() => handleOpenCalculatorWithService('')} 
-          onOpenCases={() => handleScrollToSection('portfolio-section')} 
-        />
-
-        {/* Below-the-fold sections deferred until interaction or idle */}
-        {showBelowFold && (
+        {isNotFound ? (
+          <NotFoundPage onOpenCalculator={() => handleOpenCalculatorWithService('')} />
+        ) : (
           <>
+            {/* Hero Banner section */}
+            <Hero 
+              onOpenCalculator={() => handleOpenCalculatorWithService('')} 
+              onOpenCases={() => handleScrollToSection('portfolio-section')} 
+            />
+
+            {/* Below-the-fold sections deferred until interaction or idle */}
+            {showBelowFold && (
+              <>
             {/* Expertise / Bento services section */}
             <Suspense fallback={null}>
               <Expertise onSelectService={handleOpenCalculatorWithService} />
@@ -354,6 +373,8 @@ export default function App() {
                 onOpenCallback={() => setIsCallbackOpen(true)}
               />
             </Suspense>
+          </>
+        )}
           </>
         )}
 

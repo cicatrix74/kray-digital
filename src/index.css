@@ -195,3 +195,183 @@ div[class*="netlify-feedback"] {
   width: 0 !important;
   height: 0 !important;
 }
+
+/* Vivid 404 Page Animations */
+@keyframes aurora-spin {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(180deg) scale(1.08);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+  }
+}
+
+@keyframes gradient-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes glitch-slice-1 {
+  0%, 82%, 100% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0;
+  }
+  84% {
+    transform: translate3d(-6px, -2px, 0) skewX(-6deg);
+    opacity: 0.9;
+  }
+  86% {
+    transform: translate3d(5px, 2px, 0) skewX(4deg);
+    opacity: 0.85;
+  }
+  88% {
+    transform: translate3d(-3px, 1px, 0);
+    opacity: 0.7;
+  }
+  90% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0;
+  }
+}
+
+@keyframes glitch-slice-2 {
+  0%, 76%, 100% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0;
+  }
+  78% {
+    transform: translate3d(6px, 2px, 0) skewX(6deg);
+    opacity: 0.9;
+  }
+  80% {
+    transform: translate3d(-5px, -1px, 0) skewX(-5deg);
+    opacity: 0.8;
+  }
+  82% {
+    transform: translate3d(2px, -2px, 0);
+    opacity: 0.6;
+  }
+  84% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0;
+  }
+}
+
+@keyframes float-orbit {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  33% {
+    transform: translate3d(10px, -14px, 0) scale(1.06);
+  }
+  66% {
+    transform: translate3d(-12px, 8px, 0) scale(0.95);
+  }
+}
+
+@keyframes particle-rise {
+  0% {
+    transform: translate3d(0, 24px, 0) scale(0.6);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.95;
+  }
+  80% {
+    opacity: 0.75;
+  }
+  100% {
+    transform: translate3d(0, -90px, 0) scale(1.15);
+    opacity: 0;
+  }
+}
+
+@keyframes radar-sweep {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes energy-ring-pulse {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.45);
+    opacity: 0;
+  }
+}
+
+.animate-aurora-spin {
+  animation: aurora-spin 14s linear infinite;
+  will-change: transform;
+}
+
+.animate-aurora-spin-reverse {
+  animation: aurora-spin 18s linear infinite reverse;
+  will-change: transform;
+}
+
+.animate-gradient-flow {
+  background-size: 250% 250%;
+  animation: gradient-flow 4s ease infinite;
+}
+
+.animate-glitch-1 {
+  animation: glitch-slice-1 3.6s infinite;
+  will-change: transform, opacity;
+}
+
+.animate-glitch-2 {
+  animation: glitch-slice-2 3.6s infinite;
+  will-change: transform, opacity;
+}
+
+.animate-float-orbit {
+  animation: float-orbit 6.5s ease-in-out infinite;
+  will-change: transform;
+}
+
+.animate-particle-rise {
+  animation: particle-rise 4.2s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+.animate-radar-sweep {
+  animation: radar-sweep 3.2s linear infinite;
+  transform-origin: center;
+  will-change: transform;
+}
+
+.animate-energy-ring {
+  animation: energy-ring-pulse 2.4s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  will-change: transform, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-aurora-spin,
+  .animate-aurora-spin-reverse,
+  .animate-gradient-flow,
+  .animate-glitch-1,
+  .animate-glitch-2,
+  .animate-float-orbit,
+  .animate-particle-rise,
+  .animate-radar-sweep,
+  .animate-energy-ring {
+    animation: none !important;
+  }
+}

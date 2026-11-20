@@ -53,10 +53,15 @@ const btnToggleEmergency = document.getElementById('btnToggleEmergency');
 const emergencyBanner = document.getElementById('emergencyBanner');
 const emergencyBannerClose = document.getElementById('emergencyBannerClose');
 let isEmergencyBannerDismissed = false;
+function setEmergencyBannerVisible(visible) {
+  if (!emergencyBanner) return;
+  emergencyBanner.style.display = visible ? 'block' : 'none';
+  document.body.classList.toggle('emergency-banner-visible', Boolean(visible));
+}
 if (emergencyBannerClose && emergencyBanner) {
   emergencyBannerClose.addEventListener('click', () => {
     isEmergencyBannerDismissed = true;
-    emergencyBanner.style.display = 'none';
+    setEmergencyBannerVisible(false);
   });
 }
 const gridStatusChip = document.getElementById('gridStatusChip');
@@ -225,7 +230,7 @@ async function fetchSystemStatus() {
 function renderSystemStatus() {
   if (!systemStatus) return;
   const isEmergency = systemStatus.mode === 'emergency';
-  if (emergencyBanner) emergencyBanner.style.display = (isEmergency && !isEmergencyBannerDismissed) ? 'block' : 'none';
+  setEmergencyBannerVisible(isEmergency && !isEmergencyBannerDismissed);
   if (gridStatusText) gridStatusText.textContent = systemStatus.modeLabel || systemStatus.modeTitle || 'Стабілізаційні відключення (ДТЕК Дніпро)';
   if (btnToggleEmergency) btnToggleEmergency.textContent = isEmergency ? 'Вимкнути Аварійний тест' : 'Тест: Аварійний режим';
 
@@ -526,7 +531,7 @@ function updateLiveStatusCard() {
 
   if (isEmergency) {
     if (emergencyBanner) {
-      emergencyBanner.style.display = isEmergencyBannerDismissed ? 'none' : 'block';
+      setEmergencyBannerVisible(!isEmergencyBannerDismissed);
       const bTitle = emergencyBanner.querySelector('.emergency-text strong') || emergencyBanner.querySelector('strong');
       const bSub = emergencyBanner.querySelector('.emergency-text span');
       if (isAddressEmergency && currentAddressOutage) {
@@ -619,7 +624,7 @@ function updateLiveStatusCard() {
   // Як тільки графіки стають стабілізаційні — приховуємо червоний банер, детальну картку і ОДРАЗУ виводимо таймер
   const dtekNotice = document.getElementById('dtekOfficialNotice');
   if (dtekNotice) dtekNotice.style.display = 'none';
-  if (emergencyBanner) emergencyBanner.style.display = 'none';
+  setEmergencyBannerVisible(false);
   if (countdownCol) {
     countdownCol.style.display = 'block';
   }

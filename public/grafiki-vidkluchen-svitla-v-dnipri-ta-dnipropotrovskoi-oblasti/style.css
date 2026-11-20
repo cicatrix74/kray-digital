@@ -504,25 +504,37 @@ body {
   color: #fff;
   padding: 12px 14px;
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55);
+  box-sizing: border-box;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 .emergency-banner .container {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
+  width: 100%;
+  max-width: 100%;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
 }
 
 .emergency-icon {
-  font-size: 24px;
+  font-size: 22px;
+  line-height: 1;
   flex-shrink: 0;
 }
 
 .emergency-text {
   display: flex;
   flex-direction: column;
-  font-size: 14px;
-  flex: 1;
+  gap: 2px;
+  font-size: 13px;
+  line-height: 1.35;
   min-width: 0;
+  overflow-wrap: break-word;
 }
 
 .emergency-close-btn {
@@ -2136,6 +2148,11 @@ body {
     right: 16px;
     width: 44px;
     height: 44px;
+  }
+
+  body.emergency-banner-visible .scroll-to-top-btn,
+  body:has(#emergencyBanner:not([style*="display: none"])) .scroll-to-top-btn {
+    bottom: 184px !important;
   }
 }
 

@@ -1166,6 +1166,21 @@ async function startServer() {
 
     app.use('/assets', express.static('dist/assets', { maxAge: '1y', immutable: true }));
     app.use(express.static('dist'));
+
+    app.use((req, res) => {
+      const lang = detectAcceptLang(req.headers['accept-language']);
+      const fileName = lang === 'uk' ? '404.html' : `404.${lang}.html`;
+      const filePath = path.resolve(process.cwd(), 'dist', fileName);
+      if (fs.existsSync(filePath)) {
+        res.setHeader('Vary', 'Accept-Language');
+        return res.status(404).sendFile(filePath);
+      }
+      const fallbackPath = path.resolve(process.cwd(), 'dist', '404.html');
+      if (fs.existsSync(fallbackPath)) {
+        return res.status(404).sendFile(fallbackPath);
+      }
+      return res.status(404).send('404 Not Found');
+    });
   }
 
   app.listen(PORT, () => {
