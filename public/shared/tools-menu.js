@@ -323,10 +323,11 @@
         border-color: #22d3ee;
       }
       .kray-mascot-svg {
-        width: 84px;
-        height: 68px;
+        width: 136px;
+        height: 92px;
         display: block;
-        filter: drop-shadow(0 -4px 14px rgba(0, 0, 0, 0.45));
+        margin-top: -10px;
+        filter: drop-shadow(0 -6px 18px rgba(0, 0, 0, 0.5));
       }
       .kray-mascot-eye {
         transform-origin: center;
@@ -478,25 +479,66 @@
           <a href="/" class="kray-mascot-sign">✨ <span>${signLabel}</span> →</a>
           <button type="button" class="kray-mascot-close" aria-label="Close">×</button>
         </div>
-        <svg class="kray-mascot-svg" viewBox="0 0 84 74" fill="none" aria-hidden="true">
-          <!-- Arms holding sign -->
-          <path d="M18 38 Q10 20 18 4" stroke="#38bdf8" stroke-width="6" stroke-linecap="round"/>
-          <path d="M66 38 Q74 20 66 4" stroke="#38bdf8" stroke-width="6" stroke-linecap="round"/>
-          <circle cx="18" cy="4" r="4.5" fill="#fde68a"/>
-          <circle cx="66" cy="4" r="4.5" fill="#fde68a"/>
-          <!-- Body -->
-          <path d="M22 74 C22 50 62 50 62 74 Z" fill="#1e3a8a" stroke="#38bdf8" stroke-width="2"/>
-          <!-- Ginger Hair Back -->
-          <circle cx="42" cy="31" r="19" fill="#f97316"/>
+        <svg class="kray-mascot-svg" viewBox="0 0 140 94" fill="none" aria-hidden="true">
+          <defs>
+            <linearGradient id="krayHoodie" x1="35" y1="58" x2="105" y2="94" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#1e293b"/>
+              <stop offset="100%" stop-color="#0f172a"/>
+            </linearGradient>
+            <linearGradient id="krayCap" x1="48" y1="14" x2="94" y2="36" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#0ea5e9"/>
+              <stop offset="100%" stop-color="#1d4ed8"/>
+            </linearGradient>
+            <linearGradient id="krayHair" x1="50" y1="28" x2="90" y2="44" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#fb923c"/>
+              <stop offset="100%" stop-color="#ea580c"/>
+            </linearGradient>
+          </defs>
+          <!-- Torso / Hoodie -->
+          <path d="M36 94 C36 67 48 60 70 60 C92 60 104 67 104 94 Z" fill="url(#krayHoodie)" stroke="#22d3ee" stroke-width="1.8"/>
+          <path d="M55 62 Q70 72 85 62" stroke="#38bdf8" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <!-- Neck -->
+          <rect x="64" y="52" width="12" height="11" rx="4" fill="#fcd39d"/>
+          <!-- Ears -->
+          <circle cx="53" cy="41" r="3.4" fill="#fcd39d"/>
+          <circle cx="87" cy="41" r="3.4" fill="#fcd39d"/>
           <!-- Head -->
-          <circle cx="42" cy="38" r="15" fill="#fde68a" stroke="#0f172a" stroke-width="2"/>
-          <!-- Ginger Hair Bangs / Top -->
-          <path d="M25 35 C24 16 60 16 59 35 C54 27 48 25 42 28 C36 25 30 27 25 35 Z" fill="#f97316" stroke="#c2410c" stroke-width="1.4"/>
+          <ellipse cx="70" cy="40" rx="16.5" ry="15.5" fill="#fde6ba" stroke="#1e293b" stroke-width="1.5"/>
+          <!-- Ginger sideburns / hair under cap -->
+          <path d="M53 36 C52 30 56 26 62 27 L57 38 Z" fill="url(#krayHair)"/>
+          <path d="M87 36 C88 30 84 26 78 27 L83 38 Z" fill="url(#krayHair)"/>
+          <path d="M58 31 Q66 26 76 31" fill="url(#krayHair)"/>
+          <!-- Baseball Cap -->
+          <path d="M51 31 C51 16 89 16 89 31 Z" fill="url(#krayCap)" stroke="#0f172a" stroke-width="1.4"/>
+          <!-- Cap Visor (slightly tilted to the right) -->
+          <path d="M51 30 Q72 26 98 31 Q88 35 66 32 Q55 32 51 30 Z" fill="#0284c7" stroke="#0f172a" stroke-width="1.3"/>
+          <!-- Cap KD Badge -->
+          <rect x="64" y="20" width="12" height="7" rx="2" fill="#0f172a" opacity="0.85"/>
+          <text x="70" y="25.5" text-anchor="middle" fill="#22d3ee" font-size="5.5" font-weight="800" font-family="sans-serif">KD</text>
+          <!-- Eyebrows -->
+          <path d="M60 35.5 Q63 34 66 35.5" stroke="#9a3412" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M74 35.5 Q77 34 80 35.5" stroke="#9a3412" stroke-width="1.5" stroke-linecap="round"/>
           <!-- Eyes -->
-          <circle class="kray-mascot-eye" cx="37" cy="38" r="2.2" fill="#0f172a"/>
-          <circle class="kray-mascot-eye" cx="47" cy="38" r="2.2" fill="#0f172a"/>
+          <circle class="kray-mascot-eye" cx="63.5" cy="40" r="2.2" fill="#0f172a"/>
+          <circle class="kray-mascot-eye" cx="76.5" cy="40" r="2.2" fill="#0f172a"/>
           <!-- Smile -->
-          <path d="M37 44 Q42 48 47 44" stroke="#0f172a" stroke-width="2" stroke-linecap="round"/>
+          <path d="M64.5 46 Q70 49.5 75.5 46" stroke="#0f172a" stroke-width="2" stroke-linecap="round"/>
+          <!-- Natural Bent Arms (Shoulder -> Elbow -> Forearm -> Hand holding sign) -->
+          <!-- Left arm -->
+          <path d="M41 72 L24 56 L29 14" stroke="#1e293b" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M41 72 L24 56 L29 14" stroke="#22d3ee" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+          <!-- Right arm -->
+          <path d="M99 72 L116 56 L111 14" stroke="#1e293b" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M99 72 L116 56 L111 14" stroke="#22d3ee" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+          <!-- Hands & Fingers gripping bottom of sign -->
+          <g fill="#fde6ba" stroke="#1e293b" stroke-width="1.3">
+            <rect x="22" y="6" width="14" height="10" rx="5"/>
+            <line x1="26" y1="6" x2="26" y2="11" stroke="#c28e5c" stroke-width="1.1"/>
+            <line x1="30" y1="6" x2="30" y2="11" stroke="#c28e5c" stroke-width="1.1"/>
+            <rect x="104" y="6" width="14" height="10" rx="5"/>
+            <line x1="110" y1="6" x2="110" y2="11" stroke="#c28e5c" stroke-width="1.1"/>
+            <line x1="114" y1="6" x2="114" y2="11" stroke="#c28e5c" stroke-width="1.1"/>
+          </g>
         </svg>
       `;
       document.body.appendChild(mascot);
