@@ -108,10 +108,12 @@
   }
   </script>
   <link rel="stylesheet" href="./style.css?v=4.2">
-  <link rel="stylesheet" href="./vendor/leaflet/leaflet.css">
+  <link rel="stylesheet" href="./vendor/leaflet/leaflet.css" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="./vendor/leaflet/leaflet.css"></noscript>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=optional" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=optional"></noscript>
 </head>
 <body>
   <!-- PC Ambient Background: Glowing street lanterns (Desktop only) -->
@@ -180,7 +182,7 @@
           <div class="control-group">
             <label for="providerSelect" data-i18n="labelOperator">Оператор електромереж:</label>
             <div class="select-wrapper">
-              <select id="providerSelect">
+              <select id="providerSelect" aria-label="Оператор електромереж">
                 <option value="dtek_dnipro" selected>ДТЕК Дніпровські електромережі (Дніпро, Кривий Ріг та область)</option>
                 <option value="yasno_dnipro">YASNO (Дніпровські енергетичні послуги)</option>
                 <option value="cek_dnipro">ПрАТ ПЕЕМ «ЦЕК» (Центральна енергетична компанія)</option>
@@ -209,7 +211,7 @@
             <!-- Вибір населеного пункту для точного пошуку -->
             <div class="city-filter-row">
               <div class="select-wrapper city-select-wrapper">
-                <select id="citySelect">
+                <select id="citySelect" aria-label="Оберіть місто">
                   <option value="all" data-i18n="cityAll">🌐 Усі міста області</option>
                   <option value="Дніпро" selected data-i18n="cityDnipro">🏙️ м. Дніпро</option>
                   <option value="Кривий Ріг" data-i18n="cityKryvyiRih">⛏️ м. Кривий Ріг</option>
@@ -372,7 +374,7 @@
             <div class="map-title-area">
               <span class="map-badge-icon">🗺️</span>
               <div>
-                <h3 class="map-title" data-i18n="mapTitle">Інтерактивна карта відключень: м. Дніпро</h3>
+                <h2 class="map-title" data-i18n="mapTitle">Інтерактивна карта відключень: м. Дніпро</h2>
                 <p class="map-subtitle" data-i18n="mapSubtitle">Переважаючі черги житлових масивів обох берегів. Для 100% точності за номером будинку використовуйте пошук вище</p>
               </div>
             </div>

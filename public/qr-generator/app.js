@@ -264,7 +264,11 @@ document.getElementById('typeTabs').addEventListener('click', (e) => {
   const btn = e.target.closest('.tab-btn');
   if (!btn) return;
   activeType = btn.dataset.type;
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b === btn));
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    const active = b === btn;
+    b.classList.toggle('active', active);
+    b.setAttribute('aria-selected', String(active));
+  });
   document.querySelectorAll('.input-pane').forEach(p => { p.hidden = p.id !== `pane-${activeType}`; });
   renderQR();
 });

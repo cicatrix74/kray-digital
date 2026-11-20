@@ -12,6 +12,11 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
+html, body {
+  overflow-x: clip;
+  max-width: 100%;
+}
+
 body {
   background: radial-gradient(circle at 15% 10%, rgba(6, 182, 212, 0.1), transparent 40%),
               radial-gradient(circle at 85% 20%, rgba(59, 130, 246, 0.08), transparent 45%),
@@ -29,12 +34,15 @@ body {
 .site-header {
   position: sticky; top: 0; z-index: 40;
   background: rgba(12, 17, 29, 0.88); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border);
+  padding: 18px 0;
 }
 
 .header-container {
   display: flex; align-items: center; justify-content: space-between; gap: 14px;
-  min-height: 68px; flex-wrap: wrap; padding-top: 8px; padding-bottom: 8px;
+  min-height: 44px; flex-wrap: nowrap;
 }
+
+.header-right-area { display: none !important; }
 
 .brand-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit; }
 .logo-favicon-icon { width: 38px; height: 38px; border-radius: 10px; overflow: hidden; flex-shrink: 0; }
@@ -70,6 +78,8 @@ body {
 .panel-card {
   background: rgba(19, 27, 46, 0.88); border: 1px solid var(--border); border-radius: 16px;
   padding: 22px; display: flex; flex-direction: column; gap: 16px;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .panel-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
@@ -106,16 +116,19 @@ body {
 .range-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
 .range-slider { width: 100%; accent-color: var(--accent); cursor: pointer; }
 
-.browser-tab-mock { background: #080c15; border: 1px solid var(--border); border-radius: 10px; padding: 8px 10px 0; }
+.browser-tab-mock { background: #080c15; border: 1px solid var(--border); border-radius: 10px; padding: 8px 10px 0; max-width: 100%; overflow: hidden; }
 .tab-pill {
   display: inline-flex; align-items: center; gap: 8px; background: var(--surface-2);
   padding: 7px 12px; border-radius: 8px 8px 0 0; font-size: 0.78rem; color: #fff; border: 1px solid var(--border); border-bottom: none;
+  max-width: 100%; overflow: hidden;
 }
-.tab-close { color: var(--muted); margin-left: 10px; }
+.tab-pill span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tab-close { color: var(--muted); margin-left: 10px; flex-shrink: 0; }
 
 .preview-stage {
   background: rgba(12, 17, 29, 0.65); border: 1px solid var(--border); border-radius: 12px;
   padding: 18px; display: flex; align-items: flex-end; justify-content: space-around; gap: 16px; flex-wrap: wrap;
+  max-width: 100%;
 }
 .preview-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
 .preview-item canvas {
@@ -138,9 +151,9 @@ body {
 .btn-ghost-sm { background: var(--surface-2); border: 1px solid var(--border); color: var(--muted); padding: 5px 10px; font-size: 0.76rem; }
 .btn-ghost-sm:hover { color: #fff; border-color: var(--accent); }
 
-.code-box { background: #080c15; border: 1px solid var(--border); border-radius: 12px; padding: 12px; }
-.code-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 0.8rem; color: var(--muted); }
-.code-pre { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: #93c5fd; overflow-x: auto; white-space: pre; line-height: 1.5; }
+.code-box { background: #080c15; border: 1px solid var(--border); border-radius: 12px; padding: 12px; min-width: 0; max-width: 100%; overflow: hidden; }
+.code-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 0.8rem; color: var(--muted); gap: 8px; flex-wrap: wrap; }
+.code-pre { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: #93c5fd; overflow-x: auto; white-space: pre; line-height: 1.5; max-width: 100%; }
 
 .site-footer { border-top: 1px solid var(--border); background: rgba(12, 17, 29, 0.9); padding: 18px 0; }
 .footer-inner { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
@@ -151,7 +164,11 @@ body {
 .mobile-menu-btn { display: none; }
 
 @media (max-width: 768px) {
-  .header-container { flex-wrap: wrap; gap: 10px; }
+  .site-header { padding: 14px 0; }
+  .hero-header { min-height: 280px; align-content: flex-start; }
+  .hero-header h1 { min-height: 102px; }
+  .hero-subtitle { min-height: 116px; }
+  .header-container { flex-wrap: nowrap; gap: 10px; }
   .logo-area { flex: 1; min-width: 0; }
   .brand-text { min-width: 0; }
   .page-badge { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; font-size: 9.5px; }

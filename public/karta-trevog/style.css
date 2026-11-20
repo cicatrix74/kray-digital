@@ -616,8 +616,14 @@ body {
 }
 
 @media (max-width: 768px) {
+  .hero-top h1 {
+    min-height: 86px;
+  }
+  .hero-subtitle {
+    min-height: 76px;
+  }
   .header-container {
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: 10px;
   }
   .logo-area {

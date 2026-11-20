@@ -44,6 +44,7 @@ body {
   background: rgba(12, 17, 29, 0.88);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
+  padding: 18px 0;
 }
 
 .header-container {
@@ -51,11 +52,11 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  min-height: 68px;
-  flex-wrap: wrap;
-  padding-top: 8px;
-  padding-bottom: 8px;
+  min-height: 44px;
+  flex-wrap: nowrap;
 }
+
+.header-right-area { display: none !important; }
 
 .brand-logo {
   display: flex;
@@ -724,8 +725,24 @@ body {
 }
 
 @media (max-width: 768px) {
+  .site-header {
+    padding: 14px 0;
+  }
+  .hero-header {
+    min-height: 280px;
+    align-content: flex-start;
+  }
+  .hero-header h1 {
+    min-height: 102px;
+  }
+  .hero-subtitle {
+    min-height: 116px;
+  }
+  .drop-main-text {
+    min-height: 44px;
+  }
   .header-container {
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: 10px;
   }
   .logo-area {

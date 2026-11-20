@@ -43,15 +43,20 @@ body {
   position: sticky;
   top: 0;
   z-index: 100;
-  padding: 12px 0;
+  padding: 18px 0;
 }
 
 .header-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  min-height: 44px;
   gap: 12px;
+}
+
+.header-right-area {
+  display: none !important;
 }
 
 .brand-logo {
@@ -1195,8 +1200,11 @@ input[type="range"] {
 }
 
 @media (max-width: 768px) {
+  .site-header {
+    padding: 14px 0;
+  }
   .header-container {
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: 10px;
   }
   .logo-area {
