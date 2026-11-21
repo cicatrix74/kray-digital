@@ -254,8 +254,8 @@ function formatBytes(bytes) {
 
 async function ensurePdfJs() {
   if (!pdfjsLib) {
-    pdfjsLib = await import('./vendor/pdf.min.mjs');
-    pdfjsLib.GlobalWorkerOptions.workerSrc = './vendor/pdf.worker.min.mjs';
+    pdfjsLib = await import('/pdf-to-jpg/vendor/pdf.min.mjs');
+    pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf-to-jpg/vendor/pdf.worker.min.mjs';
   }
   return pdfjsLib;
 }
@@ -264,7 +264,7 @@ function ensureJsZip() {
   if (window.JSZip) return Promise.resolve(window.JSZip);
   return new Promise((resolve, reject) => {
     const s = document.createElement('script');
-    s.src = './vendor/jszip.min.js';
+    s.src = '/pdf-to-jpg/vendor/jszip.min.js';
     s.onload = () => resolve(window.JSZip);
     s.onerror = reject;
     document.head.appendChild(s);

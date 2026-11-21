@@ -408,7 +408,7 @@
     initMap();
     try {
       const [geoRes, alertsRes] = await Promise.all([
-        fetch('./ukraine-regions.json'),
+        fetch('/karta-trevog/ukraine-regions.json'),
         fetch('/api/air-alerts')
       ]);
       if (geoRes.ok) geoData = await geoRes.json();
