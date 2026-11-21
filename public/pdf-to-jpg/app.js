@@ -152,12 +152,9 @@ const I18N = {
 };
 
 function detectLang() {
-  const langs = [...(navigator.languages || []), navigator.language || ''].map(s => String(s).toLowerCase());
-  for (const l of langs) {
-    if (l.startsWith('uk') || l.startsWith('ua')) return 'uk';
-    if (l.startsWith('ru') || l.startsWith('be') || l.startsWith('kk')) return 'ru';
-    if (l.startsWith('en')) return 'en';
-  }
+  const p = (window.location.pathname || '').toLowerCase();
+  if (p === '/ru' || p.startsWith('/ru/')) return 'ru';
+  if (p === '/en' || p.startsWith('/en/')) return 'en';
   return 'uk';
 }
 

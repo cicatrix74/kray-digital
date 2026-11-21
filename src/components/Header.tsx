@@ -41,14 +41,42 @@ export default function Header({ onOpenCalculator, onOpenCallback, onScrollToSec
   const { language, t } = useLanguage();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [activeSection, setActiveSection] = useState<string | null>(null);
 
   useEffect(() => {
     let rafId = 0;
+    const sectionIds = NAV_ITEMS.uk.map((item) => item.id);
     const updateProgress = () => {
       rafId = 0;
       const docHeight = document.documentElement.scrollHeight - window.innerHeight;
       const pct = docHeight > 0 ? Math.min(100, Math.max(0, (window.scrollY / docHeight) * 100)) : 0;
       setScrollProgress(pct);
+
+      if (window.scrollY < 160) {
+        setActiveSection(null);
+        return;
+      }
+
+      if (docHeight > 0 && window.scrollY >= docHeight - 40) {
+        const lastEl = document.getElementById(sectionIds[sectionIds.length - 1]);
+        if (lastEl) {
+          setActiveSection(sectionIds[sectionIds.length - 1]);
+          return;
+        }
+      }
+
+      let current: string | null = null;
+      let bestTop = -Infinity;
+      for (const id of sectionIds) {
+        const el = document.getElementById(id);
+        if (!el) continue;
+        const top = el.getBoundingClientRect().top;
+        if (top <= 140 && top > bestTop) {
+          bestTop = top;
+          current = id;
+        }
+      }
+      setActiveSection(current);
     };
     const onScroll = () => {
       if (!rafId) {
@@ -73,6 +101,19 @@ export default function Header({ onOpenCalculator, onOpenCallback, onScrollToSec
 
   const navItems = NAV_ITEMS[language] || NAV_ITEMS.uk;
 
+  const langLinks: { code: 'uk' | 'ru' | 'en'; label: string; href: string }[] = [
+    { code: 'uk', label: 'UA', href: '/' },
+    { code: 'ru', label: 'RU', href: '/ru/' },
+    { code: 'en', label: 'EN', href: '/en/' },
+  ];
+
+  const topbarNote =
+    language === 'ru'
+      ? 'Пн–Пт 09:00–18:00 • Разработка и продвижение сайтов под ключ'
+      : language === 'en'
+        ? 'Mon–Fri 09:00–18:00 • Turnkey Web & Growth'
+        : 'Пн–Пт 09:00–18:00 • Розробка та просування сайтів під ключ';
+
   const handleNavClick = (elementId: string) => {
     setIsMobileMenuOpen(false);
     setTimeout(() => {
@@ -82,6 +123,41 @@ export default function Header({ onOpenCalculator, onOpenCallback, onScrollToSec
 
   return (
     <header className="fixed top-0 w-full z-50 bg-[#0f131e]/95 md:bg-[#0f131e]/90 md:backdrop-blur-xl border-b border-[#3b494b]/20">
+      {/* Sleek Desktop Topbar (28px) */}
+      <div className="hidden lg:block bg-[#0a0e19]/90 border-b border-[#3b494b]/20">
+        <div className="max-w-7xl mx-auto px-4 md:px-10 h-7 flex items-center justify-between text-[11px]">
+          <span className="text-brand-on-surface-variant/80 tracking-wide">
+            {topbarNote}
+          </span>
+          <div className="flex items-center gap-3">
+            <PhoneLink
+              className="text-[11px] px-2.5 py-0.5 rounded-md border border-brand-outline-variant/30 bg-[#171b27]/80 hover:border-brand-primary-container/50"
+            />
+            <div className="flex items-center gap-1.5" aria-label="Language switcher">
+              {langLinks.map((item, idx) => {
+                const active = language === item.code;
+                return (
+                  <React.Fragment key={item.code}>
+                    {idx > 0 && <span className="text-[#3b494b] select-none">/</span>}
+                    <a
+                      href={item.href}
+                      hrefLang={item.code}
+                      className={`px-1.5 py-0.5 rounded transition-colors font-semibold ${
+                        active
+                          ? 'text-brand-primary-container font-bold'
+                          : 'text-brand-on-surface-variant hover:text-white'
+                      }`}
+                    >
+                      {item.label}
+                    </a>
+                  </React.Fragment>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="max-w-7xl mx-auto px-4 md:px-10 h-20 flex items-center justify-between">
         
         {/* Brand Logo */}
@@ -113,21 +189,29 @@ export default function Header({ onOpenCalculator, onOpenCallback, onScrollToSec
 
         {/* Desktop Navigation Menu (hidden on mobile, visible on lg screens) */}
         <nav className="hidden lg:flex items-center gap-5 xl:gap-7" id="header-desktop-nav">
-          {navItems.map((item) => (
-            <button
-              key={item.id}
-              onClick={() => handleNavClick(item.id)}
-              className="text-xs lg:text-sm font-medium text-brand-on-surface-variant hover:text-brand-primary-container transition-colors cursor-pointer bg-transparent border-none p-0 relative py-1 whitespace-nowrap after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-brand-primary-container hover:after:w-full after:transition-all after:duration-200"
-            >
-              {item.label}
-            </button>
-          ))}
+          {navItems.map((item) => {
+            const isActive = activeSection === item.id;
+            return (
+              <button
+                key={item.id}
+                onClick={() => handleNavClick(item.id)}
+                aria-current={isActive ? 'true' : undefined}
+                className={`text-xs lg:text-sm font-medium hover:text-brand-primary-container transition-colors cursor-pointer bg-transparent border-none p-0 relative py-1 whitespace-nowrap after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-0.5 after:bg-brand-primary-container after:transition-all after:duration-200 ${
+                  isActive
+                    ? 'text-white after:w-full'
+                    : 'text-brand-on-surface-variant after:w-0 hover:after:w-full'
+                }`}
+              >
+                {item.label}
+              </button>
+            );
+          })}
         </nav>
 
         {/* Right Actions Container: Phone + CTA + Hamburger Button */}
         <div className="flex items-center gap-2.5 sm:gap-3.5 shrink-0">
           <PhoneLink
-            className="hidden md:inline-flex lg:hidden xl:inline-flex text-xs xl:text-sm px-3 py-2 rounded-xl border border-brand-outline-variant/25 bg-[#171b27]/70 hover:border-brand-primary-container/40"
+            className="hidden md:inline-flex lg:hidden text-xs px-3 py-2 rounded-xl border border-brand-outline-variant/25 bg-[#171b27]/70 hover:border-brand-primary-container/40"
           />
 
           {/* Action CTA Button */}
@@ -166,16 +250,22 @@ export default function Header({ onOpenCalculator, onOpenCallback, onScrollToSec
           id="mobile-nav-drawer"
         >
           <nav className="flex flex-col gap-2">
-            {navItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => handleNavClick(item.id)}
-                className="w-full text-left text-sm font-semibold text-brand-on-surface hover:text-brand-primary-container py-3 px-3 rounded-xl hover:bg-white/5 transition-all flex items-center justify-between cursor-pointer group"
-              >
-                <span>{item.label}</span>
-                <ArrowRight className="w-4 h-4 text-brand-primary-container opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
-              </button>
-            ))}
+            {navItems.map((item) => {
+              const isActive = activeSection === item.id;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => handleNavClick(item.id)}
+                  aria-current={isActive ? 'true' : undefined}
+                  className={`w-full text-left text-sm font-semibold hover:text-brand-primary-container py-3 px-3 rounded-xl hover:bg-white/5 transition-all flex items-center justify-between cursor-pointer group ${
+                    isActive ? 'text-brand-primary-container bg-white/5' : 'text-brand-on-surface'
+                  }`}
+                >
+                  <span>{item.label}</span>
+                  <ArrowRight className={`w-4 h-4 text-brand-primary-container transition-all ${isActive ? 'opacity-100 translate-x-1' : 'opacity-40 group-hover:opacity-100 group-hover:translate-x-1'}`} />
+                </button>
+              );
+            })}
 
             {/* Mobile CTA inside Drawer */}
             <div className="pt-4 mt-2 border-t border-brand-outline-variant/15 flex flex-col gap-3">

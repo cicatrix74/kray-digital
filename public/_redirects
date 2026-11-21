@@ -16,4 +16,6 @@
 /qr-generator/*    /qr-generator/:splat    200
 /favicon-generator    /favicon-generator/index.html    200
 /favicon-generator/*    /favicon-generator/:splat    200
+/ru    /ru/    301
+/en    /en/    301
 /*    /index.html    200

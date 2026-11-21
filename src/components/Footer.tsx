@@ -129,16 +129,19 @@ export default function Footer(_props: FooterProps) {
               : 'hidden'
           }
         >
-          {usefulResources.map((item) => (
-            <li key={item.href} className={item.href === '/photoeditor/' ? 'hidden md:block' : ''}>
-              <a
-                href={item.href}
-                className="inline-flex items-center text-xs sm:text-sm text-brand-on-surface-variant hover:text-brand-primary-container transition-colors py-1"
-              >
-                {item.label}
-              </a>
-            </li>
-          ))}
+          {usefulResources.map((item) => {
+            const langPrefix = language === 'uk' ? '' : `/${language}`;
+            return (
+              <li key={item.href} className={item.href === '/photoeditor/' ? 'hidden md:block' : ''}>
+                <a
+                  href={`${langPrefix}${item.href}`}
+                  className="inline-flex items-center text-xs sm:text-sm text-brand-on-surface-variant hover:text-brand-primary-container transition-colors py-1"
+                >
+                  {item.label}
+                </a>
+              </li>
+            );
+          })}
         </ul>
       </div>
     </footer>

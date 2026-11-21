@@ -15,12 +15,9 @@
   };
 
   function detectLang() {
-    const langs = [...(navigator.languages || []), navigator.language || ''].map(s => String(s).toLowerCase());
-    for (const l of langs) {
-      if (l.startsWith('uk') || l.startsWith('ua')) return 'uk';
-      if (l.startsWith('ru') || l.startsWith('be') || l.startsWith('kk')) return 'ru';
-      if (l.startsWith('en')) return 'en';
-    }
+    const p = (window.location.pathname || '').toLowerCase();
+    if (p === '/ru' || p.startsWith('/ru/')) return 'ru';
+    if (p === '/en' || p.startsWith('/en/')) return 'en';
     return 'uk';
   }
 
@@ -81,6 +78,31 @@
       .kray-uf-cta:hover {
         background: #22d3ee;
         color: #06101a;
+      }
+      .kray-uf-langs {
+        display: inline-flex;
+        align-items: center;
+        gap: 2px;
+        padding: 2px;
+        border-radius: 9px;
+        border: 1px solid rgba(59, 73, 75, 0.45);
+        background: rgba(23, 27, 39, 0.75);
+      }
+      .kray-uf-lang {
+        padding: 4px 8px;
+        border-radius: 7px;
+        font-size: 11px;
+        font-weight: 700;
+        color: #94a3b8;
+        text-decoration: none;
+        transition: background 0.15s ease, color 0.15s ease;
+      }
+      .kray-uf-lang:hover {
+        color: #ffffff;
+      }
+      .kray-uf-lang.active {
+        background: #00f0ff;
+        color: #00363a;
       }
       @media (max-width: 768px) {
         .kray-uf-container {

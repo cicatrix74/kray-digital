@@ -640,10 +640,39 @@ app.get('/api/search', async (req, res) => {
   res.json({ success: true, results: matches.slice(0, 10) });
 });
 
+function registerMultilingualTool(slug: string, sourceDir: string) {
+  const sendLocalizedHtml = (langPrefix: '' | 'ru' | 'en', res: express.Response) => {
+    if (process.env.NODE_ENV === 'production') {
+      const distFile = langPrefix
+        ? path.resolve(process.cwd(), 'dist', langPrefix, slug, 'index.html')
+        : path.resolve(process.cwd(), 'dist', slug, 'index.html');
+      if (fs.existsSync(distFile)) {
+        return res.sendFile(distFile);
+      }
+    }
+    return res.sendFile(path.join(sourceDir, 'index.html'));
+  };
+
+  app.get(`/${slug}`, (req, res) => {
+    if (!req.originalUrl.split('?')[0].endsWith('/')) {
+      return res.redirect(301, `/${slug}/`);
+    }
+    return sendLocalizedHtml('', res);
+  });
+
+  for (const lang of ['ru', 'en'] as const) {
+    app.get(`/${lang}/${slug}`, (req, res) => {
+      if (!req.originalUrl.split('?')[0].endsWith('/')) {
+        return res.redirect(301, `/${lang}/${slug}/`);
+      }
+      return sendLocalizedHtml(lang, res);
+    });
+    app.use(`/${lang}/${slug}`, express.static(sourceDir));
+  }
+}
+
 // Outage Schedule Page Route
-app.get('/grafiki-vidkluchen-svitla-v-dnipri-ta-dnipropotrovskoi-oblasti', (_req, res) => {
-  res.sendFile(path.join(OUTAGES_DIR, 'index.html'));
-});
+registerMultilingualTool('grafiki-vidkluchen-svitla-v-dnipri-ta-dnipropotrovskoi-oblasti', OUTAGES_DIR);
 
 // Air Raid Alerts Live API (/api/air-alerts) with raion-level red/yellow/green support
 let cachedAirAlerts: any = null;
@@ -733,12 +762,7 @@ app.get('/api/air-alerts', async (_req, res) => {
 });
 
 const KARTA_TREVOG_DIR = path.resolve(process.cwd(), 'public/karta-trevog');
-app.get('/karta-trevog', (req, res) => {
-  if (!req.originalUrl.split('?')[0].endsWith('/')) {
-    return res.redirect(301, '/karta-trevog/');
-  }
-  res.sendFile(path.join(KARTA_TREVOG_DIR, 'index.html'));
-});
+registerMultilingualTool('karta-trevog', KARTA_TREVOG_DIR);
 
 // Chat API Route for Kray Digital Assistant
 app.post('/api/chat', async (req, res) => {
@@ -922,68 +946,19 @@ app.get('/api/verify-phone/status', (req, res) => {
   });
 });
 
-// Image Converter Page & API (/konvertor-webp -> WebP & AVIF)
-const KONVERTOR_DIR = path.resolve(process.cwd(), 'public/konvertor-webp');
-app.get('/konvertor-webp', (req, res) => {
-  if (!req.originalUrl.split('?')[0].endsWith('/')) {
-    return res.redirect(301, '/konvertor-webp/');
-  }
-  res.sendFile(path.join(KONVERTOR_DIR, 'index.html'));
-});
+const TOOL_ROUTE_DIRS: [string, string][] = [
+  ['konvertor-webp', 'public/konvertor-webp'],
+  ['photoeditor', 'public/photoeditor'],
+  ['password-generator', 'public/password-generator'],
+  ['generator-gif', 'public/generator-gif'],
+  ['pdf-to-jpg', 'public/pdf-to-jpg'],
+  ['qr-generator', 'public/qr-generator'],
+  ['favicon-generator', 'public/favicon-generator'],
+];
 
-// Online Photo Editor Page (/photoeditor)
-const PHOTOEDITOR_DIR = path.resolve(process.cwd(), 'public/photoeditor');
-app.get('/photoeditor', (req, res) => {
-  if (!req.originalUrl.split('?')[0].endsWith('/')) {
-    return res.redirect(301, '/photoeditor/');
-  }
-  res.sendFile(path.join(PHOTOEDITOR_DIR, 'index.html'));
-});
-
-// Password Generator Page (/password-generator)
-const PASSGEN_DIR = path.resolve(process.cwd(), 'public/password-generator');
-app.get('/password-generator', (req, res) => {
-  if (!req.originalUrl.split('?')[0].endsWith('/')) {
-    return res.redirect(301, '/password-generator/');
-  }
-  res.sendFile(path.join(PASSGEN_DIR, 'index.html'));
-});
-
-// Video to GIF Generator Page & API (/generator-gif, max 30s)
-const GIFGEN_DIR = path.resolve(process.cwd(), 'public/generator-gif');
-app.get('/generator-gif', (req, res) => {
-  if (!req.originalUrl.split('?')[0].endsWith('/')) {
-    return res.redirect(301, '/generator-gif/');
-  }
-  res.sendFile(path.join(GIFGEN_DIR, 'index.html'));
-});
-
-// PDF to JPG & PNG Converter Page (/pdf-to-jpg)
-const PDFTOJPG_DIR = path.resolve(process.cwd(), 'public/pdf-to-jpg');
-app.get('/pdf-to-jpg', (req, res) => {
-  if (!req.originalUrl.split('?')[0].endsWith('/')) {
-    return res.redirect(301, '/pdf-to-jpg/');
-  }
-  res.sendFile(path.join(PDFTOJPG_DIR, 'index.html'));
-});
-
-// QR Code Generator Page (/qr-generator)
-const QRGEN_DIR = path.resolve(process.cwd(), 'public/qr-generator');
-app.get('/qr-generator', (req, res) => {
-  if (!req.originalUrl.split('?')[0].endsWith('/')) {
-    return res.redirect(301, '/qr-generator/');
-  }
-  res.sendFile(path.join(QRGEN_DIR, 'index.html'));
-});
-
-// Favicon Generator Page (/favicon-generator)
-const FAVGEN_DIR = path.resolve(process.cwd(), 'public/favicon-generator');
-app.get('/favicon-generator', (req, res) => {
-  if (!req.originalUrl.split('?')[0].endsWith('/')) {
-    return res.redirect(301, '/favicon-generator/');
-  }
-  res.sendFile(path.join(FAVGEN_DIR, 'index.html'));
-});
+for (const [slug, relDir] of TOOL_ROUTE_DIRS) {
+  registerMultilingualTool(slug, path.resolve(process.cwd(), relDir));
+}
 
 app.post('/api/video-to-gif', express.raw({ type: '*/*', limit: '100mb' }), async (req, res) => {
   if (!ffmpegPath) {
@@ -1153,12 +1128,28 @@ async function startServer() {
       return 'uk';
     };
 
-    app.get(['/', '/index.html'], (req, res, next) => {
-      const lang = detectAcceptLang(req.headers['accept-language']);
-      const fileName = lang === 'uk' ? 'index.html' : `index.${lang}.html`;
-      const filePath = path.resolve(process.cwd(), 'dist', fileName);
+    app.get(['/ru/', '/ru/index.html'], (_req, res, next) => {
+      const filePath = path.resolve(process.cwd(), 'dist', 'ru', 'index.html');
       if (fs.existsSync(filePath)) {
-        res.setHeader('Vary', 'Accept-Language');
+        return res.sendFile(filePath);
+      }
+      return next();
+    });
+
+    app.get(['/en/', '/en/index.html'], (_req, res, next) => {
+      const filePath = path.resolve(process.cwd(), 'dist', 'en', 'index.html');
+      if (fs.existsSync(filePath)) {
+        return res.sendFile(filePath);
+      }
+      return next();
+    });
+
+    app.get('/ru', (req, res, next) => (req.path === '/ru' ? res.redirect(301, '/ru/') : next()));
+    app.get('/en', (req, res, next) => (req.path === '/en' ? res.redirect(301, '/en/') : next()));
+
+    app.get(['/', '/index.html'], (_req, res, next) => {
+      const filePath = path.resolve(process.cwd(), 'dist', 'index.html');
+      if (fs.existsSync(filePath)) {
         return res.sendFile(filePath);
       }
       return next();

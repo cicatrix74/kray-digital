@@ -141,9 +141,9 @@
   };
 
   function detectLang() {
-    const nav = ((navigator.languages && navigator.languages[0]) || navigator.language || '').toLowerCase();
-    if (nav.startsWith('ru')) return 'ru';
-    if (nav.startsWith('en')) return 'en';
+    const p = (window.location.pathname || '').toLowerCase();
+    if (p === '/ru' || p.startsWith('/ru/')) return 'ru';
+    if (p === '/en' || p.startsWith('/en/')) return 'en';
     return 'ua';
   }
 

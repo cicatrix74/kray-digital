@@ -276,11 +276,9 @@
   const STORAGE_KEY = 'kray_digital_lang';
 
   function detectInitialLanguage() {
-    const navLang = (navigator.languages && navigator.languages[0]) || navigator.language || '';
-    const code = navLang.toLowerCase();
-
-    if (code.startsWith('ru')) return 'ru';
-    if (code.startsWith('en')) return 'en';
+    const p = (window.location.pathname || '').toLowerCase();
+    if (p === '/ru' || p.startsWith('/ru/')) return 'ru';
+    if (p === '/en' || p.startsWith('/en/')) return 'en';
     return 'ua';
   }
 

@@ -62,12 +62,21 @@ interface AppProps {
   initialIsNotFound?: boolean;
 }
 
+const HOME_PATHS = new Set([
+  '/',
+  '/index.html',
+  '/ru',
+  '/ru/',
+  '/ru/index.html',
+  '/en',
+  '/en/',
+  '/en/index.html',
+]);
+
 export default function App({ initialIsNotFound }: AppProps = {}) {
   const isNotFound =
     initialIsNotFound ??
-    (typeof window !== 'undefined' &&
-      window.location.pathname !== '/' &&
-      window.location.pathname !== '/index.html');
+    (typeof window !== 'undefined' && !HOME_PATHS.has(window.location.pathname.toLowerCase()));
 
   const [isCalculatorOpen, setIsCalculatorOpen] = useState(false);
   const [isCallbackOpen, setIsCallbackOpen] = useState(false);
@@ -313,7 +322,7 @@ export default function App({ initialIsNotFound }: AppProps = {}) {
       />
 
        {/* Main layout */}
-      <main className="pt-20 relative z-20 overflow-x-hidden w-full max-w-full">
+      <main className="pt-20 lg:pt-[108px] relative z-20 overflow-x-hidden w-full max-w-full">
         {isNotFound ? (
           <NotFoundPage onOpenCalculator={() => handleOpenCalculatorWithService('')} />
         ) : (

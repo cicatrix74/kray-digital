@@ -719,8 +719,22 @@ function detectBrowserLanguage(): Language {
   return 'uk';
 }
 
+export function detectPathLanguage(pathname?: string): Language | null {
+  const path = (
+    pathname ?? (typeof window !== 'undefined' ? window.location.pathname : '/')
+  ).toLowerCase();
+  if (path === '/ru' || path === '/ru/' || path === '/ru/index.html') return 'ru';
+  if (path === '/en' || path === '/en/' || path === '/en/index.html') return 'en';
+  if (path === '/' || path === '/index.html') return 'uk';
+  return null;
+}
+
 function getInitialLanguage(initialLanguage?: Language): Language {
   if (initialLanguage) return initialLanguage;
+  if (typeof window !== 'undefined') {
+    const pathLang = detectPathLanguage(window.location.pathname);
+    if (pathLang) return pathLang;
+  }
   if (typeof document !== 'undefined') {
     const ssrLang = document.documentElement.dataset.ssrLang;
     if (ssrLang === 'uk' || ssrLang === 'ru' || ssrLang === 'en') {
@@ -729,6 +743,27 @@ function getInitialLanguage(initialLanguage?: Language): Language {
   }
   return 'uk';
 }
+
+const SEO_META: Record<Language, { title: string; description: string; notFoundTitle: string }> = {
+  uk: {
+    title: 'Kray Digital — Розробка сайтів та digital-маркетинг',
+    description:
+      'Digital-агентство Kray Digital. Розробка швидких веб-сайтів від 5 000 ₴, SEO-оптимізація та Google реклама. Без передоплати — оплата виключно за фактом робіт.',
+    notFoundTitle: '404 — Сторінку не знайдено | Kray Digital',
+  },
+  ru: {
+    title: 'Kray Digital — Разработка сайтов и digital-маркетинг',
+    description:
+      'Digital-агентство Kray Digital. Разработка быстрых веб-сайтов от 5 000 ₴, SEO-оптимизация и Google реклама. Без предоплаты — оплата исключительно по факту работ.',
+    notFoundTitle: '404 — Страница не найдена | Kray Digital',
+  },
+  en: {
+    title: 'Kray Digital — Web Development & Digital Marketing',
+    description:
+      'Kray Digital agency. Fast website development, SEO optimization and Google Ads. Pay-on-delivery model with guaranteed KPIs.',
+    notFoundTitle: '404 — Page Not Found | Kray Digital',
+  },
+};
 
 export function LanguageProvider({
   children,
@@ -740,22 +775,45 @@ export function LanguageProvider({
   const [language, setLanguageState] = useState<Language>(() => getInitialLanguage(initialLanguage));
 
   useEffect(() => {
+    const pathLang = detectPathLanguage(window.location.pathname);
+    if (pathLang) {
+      setLanguageState((prev) => (prev === pathLang ? prev : pathLang));
+      return;
+    }
+
     const detected = detectBrowserLanguage();
     setLanguageState((prev) => (prev === detected ? prev : detected));
 
-    try {
-      localStorage.removeItem('kray_digital_lang');
-    } catch {
-      // ignore
-    }
-
     const handleLangChange = () => {
-      setLanguageState(detectBrowserLanguage());
+      if (!detectPathLanguage(window.location.pathname)) {
+        setLanguageState(detectBrowserLanguage());
+      }
     };
 
     window.addEventListener('languagechange', handleLangChange);
     return () => window.removeEventListener('languagechange', handleLangChange);
   }, []);
+
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+    const meta = SEO_META[language] ?? SEO_META.uk;
+    document.documentElement.lang = language;
+    const path = typeof window !== 'undefined' ? window.location.pathname : '/';
+    const isHome =
+      path === '/' ||
+      path === '/index.html' ||
+      path === '/ru' ||
+      path === '/ru/' ||
+      path === '/ru/index.html' ||
+      path === '/en' ||
+      path === '/en/' ||
+      path === '/en/index.html';
+    document.title = isHome ? meta.title : meta.notFoundTitle;
+    const descEl = document.querySelector('meta[name="description"]');
+    if (descEl) {
+      descEl.setAttribute('content', meta.description);
+    }
+  }, [language]);
 
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);

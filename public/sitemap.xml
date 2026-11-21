@@ -1,62 +1,303 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://kray-digital.pp.ua/</loc>
-    <lastmod>2026-11-15</lastmod>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://kray-digital.pp.ua/" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://kray-digital.pp.ua/ru/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kray-digital.pp.ua/en/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kray-digital.pp.ua/" />
+    <lastmod>2026-11-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://kray-digital.pp.ua/ru/</loc>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://kray-digital.pp.ua/" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://kray-digital.pp.ua/ru/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kray-digital.pp.ua/en/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kray-digital.pp.ua/" />
+    <lastmod>2026-11-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://kray-digital.pp.ua/en/</loc>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://kray-digital.pp.ua/" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://kray-digital.pp.ua/ru/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kray-digital.pp.ua/en/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kray-digital.pp.ua/" />
+    <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://kray-digital.pp.ua/grafiki-vidkluchen-svitla-v-dnipri-ta-dnipropotrovskoi-oblasti/</loc>
-    <lastmod>2026-11-15</lastmod>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://kray-digital.pp.ua/grafiki-vidkluchen-svitla-v-dnipri-ta-dnipropotrovskoi-oblasti/" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://kray-digital.pp.ua/ru/grafiki-vidkluchen-svitla-v-dnipri-ta-dnipropotrovskoi-oblasti/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kray-digital.pp.ua/en/grafiki-vidkluchen-svitla-v-dnipri-ta-dnipropotrovskoi-oblasti/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kray-digital.pp.ua/grafiki-vidkluchen-svitla-v-dnipri-ta-dnipropotrovskoi-oblasti/" />
+    <lastmod>2026-11-21</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://kray-digital.pp.ua/ru/grafiki-vidkluchen-svitla-v-dnipri-ta-dnipropotrovskoi-oblasti/</loc>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://kray-digital.pp.ua/grafiki-vidkluchen-svitla-v-dnipri-ta-dnipropotrovskoi-oblasti/" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://kray-digital.pp.ua/ru/grafiki-vidkluchen-svitla-v-dnipri-ta-dnipropotrovskoi-oblasti/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kray-digital.pp.ua/en/grafiki-vidkluchen-svitla-v-dnipri-ta-dnipropotrovskoi-oblasti/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kray-digital.pp.ua/grafiki-vidkluchen-svitla-v-dnipri-ta-dnipropotrovskoi-oblasti/" />
+    <lastmod>2026-11-21</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://kray-digital.pp.ua/en/grafiki-vidkluchen-svitla-v-dnipri-ta-dnipropotrovskoi-oblasti/</loc>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://kray-digital.pp.ua/grafiki-vidkluchen-svitla-v-dnipri-ta-dnipropotrovskoi-oblasti/" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://kray-digital.pp.ua/ru/grafiki-vidkluchen-svitla-v-dnipri-ta-dnipropotrovskoi-oblasti/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kray-digital.pp.ua/en/grafiki-vidkluchen-svitla-v-dnipri-ta-dnipropotrovskoi-oblasti/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kray-digital.pp.ua/grafiki-vidkluchen-svitla-v-dnipri-ta-dnipropotrovskoi-oblasti/" />
+    <lastmod>2026-11-21</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://kray-digital.pp.ua/karta-trevog/</loc>
-    <lastmod>2026-11-17</lastmod>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://kray-digital.pp.ua/karta-trevog/" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://kray-digital.pp.ua/ru/karta-trevog/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kray-digital.pp.ua/en/karta-trevog/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kray-digital.pp.ua/karta-trevog/" />
+    <lastmod>2026-11-21</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://kray-digital.pp.ua/ru/karta-trevog/</loc>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://kray-digital.pp.ua/karta-trevog/" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://kray-digital.pp.ua/ru/karta-trevog/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kray-digital.pp.ua/en/karta-trevog/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kray-digital.pp.ua/karta-trevog/" />
+    <lastmod>2026-11-21</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://kray-digital.pp.ua/en/karta-trevog/</loc>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://kray-digital.pp.ua/karta-trevog/" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://kray-digital.pp.ua/ru/karta-trevog/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kray-digital.pp.ua/en/karta-trevog/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kray-digital.pp.ua/karta-trevog/" />
+    <lastmod>2026-11-21</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://kray-digital.pp.ua/konvertor-webp/</loc>
-    <lastmod>2026-11-18</lastmod>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://kray-digital.pp.ua/konvertor-webp/" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://kray-digital.pp.ua/ru/konvertor-webp/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kray-digital.pp.ua/en/konvertor-webp/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kray-digital.pp.ua/konvertor-webp/" />
+    <lastmod>2026-11-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://kray-digital.pp.ua/ru/konvertor-webp/</loc>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://kray-digital.pp.ua/konvertor-webp/" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://kray-digital.pp.ua/ru/konvertor-webp/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kray-digital.pp.ua/en/konvertor-webp/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kray-digital.pp.ua/konvertor-webp/" />
+    <lastmod>2026-11-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://kray-digital.pp.ua/en/konvertor-webp/</loc>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://kray-digital.pp.ua/konvertor-webp/" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://kray-digital.pp.ua/ru/konvertor-webp/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kray-digital.pp.ua/en/konvertor-webp/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kray-digital.pp.ua/konvertor-webp/" />
+    <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://kray-digital.pp.ua/photoeditor/</loc>
-    <lastmod>2026-11-18</lastmod>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://kray-digital.pp.ua/photoeditor/" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://kray-digital.pp.ua/ru/photoeditor/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kray-digital.pp.ua/en/photoeditor/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kray-digital.pp.ua/photoeditor/" />
+    <lastmod>2026-11-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://kray-digital.pp.ua/ru/photoeditor/</loc>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://kray-digital.pp.ua/photoeditor/" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://kray-digital.pp.ua/ru/photoeditor/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kray-digital.pp.ua/en/photoeditor/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kray-digital.pp.ua/photoeditor/" />
+    <lastmod>2026-11-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://kray-digital.pp.ua/en/photoeditor/</loc>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://kray-digital.pp.ua/photoeditor/" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://kray-digital.pp.ua/ru/photoeditor/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kray-digital.pp.ua/en/photoeditor/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kray-digital.pp.ua/photoeditor/" />
+    <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://kray-digital.pp.ua/password-generator/</loc>
-    <lastmod>2026-11-18</lastmod>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://kray-digital.pp.ua/password-generator/" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://kray-digital.pp.ua/ru/password-generator/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kray-digital.pp.ua/en/password-generator/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kray-digital.pp.ua/password-generator/" />
+    <lastmod>2026-11-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://kray-digital.pp.ua/ru/password-generator/</loc>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://kray-digital.pp.ua/password-generator/" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://kray-digital.pp.ua/ru/password-generator/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kray-digital.pp.ua/en/password-generator/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kray-digital.pp.ua/password-generator/" />
+    <lastmod>2026-11-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://kray-digital.pp.ua/en/password-generator/</loc>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://kray-digital.pp.ua/password-generator/" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://kray-digital.pp.ua/ru/password-generator/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kray-digital.pp.ua/en/password-generator/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kray-digital.pp.ua/password-generator/" />
+    <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://kray-digital.pp.ua/generator-gif/</loc>
-    <lastmod>2026-11-18</lastmod>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://kray-digital.pp.ua/generator-gif/" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://kray-digital.pp.ua/ru/generator-gif/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kray-digital.pp.ua/en/generator-gif/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kray-digital.pp.ua/generator-gif/" />
+    <lastmod>2026-11-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://kray-digital.pp.ua/ru/generator-gif/</loc>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://kray-digital.pp.ua/generator-gif/" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://kray-digital.pp.ua/ru/generator-gif/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kray-digital.pp.ua/en/generator-gif/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kray-digital.pp.ua/generator-gif/" />
+    <lastmod>2026-11-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://kray-digital.pp.ua/en/generator-gif/</loc>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://kray-digital.pp.ua/generator-gif/" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://kray-digital.pp.ua/ru/generator-gif/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kray-digital.pp.ua/en/generator-gif/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kray-digital.pp.ua/generator-gif/" />
+    <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://kray-digital.pp.ua/pdf-to-jpg/</loc>
-    <lastmod>2026-11-19</lastmod>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://kray-digital.pp.ua/pdf-to-jpg/" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://kray-digital.pp.ua/ru/pdf-to-jpg/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kray-digital.pp.ua/en/pdf-to-jpg/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kray-digital.pp.ua/pdf-to-jpg/" />
+    <lastmod>2026-11-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://kray-digital.pp.ua/ru/pdf-to-jpg/</loc>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://kray-digital.pp.ua/pdf-to-jpg/" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://kray-digital.pp.ua/ru/pdf-to-jpg/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kray-digital.pp.ua/en/pdf-to-jpg/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kray-digital.pp.ua/pdf-to-jpg/" />
+    <lastmod>2026-11-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://kray-digital.pp.ua/en/pdf-to-jpg/</loc>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://kray-digital.pp.ua/pdf-to-jpg/" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://kray-digital.pp.ua/ru/pdf-to-jpg/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kray-digital.pp.ua/en/pdf-to-jpg/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kray-digital.pp.ua/pdf-to-jpg/" />
+    <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://kray-digital.pp.ua/qr-generator/</loc>
-    <lastmod>2026-11-20</lastmod>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://kray-digital.pp.ua/qr-generator/" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://kray-digital.pp.ua/ru/qr-generator/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kray-digital.pp.ua/en/qr-generator/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kray-digital.pp.ua/qr-generator/" />
+    <lastmod>2026-11-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://kray-digital.pp.ua/ru/qr-generator/</loc>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://kray-digital.pp.ua/qr-generator/" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://kray-digital.pp.ua/ru/qr-generator/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kray-digital.pp.ua/en/qr-generator/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kray-digital.pp.ua/qr-generator/" />
+    <lastmod>2026-11-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://kray-digital.pp.ua/en/qr-generator/</loc>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://kray-digital.pp.ua/qr-generator/" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://kray-digital.pp.ua/ru/qr-generator/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kray-digital.pp.ua/en/qr-generator/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kray-digital.pp.ua/qr-generator/" />
+    <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://kray-digital.pp.ua/favicon-generator/</loc>
-    <lastmod>2026-11-20</lastmod>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://kray-digital.pp.ua/favicon-generator/" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://kray-digital.pp.ua/ru/favicon-generator/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kray-digital.pp.ua/en/favicon-generator/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kray-digital.pp.ua/favicon-generator/" />
+    <lastmod>2026-11-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://kray-digital.pp.ua/ru/favicon-generator/</loc>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://kray-digital.pp.ua/favicon-generator/" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://kray-digital.pp.ua/ru/favicon-generator/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kray-digital.pp.ua/en/favicon-generator/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kray-digital.pp.ua/favicon-generator/" />
+    <lastmod>2026-11-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://kray-digital.pp.ua/en/favicon-generator/</loc>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://kray-digital.pp.ua/favicon-generator/" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://kray-digital.pp.ua/ru/favicon-generator/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kray-digital.pp.ua/en/favicon-generator/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kray-digital.pp.ua/favicon-generator/" />
+    <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
