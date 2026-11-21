@@ -508,7 +508,9 @@ export default function Expertise({ onSelectService }: ExpertiseProps) {
                   <ShieldCheck className="w-3.5 h-3.5 text-brand-primary-container" />
                   {currentLabels.smm.sla}
                 </span>
-                <span className="text-[10px] text-emerald-400 font-mono">10% Предоплата</span>
+                <span className="text-[10px] text-emerald-400 font-mono">
+                  {language === 'ru' ? '0% Предоплата' : language === 'en' ? '0% Deposit' : '0% Передоплата'}
+                </span>
               </div>
 
               <div className="space-y-2 text-xs">

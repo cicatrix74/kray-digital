@@ -90,8 +90,8 @@ const LOCALIZED_DATA = {
       preliminaryEstimate: 'Попередній розрахунок',
       from: 'від',
       baseTimeline: 'Базовий термін:',
-      noPrepaymentBanner: 'Лише 10% передоплати: решта 90% оплачуються за фактом виконання робіт',
-      payOnDeliveryNote: '10% передоплати — решта 90% тільки після здачі та перевірки кожного кроку робіт'
+      noPrepaymentBanner: 'Жодних передоплат: оплата виключно за фактом виконання робіт',
+      payOnDeliveryNote: '0% передоплати — оплата тільки після здачі та перевірки кожного кроку робіт'
     }
   },
   ru: {
@@ -173,8 +173,8 @@ const LOCALIZED_DATA = {
       preliminaryEstimate: 'Предварительный расчет',
       from: 'от',
       baseTimeline: 'Базовый срок:',
-      noPrepaymentBanner: 'Всего 10% предоплаты: остальные 90% оплачиваются по факту выполнения работ',
-      payOnDeliveryNote: '10% предоплаты — остальные 90% только после сдачи и проверки каждого шага работ'
+      noPrepaymentBanner: 'Никаких предоплат: оплата исключительно по факту выполнения работ',
+      payOnDeliveryNote: '0% предоплаты — оплата только после сдачи и проверки каждого шага работ'
     }
   },
   en: {
@@ -256,8 +256,8 @@ const LOCALIZED_DATA = {
       preliminaryEstimate: 'Preliminary calculation',
       from: 'from',
       baseTimeline: 'Base timeline:',
-      noPrepaymentBanner: 'Only 10% deposit: remaining 90% paid upon completion of milestones',
-      payOnDeliveryNote: '10% deposit — remaining 90% upon inspection and approval of completed milestones'
+      noPrepaymentBanner: 'No upfront deposit: 100% paid upon completion of milestones',
+      payOnDeliveryNote: '0% deposit — payment only upon inspection and approval of completed milestones'
     }
   }
 };
