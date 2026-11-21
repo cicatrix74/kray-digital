@@ -1060,6 +1060,99 @@ if (scrollToTopBtn) {
   });
 }
 
+async function loadTelegramFeed() {
+  const card = document.getElementById('telegramFeedCard');
+  const listEl = document.getElementById('tgFeedList');
+  const titleEl = document.getElementById('tgFeedTitle');
+  if (!card || !listEl) return;
+
+  const lang = window.i18n ? window.i18n.current : 'ua';
+  if (titleEl) {
+    titleEl.textContent =
+      lang === 'ru'
+        ? 'Оперативные сводки из Telegram'
+        : lang === 'en'
+          ? 'Live Telegram Outage Updates'
+          : 'Оперативні зведення з Telegram';
+  }
+  const readMoreLabel =
+    lang === 'ru' ? 'Читать полностью ▾' : lang === 'en' ? 'Read full ▾' : 'Читати повністю ▾';
+  const collapseLabel =
+    lang === 'ru' ? 'Свернуть ▴' : lang === 'en' ? 'Collapse ▴' : 'Згорнути ▴';
+
+  try {
+    const res = await fetch('/api/outages-telegram');
+    if (!res.ok) return;
+    const data = await res.json();
+    if (!data.success || !Array.isArray(data.posts) || data.posts.length === 0) return;
+
+    listEl.innerHTML = '';
+    for (const post of data.posts) {
+      const item = document.createElement('article');
+      item.className = 'tg-feed-item';
+
+      const dt = post.publishedAt ? new Date(post.publishedAt) : null;
+      const timeStr =
+        dt && !Number.isNaN(dt.getTime())
+          ? dt.toLocaleTimeString(lang === 'en' ? 'en-GB' : 'uk-UA', {
+              hour: '2-digit',
+              minute: '2-digit',
+              day: '2-digit',
+              month: '2-digit',
+            })
+          : '';
+
+      const meta = document.createElement('div');
+      meta.className = 'tg-feed-meta';
+
+      const badge = document.createElement('span');
+      badge.className = 'tg-source-badge';
+      badge.textContent = post.source;
+      meta.appendChild(badge);
+
+      if (post.timeHint) {
+        const chip = document.createElement('span');
+        chip.className = 'tg-time-chip';
+        chip.textContent = `⏱ ${post.timeHint}`;
+        meta.appendChild(chip);
+      }
+
+      const body = document.createElement('p');
+      const isLong = post.text.length > 220 || post.text.split('\n').length > 5;
+      body.className = isLong ? 'tg-feed-text is-collapsed' : 'tg-feed-text';
+      body.textContent = post.text;
+
+      const footer = document.createElement('div');
+      footer.className = 'tg-feed-footer';
+
+      const dateSpan = document.createElement('span');
+      dateSpan.textContent = timeStr;
+      footer.appendChild(dateSpan);
+
+      if (isLong) {
+        const toggleBtn = document.createElement('button');
+        toggleBtn.type = 'button';
+        toggleBtn.className = 'tg-feed-link';
+        toggleBtn.textContent = readMoreLabel;
+        toggleBtn.addEventListener('click', () => {
+          const collapsed = body.classList.toggle('is-collapsed');
+          toggleBtn.textContent = collapsed ? readMoreLabel : collapseLabel;
+        });
+        footer.appendChild(toggleBtn);
+      }
+
+      item.appendChild(meta);
+      item.appendChild(body);
+      item.appendChild(footer);
+      listEl.appendChild(item);
+    }
+
+    card.style.display = 'block';
+  } catch (err) {
+    console.warn('Telegram feed load failed:', err);
+  }
+}
+
 // Initialize
 (async () => {
   if (window.i18n) {
@@ -1071,6 +1164,7 @@ if (scrollToTopBtn) {
   updateActiveAddressChip();
   await fetchSystemStatus();
   await fetchSchedule();
+  loadTelegramFeed();
 })();
 
 (function initMobileMenu() {
