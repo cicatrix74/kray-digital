@@ -112,6 +112,77 @@
           gap: 10px;
         }
       }
+      .kray-cookie-bar {
+        position: fixed;
+        bottom: 18px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 98;
+        width: calc(100% - 2rem);
+        max-width: 560px;
+        border-radius: 16px;
+        border: 1px solid rgba(59, 73, 75, 0.45);
+        background: rgba(15, 19, 30, 0.96);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        padding: 12px 16px;
+        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        box-sizing: border-box;
+      }
+      body.emergency-banner-visible .kray-cookie-bar {
+        bottom: 148px;
+      }
+      .kray-cookie-text {
+        font-size: 12.5px;
+        line-height: 1.35;
+        color: #dfe2f2;
+        margin: 0;
+      }
+      .kray-cookie-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-shrink: 0;
+      }
+      .kray-cookie-btn {
+        font-family: inherit;
+        font-size: 12px;
+        font-weight: 600;
+        padding: 6px 12px;
+        border-radius: 10px;
+        cursor: pointer;
+        border: 1px solid rgba(59, 73, 75, 0.45);
+        background: transparent;
+        color: #b9cacb;
+        transition: all 0.15s ease;
+      }
+      .kray-cookie-btn:hover {
+        color: #ffffff;
+        border-color: rgba(0, 240, 255, 0.45);
+      }
+      .kray-cookie-btn.primary {
+        background: #00f0ff;
+        border-color: #00f0ff;
+        color: #00363a;
+        font-weight: 700;
+      }
+      .kray-cookie-btn.primary:hover {
+        filter: brightness(1.08);
+      }
+      @media (max-width: 600px) {
+        .kray-cookie-bar {
+          flex-direction: column;
+          align-items: stretch;
+          bottom: 72px;
+        }
+        .kray-cookie-actions {
+          justify-content: flex-end;
+        }
+      }
     `;
     document.head.appendChild(style);
   }
@@ -143,6 +214,65 @@
         </span>
       </div>
     `;
+
+    mountCookieConsent(lang);
+  }
+
+  function mountCookieConsent(lang) {
+    const STORAGE_KEY = 'kray_cookie_consent';
+    try {
+      if (localStorage.getItem(STORAGE_KEY)) return;
+    } catch {
+      // continue
+    }
+    if (document.getElementById('kray-cookie-consent')) return;
+
+    const COOKIE_COPY = {
+      uk: {
+        text: 'Ми використовуємо файли cookie для коректної роботи сайту та аналітики.',
+        essential: 'Лише необхідні',
+        accept: 'Прийняти',
+      },
+      ru: {
+        text: 'Мы используем файлы cookie для корректной работы сайта и аналитики.',
+        essential: 'Только необходимые',
+        accept: 'Принять',
+      },
+      en: {
+        text: 'We use cookies to ensure the website works properly and for analytics.',
+        essential: 'Essential only',
+        accept: 'Accept',
+      },
+    };
+    const c = COOKIE_COPY[lang] || COOKIE_COPY.uk;
+
+    const bar = document.createElement('div');
+    bar.id = 'kray-cookie-consent';
+    bar.className = 'kray-cookie-bar';
+    bar.setAttribute('role', 'dialog');
+    bar.setAttribute('aria-label', 'Cookie consent');
+    bar.innerHTML = `
+      <p class="kray-cookie-text">${c.text}</p>
+      <div class="kray-cookie-actions">
+        <button type="button" class="kray-cookie-btn" data-cookie-choice="essential">${c.essential}</button>
+        <button type="button" class="kray-cookie-btn primary" data-cookie-choice="accepted">${c.accept}</button>
+      </div>
+    `;
+
+    bar.querySelectorAll('[data-cookie-choice]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const choice = btn.getAttribute('data-cookie-choice') || 'accepted';
+        try {
+          localStorage.setItem(STORAGE_KEY, choice);
+          document.cookie = 'kray_consent=' + choice + '; max-age=31536000; path=/; SameSite=Lax';
+        } catch {
+          // ignore
+        }
+        bar.remove();
+      });
+    });
+
+    document.body.appendChild(bar);
   }
 
   if (document.readyState === 'loading') {

@@ -6,6 +6,7 @@ import NotFoundPage from './components/NotFoundPage';
 import TechGridBackground from './components/TechGridBackground';
 import ScrollToTop from './components/ScrollToTop';
 import CallbackWidget from './components/CallbackWidget';
+import CookieConsent from './components/CookieConsent';
 import { LeadSubmission } from './types';
 
 // Code-split heavy below-the-fold and modal components for ultra-fast initial load
@@ -465,6 +466,9 @@ export default function App({ initialIsNotFound }: AppProps = {}) {
 
       {/* Floating Scroll to Top Action */}
       <ScrollToTop />
+
+      {/* Cookie Consent Banner */}
+      <CookieConsent />
 
       {/* Floating Quick Help Chat Bubble */}
       {showBelowFold && (
