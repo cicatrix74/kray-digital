@@ -55,6 +55,7 @@ const I18N = {
     clicksWord: 'Переходів:',
     errInvalidUrl: 'Введіть коректне посилання, що починається з http:// або https://',
     errAliasTaken: 'Цей аліас уже зайнятий, оберіть інший.',
+    errStorage: 'Сервіс тимчасово недоступний: не налаштовано сховище посилань на сервері.',
     errInvalidAlias: 'Аліас має містити 3–32 латинські літери, цифри, "-" або "_".',
     errDecode: 'Не вдалося розкодувати рядок.',
   },
@@ -114,6 +115,7 @@ const I18N = {
     clicksWord: 'Переходов:',
     errInvalidUrl: 'Введите корректную ссылку, начинающуюся с http:// или https://',
     errAliasTaken: 'Этот алиас уже занят, выберите другой.',
+    errStorage: 'Сервис временно недоступен: не настроено хранилище ссылок на сервере.',
     errInvalidAlias: 'Алиас должен содержать 3–32 латинские буквы, цифры, "-" или "_".',
     errDecode: 'Не удалось раскодировать строку.',
   },
@@ -173,6 +175,7 @@ const I18N = {
     clicksWord: 'Clicks:',
     errInvalidUrl: 'Please enter a valid URL starting with http:// or https://',
     errAliasTaken: 'This alias is already taken. Try another one.',
+    errStorage: 'Service temporarily unavailable: short link storage is not configured.',
     errInvalidAlias: 'Alias must be 3–32 letters, numbers, "-" or "_".',
     errDecode: 'Failed to decode the input string.',
   },
@@ -292,7 +295,9 @@ async function doShorten() {
         ? T.errAliasTaken
         : data.error === 'INVALID_ALIAS'
           ? T.errInvalidAlias
-          : T.errInvalidUrl;
+          : data.error === 'STORAGE_NOT_CONFIGURED'
+            ? T.errStorage
+            : T.errInvalidUrl;
       elShortError.textContent = msg;
       elShortError.hidden = false;
       return;

@@ -335,7 +335,7 @@ function normalizeSearchText(str) {
 }
 
 export async function onRequest(context) {
-  const { request } = context;
+  const { request, env } = context;
   const url = new URL(request.url);
   const pathname = url.pathname;
 
@@ -712,6 +712,116 @@ export async function onRequest(context) {
       display: `${phoneParts[0]} (${phoneParts[1]}) ${phoneParts[2]}-${phoneParts[3]}-${phoneParts[4]}`,
       href: `tel:${phoneParts.join('')}`
     }), { headers: corsHeaders });
+  }
+
+  if (pathname === '/api/shorten' && request.method === 'POST') {
+    const kv = env && env.SHORT_LINKS;
+    if (!kv) {
+      return new Response(JSON.stringify({ ok: false, error: 'STORAGE_NOT_CONFIGURED' }), {
+        status: 503,
+        headers: corsHeaders
+      });
+    }
+
+    let body = {};
+    try {
+      body = await request.json();
+    } catch {
+      body = {};
+    }
+
+    const rawUrl = typeof body.url === 'string' ? body.url.trim() : '';
+    const customAlias = typeof body.alias === 'string' ? body.alias.trim() : '';
+
+    let parsedUrl;
+    try {
+      parsedUrl = new URL(rawUrl);
+    } catch {
+      return new Response(JSON.stringify({ ok: false, error: 'INVALID_URL' }), {
+        status: 400,
+        headers: corsHeaders
+      });
+    }
+    if (parsedUrl.protocol !== 'http:' && parsedUrl.protocol !== 'https:') {
+      return new Response(JSON.stringify({ ok: false, error: 'INVALID_PROTOCOL' }), {
+        status: 400,
+        headers: corsHeaders
+      });
+    }
+
+    let code = '';
+    if (customAlias) {
+      if (!/^[a-zA-Z0-9_-]{3,32}$/.test(customAlias)) {
+        return new Response(JSON.stringify({ ok: false, error: 'INVALID_ALIAS' }), {
+          status: 400,
+          headers: corsHeaders
+        });
+      }
+      const existing = await kv.get(customAlias);
+      if (existing !== null) {
+        return new Response(JSON.stringify({ ok: false, error: 'ALIAS_TAKEN' }), {
+          status: 400,
+          headers: corsHeaders
+        });
+      }
+      code = customAlias;
+    } else {
+      const chars = 'abcdefghijkmnpqrstuvwxyz23456789';
+      for (let attempt = 0; attempt < 10; attempt++) {
+        const bytes = new Uint8Array(6);
+        crypto.getRandomValues(bytes);
+        let candidate = '';
+        for (let i = 0; i < 6; i++) {
+          candidate += chars[bytes[i] % chars.length];
+        }
+        const existing = await kv.get(candidate);
+        if (existing === null) {
+          code = candidate;
+          break;
+        }
+      }
+      if (!code) {
+        return new Response(JSON.stringify({ ok: false, error: 'CODE_GENERATION_FAILED' }), {
+          status: 500,
+          headers: corsHeaders
+        });
+      }
+    }
+
+    const record = {
+      code,
+      url: parsedUrl.toString(),
+      createdAt: new Date().toISOString(),
+      clicks: 0
+    };
+    await kv.put(code, JSON.stringify(record));
+    return new Response(JSON.stringify({ ok: true, ...record }), { headers: corsHeaders });
+  }
+
+  if (pathname.startsWith('/api/shorten/') && request.method === 'GET') {
+    const kv = env && env.SHORT_LINKS;
+    if (!kv) {
+      return new Response(JSON.stringify({ ok: false, error: 'STORAGE_NOT_CONFIGURED' }), {
+        status: 503,
+        headers: corsHeaders
+      });
+    }
+
+    const code = decodeURIComponent(pathname.slice('/api/shorten/'.length));
+    if (!code) {
+      return new Response(JSON.stringify({ ok: false, error: 'NOT_FOUND' }), {
+        status: 404,
+        headers: corsHeaders
+      });
+    }
+    const rec = await kv.get(code, { type: 'json' });
+    if (!rec) {
+      return new Response(JSON.stringify({ ok: false, error: 'NOT_FOUND' }), {
+        status: 404,
+        headers: corsHeaders
+      });
+    }
+    return new Response(JSON.stringify({ ok: true, ...rec }), { headers: corsHeaders });
   }
 
   return new Response(JSON.stringify({ error: 'Endpoint not found' }), { status: 404, headers: corsHeaders });
