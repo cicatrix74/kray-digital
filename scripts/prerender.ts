@@ -320,6 +320,57 @@ const TOOL_PAGES: ToolSeoEntry[] = [
       },
     },
   },
+  {
+    slug: 'code-online',
+    meta: {
+      uk: {
+        title: 'Онлайн редактор коду HTML, CSS, JS з Emmet та підсвіткою тегів | KRAY DIGITAL',
+        description: 'Безкоштовний онлайн редактор коду HTML, CSS та JavaScript з підсвіткою синтаксису і парних тегів, Emmet (Tab), перенесенням рядків, живим переглядом та консоллю.',
+      },
+      ru: {
+        title: 'Онлайн редактор кода HTML, CSS, JS с Emmet и подсветкой тегов | KRAY DIGITAL',
+        description: 'Бесплатный онлайн редактор кода HTML, CSS и JavaScript с подсветкой синтаксиса и парных тегов, Emmet (Tab), переносом строк, живым превью и консолью.',
+      },
+      en: {
+        title: 'Online HTML, CSS, JS Code Editor with Emmet & Tag Highlighting | KRAY DIGITAL',
+        description: 'Free online HTML, CSS and JavaScript code editor with syntax & matching tag highlighting, Emmet (Tab), word wrap, live preview, console and HTML export.',
+      },
+    },
+  },
+  {
+    slug: 'timer-generator',
+    meta: {
+      uk: {
+        title: 'Генератор таймера зворотного відліку для сайту онлайн | KRAY DIGITAL',
+        description: 'Створіть адаптивний HTML/JS таймер зворотного відліку для сайту чи лендінгу за 1 хвилину. Режими до дати та вічнозелений, теми оформлення, готовий код.',
+      },
+      ru: {
+        title: 'Генератор таймера обратного отсчета для сайта онлайн | KRAY DIGITAL',
+        description: 'Создайте адаптивный HTML/JS таймер обратного отсчета для сайта или лендинга за 1 минуту. Режимы до даты и вечнозеленый, темы оформления, готовый код.',
+      },
+      en: {
+        title: 'Online Website Countdown Timer Generator (HTML/JS) | KRAY DIGITAL',
+        description: 'Create a responsive HTML/JS countdown timer for your website or landing page in 1 minute. Target date and evergreen modes, visual themes, ready-to-embed code.',
+      },
+    },
+  },
+  {
+    slug: 'url-shortener',
+    meta: {
+      uk: {
+        title: 'Скорочувач посилань та кодувальник URL онлайн (UTM, Base64) | KRAY DIGITAL',
+        description: 'Безкоштовний онлайн скорочувач посилань зі статистикою переходів та власним аліасом, кодувальник URL (Percent-encoding, Base64), UTM-генератор і парсер параметрів.',
+      },
+      ru: {
+        title: 'Сокращатель ссылок и кодировщик URL онлайн (UTM, Base64) | KRAY DIGITAL',
+        description: 'Бесплатный онлайн сокращатель ссылок со статистикой переходов и своим алиасом, кодировщик URL (Percent-encoding, Base64), UTM-генератор и парсер параметров.',
+      },
+      en: {
+        title: 'Online URL Shortener & Link Encoder (UTM, Base64) | KRAY DIGITAL',
+        description: 'Free online URL shortener with custom aliases and click stats, URL/Base64 encoder-decoder, UTM tag builder, and query parameter parser.',
+      },
+    },
+  },
 ];
 
 for (const tool of TOOL_PAGES) {
@@ -392,6 +443,31 @@ for (const tool of TOOL_PAGES) {
     if (v.rewriteAssets) {
       outHtml = outHtml
         .replace(/(href|src)=["']\.\//gi, `$1="/${tool.slug}/`);
+    }
+
+    if (!outHtml.includes('G-DXN3LJEFFF')) {
+      const analyticsSnippet = `  <!-- Google Analytics 4 (GA4: G-DXN3LJEFFF) & Google Tag Manager -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DXN3LJEFFF');
+    function loadAnalytics(){
+      if(window._analyticsLoaded)return;
+      window._analyticsLoaded=true;
+      var ga=document.createElement('script');ga.async=true;
+      ga.src="https://www.googletagmanager.com/gtag/js?id=G-DXN3LJEFFF";
+      document.head.appendChild(ga);
+      var gtm=document.createElement('script');gtm.async=true;
+      gtm.src="https://www.googletagmanager.com/gtm.js?id=GTM-5TLVJ2GK";
+      document.head.appendChild(gtm);
+    }
+    ['scroll','touchstart','pointerdown','click','keydown'].forEach(function(e){
+      window.addEventListener(e,loadAnalytics,{once:true,passive:true});
+    });
+    setTimeout(loadAnalytics,15000);
+  </script>`;
+      outHtml = outHtml.replace(/<\/head>/i, `${analyticsSnippet}\n</head>`);
     }
 
     const outPath = path.join(distDir, v.outRel);

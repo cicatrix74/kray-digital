@@ -16,6 +16,12 @@
 /qr-generator/*    /qr-generator/:splat    200
 /favicon-generator    /favicon-generator/index.html    200
 /favicon-generator/*    /favicon-generator/:splat    200
+/code-online    /code-online/index.html    200
+/code-online/*    /code-online/:splat    200
+/timer-generator    /timer-generator/index.html    200
+/timer-generator/*    /timer-generator/:splat    200
+/url-shortener    /url-shortener/index.html    200
+/url-shortener/*    /url-shortener/:splat    200
 /ru    /ru/    301
 /en    /en/    301
 /*    /index.html    200

@@ -11,6 +11,8 @@ import sharp from 'sharp';
 import os from 'os';
 import { execFile } from 'child_process';
 import ffmpegPath from 'ffmpeg-static';
+import { renderTimerGif } from './server/timerGif';
+import { createShortLink, resolveShortLink, getShortLinkStats } from './server/shortLinks';
 
 dotenv.config();
 
@@ -1062,11 +1064,54 @@ const TOOL_ROUTE_DIRS: [string, string][] = [
   ['pdf-to-jpg', 'public/pdf-to-jpg'],
   ['qr-generator', 'public/qr-generator'],
   ['favicon-generator', 'public/favicon-generator'],
+  ['code-online', 'public/code-online'],
+  ['timer-generator', 'public/timer-generator'],
+  ['url-shortener', 'public/url-shortener'],
 ];
 
 for (const [slug, relDir] of TOOL_ROUTE_DIRS) {
   registerMultilingualTool(slug, path.resolve(process.cwd(), relDir));
 }
+
+app.post('/api/shorten', express.json(), (req, res) => {
+  const { url, alias } = req.body || {};
+  const result = createShortLink(url, alias);
+  if (result.ok === false) {
+    return res.status(400).json({ ok: false, error: result.error });
+  }
+  return res.json({ ok: true, ...result.record });
+});
+
+app.get('/api/shorten/:code', (req, res) => {
+  const rec = getShortLinkStats(req.params.code);
+  if (!rec) return res.status(404).json({ ok: false, error: 'NOT_FOUND' });
+  return res.json({ ok: true, ...rec });
+});
+
+app.get('/s/:code', (req, res) => {
+  const rec = resolveShortLink(req.params.code);
+  if (!rec) return res.status(404).send('Short link not found');
+  return res.redirect(302, rec.url);
+});
+
+app.get('/api/timer.gif', async (req, res) => {
+  const rawC = typeof req.query.c === 'string' ? req.query.c : '';
+  if (!rawC) {
+    return res.status(400).send('Missing timer config');
+  }
+  try {
+    const gifBuf = await renderTimerGif(rawC);
+    res.setHeader('Content-Type', 'image/gif');
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
+    if (req.query.download === '1') {
+      res.setHeader('Content-Disposition', 'attachment; filename="timer.gif"');
+    }
+    return res.send(gifBuf);
+  } catch (err) {
+    console.error('[timer.gif] render failed:', err);
+    return res.status(500).send('Failed to render GIF timer');
+  }
+});
 
 app.post('/api/video-to-gif', express.raw({ type: '*/*', limit: '100mb' }), async (req, res) => {
   if (!ffmpegPath) {

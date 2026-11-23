@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Генератор таймерів зворотного відліку для сайту онлайн — HTML/CSS/JS | KRAY DIGITAL</title>
+  <meta name="description" content="Безкоштовний онлайн-генератор таймерів зворотного відліку для сайту, лендінгу чи інтернет-магазину. Налаштуйте дату, стиль, кольори та отримайте готовий HTML/JS-код.">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+  <meta name="theme-color" content="#0c111d">
+  <link rel="canonical" href="https://kray-digital.pp.ua/timer-generator/">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://kray-digital.pp.ua/timer-generator/">
+  <meta property="og:title" content="Генератор таймерів для сайту онлайн — KRAY DIGITAL">
+  <meta property="og:description" content="Створіть стильний таймер зворотного відліку для акцій, запуску проєкту або вебінару та скопіюйте готовий HTML-код в один клік.">
+
+  <!-- Schema.org WebApplication -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "KRAY DIGITAL Website Countdown Timer Generator",
+    "url": "https://kray-digital.pp.ua/timer-generator/",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "All",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "UAH"
+    },
+    "inLanguage": ["uk", "ru", "en"]
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@600;700&display=optional" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@600;700&display=optional"></noscript>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-container">
+      <div class="logo-area">
+        <a href="/" class="brand-logo" title="KRAY DIGITAL">
+          <div class="logo-favicon-icon" aria-hidden="true">
+            <img src="/favicon.svg?v=2" alt="KRAY DIGITAL" style="width:100%;height:100%;display:block;" />
+          </div>
+          <div class="brand-text">
+            <span class="brand-name">KRAY <span class="brand-highlight">DIGITAL</span></span>
+            <span class="page-badge" id="i18nBadge">WEB TOOLS • COUNTDOWN TIMER GENERATOR</span>
+          </div>
+        </a>
+      </div>
+      <button type="button" class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu" aria-expanded="false" aria-controls="headerNav">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+      <nav class="header-right-area" id="headerNav" aria-label="Tools navigation">
+        <a href="/qr-generator/" class="header-nav-link" id="i18nLinkQr">📱 QR-код</a>
+        <a href="/favicon-generator/" class="header-nav-link" id="i18nLinkFavicon">✨ Favicon</a>
+        <a href="/konvertor-webp/" class="header-nav-link" id="i18nLinkWebp">🖼️ Конвертер WebP</a>
+        <a href="/password-generator/" class="header-nav-link" id="i18nLinkPass">🔐 Паролі</a>
+        <a href="/" class="header-order-btn">
+          <span>✨</span>
+          <span id="i18nOrderText">Замовити сайт</span>
+          <span>→</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="container">
+      <section class="tool-hero">
+        <div class="hero-header">
+          <div>
+            <h1 id="i18nTitle">Генератор таймерів для сайту онлайн</h1>
+            <p class="hero-subtitle" id="i18nSubtitle">Створіть адаптивний таймер зворотного відліку для акцій, розпродажів, запуску сайту або вебінару. Готовий автономний HTML + CSS + JS код без сторонніх бібліотек.</p>
+          </div>
+          <div class="format-badges">
+            <span class="fmt-pill">Pure HTML/CSS/JS</span>
+            <span class="fmt-pill">Date &amp; Evergreen</span>
+            <span class="fmt-pill">100% Free</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="studio-grid">
+        <!-- Left: Controls -->
+        <div class="controls-column">
+          <div class="panel-card">
+            <div class="panel-top">
+              <h2 class="panel-title" id="i18nSec1">1. Час відліку</h2>
+            </div>
+
+            <div>
+              <label class="field-label" for="timerMode" id="lblTimerMode">Тип таймера</label>
+              <select id="timerMode" class="text-input">
+                <option value="date" id="optModeDate">📅 До конкретної дати та часу</option>
+                <option value="evergreen" id="optModeEvergreen">🔁 Заданий інтервал (Evergreen)</option>
+              </select>
+            </div>
+
+            <div class="input-pane" id="paneDate">
+              <label class="field-label" for="targetDatetime" id="lblTargetDate">Дата та час завершення</label>
+              <input type="datetime-local" id="targetDatetime" class="text-input">
+            </div>
+
+            <div class="input-pane" id="paneEvergreen" hidden>
+              <div class="two-cols">
+                <div>
+                  <label class="field-label" for="evHours" id="lblEvHours">Годин</label>
+                  <input type="number" id="evHours" class="text-input" min="0" max="999" value="23">
+                </div>
+                <div>
+                  <label class="field-label" for="evMinutes" id="lblEvMinutes">Хвилин</label>
+                  <input type="number" id="evMinutes" class="text-input" min="0" max="59" value="59">
+                </div>
+              </div>
+              <label class="check-row">
+                <input type="checkbox" id="evPersist" checked>
+                <span id="lblEvPersist">Запам'ятовувати старт для кожного відвідувача (localStorage)</span>
+              </label>
+              <label class="check-row">
+                <input type="checkbox" id="evLoop">
+                <span id="lblEvLoop">Зациклити таймер (автоперезапуск після завершення)</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="panel-card">
+            <div class="panel-top">
+              <h2 class="panel-title" id="i18nSec2">2. Стиль таймера</h2>
+            </div>
+            <div class="style-grid" id="styleGrid" role="radiogroup" aria-label="Timer visual style"></div>
+          </div>
+
+          <details class="panel-card details-card">
+            <summary class="panel-top details-summary">
+              <h2 class="panel-title" id="i18nSecDetails">3. Тексти та кольори</h2>
+              <span class="details-chevron" aria-hidden="true">▾</span>
+            </summary>
+
+            <div class="details-body">
+              <div class="two-cols">
+                <div>
+                  <label class="field-label" for="timerHeading" id="lblHeading">Заголовок над таймером</label>
+                  <input type="text" id="timerHeading" class="text-input" value="До кінця акції залишилось:">
+                </div>
+                <div>
+                  <label class="field-label" for="expiredText" id="lblExpired">Текст після завершення</label>
+                  <input type="text" id="expiredText" class="text-input" value="Акція завершилась!">
+                </div>
+              </div>
+
+              <div class="two-cols">
+                <div>
+                  <label class="field-label" for="ctaText" id="lblCtaText">Текст кнопки (необов'язково)</label>
+                  <input type="text" id="ctaText" class="text-input" placeholder="Встигнути зі знижкою">
+                </div>
+                <div>
+                  <label class="field-label" for="ctaUrl" id="lblCtaUrl">Посилання кнопки</label>
+                  <input type="url" id="ctaUrl" class="text-input" placeholder="https://example.com/promo">
+                </div>
+              </div>
+
+              <div class="divider"></div>
+
+              <div class="panel-top">
+                <span class="field-label" style="margin:0;" id="lblThemePresets">Швидкі палітри кольорів</span>
+                <div class="type-tabs" role="tablist" aria-label="Theme presets">
+                  <button type="button" class="tab-btn active" data-theme="neon">Cyber Neon</button>
+                  <button type="button" class="tab-btn" data-theme="minimal">Minimal Dark</button>
+                  <button type="button" class="tab-btn" data-theme="sale">Hot Sale</button>
+                  <button type="button" class="tab-btn" data-theme="light">Clean Light</button>
+                </div>
+              </div>
+
+              <div class="three-cols">
+                <div>
+                  <label class="field-label" for="accentColor" id="lblAccent">Акцент</label>
+                  <div class="color-row">
+                    <input type="color" id="accentColor" value="#00f0ff" class="color-picker">
+                    <span class="mono-val" id="accentHex">#00f0ff</span>
+                  </div>
+                </div>
+                <div>
+                  <label class="field-label" for="bgColor" id="lblBg">Фон блоку</label>
+                  <div class="color-row">
+                    <input type="color" id="bgColor" value="#0f131e" class="color-picker">
+                    <span class="mono-val" id="bgHex">#0f131e</span>
+                  </div>
+                </div>
+                <div>
+                  <label class="field-label" for="textColor" id="lblTextColor">Текст</label>
+                  <div class="color-row">
+                    <input type="color" id="textColor" value="#ffffff" class="color-picker">
+                    <span class="mono-val" id="textHex">#ffffff</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="two-cols">
+                <div>
+                  <label class="field-label" for="timerRadius" id="lblRadius">Заокруглення: <span class="mono-val" id="radiusVal">16px</span></label>
+                  <input type="range" id="timerRadius" min="0" max="28" value="16" class="range-input">
+                </div>
+                <div>
+                  <label class="field-label" for="timerLang" id="lblUnitLang">Мова підписів таймера</label>
+                  <select id="timerLang" class="text-input">
+                    <option value="uk">Українська (Дні / Год / Хв / Сек)</option>
+                    <option value="ru">Русский (Дни / Часы / Мин / Сек)</option>
+                    <option value="en">English (Days / Hrs / Min / Sec)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="toggles-row">
+                <label class="check-row">
+                  <input type="checkbox" id="showDays" checked>
+                  <span id="lblShowDays">Показувати дні</span>
+                </label>
+                <label class="check-row">
+                  <input type="checkbox" id="showSeconds" checked>
+                  <span id="lblShowSeconds">Показувати секунди</span>
+                </label>
+              </div>
+            </div>
+          </details>
+        </div>
+
+        <!-- Right: Live Preview + Embed Code -->
+        <div class="panel-card preview-panel">
+          <div class="panel-top">
+            <h2 class="panel-title" id="i18nSec3">3. Попередній перегляд</h2>
+            <button type="button" class="tab-btn" id="btnSimulateEnd">⚡ Тест завершення</button>
+          </div>
+
+          <div class="timer-stage" id="timerStage"></div>
+
+          <div class="code-box-wrap">
+            <div class="panel-top">
+              <div class="type-tabs" role="tablist" aria-label="Embed format">
+                <button type="button" class="tab-btn active" data-embed="script" id="embedScriptBtn">🌐 Сайт / OBS (1 рядок)</button>
+                <button type="button" class="tab-btn" data-embed="gif" id="embedGifBtn">📧 Email / GIF (&lt;img&gt;)</button>
+              </div>
+              <span class="mono-val" id="codeSizeLabel">~410 B</span>
+            </div>
+            <textarea id="embedCode" class="text-area code-area" rows="3" readonly aria-label="Generated embed code"></textarea>
+          </div>
+
+          <div class="action-buttons action-buttons-3">
+            <button type="button" id="btnCopyCode" class="btn-primary">📋 <span id="i18nCopyBtn">Копіювати код</span></button>
+            <button type="button" id="btnDownloadHtml" class="btn-secondary">💾 <span id="i18nDownloadBtn">timer.html</span></button>
+            <button type="button" id="btnDownloadGif" class="btn-secondary">🎞️ <span id="i18nDownloadGifBtn">timer.gif</span></button>
+          </div>
+        </div>
+      </section>
+
+      <section class="info-section">
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">⚡</div>
+            <h3 id="i18nFeat1Title">Жодних залежностей</h3>
+            <p id="i18nFeat1Desc">Чистий HTML, CSS та ванільний JavaScript без jQuery, React або зовнішніх скриптів — працює на будь-якому сайті, WordPress, Tilda чи Webflow.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🔁</div>
+            <h3 id="i18nFeat2Title">Режим до дати та Evergreen</h3>
+            <p id="i18nFeat2Desc">Підходить як для фіксованих акцій і запусків, так і для індивідуального таймера кожному новому відвідувачу через localStorage.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🎨</div>
+            <h3 id="i18nFeat3Title">Готові теми та адаптивність</h3>
+            <p id="i18nFeat3Desc">Коректно виглядає на мобільних екранах і десктопі, підтримує власні кольори, заокруглення та кнопку заклику до дії.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="seo-box">
+        <h2 id="i18nSeoTitle">Навіщо сайту таймер зворотного відліку і як його встановити</h2>
+        <p id="i18nSeoIntro">Таймер зворотного відліку підвищує конверсію лендінгів та інтернет-магазинів на 15–35%, створюючи зрозумілий дедлайн акції, безкоштовної доставки або старту курсу. Наш генератор створює легкий фрагмент коду, який не уповільнює PageSpeed вашого сайту.</p>
+        <div class="seo-grid">
+          <div class="seo-col">
+            <h3 id="i18nSeoCol1Title">🌐 Вставка на сайт (WordPress, Tilda, Webflow)</h3>
+            <p id="i18nSeoCol1Desc">Оберіть формат «Сайт / OBS (1 рядок)», натисніть «Копіювати код» і вставте тег &lt;script&gt; у потрібний HTML-блок (у WordPress — «Довільний HTML», у Tilda — блок T123, у Webflow — Embed).</p>
+          </div>
+          <div class="seo-col">
+            <h3 id="i18nSeoCol2Title">📧 GIF-таймер для Email-розсилок</h3>
+            <p id="i18nSeoCol2Desc">Поштові сервіси (Gmail, Outlook, Apple Mail) блокують JavaScript. Перемкніть код на «Email / GIF (&lt;img&gt;)» та вставте тег &lt;img&gt; у лист — сервер автоматично генерує живий анімований GIF із точним залишком часу в момент відкриття листа.</p>
+          </div>
+          <div class="seo-col">
+            <h3 id="i18nSeoCol3Title">🎥 Додавання в OBS Studio та Streamlabs (для стрімів)</h3>
+            <p id="i18nSeoCol3Desc">Натисніть «timer.html» щоб зберегти файл на комп'ютер. В OBS Studio або Streamlabs відкрийте «Джерела (+) → Браузер (Browser Source)», поставте галочку «Локальний файл» (Local file), виберіть збережений timer.html, задайте ширину 620 і висоту 240 px та увімкніть «Оновлювати браузер, коли сцена стає активною».</p>
+          </div>
+          <div class="seo-col">
+            <h3 id="i18nSeoCol4Title">🔁 Зациклений та Evergreen-таймер</h3>
+            <p id="i18nSeoCol4Desc">У режимі «Інтервал» таймер веде індивідуальний відлік для кожного відвідувача через localStorage, а опція «Зациклити таймер» автоматично перезапускає новий цикл після 00:00 — зручно для щоденних акцій і автовебінарів.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer"></footer>
+
+  <script src="/shared/tools-menu.js"></script>
+  <script src="/shared/site-footer.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>

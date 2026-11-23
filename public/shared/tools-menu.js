@@ -43,12 +43,33 @@
       en: 'Video to GIF Generator'
     },
     {
+      href: '/code-online/',
+      icon: '💻',
+      uk: 'Онлайн редактор коду (HTML/CSS/JS)',
+      ru: 'Онлайн редактор кода (HTML/CSS/JS)',
+      en: 'Online Code Editor (HTML/CSS/JS)'
+    },
+    {
       href: '/photoeditor/',
       icon: '🎨',
       uk: 'Онлайн фоторедактор',
       ru: 'Онлайн фоторедактор',
       en: 'Online Photo Editor',
       desktopOnly: true
+    },
+    {
+      href: '/timer-generator/',
+      icon: '⏱️',
+      uk: 'Генератор таймерів для сайту',
+      ru: 'Генератор таймеров для сайта',
+      en: 'Website Countdown Timer Generator'
+    },
+    {
+      href: '/url-shortener/',
+      icon: '🔗',
+      uk: 'Скорочувач і кодувальник посилань',
+      ru: 'Сокращатель и кодировщик ссылок',
+      en: 'URL Shortener & Link Encoder'
     }
   ];
 
@@ -82,8 +103,40 @@
         position: relative;
         display: inline-flex;
         align-items: center;
-        gap: 10px;
+        gap: 14px;
         flex-shrink: 0;
+        margin-left: 12px;
+      }
+      .kray-lang-switch {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 4px;
+        border-radius: 10px;
+        border: 1px solid rgba(59, 73, 75, 0.55);
+        background: rgba(15, 22, 38, 0.85);
+      }
+      .kray-lang-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 6px 10px;
+        border-radius: 7px;
+        font-family: inherit;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.03em;
+        color: #94a3b8;
+        text-decoration: none;
+        transition: color 0.15s ease, background 0.15s ease;
+      }
+      .kray-lang-link:hover {
+        color: #ffffff;
+        background: rgba(255, 255, 255, 0.06);
+      }
+      .kray-lang-link.is-active {
+        color: #06101a;
+        background: #22d3ee;
       }
       .kray-hamburger-btn {
         display: inline-flex !important;
@@ -204,6 +257,18 @@
         }
         .kray-desktop-only {
           display: none !important;
+        }
+        .kray-menu-wrap {
+          gap: 10px;
+          margin-left: 8px;
+        }
+        .kray-lang-switch {
+          gap: 2px;
+          padding: 3px;
+        }
+        .kray-lang-link {
+          padding: 5px 7px;
+          font-size: 11px;
         }
         .header-container {
           flex-wrap: nowrap !important;
@@ -362,9 +427,28 @@
     const lang = detectLang();
     const L = LABELS[lang] || LABELS.uk;
     const currentPath = window.location.pathname.replace(/index\.html$/, '');
+    const basePath = currentPath.replace(/^\/(ru|en)(?=\/|$)/i, '') || '/';
+    const langPrefix = lang === 'uk' ? '' : `/${lang}`;
+    const suffix = (window.location.search || '') + (window.location.hash || '');
 
     const wrap = document.createElement('div');
     wrap.className = 'kray-menu-wrap';
+
+    const langSwitch = document.createElement('div');
+    langSwitch.className = 'kray-lang-switch';
+    langSwitch.setAttribute('aria-label', 'Language switcher');
+    [
+      { code: 'uk', label: 'UA', href: `${basePath}${suffix}` },
+      { code: 'ru', label: 'RU', href: `/ru${basePath}${suffix}` },
+      { code: 'en', label: 'EN', href: `/en${basePath}${suffix}` }
+    ].forEach((item) => {
+      const a = document.createElement('a');
+      a.href = item.href;
+      a.textContent = item.label;
+      a.className = 'kray-lang-link' + (lang === item.code ? ' is-active' : '');
+      if (lang === item.code) a.setAttribute('aria-current', 'page');
+      langSwitch.appendChild(a);
+    });
 
     const btn = document.createElement('button');
     btn.type = 'button';
@@ -393,9 +477,9 @@
 
     for (const tool of TOOLS) {
       const a = document.createElement('a');
-      a.href = tool.href;
+      a.href = `${langPrefix}${tool.href}`;
       a.className = 'kray-tool-item'
-        + (currentPath === tool.href ? ' is-active' : '')
+        + (basePath === tool.href ? ' is-active' : '')
         + (tool.desktopOnly ? ' kray-desktop-only' : '');
       a.innerHTML = `<span>${tool.icon}</span><span>${tool[lang] || tool.uk}</span>`;
       dropdown.appendChild(a);
@@ -406,18 +490,18 @@
     dropdown.appendChild(sep);
 
     const homeLink = document.createElement('a');
-    homeLink.href = '/';
+    homeLink.href = `${langPrefix}/`;
     homeLink.className = 'kray-tool-item';
     homeLink.innerHTML = `<span>🏠</span><span>${L.home}</span>`;
     dropdown.appendChild(homeLink);
 
     const cta = document.createElement('a');
-    cta.href = '/';
+    cta.href = `${langPrefix}/`;
     cta.className = 'kray-dropdown-cta';
     cta.textContent = `✨ ${L.order}`;
     dropdown.appendChild(cta);
 
-    wrap.append(btn, dropdown);
+    wrap.append(langSwitch, btn, dropdown);
     headerContainer.appendChild(wrap);
 
     // Floating Scroll-to-Top button (matching homepage)
@@ -473,7 +557,7 @@
       const signLabel = lang === 'en' ? 'Order Website' : (lang === 'ru' ? 'Заказать сайт' : 'Замовити сайт');
       mascot.innerHTML = `
         <div class="kray-mascot-sign-wrap">
-          <a href="/" class="kray-mascot-sign">✨ <span>${signLabel}</span> →</a>
+          <a href="${langPrefix}/" class="kray-mascot-sign">✨ <span>${signLabel}</span> →</a>
           <button type="button" class="kray-mascot-close" aria-label="Close">×</button>
         </div>
         <svg class="kray-mascot-svg" viewBox="0 0 140 94" fill="none" aria-hidden="true">
@@ -541,12 +625,15 @@
       document.body.appendChild(mascot);
 
       let dismissed = false;
+      let firstShow = true;
       let showTimer = null;
       let hideTimer = null;
 
       const scheduleNext = () => {
         if (dismissed) return;
+        const delayMs = firstShow ? 8000 : 60000;
         showTimer = setTimeout(() => {
+          firstShow = false;
           if (dismissed || window.innerWidth <= 768) return;
           if (document.hidden) {
             scheduleNext();
@@ -557,7 +644,7 @@
             mascot.classList.remove('is-visible');
             scheduleNext();
           }, 30000);
-        }, 60000);
+        }, delayMs);
       };
 
       mascot.querySelector('.kray-mascot-close').addEventListener('click', (e) => {

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Скорочувач посилань та кодувальник URL онлайн (UTM, Base64) | KRAY DIGITAL</title>
+  <meta name="description" content="Безкоштовний онлайн скорочувач посилань зі статистикою переходів та власним аліасом, кодувальник URL (Percent-encoding, Base64), UTM-генератор і парсер параметрів.">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+  <meta name="theme-color" content="#0c111d">
+  <link rel="canonical" href="https://kray-digital.pp.ua/url-shortener/">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://kray-digital.pp.ua/url-shortener/">
+  <meta property="og:title" content="Скорочувач посилань та кодувальник URL онлайн — KRAY DIGITAL">
+  <meta property="og:description" content="Створіть коротке посилання з лічильником кліків, закодуйте або розкодуйте URL, зберіть UTM-мітки та перевірте параметри адреси.">
+
+  <!-- Schema.org WebApplication -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "KRAY DIGITAL URL Shortener & Encoder",
+    "url": "https://kray-digital.pp.ua/url-shortener/",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "All",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "UAH"
+    },
+    "inLanguage": ["uk", "ru", "en"]
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@600;700&display=optional" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@600;700&display=optional"></noscript>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-container">
+      <div class="logo-area">
+        <a href="/" class="brand-logo" title="KRAY DIGITAL">
+          <div class="logo-favicon-icon" aria-hidden="true">
+            <img src="/favicon.svg?v=2" alt="KRAY DIGITAL" style="width:100%;height:100%;display:block;" />
+          </div>
+          <div class="brand-text">
+            <span class="brand-name">KRAY <span class="brand-highlight">DIGITAL</span></span>
+            <span class="page-badge" id="i18nBadge">WEB TOOLS • URL SHORTENER &amp; ENCODER</span>
+          </div>
+        </a>
+      </div>
+      <button type="button" class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu" aria-expanded="false" aria-controls="headerNav">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+      <div class="header-right-area" id="headerNav"></div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="container">
+      <section class="tool-hero">
+        <div class="hero-header">
+          <div>
+            <h1 id="i18nTitle">Скорочувач посилань та кодувальник URL онлайн</h1>
+            <p class="hero-subtitle" id="i18nSubtitle">Створюйте короткі посилання з власним аліасом і статистикою переходів, кодуйте URL (Percent / Base64), збирайте UTM-мітки та аналізуйте параметри.</p>
+          </div>
+          <div class="format-badges">
+            <span class="fmt-pill">Short Links /s/</span>
+            <span class="fmt-pill">URL Encode / Base64</span>
+            <span class="fmt-pill">UTM Builder</span>
+          </div>
+        </div>
+      </section>
+
+      <div class="tool-tabs" role="tablist" aria-label="URL Tools">
+        <button type="button" class="tool-tab active" data-tab="shorten" id="tabShorten">🔗 <span id="i18nTabShorten">Скоротити посилання</span></button>
+        <button type="button" class="tool-tab" data-tab="encode" id="tabEncode">🔐 <span id="i18nTabEncode">Кодувальник URL</span></button>
+        <button type="button" class="tool-tab" data-tab="utm" id="tabUtm">📊 <span id="i18nTabUtm">UTM-генератор і парсер</span></button>
+      </div>
+
+      <!-- Tab 1: URL Shortener -->
+      <section class="tab-pane active" id="paneShorten">
+        <div class="studio-grid">
+          <div class="panel-card">
+            <h2 class="panel-title" id="i18nShortTitle">Створити коротке посилання</h2>
+            <div>
+              <label class="field-label" for="longUrlInput" id="lblLongUrl">Довге посилання (URL)</label>
+              <input type="url" id="longUrlInput" class="text-input" placeholder="https://example.com/catalog/item?utm_source=telegram">
+            </div>
+            <div>
+              <label class="field-label" for="aliasInput" id="lblAlias">Власний хвіст (необов'язково, 3–32 символи)</label>
+              <div class="alias-row">
+                <span class="alias-prefix" id="aliasPrefix">/s/</span>
+                <input type="text" id="aliasInput" class="text-input" placeholder="promo-2026" maxlength="32">
+              </div>
+            </div>
+            <div class="error-msg" id="shortError" hidden></div>
+            <button type="button" id="btnShorten" class="btn-primary">⚡ <span id="i18nBtnShorten">Скоротити посилання</span></button>
+
+            <div class="result-box" id="shortResultBox" hidden>
+              <div class="field-label" id="lblShortReady">Коротке посилання готове:</div>
+              <div class="short-result-row">
+                <input type="text" id="shortResultUrl" class="text-input mono-input" readonly aria-label="Short URL">
+                <button type="button" id="btnCopyShort" class="btn-secondary">📋 <span id="i18nCopyShort">Копіювати</span></button>
+                <a href="#" id="btnOpenShort" target="_blank" rel="noopener" class="btn-secondary">↗</a>
+              </div>
+              <div class="stats-row">
+                <span id="shortClicksLabel">Переходів: <strong id="shortClicksCount">0</strong></span>
+                <button type="button" id="btnRefreshClicks" class="link-btn">🔄 <span id="i18nRefreshClicks">Оновити статистику</span></button>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel-card">
+            <div class="panel-top">
+              <h2 class="panel-title" id="i18nHistoryTitle">Останні посилання</h2>
+              <button type="button" id="btnClearHistory" class="link-btn">🗑️ <span id="i18nClearHistory">Очистити</span></button>
+            </div>
+            <div class="history-list" id="historyList"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tab 2: URL Encoder / Decoder -->
+      <section class="tab-pane" id="paneEncode" hidden>
+        <div class="panel-card">
+          <div class="panel-top">
+            <h2 class="panel-title" id="i18nEncTitle">Кодування та декодування URL / Base64</h2>
+            <div class="type-tabs" role="tablist" aria-label="Encoding mode">
+              <button type="button" class="tab-btn active" data-enc="component">encodeURIComponent</button>
+              <button type="button" class="tab-btn" data-enc="uri">encodeURI</button>
+              <button type="button" class="tab-btn" data-enc="base64">Base64</button>
+              <button type="button" class="tab-btn" data-enc="base64url">Base64URL</button>
+            </div>
+          </div>
+          <div class="studio-grid">
+            <div>
+              <label class="field-label" for="encInput" id="lblEncInput">Вхідний текст або URL</label>
+              <textarea id="encInput" class="text-area" rows="7" placeholder="https://example.com/search?q=привіт світ&tag=100%"></textarea>
+            </div>
+            <div>
+              <label class="field-label" for="encOutput" id="lblEncOutput">Результат</label>
+              <textarea id="encOutput" class="text-area mono-input" rows="7" readonly></textarea>
+            </div>
+          </div>
+          <div class="enc-actions">
+            <button type="button" id="btnDoEncode" class="btn-primary">🔒 <span id="i18nBtnEncode">Закодувати</span></button>
+            <button type="button" id="btnDoDecode" class="btn-secondary">🔓 <span id="i18nBtnDecode">Розкодувати</span></button>
+            <button type="button" id="btnSwapEnc" class="btn-secondary">⇅ <span id="i18nBtnSwap">Поміняти місцями</span></button>
+            <button type="button" id="btnCopyEnc" class="btn-secondary">📋 <span id="i18nBtnCopyEnc">Копіювати результат</span></button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tab 3: UTM Builder & Parser -->
+      <section class="tab-pane" id="paneUtm" hidden>
+        <div class="studio-grid">
+          <div class="panel-card">
+            <h2 class="panel-title" id="i18nUtmTitle">Генератор UTM-міток</h2>
+            <div>
+              <label class="field-label" for="utmBase" id="lblUtmBase">Базовий URL</label>
+              <input type="url" id="utmBase" class="text-input" placeholder="https://kray-digital.pp.ua/">
+            </div>
+            <div class="two-cols">
+              <div>
+                <label class="field-label" for="utmSource">utm_source *</label>
+                <input type="text" id="utmSource" class="text-input" placeholder="telegram / google / facebook">
+              </div>
+              <div>
+                <label class="field-label" for="utmMedium">utm_medium *</label>
+                <input type="text" id="utmMedium" class="text-input" placeholder="cpc / social / email">
+              </div>
+            </div>
+            <div class="two-cols">
+              <div>
+                <label class="field-label" for="utmCampaign">utm_campaign</label>
+                <input type="text" id="utmCampaign" class="text-input" placeholder="black_friday">
+              </div>
+              <div>
+                <label class="field-label" for="utmContent">utm_content</label>
+                <input type="text" id="utmContent" class="text-input" placeholder="banner_top">
+              </div>
+            </div>
+            <div>
+              <label class="field-label" for="utmTerm">utm_term</label>
+              <input type="text" id="utmTerm" class="text-input" placeholder="web_studio">
+            </div>
+            <div>
+              <label class="field-label" for="utmResult" id="lblUtmResult">Готове посилання з UTM</label>
+              <textarea id="utmResult" class="text-area mono-input" rows="3" readonly></textarea>
+            </div>
+            <div class="two-cols">
+              <button type="button" id="btnCopyUtm" class="btn-primary">📋 <span id="i18nCopyUtm">Копіювати UTM-посилання</span></button>
+              <button type="button" id="btnShortenUtm" class="btn-secondary">🔗 <span id="i18nShortenUtm">Скоротити це посилання</span></button>
+            </div>
+          </div>
+
+          <div class="panel-card">
+            <h2 class="panel-title" id="i18nParserTitle">Парсер URL-параметрів</h2>
+            <div>
+              <label class="field-label" for="parseInput" id="lblParseInput">Вставте будь-який URL для розбору</label>
+              <input type="text" id="parseInput" class="text-input mono-input" placeholder="https://example.com/path?a=1&b=hello#top">
+            </div>
+            <div class="parsed-grid" id="parsedOutput"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="seo-box">
+        <h2 id="i18nSeoTitle">Навіщо потрібен скорочувач посилань і кодувальник URL</h2>
+        <p id="i18nSeoIntro">Короткі посилання підвищують довіру та CTR у Telegram, Instagram, SMS і рекламі, приховуючи довгі UTM-мітки. А вбудований кодувальник URL та Base64 допомагає розробникам і маркетологам без помилок передавати кирилицю, пробіли й параметри в адресному рядку.</p>
+        <p id="i18nSeoIntro2" style="margin-top:10px;">На одній сторінці об’єднано три інструменти: серверний скорочувач URL зі статистикою кліків, двосторонній кодувальник/декодер (Percent-encoding і Base64) та візуальний конструктор UTM-міток з парсером параметрів.</p>
+        <div class="seo-grid">
+          <div class="seo-col">
+            <h3 id="i18nSeoC1Title">🔗 Короткі посилання з аліасом</h3>
+            <p id="i18nSeoC1Desc">Отримайте компактну адресу формату /s/promo або випадковий 6-символьний код, відстежуйте кількість переходів у реальному часі та копіюйте посилання з історії.</p>
+          </div>
+          <div class="seo-col">
+            <h3 id="i18nSeoC2Title">🔐 Кодування URL і Base64</h3>
+            <p id="i18nSeoC2Desc">Миттєве перетворення між звичайним текстом, Percent-encoding (encodeURIComponent / encodeURI) та Base64 / Base64URL з коректною підтримкою UTF-8 і кирилиці.</p>
+          </div>
+          <div class="seo-col">
+            <h3 id="i18nSeoC3Title">📊 UTM-генератор і парсер параметрів</h3>
+            <p id="i18nSeoC3Desc">Збирайте мітки utm_source, utm_medium, utm_campaign, utm_content та utm_term для аналітики реклами й одразу скорочуйте готову адресу в один клік.</p>
+          </div>
+          <div class="seo-col">
+            <h3 id="i18nSeoC4Title">🚀 Де використовують скорочені URL</h3>
+            <p id="i18nSeoC4Desc">У постах Telegram і Viber, профілях Instagram/TikTok, SMS-розсилках (де важливий кожен символ), QR-кодах на візитках та при тестуванні API і вебхуків.</p>
+          </div>
+        </div>
+
+        <div class="seo-faq-wrap">
+          <h3 class="seo-faq-heading" id="i18nSeoFaqTitle">Часті запитання</h3>
+          <div class="seo-grid">
+            <div class="seo-col">
+              <h4 id="i18nFaq1Q">Чи зберігаються короткі посилання /s/...?</h4>
+              <p id="i18nFaq1A">Так, створені короткі посилання та лічильник кліків зберігаються на сервері та продовжують працювати після оновлення сторінки. Перехід відбувається через швидкий HTTP 302 редирект.</p>
+            </div>
+            <div class="seo-col">
+              <h4 id="i18nFaq2Q">У чому різниця між encodeURIComponent та encodeURI?</h4>
+              <p id="i18nFaq2A">encodeURI кодує лише пробіли та кирилицю, зберігаючи структуру адреси (:, /, ?, &amp;, =). encodeURIComponent кодує абсолютно всі службові символи — це потрібно для передачі іншого URL всередині query-параметра.</p>
+            </div>
+            <div class="seo-col">
+              <h4 id="i18nFaq3Q">Навіщо використовувати Base64URL замість звичайного Base64?</h4>
+              <p id="i18nFaq3A">Звичайний Base64 містить символи +, / та =, які можуть ламати посилання в адресному рядку. Base64URL замінює їх на безпечні - та _ без знаків = наприкінці.</p>
+            </div>
+            <div class="seo-col">
+              <h4 id="i18nFaq4Q">Чи можна одразу скоротити посилання з UTM-мітками?</h4>
+              <p id="i18nFaq4A">Так! На вкладці «UTM-генератор і парсер» заповніть потрібні мітки й натисніть «Скоротити це посилання» — ви миттєво отримаєте компактну адресу з трекінгом.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer"></footer>
+
+  <script src="/shared/tools-menu.js"></script>
+  <script src="/shared/site-footer.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>

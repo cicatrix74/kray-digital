@@ -84,6 +84,22 @@ export default function Footer(_props: FooterProps) {
         : language === 'en'
           ? '✨ Favicon Generator (ICO & PNG)'
           : '✨ Генератор Favicon (ICO & PNG)'
+    },
+    {
+      href: '/timer-generator/',
+      label: language === 'ru'
+        ? '⏱️ Генератор таймеров для сайта'
+        : language === 'en'
+          ? '⏱️ Countdown Timer Generator'
+          : '⏱️ Генератор таймерів для сайту'
+    },
+    {
+      href: '/url-shortener/',
+      label: language === 'ru'
+        ? '🔗 Сокращатель и кодировщик ссылок'
+        : language === 'en'
+          ? '🔗 URL Shortener & Encoder'
+          : '🔗 Скорочувач і кодувальник посилань'
     }
   ];
 

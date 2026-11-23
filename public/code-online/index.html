@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Онлайн редактор коду HTML, CSS, JS з Emmet та підсвіткою тегів | KRAY DIGITAL</title>
+  <meta name="description" content="Безкоштовний онлайн редактор коду HTML, CSS та JavaScript з підсвіткою синтаксису і парних тегів, Emmet (Tab), перенесенням рядків, живим переглядом та консоллю.">
+  <meta name="keywords" content="онлайн редактор коду, html css js редактор, emmet онлайн, підсвітка тегів html, code editor online, пісочниця html, codepen аналог">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+  <meta name="theme-color" content="#0c111d">
+  <base href="/code-online/">
+  <link rel="canonical" href="https://kray-digital.pp.ua/code-online/">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://kray-digital.pp.ua/code-online/">
+  <meta property="og:title" content="Онлайн редактор коду HTML, CSS, JS з Emmet — KRAY DIGITAL">
+  <meta property="og:description" content="Пишіть HTML, CSS та JavaScript із підсвіткою синтаксису, Emmet, автозакриттям тегів і миттєвим живим переглядом прямо у браузері.">
+
+  <!-- Schema.org WebApplication -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "KRAY DIGITAL Online Code Editor",
+    "url": "https://kray-digital.pp.ua/code-online/",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "All",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "UAH"
+    },
+    "inLanguage": ["uk", "ru", "en"]
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap"></noscript>
+  <link rel="stylesheet" href="./style.css?v=1.0">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-container">
+      <div class="logo-area">
+        <a href="/" class="brand-logo" title="KRAY DIGITAL">
+          <div class="logo-favicon-icon" aria-hidden="true">
+            <img src="/favicon.svg" alt="KRAY DIGITAL" style="width:100%;height:100%;display:block;" />
+          </div>
+          <div class="brand-text">
+            <span class="brand-name">KRAY <span class="brand-highlight">DIGITAL</span></span>
+            <span class="page-badge" id="i18nBadge">WEB TOOLS • ONLINE CODE PLAYGROUND</span>
+          </div>
+        </a>
+      </div>
+      <button type="button" class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu" aria-expanded="false" aria-controls="headerNav">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+      <div class="header-right-area" id="headerNav">
+        <a href="/" class="header-order-btn">
+          <span>✨</span>
+          <span id="i18nOrderText">Замовити сайт</span>
+          <span>→</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="container">
+      <section class="tool-hero">
+        <div class="hero-header">
+          <div>
+            <h1 id="i18nTitle">Онлайн редактор коду HTML, CSS та JavaScript</h1>
+            <p class="hero-subtitle" id="i18nSubtitle">Пишіть код у трьох панелях і миттєво бачте результат у живому перегляді. Уся робота відбувається локально у вашому браузері — жодних реєстрацій та встановлень.</p>
+          </div>
+          <div class="format-badges">
+            <span class="fmt-pill">HTML</span>
+            <span class="fmt-pill">CSS</span>
+            <span class="fmt-pill">JavaScript</span>
+            <span class="fmt-pill">Emmet (Tab)</span>
+            <span class="fmt-pill">Live Preview</span>
+          </div>
+        </div>
+
+        <!-- Toolbar -->
+        <div class="toolbar">
+          <div class="toolbar-left">
+            <button type="button" class="btn btn-primary" id="btnRun">▶ <span id="i18nBtnRun">Запустити</span></button>
+            <button type="button" class="btn is-on" id="btnAutoRun" aria-pressed="true">⚡ <span id="i18nBtnAuto">Авто-запуск: увімк.</span></button>
+            <button type="button" class="btn" id="btnFormat">✨ <span id="i18nBtnFormat">Форматувати</span></button>
+          </div>
+          <div class="toolbar-right">
+            <button type="button" class="btn" id="btnCopyLink">🔗 <span id="i18nBtnCopyLink">Посилання</span></button>
+            <button type="button" class="btn" id="btnDownload">⬇ <span id="i18nBtnDownload">Завантажити .html</span></button>
+            <button type="button" class="btn" id="btnReset">⟲ <span id="i18nBtnReset">Скинути</span></button>
+          </div>
+        </div>
+
+        <!-- Workspace -->
+        <div class="workspace" id="workspace">
+          <div class="editors-pane">
+            <div class="tabs" role="tablist" aria-label="Code editors">
+              <button type="button" class="tab is-active" role="tab" aria-selected="true" data-editor="html">
+                <span class="tab-dot dot-html"></span> HTML
+              </button>
+              <button type="button" class="tab" role="tab" aria-selected="false" data-editor="css">
+                <span class="tab-dot dot-css"></span> CSS
+              </button>
+              <button type="button" class="tab" role="tab" aria-selected="false" data-editor="js">
+                <span class="tab-dot dot-js"></span> JS
+              </button>
+            </div>
+
+            <div class="editor-stack">
+              <div class="editor-wrap is-active" data-editor="html">
+                <pre class="line-gutter" id="gutterHtml" aria-hidden="true"></pre>
+                <div class="editor-layer">
+                  <pre class="code-highlight" id="highlightHtml" aria-hidden="true"></pre>
+                  <textarea id="editorHtml" class="code-area" spellcheck="false" autocapitalize="off" autocorrect="off" wrap="soft" aria-label="HTML editor"></textarea>
+                </div>
+              </div>
+              <div class="editor-wrap" data-editor="css">
+                <pre class="line-gutter" id="gutterCss" aria-hidden="true"></pre>
+                <div class="editor-layer">
+                  <pre class="code-highlight" id="highlightCss" aria-hidden="true"></pre>
+                  <textarea id="editorCss" class="code-area" spellcheck="false" autocapitalize="off" autocorrect="off" wrap="soft" aria-label="CSS editor"></textarea>
+                </div>
+              </div>
+              <div class="editor-wrap" data-editor="js">
+                <pre class="line-gutter" id="gutterJs" aria-hidden="true"></pre>
+                <div class="editor-layer">
+                  <pre class="code-highlight" id="highlightJs" aria-hidden="true"></pre>
+                  <textarea id="editorJs" class="code-area" spellcheck="false" autocapitalize="off" autocorrect="off" wrap="soft" aria-label="JavaScript editor"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <div class="editor-status">
+              <span id="statusInfo">HTML</span>
+              <span id="statusSaved"></span>
+            </div>
+          </div>
+
+          <div class="preview-pane">
+            <div class="preview-head">
+              <div class="preview-dots" aria-hidden="true"><i></i><i></i><i></i></div>
+              <span class="preview-url">preview</span>
+              <div class="preview-actions">
+                <button type="button" class="btn-icon" id="btnRefresh" title="Оновити">🔄</button>
+                <button type="button" class="btn-icon" id="btnFullscreen" title="На весь екран">⛶</button>
+              </div>
+            </div>
+            <iframe id="previewFrame" class="preview-frame" title="Live preview" sandbox="allow-scripts allow-modals allow-forms allow-popups allow-same-origin"></iframe>
+
+            <div class="console-panel">
+              <div class="console-head">
+                <span id="i18nConsoleTitle">Консоль</span>
+                <button type="button" class="btn-icon-small" id="btnClearConsole" title="Очистити консоль">✕</button>
+              </div>
+              <div class="console-output" id="consoleOutput" aria-live="polite"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SEO Article -->
+      <article class="seo-article-card">
+        <h2 id="i18nSeoH2">Онлайн редактор коду HTML, CSS та JavaScript з Emmet і підсвіткою тегів</h2>
+        <p id="i18nSeoP1">Зручна браузерна пісочниця з трьома вкладками (HTML, CSS, JS), живим прев’ю та консоллю. Редактор підтримує підсвітку синтаксису й парних тегів, автозакриття тегів, скорочення Emmet за клавішею Tab та автоматичний перенос довгих рядків — ідеально для швидкого прототипування, навчання та перевірки верстки без встановлення програм.</p>
+
+        <div class="seo-columns">
+          <div class="seo-col">
+            <h3 id="i18nSeoC1Title">🎨 Підсвітка тегів та Emmet (Tab)</h3>
+            <p id="i18nSeoC1Text">HTML-теги, атрибути, CSS-властивості та JS-синтаксис виділяються кольорами, парні теги підсвічуються при наведенні курсора, а скорочення на кшталт <code>ul&gt;li*3</code> чи <code>df</code> розгортаються за <code>Tab</code>.</p>
+          </div>
+          <div class="seo-col">
+            <h3 id="i18nSeoC2Title">⚡ Живий перегляд, перенос рядків і консоль</h3>
+            <p id="i18nSeoC2Text">Довгі рядки коду автоматично переносяться без горизонтального скролу, прев’ю оновлюється миттєво, а <code>console.log</code> і помилки одразу видно в нижній консолі.</p>
+          </div>
+          <div class="seo-col">
+            <h3 id="i18nSeoC3Title">🔒 Локальна робота та експорт у HTML</h3>
+            <p id="i18nSeoC3Text">Весь код виконується у вашому браузері та автоматично зберігається в <code>localStorage</code>. Проєкт можна передати коротким посиланням або завантажити одним <code>.html</code> файлом.</p>
+          </div>
+        </div>
+
+        <div class="seo-subblock">
+          <h3 id="i18nSeoFaqTitle">Часті запитання про онлайн редактор коду</h3>
+          <div class="seo-faq-grid">
+            <div class="seo-faq-item">
+              <h4 id="i18nFaq1Q">Чи потрібно реєструватися?</h4>
+              <p id="i18nFaq1A">Ні. Інструмент працює відразу у браузері без акаунтів та встановлення — достатньо відкрити сторінку.</p>
+            </div>
+            <div class="seo-faq-item">
+              <h4 id="i18nFaq2Q">Чи зберігається мій код на сервері?</h4>
+              <p id="i18nFaq2A">Ні. Виконання та збереження чернетки відбуваються локально. Код надсилається лише тоді, коли ви самі копіюєте посилання на проєкт.</p>
+            </div>
+            <div class="seo-faq-item">
+              <h4 id="i18nFaq3Q">Чи можна використовувати бібліотеки на кшталт Bootstrap чи jQuery?</h4>
+              <p id="i18nFaq3A">Так. Додайте потрібний CDN-скрипт чи стиль у розділ HTML — результат одразу підключить їх у прев’ю.</p>
+            </div>
+            <div class="seo-faq-item">
+              <h4 id="i18nFaq4Q">Як поділитися своїм проєктом?</h4>
+              <p id="i18nFaq4A">Натисніть «Посилання» — посилання з вашим кодом скопіюється в буфер обміну. Отримувач побачить готовий результат.</p>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2026 KRAY DIGITAL • <a href="/">kray-digital.pp.ua</a> • <a href="/password-generator/" id="i18nFooterPass">Генератор паролів</a> • <a href="/qr-generator/" id="i18nFooterQr">QR-коди</a> • <a href="/photoeditor/" id="i18nFooterEditor">Фоторедактор</a></p>
+    </div>
+  </footer>
+
+  <script defer src="/shared/tools-menu.js"></script>
+  <script defer src="/shared/site-footer.js"></script>
+  <script defer src="./app.js?v=1.0"></script>
+</body>
+</html>
