@@ -734,17 +734,17 @@ function downloadMatrixAsPng() {
           iconColor = '#f87171';
           iconFont = '700 13px Inter, system-ui, -apple-system, sans-serif';
         } else if (st === 'off-first') {
-          ctx.fillStyle = 'rgba(239, 68, 68, 0.36)';
+          ctx.fillStyle = 'rgba(239, 68, 68, 0.22)';
           ctx.fillRect(cx, ry, cellW / 2, rowH);
-          ctx.fillStyle = 'rgba(255, 255, 255, 0.03)';
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.02)';
           ctx.fillRect(cx + cellW / 2, ry, cellW / 2, rowH);
           icon = '⚡';
           iconColor = '#f87171';
           iconFont = '700 13px Inter, system-ui, -apple-system, sans-serif';
         } else if (st === 'off-second') {
-          ctx.fillStyle = 'rgba(255, 255, 255, 0.03)';
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.02)';
           ctx.fillRect(cx, ry, cellW / 2, rowH);
-          ctx.fillStyle = 'rgba(239, 68, 68, 0.36)';
+          ctx.fillStyle = 'rgba(239, 68, 68, 0.22)';
           ctx.fillRect(cx + cellW / 2, ry, cellW / 2, rowH);
           icon = '⚡';
           iconColor = '#f87171';
@@ -770,17 +770,17 @@ function downloadMatrixAsPng() {
           iconColor = '#f87171';
           iconFont = '700 13px Inter, system-ui, -apple-system, sans-serif';
         } else if (st === 'off-first') {
-          ctx.fillStyle = 'rgba(239, 68, 68, 0.36)';
+          ctx.fillStyle = 'rgba(239, 68, 68, 0.22)';
           ctx.fillRect(cx, ry, cellW / 2, rowH);
-          ctx.fillStyle = 'rgba(16, 185, 129, 0.14)';
+          ctx.fillStyle = 'rgba(16, 185, 129, 0.15)';
           ctx.fillRect(cx + cellW / 2, ry, cellW / 2, rowH);
           icon = '⚡';
           iconColor = '#f87171';
           iconFont = '700 13px Inter, system-ui, -apple-system, sans-serif';
         } else if (st === 'off-second') {
-          ctx.fillStyle = 'rgba(16, 185, 129, 0.14)';
+          ctx.fillStyle = 'rgba(16, 185, 129, 0.15)';
           ctx.fillRect(cx, ry, cellW / 2, rowH);
-          ctx.fillStyle = 'rgba(239, 68, 68, 0.36)';
+          ctx.fillStyle = 'rgba(239, 68, 68, 0.22)';
           ctx.fillRect(cx + cellW / 2, ry, cellW / 2, rowH);
           icon = '⚡';
           iconColor = '#f87171';

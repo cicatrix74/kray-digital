@@ -1507,25 +1507,25 @@ body {
 }
 
 .matrix-cell-off-first {
-  background: linear-gradient(90deg, rgba(239, 68, 68, 0.36) 50%, rgba(16, 185, 129, 0.12) 50%) !important;
+  background: linear-gradient(90deg, rgba(239, 68, 68, 0.22) 50%, rgba(16, 185, 129, 0.15) 50%) !important;
   border: 1px solid rgba(239, 68, 68, 0.3) !important;
   text-align: center;
 }
 
 .matrix-cell-off-second {
-  background: linear-gradient(90deg, rgba(16, 185, 129, 0.12) 50%, rgba(239, 68, 68, 0.36) 50%) !important;
+  background: linear-gradient(90deg, rgba(16, 185, 129, 0.15) 50%, rgba(239, 68, 68, 0.22) 50%) !important;
   border: 1px solid rgba(239, 68, 68, 0.3) !important;
   text-align: center;
 }
 
 .matrix-cell-off-first-neutral {
-  background: linear-gradient(90deg, rgba(239, 68, 68, 0.36) 50%, rgba(255, 255, 255, 0.03) 50%) !important;
+  background: linear-gradient(90deg, rgba(239, 68, 68, 0.22) 50%, rgba(255, 255, 255, 0.02) 50%) !important;
   border: 1px solid rgba(255, 255, 255, 0.08) !important;
   text-align: center;
 }
 
 .matrix-cell-off-second-neutral {
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.03) 50%, rgba(239, 68, 68, 0.36) 50%) !important;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.02) 50%, rgba(239, 68, 68, 0.22) 50%) !important;
   border: 1px solid rgba(255, 255, 255, 0.08) !important;
   text-align: center;
 }
