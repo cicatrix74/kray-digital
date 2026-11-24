@@ -247,7 +247,8 @@ function parseDaySchedule(group, isTomorrow, yasnoData, dtekMirror) {
   const dayObj = groupData ? (isTomorrow ? groupData.tomorrow : groupData.today) : null;
 
   if (dayObj) {
-    const isNoOutages = dayObj.status === 'NoOutages' || dayObj.status === 'WaitingForSchedule';
+    const isWaiting = dayObj.status === 'WaitingForSchedule';
+    const isNoOutages = dayObj.status === 'NoOutages';
     const slots = dayObj.slots || [];
 
     const getHalfStatus = (min) => {
@@ -261,9 +262,9 @@ function parseDaySchedule(group, isTomorrow, yasnoData, dtekMirror) {
     };
 
     for (let h = 0; h < 24; h++) {
-      let slotStatus = 'on';
+      let slotStatus = isWaiting ? 'neutral' : 'on';
 
-      if (!isNoOutages && slots.length > 0) {
+      if (!isWaiting && !isNoOutages && slots.length > 0) {
         const h1 = getHalfStatus(h * 60 + 15);
         const h2 = getHalfStatus(h * 60 + 45);
         if (h1 === 'off' && h2 === 'off') slotStatus = 'off';
@@ -297,7 +298,7 @@ function parseDaySchedule(group, isTomorrow, yasnoData, dtekMirror) {
     hours.push({
       hour: h,
       time: `${String(h).padStart(2, '0')}:00 - ${String((h + 1) % 24).padStart(2, '0')}:00`,
-      status: 'on'
+      status: isTomorrow ? 'neutral' : 'on'
     });
   }
 
@@ -307,7 +308,7 @@ function parseDaySchedule(group, isTomorrow, yasnoData, dtekMirror) {
     date: dateStr,
     isLive: false,
     liveSource: 'ДТЕК Дніпро (Резервний розклад)',
-    status: 'NoOutages',
+    status: isTomorrow ? 'WaitingForSchedule' : 'NoOutages',
     lastUpdate: 'Сьогодні',
     hours: hours,
     updatedAt: new Date().toISOString()

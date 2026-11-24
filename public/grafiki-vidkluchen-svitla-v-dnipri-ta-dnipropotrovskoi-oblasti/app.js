@@ -419,7 +419,7 @@ function renderActiveSchedule() {
 
   hours.forEach(item => {
     const hourEmergency = isHourEmergencyForView(item.hour, currentDayView);
-    if (!hourEmergency) {
+    if (!hourEmergency && item.status !== 'neutral') {
       if (item.status === 'on') countOn += 1;
       else if (item.status === 'maybe') countMaybe += 1;
       else if (item.status === 'off-first' || item.status === 'off-second') {
@@ -447,6 +447,9 @@ function renderActiveSchedule() {
         block.className = 'hour-block state-neutral';
         block.title = `${item.time}: ${lang === 'en' ? 'Schedule suspended (emergency mode)' : (lang === 'ru' ? 'График не действует (аварийный режим)' : 'Графік не діє (аварійний режим)')}`;
       }
+    } else if (item.status === 'neutral') {
+      block.className = 'hour-block state-neutral';
+      block.title = `${item.time}: ${lang === 'en' ? 'Schedule not published yet' : (lang === 'ru' ? 'График ещё не опубликован' : 'Графік ще не опубліковано')}`;
     } else {
       block.className = `hour-block state-${item.status}`;
       block.title = `${item.time}: ${getStatusName(item.status)}`;
@@ -457,13 +460,19 @@ function renderActiveSchedule() {
   // Stats
   const uHour = window.i18n ? window.i18n.t('unitHour') : 'год';
   const statOffLabel = document.getElementById('statOffLabel') || document.querySelector('.stat-card:nth-child(3) .stat-desc');
-  const allEmergency = (countOn + countMaybe + countOff) === 0;
-  if (isEmergency && allEmergency) {
+  const allNeutralOrEmergency = (countOn + countMaybe + countOff) === 0;
+  const isWaitingTomorrow = currentSchedule.status === 'WaitingForSchedule';
+  if ((isEmergency && allNeutralOrEmergency) || isWaitingTomorrow) {
     statHoursOn.textContent = '—';
     statHoursMaybe.textContent = '—';
     statHoursOff.textContent = '—';
-    if (statOffLabel && window.i18n) {
-      statOffLabel.textContent = window.i18n.t('statEmergencyLabel');
+    if (statOffLabel) {
+      if (isWaitingTomorrow) {
+        const lang = (window.i18n && window.i18n.current) || 'ua';
+        statOffLabel.textContent = lang === 'en' ? 'Schedule pending' : (lang === 'ru' ? 'График ожидается' : 'Графік очікується');
+      } else if (window.i18n) {
+        statOffLabel.textContent = window.i18n.t('statEmergencyLabel');
+      }
     }
   } else {
     statHoursOn.textContent = `${countOn} ${uHour}`;
@@ -534,6 +543,9 @@ function renderFullMatrixTable() {
           cellsHtml += `<td class="matrix-cell-${st}" title="${h}:00 - ${getStatusName(st)}"><span class="cell-icon-off">⚡</span></td>`;
         } else if (st === 'maybe') {
           cellsHtml += `<td class="matrix-cell-maybe" title="${h}:00 - Можливе відключення"><span class="cell-icon-maybe">⚡</span></td>`;
+        } else if (st === 'neutral') {
+          const noScheduleText = (window.i18n && window.i18n.current === 'en') ? 'Schedule not published yet' : ((window.i18n && window.i18n.current === 'ru') ? 'График ещё не опубликован' : 'Графік ще не опубліковано');
+          cellsHtml += `<td class="matrix-cell-neutral" title="${h}:00 - ${noScheduleText}"><span class="cell-icon-neutral">—</span></td>`;
         } else {
           cellsHtml += `<td class="matrix-cell-on" title="${h}:00 - Світло є"><span class="cell-icon-on">✓</span></td>`;
         }
@@ -556,10 +568,16 @@ function renderFullMatrixTable() {
   });
 
   if (matrixStatusBadge) {
-    if (isEmergency) {
+    const isWaitingTomorrow = currentDayView === 'tomorrow' && scheduleData.tomorrow && scheduleData.tomorrow.status === 'WaitingForSchedule';
+    if (isEmergency && currentDayView === 'today') {
       matrixStatusBadge.textContent = window.i18n ? window.i18n.t('matrixStatusEmergency') : '🚨 Аварійні відключення: графіки не діють!';
       matrixStatusBadge.style.background = 'rgba(239, 68, 68, 0.25)';
       matrixStatusBadge.style.color = '#fca5a5';
+    } else if (isWaitingTomorrow) {
+      const lang = (window.i18n && window.i18n.current) || 'ua';
+      matrixStatusBadge.textContent = lang === 'en' ? '⏳ Tomorrow: schedule pending' : (lang === 'ru' ? '⏳ Завтра: график ещё не опубликован' : '⏳ Завтра: графік ще не опубліковано');
+      matrixStatusBadge.style.background = 'rgba(148, 163, 184, 0.18)';
+      matrixStatusBadge.style.color = '#cbd5e1';
     } else {
       matrixStatusBadge.textContent = window.i18n ? window.i18n.t('matrixStatusNormal') : '🟢 Сьогодні: без відключень';
       matrixStatusBadge.style.background = 'rgba(16, 185, 129, 0.2)';
@@ -773,6 +791,12 @@ function downloadMatrixAsPng() {
           icon = '⚡';
           iconColor = '#fbbf24';
           iconFont = '700 13px Inter, system-ui, -apple-system, sans-serif';
+        } else if (st === 'neutral') {
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.02)';
+          ctx.fillRect(cx, ry, cellW, rowH);
+          icon = '—';
+          iconColor = '#64748b';
+          iconFont = '600 11px Inter, system-ui, -apple-system, sans-serif';
         } else {
           ctx.fillStyle = 'rgba(16, 185, 129, 0.15)';
           ctx.fillRect(cx, ry, cellW, rowH);
@@ -1063,7 +1087,7 @@ function updateLiveStatusCard() {
   };
 
   const hours = scheduleData.today.hours;
-  const tomorrowHours = scheduleData.tomorrow ? scheduleData.tomorrow.hours : null;
+  const tomorrowHours = (scheduleData.tomorrow && scheduleData.tomorrow.status !== 'WaitingForSchedule') ? scheduleData.tomorrow.hours : null;
   const maxSlotIdx = tomorrowHours ? 95 : 47;
   const curSlotIdx = currentHour * 2 + (currentMin < 30 ? 0 : 1);
 
@@ -1075,7 +1099,7 @@ function updateLiveStatusCard() {
     const isSecondHalf = (sIdx % 2) === 1;
     const slotObj = h < 24 ? hours[h] : tomorrowHours[h - 24];
     const halfStatus = getHalfSlotStatus(slotObj, isSecondHalf);
-    if (halfStatus !== effectiveStatus) {
+    if (halfStatus !== 'neutral' && halfStatus !== effectiveStatus) {
       nextTransitionSlot = sIdx;
       nextStatus = halfStatus;
       break;
@@ -1150,6 +1174,7 @@ tabToday.addEventListener('click', () => {
   tabTomorrow.classList.remove('active');
   currentDayView = 'today';
   renderActiveSchedule();
+  renderFullMatrixTable();
 });
 
 tabTomorrow.addEventListener('click', () => {
@@ -1157,11 +1182,12 @@ tabTomorrow.addEventListener('click', () => {
   tabToday.classList.remove('active');
   currentDayView = 'tomorrow';
   renderActiveSchedule();
+  renderFullMatrixTable();
 });
 
 btnManualRefresh.addEventListener('click', async () => {
   try {
-    liveDtekStatusText.textContent = 'Синхронізація з ДТЕК Дніпро...';
+    if (liveDtekStatusText) liveDtekStatusText.textContent = 'Синхронізація з ДТЕК Дніпро...';
     await fetch('/api/sync-live', { method: 'POST' });
     await loadProviders();
     await fetchSchedule();
