@@ -359,6 +359,9 @@ function formatKyivDateTime(isoStr?: string): string {
 }
 
 let manualEmergencyMode: boolean | null = null;
+let emergencyStartedAt: string | null = null;
+let emergencyEndedAt: string | null = null;
+let lastObservedEmergency = false;
 
 app.get('/api/status', async (req, res) => {
   const [yasno, dtekMirror, emerg] = await Promise.all([
@@ -385,6 +388,14 @@ app.get('/api/status', async (req, res) => {
     ? manualEmergencyMode 
     : (emerg.isEmergency || (req.query.mode === 'emergency'));
 
+  if (isEmergency && !lastObservedEmergency) {
+    emergencyStartedAt = new Date().toISOString();
+    emergencyEndedAt = null;
+  } else if (!isEmergency && lastObservedEmergency) {
+    emergencyEndedAt = new Date().toISOString();
+  }
+  lastObservedEmergency = isEmergency;
+
   let mode = isEmergency ? 'emergency' : 'normal';
   let modeLabel = 'Стабілізаційні відключення (за графіком ДТЕК Дніпро)';
   if (isEmergency) {
@@ -399,7 +410,7 @@ app.get('/api/status', async (req, res) => {
 
   const reqGroup = (req.query.group as string) || '5.1';
   const yasnoGroup = yasno && yasno[reqGroup] ? yasno[reqGroup] : (yasno ? yasno['5.1'] : null);
-  const startIso = (yasnoGroup && yasnoGroup.updatedOn) || (dtekMirror && dtekMirror.lastUpdated);
+  const startIso = emergencyStartedAt || (yasnoGroup && yasnoGroup.updatedOn) || (dtekMirror && dtekMirror.lastUpdated);
   const updatedIso = (dtekMirror && dtekMirror.lastUpdated) || (yasnoGroup && yasnoGroup.updatedOn);
 
   const emergencyDetails = isEmergency ? {
@@ -419,6 +430,8 @@ app.get('/api/status', async (req, res) => {
     modeLabel: modeLabel,
     emergencyReason: emerg.reason || 'Аварійні ремонтні роботи ДТЕК',
     emergencyDetails: emergencyDetails,
+    emergencyStartedAt: startIso || null,
+    emergencyEndedAt: emergencyEndedAt,
     liveStatus: isEmergency 
       ? 'Аварійні роботи (Графіки погодинних відключень не діють)' 
       : (dtekHasOutages ? 'Синхронізовано з ДТЕК Дніпро Live (Графік діє)' : 'Синхронізовано з ДТЕК Дніпро (Без відключень)'),
@@ -434,7 +447,19 @@ app.post('/api/toggle-mode', (req, res) => {
   } else {
     manualEmergencyMode = !manualEmergencyMode;
   }
-  res.json({ success: true, mode: manualEmergencyMode ? 'emergency' : 'normal' });
+  if (manualEmergencyMode) {
+    emergencyStartedAt = new Date().toISOString();
+    emergencyEndedAt = null;
+  } else {
+    emergencyEndedAt = new Date().toISOString();
+  }
+  lastObservedEmergency = manualEmergencyMode;
+  res.json({
+    success: true,
+    mode: manualEmergencyMode ? 'emergency' : 'normal',
+    emergencyStartedAt,
+    emergencyEndedAt
+  });
 });
 
 app.post('/api/sync-live', async (_req, res) => {

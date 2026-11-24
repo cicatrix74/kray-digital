@@ -1277,6 +1277,7 @@ body {
   top: 24px;
   bottom: 14px;
   width: 2px;
+  margin-left: -1px;
   pointer-events: none;
   z-index: 10;
   transition: left 0.5s ease;

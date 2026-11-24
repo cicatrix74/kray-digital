@@ -39,6 +39,10 @@ let lastDtekMirrorFetch = 0;
 let cachedEmergencyStatus = null;
 let lastEmergencyCheck = 0;
 
+let emergencyStartedAt = null;
+let emergencyEndedAt = null;
+let lastObservedEmergency = false;
+
 let cachedAirAlerts = null;
 let lastAirAlertsFetch = 0;
 
@@ -382,6 +386,14 @@ export async function onRequest(context) {
 
     const isEmergency = emerg.isEmergency || (url.searchParams.get('mode') === 'emergency');
 
+    if (isEmergency && !lastObservedEmergency) {
+      emergencyStartedAt = new Date().toISOString();
+      emergencyEndedAt = null;
+    } else if (!isEmergency && lastObservedEmergency) {
+      emergencyEndedAt = new Date().toISOString();
+    }
+    lastObservedEmergency = isEmergency;
+
     let mode = isEmergency ? 'emergency' : 'normal';
     let modeLabel = 'Стабілізаційні відключення (за графіком ДТЕК Дніпро)';
     if (isEmergency) {
@@ -396,7 +408,7 @@ export async function onRequest(context) {
 
     const reqGroup = url.searchParams.get('group') || '5.1';
     const yasnoGroup = yasno && yasno[reqGroup] ? yasno[reqGroup] : (yasno ? yasno['5.1'] : null);
-    const startIso = (yasnoGroup && yasnoGroup.updatedOn) || (dtekMirror && dtekMirror.lastUpdated);
+    const startIso = emergencyStartedAt || (yasnoGroup && yasnoGroup.updatedOn) || (dtekMirror && dtekMirror.lastUpdated);
     const updatedIso = (dtekMirror && dtekMirror.lastUpdated) || (yasnoGroup && yasnoGroup.updatedOn);
 
     const emergencyDetails = isEmergency ? {
@@ -416,6 +428,8 @@ export async function onRequest(context) {
       modeLabel: modeLabel,
       emergencyReason: emerg.reason || 'Аварійні ремонтні роботи ДТЕК',
       emergencyDetails: emergencyDetails,
+      emergencyStartedAt: startIso || null,
+      emergencyEndedAt: emergencyEndedAt,
       liveStatus: isEmergency 
         ? 'Аварійні роботи (Графіки погодинних відключень не діють)' 
         : (dtekHasOutages ? 'Синхронізовано з ДТЕК Дніпро Live (Графік діє)' : 'Синхронізовано з ДТЕК Дніпро (Без відключень)'),
@@ -577,7 +591,7 @@ export async function onRequest(context) {
         const isGroupEmergency = yasnoGroup && yasnoGroup.today && yasnoGroup.today.status === 'EmergencyShutdowns';
 
         if (isGroupEmergency) {
-          const startIso = (yasnoGroup && yasnoGroup.updatedOn) || (dtekMirror && dtekMirror.lastUpdated);
+          const startIso = emergencyStartedAt || (yasnoGroup && yasnoGroup.updatedOn) || (dtekMirror && dtekMirror.lastUpdated);
           const updatedIso = (dtekMirror && dtekMirror.lastUpdated) || (yasnoGroup && yasnoGroup.updatedOn);
           outageInfo = {
             hasOutage: true,

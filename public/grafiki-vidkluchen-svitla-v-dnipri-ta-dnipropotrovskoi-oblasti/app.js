@@ -31,6 +31,77 @@ function isEmergencyModeActive() {
   return isGlobalEmergency || isAddressEmergency;
 }
 window.isEmergencyModeActive = isEmergencyModeActive;
+
+function parseKyivDateTimeParts(val) {
+  if (!val) return null;
+  const s = String(val).trim();
+  const dmy = s.match(/^(\d{1,2}):(\d{2})\s+(\d{2})\.(\d{2})\.(\d{4})$/);
+  if (dmy) {
+    return {
+      hour: parseInt(dmy[1], 10),
+      minute: parseInt(dmy[2], 10),
+      dateKey: `${dmy[5]}-${dmy[4]}-${dmy[3]}`
+    };
+  }
+  const d = new Date(s);
+  if (Number.isNaN(d.getTime())) return null;
+  const parts = new Intl.DateTimeFormat('en-GB', {
+    timeZone: 'Europe/Kiev',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false
+  }).formatToParts(d);
+  const get = (t) => (parts.find(p => p.type === t) || {}).value || '00';
+  return {
+    hour: parseInt(get('hour'), 10) % 24,
+    minute: parseInt(get('minute'), 10),
+    dateKey: `${get('year')}-${get('month')}-${get('day')}`
+  };
+}
+
+function getTodayEmergencyHourWindow() {
+  const isEmergency = isEmergencyModeActive();
+  const isAddressEmergency = Boolean(currentAddressOutage && currentAddressOutage.hasOutage);
+  const startRaw = isAddressEmergency && currentAddressOutage.startTime
+    ? currentAddressOutage.startTime
+    : ((systemStatus && (systemStatus.emergencyStartedAt || (systemStatus.emergencyDetails && systemStatus.emergencyDetails.startTime))) || null);
+  const endRaw = (!isEmergency && systemStatus && systemStatus.emergencyEndedAt) ? systemStatus.emergencyEndedAt : null;
+
+  if (!isEmergency && !endRaw) return null;
+
+  const nowParts = parseKyivDateTimeParts(new Date().toISOString());
+  const todayKey = nowParts ? nowParts.dateKey : '';
+
+  let startHour = nowParts ? nowParts.hour : 0;
+  if (startRaw) {
+    const sp = parseKyivDateTimeParts(startRaw);
+    if (sp) {
+      if (sp.dateKey < todayKey) startHour = 0;
+      else if (sp.dateKey > todayKey) return null;
+      else startHour = sp.hour;
+    }
+  }
+
+  let endHour = 24;
+  if (!isEmergency) {
+    const ep = parseKyivDateTimeParts(endRaw);
+    if (!ep || ep.dateKey !== todayKey) return null;
+    endHour = ep.hour;
+    if (endHour <= startHour) return null;
+  }
+
+  return { startHour, endHour };
+}
+
+function isHourEmergencyForView(hourIdx, dayView) {
+  if (dayView !== 'today') return false;
+  const win = getTodayEmergencyHourWindow();
+  if (!win) return false;
+  return hourIdx >= win.startHour && hourIdx < win.endHour;
+}
 window.currentAddressOutage = currentAddressOutage;
 window.currentProvider = currentProvider;
 window.currentGroup = currentGroup;
@@ -80,6 +151,9 @@ function updateGroupSelectionVisibility() {
   if (statusSectionEl) statusSectionEl.style.display = hasSelection ? 'block' : 'none';
   if (scheduleSectionEl) scheduleSectionEl.style.display = hasSelection ? 'block' : 'none';
   if (matrixSectionEl) matrixSectionEl.style.display = hasSelection ? 'block' : 'none';
+  if (hasSelection && typeof updateTimelineNeedle === 'function') {
+    requestAnimationFrame(updateTimelineNeedle);
+  }
 }
 updateGroupSelectionVisibility();
 
@@ -344,19 +418,22 @@ function renderActiveSchedule() {
   let countOn = 0, countMaybe = 0, countOff = 0;
 
   hours.forEach(item => {
-    if (item.status === 'on') countOn += 1;
-    else if (item.status === 'maybe') countMaybe += 1;
-    else if (item.status === 'off-first' || item.status === 'off-second') {
-      countOff += 0.5;
-      countOn += 0.5;
+    const hourEmergency = isHourEmergencyForView(item.hour, currentDayView);
+    if (!hourEmergency) {
+      if (item.status === 'on') countOn += 1;
+      else if (item.status === 'maybe') countMaybe += 1;
+      else if (item.status === 'off-first' || item.status === 'off-second') {
+        countOff += 0.5;
+        countOn += 0.5;
+      }
+      else countOff += 1;
     }
-    else countOff += 1;
 
     const block = document.createElement('div');
     block.textContent = item.hour;
     const lang = (window.i18n && window.i18n.current) || 'ua';
 
-    if (isEmergency) {
+    if (hourEmergency) {
       if (item.status === 'off') {
         block.className = 'hour-block state-off';
         block.title = `${item.time}: ${getStatusName('off')} (аварійний режим)`;
@@ -380,7 +457,8 @@ function renderActiveSchedule() {
   // Stats
   const uHour = window.i18n ? window.i18n.t('unitHour') : 'год';
   const statOffLabel = document.getElementById('statOffLabel') || document.querySelector('.stat-card:nth-child(3) .stat-desc');
-  if (isEmergency) {
+  const allEmergency = (countOn + countMaybe + countOff) === 0;
+  if (isEmergency && allEmergency) {
     statHoursOn.textContent = '—';
     statHoursMaybe.textContent = '—';
     statHoursOff.textContent = '—';
@@ -433,7 +511,7 @@ function renderFullMatrixTable() {
     const pattern = activeMatrix[g] || [];
 
     pattern.forEach((st, h) => {
-      if (isEmergency) {
+      if (isHourEmergencyForView(h, currentDayView)) {
         if (st === 'off') {
           hasAnyOff = true;
           cellsHtml += `<td class="matrix-cell-off" title="${h}:00 - ${window.i18n ? window.i18n.t('mapTooltipOff') : 'Відключено за графіком'} (аварійний режим)"><span class="cell-icon-off">⚡</span></td>`;
@@ -630,7 +708,7 @@ function downloadMatrixAsPng() {
       let iconColor = '#34d399';
       let iconFont = '800 12px Inter, system-ui, -apple-system, sans-serif';
 
-      if (isEmergency) {
+      if (isHourEmergencyForView(h, currentDayView)) {
         if (st === 'off') {
           ctx.fillStyle = 'rgba(239, 68, 68, 0.24)';
           ctx.fillRect(cx, ry, cellW, rowH);
@@ -818,10 +896,21 @@ function updateTimelineNeedle() {
     markerPin.textContent = window.i18n.t('markerNow');
   }
   const now = new Date();
-  const totalMinutes = now.getHours() * 60 + now.getMinutes();
-  const percent = (totalMinutes / 1440) * 100;
-  timeMarker.style.left = `${percent}%`;
+  const hour = now.getHours();
+  const minute = now.getMinutes();
+  const blocks = timelineGrid ? timelineGrid.children : null;
+  if (blocks && blocks[hour] && blocks[hour].offsetWidth > 0) {
+    const block = blocks[hour];
+    const exactLeft = timelineGrid.offsetLeft + block.offsetLeft + (minute / 60) * block.offsetWidth;
+    timeMarker.style.left = `${exactLeft}px`;
+  } else {
+    const totalMinutes = hour * 60 + minute;
+    const percent = (totalMinutes / 1440) * 100;
+    timeMarker.style.left = `${percent}%`;
+  }
 }
+
+window.addEventListener('resize', updateTimelineNeedle);
 
 function updateLiveStatusCard() {
   updateGroupSelectionVisibility();
@@ -1313,7 +1402,10 @@ if (btnFooterToggleEmergency) {
       if (data && data.success) {
         if (!systemStatus) systemStatus = {};
         systemStatus.mode = data.mode;
+        systemStatus.emergencyStartedAt = data.emergencyStartedAt || null;
+        systemStatus.emergencyEndedAt = data.emergencyEndedAt || null;
         window.systemStatus = systemStatus;
+        await fetchSystemStatus();
         updateLocationInfo();
         updateLiveStatusCard();
         renderActiveSchedule();
