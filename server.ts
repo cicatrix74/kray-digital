@@ -79,7 +79,7 @@ let lastYasnoFetch = 0;
 let cachedEmergencyStatus: any = null;
 let lastEmergencyCheck = 0;
 
-async function checkEmergencyStatus(): Promise<{ isEmergency: boolean; reason: string }> {
+async function checkEmergencyStatus(): Promise<{ isEmergency: boolean; reason: string; startedAt?: string | null }> {
   const now = Date.now();
   if (cachedEmergencyStatus !== null && (now - lastEmergencyCheck < 180000)) {
     return cachedEmergencyStatus;
@@ -87,6 +87,7 @@ async function checkEmergencyStatus(): Promise<{ isEmergency: boolean; reason: s
 
   let isEmergency = false;
   let emergencyReason = '';
+  let emergencyPostTime: string | null = null;
 
   // 1. Primary source: Telegram feeds (newest -> oldest)
   try {
@@ -97,9 +98,11 @@ async function checkEmergencyStatus(): Promise<{ isEmergency: boolean; reason: s
       });
       if (res.ok) {
         const html = await res.text();
-        const matches = html.match(/tgme_widget_message_text[^>]*>([\s\S]*?)<\/div>/gi) || [];
-        const recent = matches.slice(-6).reverse().map(m => m.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').toLowerCase());
-        for (const post of recent) {
+        const blocks = html.split('tgme_widget_message_wrap').slice(-6).reverse();
+        for (const block of blocks) {
+          const textMatch = block.match(/tgme_widget_message_text[^>]*>([\s\S]*?)<\/div>/i);
+          if (!textMatch) continue;
+          const post = textMatch[1].replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').toLowerCase();
           const hasDnipro = post.includes('дніпро') || post.includes('днепр');
           if (!hasDnipro) continue;
           const isCancelled = post.includes('скасован') || post.includes('відмін') || post.includes('повернулися до графіків');
@@ -115,6 +118,8 @@ async function checkEmergencyStatus(): Promise<{ isEmergency: boolean; reason: s
           if (hasDniproEmergency) {
             isEmergency = true;
             emergencyReason = 'НЕК Укренерго / ДТЕК: екстрені (аварійні) відключення';
+            const dtMatch = block.match(/datetime="([^"]+)"/i);
+            emergencyPostTime = dtMatch ? dtMatch[1] : null;
             break;
           }
         }
@@ -135,12 +140,13 @@ async function checkEmergencyStatus(): Promise<{ isEmergency: boolean; reason: s
         if (s === 'Emergency' || s === 'EmergencyShutdowns' || s === 'EmergencyBlackout') {
           isEmergency = true;
           emergencyReason = 'YASNO/ДТЕК Live API: екстрені відключення';
+          emergencyPostTime = g51.updatedOn || null;
         }
       }
     } catch (err) {}
   }
 
-  cachedEmergencyStatus = { isEmergency, reason: emergencyReason };
+  cachedEmergencyStatus = { isEmergency, reason: emergencyReason, startedAt: emergencyPostTime };
   lastEmergencyCheck = now;
   return cachedEmergencyStatus;
 }
@@ -411,7 +417,7 @@ app.get('/api/status', async (req, res) => {
 
   const reqGroup = (req.query.group as string) || '5.1';
   const yasnoGroup = yasno && yasno[reqGroup] ? yasno[reqGroup] : (yasno ? yasno['5.1'] : null);
-  const startIso = emergencyStartedAt || (yasnoGroup && yasnoGroup.updatedOn) || (dtekMirror && dtekMirror.lastUpdated);
+  const startIso = (manualEmergencyMode === true ? emergencyStartedAt : (emerg.startedAt || emergencyStartedAt)) || (yasnoGroup && yasnoGroup.updatedOn) || (dtekMirror && dtekMirror.lastUpdated);
   const updatedIso = (dtekMirror && dtekMirror.lastUpdated) || (yasnoGroup && yasnoGroup.updatedOn);
 
   const emergencyDetails = isEmergency ? {

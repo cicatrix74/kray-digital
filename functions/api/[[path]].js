@@ -112,6 +112,7 @@ async function checkEmergencyStatus() {
 
   let isEmergency = false;
   let emergencyReason = '';
+  let emergencyPostTime = null;
 
   // 1. Офіційні термінові повідомлення НЕК Укренерго та ДТЕК у Telegram
   try {
@@ -122,9 +123,11 @@ async function checkEmergencyStatus() {
       });
       if (res.ok) {
         const html = await res.text();
-        const matches = html.match(/tgme_widget_message_text[^>]*>([\s\S]*?)<\/div>/gi) || [];
-        const recent = matches.slice(-6).reverse().map(m => m.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').toLowerCase());
-        for (const post of recent) {
+        const blocks = html.split('tgme_widget_message_wrap').slice(-6).reverse();
+        for (const block of blocks) {
+          const textMatch = block.match(/tgme_widget_message_text[^>]*>([\s\S]*?)<\/div>/i);
+          if (!textMatch) continue;
+          const post = textMatch[1].replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').toLowerCase();
           const hasDnipro = post.includes('дніпро') || post.includes('днепр');
           if (!hasDnipro) continue;
           const isCancelled = post.includes('скасован') || post.includes('відмін') || post.includes('повернулися до графіків');
@@ -140,6 +143,8 @@ async function checkEmergencyStatus() {
           if (hasDniproEmergency) {
             isEmergency = true;
             emergencyReason = 'НЕК Укренерго / ДТЕК: екстрені (аварійні) відключення';
+            const dtMatch = block.match(/datetime="([^"]+)"/i);
+            emergencyPostTime = dtMatch ? dtMatch[1] : null;
             break;
           }
         }
@@ -160,12 +165,13 @@ async function checkEmergencyStatus() {
         if (s === 'Emergency' || s === 'EmergencyShutdowns' || s === 'EmergencyBlackout') {
           isEmergency = true;
           emergencyReason = 'YASNO/ДТЕК Live API: екстрені відключення';
+          emergencyPostTime = g51.updatedOn || null;
         }
       }
     } catch (err) {}
   }
 
-  cachedEmergencyStatus = { isEmergency, reason: emergencyReason };
+  cachedEmergencyStatus = { isEmergency, reason: emergencyReason, startedAt: emergencyPostTime };
   lastEmergencyCheck = now;
   return cachedEmergencyStatus;
 }
@@ -409,7 +415,7 @@ export async function onRequest(context) {
 
     const reqGroup = url.searchParams.get('group') || '5.1';
     const yasnoGroup = yasno && yasno[reqGroup] ? yasno[reqGroup] : (yasno ? yasno['5.1'] : null);
-    const startIso = emergencyStartedAt || (yasnoGroup && yasnoGroup.updatedOn) || (dtekMirror && dtekMirror.lastUpdated);
+    const startIso = (emerg && emerg.startedAt) || emergencyStartedAt || (yasnoGroup && yasnoGroup.updatedOn) || (dtekMirror && dtekMirror.lastUpdated);
     const updatedIso = (dtekMirror && dtekMirror.lastUpdated) || (yasnoGroup && yasnoGroup.updatedOn);
 
     const emergencyDetails = isEmergency ? {
@@ -592,7 +598,7 @@ export async function onRequest(context) {
         const isGroupEmergency = yasnoGroup && yasnoGroup.today && yasnoGroup.today.status === 'EmergencyShutdowns';
 
         if (isGroupEmergency) {
-          const startIso = emergencyStartedAt || (yasnoGroup && yasnoGroup.updatedOn) || (dtekMirror && dtekMirror.lastUpdated);
+          const startIso = (emerg && emerg.startedAt) || emergencyStartedAt || (yasnoGroup && yasnoGroup.updatedOn) || (dtekMirror && dtekMirror.lastUpdated);
           const updatedIso = (dtekMirror && dtekMirror.lastUpdated) || (yasnoGroup && yasnoGroup.updatedOn);
           outageInfo = {
             hasOutage: true,
