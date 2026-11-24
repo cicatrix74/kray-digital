@@ -73,11 +73,13 @@ const activeSourceLabel = document.getElementById('activeSourceLabel');
 // Status card DOM
 const statusSectionEl = document.getElementById('liveStatusSection') || document.querySelector('.live-status-section');
 const scheduleSectionEl = document.querySelector('.schedule-section');
+const matrixSectionEl = document.querySelector('.matrix-section');
 
 function updateGroupSelectionVisibility() {
   const hasSelection = Boolean(currentGroup || savedStreet);
   if (statusSectionEl) statusSectionEl.style.display = hasSelection ? 'block' : 'none';
   if (scheduleSectionEl) scheduleSectionEl.style.display = hasSelection ? 'block' : 'none';
+  if (matrixSectionEl) matrixSectionEl.style.display = hasSelection ? 'block' : 'none';
 }
 updateGroupSelectionVisibility();
 
@@ -488,6 +490,314 @@ function renderFullMatrixTable() {
   }
 }
 
+function drawRoundedRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  ctx.lineTo(x + r, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+  ctx.lineTo(x, y + r);
+  ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.closePath();
+}
+
+function downloadMatrixAsPng() {
+  if (!scheduleData) return;
+  const isEmergency = isEmergencyModeActive();
+  const activeMatrix = currentDayView === 'today' ? scheduleData.todayMatrix : scheduleData.tomorrowMatrix;
+  if (!activeMatrix) return;
+
+  const dpr = 2;
+  const W = 1300;
+  const H = 616;
+  const canvas = document.createElement('canvas');
+  canvas.width = W * dpr;
+  canvas.height = H * dpr;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+  ctx.scale(dpr, dpr);
+
+  // Outer background & card
+  ctx.fillStyle = '#070b14';
+  ctx.fillRect(0, 0, W, H);
+  drawRoundedRect(ctx, 14, 14, W - 28, H - 28, 14);
+  ctx.fillStyle = '#0f172a';
+  ctx.fill();
+  ctx.lineWidth = 1.5;
+  ctx.strokeStyle = '#1e293b';
+  ctx.stroke();
+
+  // Header
+  const titleText = window.i18n ? window.i18n.t('matrixTitle') : 'Зведена таблиця всіх 12 підгруп Дніпропетровської області на 24 години';
+  const activeTabEl = document.getElementById(currentDayView === 'today' ? 'tabToday' : 'tabTomorrow');
+  const dayLabel = activeTabEl ? activeTabEl.textContent.trim() : '';
+  const badgeEl = document.getElementById('matrixStatusBadge');
+  const statusText = badgeEl ? badgeEl.textContent.trim() : '';
+
+  ctx.font = '700 16px Inter, system-ui, -apple-system, sans-serif';
+  ctx.fillStyle = '#f8fafc';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(titleText, 34, 46);
+
+  if (statusText) {
+    const titleW = ctx.measureText(titleText).width;
+    const pillX = Math.min(34 + titleW + 14, W - 360);
+    ctx.font = '600 11px Inter, system-ui, -apple-system, sans-serif';
+    const pillW = ctx.measureText(statusText).width + 20;
+    drawRoundedRect(ctx, pillX, 34, pillW, 24, 12);
+    ctx.fillStyle = isEmergency ? 'rgba(239, 68, 68, 0.22)' : 'rgba(16, 185, 129, 0.2)';
+    ctx.fill();
+    ctx.fillStyle = isEmergency ? '#fca5a5' : '#34d399';
+    ctx.fillText(statusText, pillX + 10, 46);
+  }
+
+  const now = new Date();
+  const timeStamp = `${dayLabel ? dayLabel + ' • ' : ''}${now.toLocaleTimeString('uk-UA', { hour: '2-digit', minute: '2-digit' })}`;
+  ctx.font = '600 12px Inter, system-ui, -apple-system, sans-serif';
+  ctx.fillStyle = '#94a3b8';
+  ctx.textAlign = 'right';
+  ctx.fillText(timeStamp, W - 34, 46);
+
+  // Table geometry
+  const tableX = 34;
+  const tableY = 74;
+  const groupColW = 78;
+  const cellW = 48;
+  const headerH = 32;
+  const rowH = 36;
+  const tableW = groupColW + 24 * cellW;
+  const tableH = headerH + allSubgroups.length * rowH;
+
+  drawRoundedRect(ctx, tableX, tableY, tableW, tableH, 8);
+  ctx.fillStyle = '#0b1120';
+  ctx.fill();
+
+  // Table header
+  ctx.fillStyle = '#111a2e';
+  ctx.fillRect(tableX, tableY, tableW, headerH);
+
+  ctx.fillStyle = '#111827';
+  ctx.fillRect(tableX, tableY, groupColW, headerH);
+
+  ctx.font = '700 11px Inter, system-ui, -apple-system, sans-serif';
+  ctx.fillStyle = '#f1f5f9';
+  ctx.textAlign = 'center';
+  ctx.fillText(window.i18n ? window.i18n.t('matrixColGroup') : 'Підгрупа', tableX + groupColW / 2, tableY + headerH / 2);
+
+  ctx.font = '700 10px Inter, system-ui, -apple-system, sans-serif';
+  ctx.fillStyle = '#94a3b8';
+  for (let h = 0; h < 24; h++) {
+    const cx = tableX + groupColW + h * cellW;
+    const label = `${String(h).padStart(2, '0')}-${String(h + 1).padStart(2, '0')}`;
+    ctx.fillText(label, cx + cellW / 2, tableY + headerH / 2);
+  }
+
+  // Rows
+  let activeRowY = -1;
+  allSubgroups.forEach((g, rIdx) => {
+    const ry = tableY + headerH + rIdx * rowH;
+    const isCurrent = g === currentGroup;
+    if (isCurrent) activeRowY = ry;
+
+    // Sticky subgroup cell
+    if (isCurrent) {
+      const grad = ctx.createLinearGradient(tableX, ry, tableX + groupColW, ry + rowH);
+      grad.addColorStop(0, '#0284c7');
+      grad.addColorStop(1, '#06b6d4');
+      ctx.fillStyle = grad;
+      ctx.fillRect(tableX, ry, groupColW, rowH);
+      ctx.fillStyle = '#ffffff';
+    } else {
+      ctx.fillStyle = '#111827';
+      ctx.fillRect(tableX, ry, groupColW, rowH);
+      ctx.fillStyle = '#f1f5f9';
+    }
+
+    ctx.font = '800 12px Inter, system-ui, -apple-system, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(isCurrent ? `${g} ★` : g, tableX + groupColW / 2, ry + rowH / 2);
+
+    const pattern = activeMatrix[g] || [];
+    for (let h = 0; h < 24; h++) {
+      const st = pattern[h] || 'on';
+      const cx = tableX + groupColW + h * cellW;
+
+      let icon = '✓';
+      let iconColor = '#34d399';
+      let iconFont = '800 12px Inter, system-ui, -apple-system, sans-serif';
+
+      if (isEmergency) {
+        if (st === 'off') {
+          ctx.fillStyle = 'rgba(239, 68, 68, 0.24)';
+          ctx.fillRect(cx, ry, cellW, rowH);
+          icon = '⚡';
+          iconColor = '#f87171';
+          iconFont = '700 13px Inter, system-ui, -apple-system, sans-serif';
+        } else if (st === 'off-first') {
+          ctx.fillStyle = 'rgba(239, 68, 68, 0.36)';
+          ctx.fillRect(cx, ry, cellW / 2, rowH);
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.03)';
+          ctx.fillRect(cx + cellW / 2, ry, cellW / 2, rowH);
+          icon = '⚡';
+          iconColor = '#f87171';
+          iconFont = '700 13px Inter, system-ui, -apple-system, sans-serif';
+        } else if (st === 'off-second') {
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.03)';
+          ctx.fillRect(cx, ry, cellW / 2, rowH);
+          ctx.fillStyle = 'rgba(239, 68, 68, 0.36)';
+          ctx.fillRect(cx + cellW / 2, ry, cellW / 2, rowH);
+          icon = '⚡';
+          iconColor = '#f87171';
+          iconFont = '700 13px Inter, system-ui, -apple-system, sans-serif';
+        } else if (st === 'maybe') {
+          ctx.fillStyle = 'rgba(245, 158, 11, 0.22)';
+          ctx.fillRect(cx, ry, cellW, rowH);
+          icon = '⚡';
+          iconColor = '#fbbf24';
+          iconFont = '700 13px Inter, system-ui, -apple-system, sans-serif';
+        } else {
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.02)';
+          ctx.fillRect(cx, ry, cellW, rowH);
+          icon = '—';
+          iconColor = '#64748b';
+          iconFont = '600 11px Inter, system-ui, -apple-system, sans-serif';
+        }
+      } else {
+        if (st === 'off') {
+          ctx.fillStyle = 'rgba(239, 68, 68, 0.22)';
+          ctx.fillRect(cx, ry, cellW, rowH);
+          icon = '⚡';
+          iconColor = '#f87171';
+          iconFont = '700 13px Inter, system-ui, -apple-system, sans-serif';
+        } else if (st === 'off-first') {
+          ctx.fillStyle = 'rgba(239, 68, 68, 0.36)';
+          ctx.fillRect(cx, ry, cellW / 2, rowH);
+          ctx.fillStyle = 'rgba(16, 185, 129, 0.14)';
+          ctx.fillRect(cx + cellW / 2, ry, cellW / 2, rowH);
+          icon = '⚡';
+          iconColor = '#f87171';
+          iconFont = '700 13px Inter, system-ui, -apple-system, sans-serif';
+        } else if (st === 'off-second') {
+          ctx.fillStyle = 'rgba(16, 185, 129, 0.14)';
+          ctx.fillRect(cx, ry, cellW / 2, rowH);
+          ctx.fillStyle = 'rgba(239, 68, 68, 0.36)';
+          ctx.fillRect(cx + cellW / 2, ry, cellW / 2, rowH);
+          icon = '⚡';
+          iconColor = '#f87171';
+          iconFont = '700 13px Inter, system-ui, -apple-system, sans-serif';
+        } else if (st === 'maybe') {
+          ctx.fillStyle = 'rgba(245, 158, 11, 0.22)';
+          ctx.fillRect(cx, ry, cellW, rowH);
+          icon = '⚡';
+          iconColor = '#fbbf24';
+          iconFont = '700 13px Inter, system-ui, -apple-system, sans-serif';
+        } else {
+          ctx.fillStyle = 'rgba(16, 185, 129, 0.15)';
+          ctx.fillRect(cx, ry, cellW, rowH);
+        }
+      }
+
+      if (isCurrent) {
+        ctx.fillStyle = 'rgba(6, 182, 212, 0.08)';
+        ctx.fillRect(cx, ry, cellW, rowH);
+      }
+
+      ctx.font = iconFont;
+      ctx.fillStyle = iconColor;
+      ctx.fillText(icon, cx + cellW / 2, ry + rowH / 2);
+    }
+  });
+
+  // Grid lines
+  ctx.strokeStyle = '#1e293b';
+  ctx.lineWidth = 1;
+  for (let r = 0; r <= allSubgroups.length; r++) {
+    const y = tableY + headerH + r * rowH;
+    ctx.beginPath();
+    ctx.moveTo(tableX, y);
+    ctx.lineTo(tableX + tableW, y);
+    ctx.stroke();
+  }
+  for (let h = 0; h <= 24; h++) {
+    const x = tableX + groupColW + h * cellW;
+    ctx.beginPath();
+    ctx.moveTo(x, tableY);
+    ctx.lineTo(x, tableY + tableH);
+    ctx.stroke();
+  }
+  ctx.strokeStyle = '#334155';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(tableX + groupColW, tableY);
+  ctx.lineTo(tableX + groupColW, tableY + tableH);
+  ctx.stroke();
+
+  if (activeRowY >= 0) {
+    ctx.strokeStyle = '#06b6d4';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(tableX + 1, activeRowY + 1, tableW - 2, rowH - 2);
+  }
+
+  // Legend bar
+  const legY = tableY + tableH + 22;
+  const legendItems = [
+    { bg: '#10b981', icon: '✓', text: window.i18n ? window.i18n.t('legendOn') : 'Світло є (гарантовано)' },
+    { bg: '#f59e0b', icon: '⚡', text: window.i18n ? window.i18n.t('legendMaybe') : 'Можливе відключення (жовта зона)' },
+    { bg: '#ef4444', icon: '⚡', text: window.i18n ? window.i18n.t('legendOff') : 'Світло відсутнє (сіра зона)' }
+  ];
+
+  let lx = 34;
+  ctx.textBaseline = 'middle';
+  legendItems.forEach(item => {
+    drawRoundedRect(ctx, lx, legY - 8, 16, 16, 4);
+    ctx.fillStyle = item.bg;
+    ctx.fill();
+
+    ctx.font = '700 10px Inter, system-ui, -apple-system, sans-serif';
+    ctx.fillStyle = '#ffffff';
+    ctx.textAlign = 'center';
+    ctx.fillText(item.icon, lx + 8, legY);
+
+    ctx.font = '500 12px Inter, system-ui, -apple-system, sans-serif';
+    ctx.fillStyle = '#cbd5e1';
+    ctx.textAlign = 'left';
+    ctx.fillText(item.text, lx + 24, legY);
+    lx += 24 + ctx.measureText(item.text).width + 24;
+  });
+
+  ctx.font = '600 12px Inter, system-ui, -apple-system, sans-serif';
+  ctx.fillStyle = '#64748b';
+  ctx.textAlign = 'right';
+  ctx.fillText('kray.digital • ДТЕК Дніпро', W - 34, legY);
+
+  const dateSlug = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+  const fileName = `grafik-vidkluchen-dnipro-${currentDayView}-${dateSlug}.png`;
+
+  const triggerDownload = (url) => {
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  if (canvas.toBlob) {
+    canvas.toBlob((blob) => {
+      if (!blob) return;
+      const url = URL.createObjectURL(blob);
+      triggerDownload(url);
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    }, 'image/png');
+  } else {
+    triggerDownload(canvas.toDataURL('image/png'));
+  }
+}
+
 function getStatusName(status) {
   const lang = (window.i18n && window.i18n.current) || 'ua';
   if (status === 'on') return window.i18n ? window.i18n.t('legendOn') : 'Світло є (гарантовано)';
@@ -656,35 +966,42 @@ function updateLiveStatusCard() {
     statusTitle.textContent = window.i18n ? window.i18n.t('statusPowerOff') : 'Світло ВІДСУТНЄ';
   }
 
-  let nextTransitionHour = null;
-  let nextStatus = null;
-  const hours = scheduleData.today.hours;
+  const getHalfSlotStatus = (slotObj, isSecondHalf) => {
+    if (!slotObj) return 'on';
+    if (slotObj.status === 'off-first') return isSecondHalf ? 'on' : 'off';
+    if (slotObj.status === 'off-second') return isSecondHalf ? 'off' : 'on';
+    return slotObj.status;
+  };
 
-  for (let h = currentHour + 1; h < 24; h++) {
-    if (hours[h].status !== currentSlot.status) {
-      nextTransitionHour = h;
-      nextStatus = hours[h].status;
+  const hours = scheduleData.today.hours;
+  const tomorrowHours = scheduleData.tomorrow ? scheduleData.tomorrow.hours : null;
+  const maxSlotIdx = tomorrowHours ? 95 : 47;
+  const curSlotIdx = currentHour * 2 + (currentMin < 30 ? 0 : 1);
+
+  let nextTransitionSlot = null;
+  let nextStatus = null;
+
+  for (let sIdx = curSlotIdx + 1; sIdx <= maxSlotIdx; sIdx++) {
+    const h = Math.floor(sIdx / 2);
+    const isSecondHalf = (sIdx % 2) === 1;
+    const slotObj = h < 24 ? hours[h] : tomorrowHours[h - 24];
+    const halfStatus = getHalfSlotStatus(slotObj, isSecondHalf);
+    if (halfStatus !== effectiveStatus) {
+      nextTransitionSlot = sIdx;
+      nextStatus = halfStatus;
       break;
     }
   }
 
-  if (nextTransitionHour === null && scheduleData.tomorrow) {
-    for (let h = 0; h < 24; h++) {
-      if (scheduleData.tomorrow.hours[h].status !== currentSlot.status) {
-        nextTransitionHour = h + 24;
-        nextStatus = scheduleData.tomorrow.hours[h].status;
-        break;
-      }
-    }
-  }
-
-  if (nextTransitionHour !== null) {
+  if (nextTransitionSlot !== null) {
+    const targetTotalHour = Math.floor(nextTransitionSlot / 2);
+    const targetMin = (nextTransitionSlot % 2) * 30;
     const actionKey = nextStatus === 'off' ? 'countdownLabelToOff' : (nextStatus === 'maybe' ? 'countdownLabelToMaybe' : 'countdownLabelToOn');
     countdownLabel.textContent = window.i18n ? window.i18n.t(actionKey) : `До ${nextStatus === 'off' ? 'відключення' : 'увімкнення'}:`;
 
     const targetDate = new Date();
-    targetDate.setHours(nextTransitionHour % 24, 0, 0, 0);
-    if (nextTransitionHour >= 24) {
+    targetDate.setHours(targetTotalHour % 24, targetMin, 0, 0);
+    if (targetTotalHour >= 24) {
       targetDate.setDate(targetDate.getDate() + 1);
     }
 
@@ -697,18 +1014,19 @@ function updateLiveStatusCard() {
       const minsLeft = String(Math.floor((diffSec % 3600) / 60)).padStart(2, '0');
       const secsLeft = String(diffSec % 60).padStart(2, '0');
       countdownTimer.textContent = `${hoursLeft}:${minsLeft}:${secsLeft}`;
-      const hourFmt = String(nextTransitionHour % 24).padStart(2, '0');
+      const timeFmt = `${String(targetTotalHour % 24).padStart(2, '0')}:${String(targetMin).padStart(2, '0')}`;
       const nextStatusKey = nextStatus === 'off' ? 'countdownNextOff' : (nextStatus === 'maybe' ? 'countdownNextMaybe' : 'countdownNextOn');
       const fallbackNextName = nextStatus === 'off' ? 'відключення світла (червона зона)' : (nextStatus === 'maybe' ? 'можливе відключення (жовта зона)' : 'увімкнення світла (біла зона)');
       const stName = window.i18n ? (window.i18n.t(nextStatusKey) || getStatusName(nextStatus).toLowerCase()) : fallbackNextName;
       if (window.i18n) {
-        countdownSub.textContent = (window.i18n.t('countdownExpectedAt') || 'О {time}:00 очікується {status}').replace('{time}', hourFmt).replace('{status}', stName);
+        const tpl = window.i18n.t('countdownExpectedAt') || 'О {time}:00 очікується {status}';
+        countdownSub.textContent = tpl.replace('{time}:00', timeFmt).replace('{time}', timeFmt).replace('{status}', stName);
       } else {
-        countdownSub.textContent = `О ${hourFmt}:00 очікується ${stName}`;
+        countdownSub.textContent = `О ${timeFmt} очікується ${stName}`;
       }
     }
   } else {
-    if (currentSlot.status === 'on') {
+    if (effectiveStatus === 'on') {
       countdownLabel.textContent = window.i18n ? window.i18n.t('countdownPowerStatus') : 'Статус електропостачання:';
       countdownTimer.textContent = window.i18n ? window.i18n.t('countdown247') : '24/7 БЕЗ ВІДКЛЮЧЕНЬ';
       countdownTimer.style.fontSize = '24px';
@@ -1165,6 +1483,15 @@ async function loadTelegramFeed() {
   await fetchSystemStatus();
   await fetchSchedule();
   loadTelegramFeed();
+
+  const downloadMatrixBtn = document.getElementById('downloadMatrixBtn');
+  if (downloadMatrixBtn) {
+    downloadMatrixBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      downloadMatrixAsPng();
+    });
+  }
 })();
 
 (function initMobileMenu() {
