@@ -1,7 +1,109 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Check, ArrowRight, ArrowLeft, Calculator, Calendar, Phone, ShieldCheck } from 'lucide-react';
+import { X, Check, ArrowRight, ArrowLeft, Calculator, Calendar, Phone, ShieldCheck, Clock } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+
+const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
+const KYIV_OFFSET_MS = 2 * 3600 * 1000;
+const EPOCH_MONDAY_MS = 4 * 86400 * 1000;
+const ANCHOR_WEEK_IDX = Math.floor((Date.UTC(2026, 10, 23) + KYIV_OFFSET_MS - EPOCH_MONDAY_MS) / WEEK_MS);
+
+const DISCOUNT_CYCLE = [67, 72, 67, 62] as const;
+
+function getWeeklyPromoState(nowMs: number) {
+  const shifted = nowMs + KYIV_OFFSET_MS - EPOCH_MONDAY_MS;
+  const weekIdx = Math.floor(shifted / WEEK_MS);
+  const elapsedInWeek = ((shifted % WEEK_MS) + WEEK_MS) % WEEK_MS;
+  const remainingMs = WEEK_MS - elapsedInWeek;
+  const phase = (((weekIdx - ANCHOR_WEEK_IDX) % 4) + 4) % 4;
+  const discountPct = DISCOUNT_CYCLE[phase];
+
+  const totalSec = Math.max(0, Math.floor(remainingMs / 1000));
+  const days = Math.floor(totalSec / 86400);
+  const hours = Math.floor((totalSec % 86400) / 3600);
+  const minutes = Math.floor((totalSec % 3600) / 60);
+  const seconds = totalSec % 60;
+
+  return { phase, discountPct, days, hours, minutes, seconds };
+}
+
+function getDiscountedPrice(basePrice: number, discountPct: number): number {
+  if (discountPct === 67) return basePrice;
+  const oldPrice = basePrice * 3;
+  const val = oldPrice * (1 - discountPct / 100);
+  if (val >= 1000) return Math.round(val / 100) * 100;
+  if (val >= 100) return Math.round(val / 10) * 10;
+  if (basePrice < 5) return Math.round(val * 10) / 10;
+  return Math.round(val);
+}
+
+const FlipDigit: React.FC<{ digit: string }> = ({ digit }) => {
+  const [current, setCurrent] = useState(digit);
+  const [prev, setPrev] = useState(digit);
+  const [flipping, setFlipping] = useState(false);
+
+  useEffect(() => {
+    if (digit === current) return;
+    setPrev(current);
+    setCurrent(digit);
+    setFlipping(true);
+    const t = window.setTimeout(() => {
+      setPrev(digit);
+      setFlipping(false);
+    }, 480);
+    return () => window.clearTimeout(t);
+  }, [digit, current]);
+
+  return (
+    <div
+      className="relative w-6 h-8 sm:w-7 sm:h-9 rounded-md select-none font-display text-base sm:text-lg font-bold text-[#f9fafb] tabular-nums shadow-md"
+      style={{ perspective: '200px' }}
+    >
+      <div
+        className="absolute inset-x-0 top-0 h-1/2 overflow-hidden rounded-t-md border border-[#111827] border-b-black/60"
+        style={{ background: 'linear-gradient(180deg, #374151 0%, #1f2937 100%)' }}
+      >
+        <span className="block h-8 sm:h-9 leading-8 sm:leading-9 text-center">{current}</span>
+      </div>
+      <div
+        className="absolute inset-x-0 bottom-0 h-1/2 overflow-hidden rounded-b-md border border-[#111827] border-t-0"
+        style={{ background: 'linear-gradient(180deg, #1f2937 0%, #111827 100%)' }}
+      >
+        <span className="block h-8 sm:h-9 leading-8 sm:leading-9 text-center -translate-y-4 sm:-translate-y-[18px]">
+          {flipping ? prev : current}
+        </span>
+      </div>
+      {flipping && (
+        <>
+          <div
+            key={`t-${current}-${prev}`}
+            className="calc-flap-t absolute inset-x-0 top-0 h-1/2 overflow-hidden rounded-t-md border border-[#111827] border-b-black/60 z-20"
+            style={{
+              background: 'linear-gradient(180deg, #374151 0%, #1f2937 100%)',
+              transformOrigin: '50% 100%',
+              backfaceVisibility: 'hidden',
+            }}
+          >
+            <span className="block h-8 sm:h-9 leading-8 sm:leading-9 text-center">{prev}</span>
+          </div>
+          <div
+            key={`b-${current}-${prev}`}
+            className="calc-flap-b absolute inset-x-0 bottom-0 h-1/2 overflow-hidden rounded-b-md border border-[#111827] border-t-0 z-30"
+            style={{
+              background: 'linear-gradient(180deg, #1f2937 0%, #111827 100%)',
+              transformOrigin: '50% 0%',
+              backfaceVisibility: 'hidden',
+            }}
+          >
+            <span className="block h-8 sm:h-9 leading-8 sm:leading-9 text-center -translate-y-4 sm:-translate-y-[18px]">
+              {current}
+            </span>
+          </div>
+        </>
+      )}
+    </div>
+  );
+};
 
 interface CalculatorModalProps {
   isOpen: boolean;
@@ -27,10 +129,10 @@ const LOCALIZED_DATA = {
         { id: 'portal', name: 'Складний портал / Сервіс', price: 30000, days: 30, daysRange: '20–40 днів' }
       ],
       seo: [
-        { id: 'onpage_seo', name: 'Внутрішня SEO-оптимізація сайту', price: 5000, days: 7, daysRange: '5–10 днів', customPriceLabel: 'від 5 000 ₴ (разово)' },
+        { id: 'onpage_seo', name: 'Внутрішня SEO-оптимізація сайту', price: 2000, days: 7, daysRange: '5–10 днів', customPriceLabel: 'від 2 000 ₴ (разово)' },
         { id: 'seo_texts', name: 'SEO-тексти (Копірайтинг)', price: 100, days: 2, daysRange: '1–3 дні', customPriceLabel: '100 ₴ / 1000 симв.' },
         { id: 'image_optimization', name: 'Оптимізація картинок', price: 20, days: 1, daysRange: '1–2 дні', customPriceLabel: '20 ₴ / 1 картинка' },
-        { id: 'speed_optimization', name: 'Оптимізація швидкості завантаження сайту', price: 2000, days: 3, daysRange: '2–4 дні', customPriceLabel: 'від 2 000 ₴' }
+        { id: 'speed_optimization', name: 'Оптимізація швидкості завантаження сайту', price: 3000, days: 3, daysRange: '2–4 дні', customPriceLabel: 'від 3 000 ₴' }
       ],
       ads: [
         { id: 'test', name: 'Тестовий запуск + Налаштування', price: 3300, days: 7 },
@@ -110,10 +212,10 @@ const LOCALIZED_DATA = {
         { id: 'portal', name: 'Сложный портал / Сервис', price: 30000, days: 30, daysRange: '20–40 дней' }
       ],
       seo: [
-        { id: 'onpage_seo', name: 'Внутренняя SEO-оптимизация сайта', price: 5000, days: 7, daysRange: '5–10 дней', customPriceLabel: 'от 5 000 ₴ (разово)' },
+        { id: 'onpage_seo', name: 'Внутренняя SEO-оптимизация сайта', price: 2000, days: 7, daysRange: '5–10 дней', customPriceLabel: 'от 2 000 ₴ (разово)' },
         { id: 'seo_texts', name: 'SEO-тексты (Копирайтинг)', price: 100, days: 2, daysRange: '1–3 дня', customPriceLabel: '100 ₴ / 1000 симв.' },
         { id: 'image_optimization', name: 'Оптимизация картинок', price: 20, days: 1, daysRange: '1–2 дня', customPriceLabel: '20 ₴ / 1 картинка' },
-        { id: 'speed_optimization', name: 'Оптимизация скорости загрузки сайта', price: 2000, days: 3, daysRange: '2–4 дня', customPriceLabel: 'от 2 000 ₴' }
+        { id: 'speed_optimization', name: 'Оптимизация скорости загрузки сайта', price: 3000, days: 3, daysRange: '2–4 дня', customPriceLabel: 'от 3 000 ₴' }
       ],
       ads: [
         { id: 'test', name: 'Тестовый запуск + Настройка', price: 3300, days: 7 },
@@ -193,10 +295,10 @@ const LOCALIZED_DATA = {
         { id: 'portal', name: 'Complex Portal / Web Service', price: 730, days: 30, daysRange: '20–40 days' }
       ],
       seo: [
-        { id: 'onpage_seo', name: 'On-Page SEO Optimization', price: 120, days: 7, daysRange: '5–10 days', customPriceLabel: 'from $120 (one-time)' },
+        { id: 'onpage_seo', name: 'On-Page SEO Optimization', price: 50, days: 7, daysRange: '5–10 days', customPriceLabel: 'from $50 (one-time)' },
         { id: 'seo_texts', name: 'SEO Copywriting & Content', price: 3, days: 2, daysRange: '1–3 days', customPriceLabel: '$3 / 1,000 chars' },
         { id: 'image_optimization', name: 'Image Optimization & Compression', price: 0.5, days: 1, daysRange: '1–2 days', customPriceLabel: '$0.50 / image' },
-        { id: 'speed_optimization', name: 'Page Speed Loading Optimization', price: 50, days: 3, daysRange: '2–4 days', customPriceLabel: 'from $50' }
+        { id: 'speed_optimization', name: 'Page Speed Loading Optimization', price: 75, days: 3, daysRange: '2–4 days', customPriceLabel: 'from $75' }
       ],
       ads: [
         { id: 'test', name: 'Test Campaign + Setup', price: 80, days: 7 },
@@ -279,6 +381,16 @@ export default function CalculatorModal({ isOpen, onClose, onSubmitLead, initial
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [nowMs, setNowMs] = useState(() => Date.now());
+
+  useEffect(() => {
+    if (!isOpen) return;
+    setNowMs(Date.now());
+    const id = window.setInterval(() => setNowMs(Date.now()), 1000);
+    return () => window.clearInterval(id);
+  }, [isOpen]);
+
+  const weekPromo = getWeeklyPromoState(nowMs);
 
   // Synchronize initial service from outside click
   useEffect(() => {
@@ -321,7 +433,7 @@ export default function CalculatorModal({ isOpen, onClose, onSubmitLead, initial
 
     if (!activeScale) return { price: 0, days: 0, serviceName: '', scaleName: '', activeScale: null };
 
-    const rawPrice = activeScale.price;
+    const rawPrice = getDiscountedPrice(activeScale.price, weekPromo.discountPct);
     const finalPrice = Math.round(rawPrice * activeTimeline.multiplier);
     const finalDays = Math.round(activeScale.days * activeTimeline.timeMultiplier);
 
@@ -396,7 +508,7 @@ export default function CalculatorModal({ isOpen, onClose, onSubmitLead, initial
   const currentScales = scalesDict[service as keyof typeof scalesDict] || [];
 
   return (
-    <div className="fixed inset-0 z-[110] flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[110] flex items-center justify-center p-2 sm:p-4">
       {/* Backdrop */}
       <motion.div
         initial={{ opacity: 0 }}
@@ -413,17 +525,17 @@ export default function CalculatorModal({ isOpen, onClose, onSubmitLead, initial
         animate={{ scale: 1, opacity: 1, y: 0 }}
         exit={{ scale: 0.95, opacity: 0, y: 10 }}
         transition={{ type: 'spring', damping: 25, stiffness: 220 }}
-        className="relative w-full max-w-2xl bg-brand-surface-container rounded-2xl border border-brand-outline-variant/30 shadow-2xl overflow-hidden flex flex-col z-10"
+        className="relative w-full max-w-2xl max-h-[88dvh] bg-brand-surface-container rounded-2xl border border-brand-outline-variant/30 shadow-2xl overflow-hidden flex flex-col z-10"
         id="calc-modal-content"
       >
         {/* Glow effect */}
         <div className="absolute -top-24 -left-24 w-48 h-48 bg-brand-primary-container/10 blur-[80px] rounded-full pointer-events-none" />
 
         {/* Header */}
-        <div className="p-5 border-b border-brand-outline-variant/15 flex items-center justify-between bg-brand-surface-container-low relative z-10">
+        <div className="px-5 py-3.5 border-b border-brand-outline-variant/15 flex items-center justify-between bg-brand-surface-container-low relative z-10 shrink-0">
           <div className="flex items-center gap-2">
             <Calculator className="w-5 h-5 text-brand-primary-container" />
-            <h3 className="text-lg font-bold font-display text-brand-on-surface">{labels.title}</h3>
+            <h3 className="text-base sm:text-lg font-bold font-display text-brand-on-surface">{labels.title}</h3>
           </div>
           <button
             onClick={onClose}
@@ -434,7 +546,7 @@ export default function CalculatorModal({ isOpen, onClose, onSubmitLead, initial
         </div>
 
         {/* Progress bar */}
-        <div className="h-1 w-full bg-brand-surface-container-low flex">
+        <div className="h-1 w-full bg-brand-surface-container-low flex shrink-0">
           {[1, 2, 3, 4].map((s) => (
             <div
               key={s}
@@ -446,13 +558,69 @@ export default function CalculatorModal({ isOpen, onClose, onSubmitLead, initial
         </div>
 
         {/* Zero Prepayment Advantage Banner */}
-        <div className="mx-6 mt-4 px-3.5 py-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/25 flex items-center gap-2.5 text-xs text-emerald-300">
+        <div className="mx-5 mt-3 px-3.5 py-2 rounded-xl bg-emerald-500/10 border border-emerald-500/25 flex items-center gap-2.5 text-xs text-emerald-300 shrink-0">
           <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
           <span className="font-medium">{labels.noPrepaymentBanner}</span>
         </div>
 
+        {/* Weekly Cyclic Flip Timer Banner */}
+        <div
+          id="calc-weekly-timer"
+          className="mx-5 mt-2 px-3.5 py-2 rounded-xl bg-[#131926] border border-cyan-500/25 text-center shadow-lg shrink-0"
+        >
+          <div className="flex items-center justify-center gap-2 mb-1.5 flex-wrap">
+            <Clock className="w-3.5 h-3.5 text-brand-primary-container shrink-0" />
+            <span className="text-xs font-semibold text-brand-on-surface">
+              {language === 'ru'
+                ? 'До конца акции осталось:'
+                : language === 'en'
+                  ? 'Offer ends in:'
+                  : 'До кінця акції залишилось:'}
+            </span>
+            <span className="px-2 py-0.5 text-[10px] font-black rounded bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 uppercase tracking-wider">
+              {language === 'ru'
+                ? `СКИДКА -${weekPromo.discountPct}%`
+                : language === 'en'
+                  ? `SALE -${weekPromo.discountPct}%`
+                  : `ЗНИЖКА -${weekPromo.discountPct}%`}
+            </span>
+          </div>
+
+          <div className="flex items-center justify-center gap-2.5 sm:gap-3.5">
+            {[
+              {
+                val: String(weekPromo.days).padStart(2, '0'),
+                lbl: language === 'ru' ? 'дней' : language === 'en' ? 'days' : 'днів',
+              },
+              {
+                val: String(weekPromo.hours).padStart(2, '0'),
+                lbl: language === 'ru' ? 'часов' : language === 'en' ? 'hours' : 'годин',
+              },
+              {
+                val: String(weekPromo.minutes).padStart(2, '0'),
+                lbl: language === 'ru' ? 'минут' : language === 'en' ? 'min' : 'хвилин',
+              },
+              {
+                val: String(weekPromo.seconds).padStart(2, '0'),
+                lbl: language === 'ru' ? 'секунд' : language === 'en' ? 'sec' : 'секунд',
+              },
+            ].map((unit, uIdx) => (
+              <div key={uIdx} className="flex flex-col items-center gap-1">
+                <div className="flex gap-1">
+                  {unit.val.split('').map((digit, dIdx) => (
+                    <FlipDigit key={dIdx} digit={digit} />
+                  ))}
+                </div>
+                <span className="text-[10px] text-brand-on-surface-variant lowercase">
+                  {unit.lbl}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+
         {/* Main Body */}
-        <div className="p-6 relative z-10 flex-1 overflow-y-auto max-h-[70vh]">
+        <div className="p-4 sm:p-5 relative z-10 flex-1 min-h-0 overflow-y-auto">
           <AnimatePresence mode="wait">
             {!isSuccess ? (
               <motion.div
@@ -502,6 +670,12 @@ export default function CalculatorModal({ isOpen, onClose, onSubmitLead, initial
                         const isNegotiable = (sc as any).isNegotiable;
                         const customLabel = (sc as any).customPriceLabel;
                         const oldPrice = sc.price * 3;
+                        const effectivePrice = getDiscountedPrice(sc.price, weekPromo.discountPct);
+                        const salePct = weekPromo.discountPct;
+                        const displayPrice =
+                          weekPromo.discountPct === 67 && customLabel
+                            ? customLabel
+                            : `${labels.from} ${effectivePrice.toLocaleString(language === 'en' ? 'en-US' : 'uk-UA')} ${language === 'en' ? '$' : '₴'}`;
                         return (
                           <button
                             key={sc.id}
@@ -527,7 +701,7 @@ export default function CalculatorModal({ isOpen, onClose, onSubmitLead, initial
                               ) : (
                                 <div className="flex items-center gap-1.5 mb-1.5">
                                   <span className="px-1.5 py-0.5 text-[9px] font-black rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/25 uppercase tracking-wider animate-pulse">
-                                    {language === 'en' ? 'SALE -66%' : language === 'uk' ? 'ЗНИЖКА -66%' : 'СКИДКА -66%'}
+                                    {language === 'en' ? `SALE -${salePct}%` : language === 'uk' ? `ЗНИЖКА -${salePct}%` : `СКИДКА -${salePct}%`}
                                   </span>
                                   <span className="text-[10px] text-brand-on-surface-variant/40 line-through">
                                     {oldPrice.toLocaleString(language === 'en' ? 'en-US' : 'uk-UA')} {language === 'en' ? '$' : '₴'}
@@ -535,7 +709,7 @@ export default function CalculatorModal({ isOpen, onClose, onSubmitLead, initial
                                 </div>
                               )}
                               <span className="text-xs md:text-sm font-black text-brand-primary-container block font-display">
-                                {customLabel ? customLabel : `${labels.from} ${sc.price.toLocaleString(language === 'en' ? 'en-US' : 'uk-UA')} ${language === 'en' ? '$' : '₴'}`}
+                                {displayPrice}
                               </span>
                             </div>
                           </button>
@@ -762,7 +936,7 @@ export default function CalculatorModal({ isOpen, onClose, onSubmitLead, initial
 
         {/* Footer controls (when not success) */}
         {!isSuccess && (
-          <div className="p-4 bg-brand-surface-container-low border-t border-brand-outline-variant/15 flex justify-between items-center px-6 relative z-10">
+          <div className="py-3 px-6 bg-brand-surface-container-low border-t border-brand-outline-variant/15 flex justify-between items-center relative z-10 shrink-0">
             {step > 1 ? (
               <button
                 onClick={handleBack}

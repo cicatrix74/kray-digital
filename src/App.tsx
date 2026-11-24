@@ -102,7 +102,7 @@ export default function App({ initialIsNotFound }: AppProps = {}) {
     const reveal = () => setShowBelowFold(true);
     const events = ['scroll', 'touchstart', 'pointerdown', 'keydown'] as const;
     events.forEach((ev) => window.addEventListener(ev, reveal, { once: true, passive: true }));
-    const timer = window.setTimeout(reveal, 15000);
+    const timer = window.setTimeout(reveal, 1800);
 
     return () => {
       events.forEach((ev) => window.removeEventListener(ev, reveal));
@@ -334,68 +334,43 @@ export default function App({ initialIsNotFound }: AppProps = {}) {
               onOpenCases={() => handleScrollToSection('portfolio-section')} 
             />
 
-            {/* Below-the-fold sections deferred until interaction or idle */}
+            {/* Below-the-fold sections + Footer deferred together so Footer never flashes under Hero */}
             {showBelowFold && (
-              <>
-            {/* Expertise / Bento services section */}
-            <Suspense fallback={null}>
-              <Expertise onSelectService={handleOpenCalculatorWithService} />
-            </Suspense>
-
-            {/* Visual Project Roadmap & Durations section */}
-            <Suspense fallback={null}>
-              <ProjectRoadmap 
-                onOpenCalculator={handleOpenCalculatorWithService}
-                onScrollToContact={() => handleScrollToSection('contact-cta-section')}
-              />
-            </Suspense>
-
-            {/* Stats and trust section */}
-            <Suspense fallback={null}>
-              <Stats />
-            </Suspense>
-
-            {/* Portfolio / Our Works section */}
-            <Suspense fallback={null}>
-              <Portfolio onOpenCase={handleOpenCasesWithCase} />
-            </Suspense>
-
-            {/* Testimonials / Client Success Stories carousel section */}
-            <Suspense fallback={null}>
-              <Testimonials 
-                onOpenCase={handleOpenCasesWithCase}
-                onScrollToContact={() => handleScrollToSection('contact-cta-section')}
-              />
-            </Suspense>
-
-            {/* FAQ Section answering client questions on timelines, guarantees, workflows */}
-            <Suspense fallback={null}>
-              <FAQ 
-                onScrollToContact={() => handleScrollToSection('contact-cta-section')}
-                onOpenCalculator={handleOpenCalculatorWithService}
-              />
-            </Suspense>
-
-            {/* Contact/Lead Capture Form Section */}
-            <Suspense fallback={null}>
-              <ContactCTA
-                onSubmitLead={handleAddLead}
-                onOpenCallback={() => setIsCallbackOpen(true)}
-              />
-            </Suspense>
-          </>
-        )}
+              <Suspense fallback={<div className="min-h-screen" aria-hidden="true" />}>
+                <Expertise onSelectService={handleOpenCalculatorWithService} />
+                <ProjectRoadmap 
+                  onOpenCalculator={handleOpenCalculatorWithService}
+                  onScrollToContact={() => handleScrollToSection('contact-cta-section')}
+                />
+                <Stats />
+                <Portfolio onOpenCase={handleOpenCasesWithCase} />
+                <Testimonials 
+                  onOpenCase={handleOpenCasesWithCase}
+                  onScrollToContact={() => handleScrollToSection('contact-cta-section')}
+                />
+                <FAQ 
+                  onScrollToContact={() => handleScrollToSection('contact-cta-section')}
+                  onOpenCalculator={handleOpenCalculatorWithService}
+                />
+                <ContactCTA
+                  onSubmitLead={handleAddLead}
+                  onOpenCallback={() => setIsCallbackOpen(true)}
+                />
+              </Suspense>
+            )}
           </>
         )}
 
       </main>
 
-      {/* Footer navigation */}
-      <Footer 
-        onOpenCases={() => handleScrollToSection('portfolio-section')} 
-        onScrollToSection={handleScrollToSection}
-        onOpenLeadPanel={() => setIsLeadPanelOpen(true)}
-      />
+      {/* Footer navigation: on home page wait until below-the-fold sections are revealed */}
+      {(isNotFound || showBelowFold) && (
+        <Footer 
+          onOpenCases={() => handleScrollToSection('portfolio-section')} 
+          onScrollToSection={handleScrollToSection}
+          onOpenLeadPanel={() => setIsLeadPanelOpen(true)}
+        />
+      )}
 
       {/* OVERLAY COMPONENT POPUPS */}
       <Suspense fallback={null}>

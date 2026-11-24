@@ -132,18 +132,18 @@ function getLocalAssistantReply(
   ) {
     if (lang === 'uk') {
       return {
-        text: "**Послуги та вартість SEO-оптимізації (Kray Digital):**\n\n• **1. Внутрішня SEO-оптимізація сайту:** від 5 000 ₴ (разово)\n• **2. SEO-тексти (Копірайтинг):** 100 ₴ за 1000 символів\n• **3. Оптимізація картинок:** 20 ₴ за 1 картинку\n• **4. Оптимізація швидкості завантаження:** від 2 000 ₴\n\n🛡️ Також діє наше правило: **0% передоплати**, оплата — за фактом виконання та прийому робіт!\n\nВи можете відкрити калькулятор та розрахувати бюджет прямо зараз.",
+        text: "**Послуги та вартість SEO-оптимізації (Kray Digital):**\n\n• **1. Внутрішня SEO-оптимізація сайту:** від 2 000 ₴ (разово)\n• **2. SEO-тексти (Копірайтинг):** 100 ₴ за 1000 символів\n• **3. Оптимізація картинок:** 20 ₴ за 1 картинку\n• **4. Оптимізація швидкості завантаження:** від 3 000 ₴\n\n🛡️ Також діє наше правило: **0% передоплати**, оплата — за фактом виконання та прийому робіт!\n\nВи можете відкрити калькулятор та розрахувати бюджет прямо зараз.",
         cta: 'calculator'
       };
     }
     if (lang === 'ru') {
       return {
-        text: "**Услуги и стоимость SEO-оптимизации (Kray Digital):**\n\n• **1. Внутренняя SEO-оптимизация сайта:** от 5 000 ₴ (единоразово)\n• **2. SEO-тексты (Копирайтинг):** 100 ₴ за 1000 символов\n• **3. Оптимизация картинок:** 20 ₴ за 1 картинку\n• **4. Оптимизация скорости загрузки сайта:** от 2 000 ₴\n\n🛡️ Действует гарантия: **0% предоплаты**, оплата — строго по факту выполнения работ!\n\nВы можете перейти в онлайн-калькулятор и выбрать нужные услуги.",
+        text: "**Услуги и стоимость SEO-оптимизации (Kray Digital):**\n\n• **1. Внутренняя SEO-оптимизация сайта:** от 2 000 ₴ (единоразово)\n• **2. SEO-тексты (Копирайтинг):** 100 ₴ за 1000 символов\n• **3. Оптимизация картинок:** 20 ₴ за 1 картинку\n• **4. Оптимизация скорости загрузки сайта:** от 3 000 ₴\n\n🛡️ Действует гарантия: **0% предоплаты**, оплата — строго по факту выполнения работ!\n\nВы можете перейти в онлайн-калькулятор и выбрать нужные услуги.",
         cta: 'calculator'
       };
     }
     return {
-      text: "**SEO Optimization Services & Rates (Kray Digital):**\n\n• **1. On-Page SEO Optimization:** from $120 (one-time)\n• **2. SEO Copywriting & Articles:** $3 per 1,000 chars\n• **3. Image Compression & Optimization:** $0.50 per image\n• **4. Page Speed Optimization:** from $50\n\n🛡️ 0% upfront deposit required — payment is made strictly upon milestone delivery!\n\nYou can use our calculator to configure your custom plan.",
+      text: "**SEO Optimization Services & Rates (Kray Digital):**\n\n• **1. On-Page SEO Optimization:** from $50 (one-time)\n• **2. SEO Copywriting & Articles:** $3 per 1,000 chars\n• **3. Image Compression & Optimization:** $0.50 per image\n• **4. Page Speed Optimization:** from $75\n\n🛡️ 0% upfront deposit required — payment is made strictly upon milestone delivery!\n\nYou can use our calculator to configure your custom plan.",
       cta: 'calculator'
     };
   }

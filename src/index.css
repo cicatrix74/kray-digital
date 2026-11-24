@@ -176,6 +176,25 @@ body {
   will-change: transform, opacity;
 }
 
+@keyframes calcFlipDown {
+  0% { transform: rotateX(0deg); filter: brightness(1); }
+  100% { transform: rotateX(-90deg); filter: brightness(0.75); }
+}
+
+@keyframes calcFlipUp {
+  0% { transform: rotateX(90deg); filter: brightness(0.8); }
+  100% { transform: rotateX(0deg); filter: brightness(1); }
+}
+
+.calc-flap-t {
+  animation: calcFlipDown 0.24s ease-in forwards;
+}
+
+.calc-flap-b {
+  transform: rotateX(90deg);
+  animation: calcFlipUp 0.24s 0.22s ease-out forwards;
+}
+
 /* Hide Netlify Drawer & Collaborative Feedback Badge completely */
 [data-netlify-deploy-id],
 #netlify-drawer,

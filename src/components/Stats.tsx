@@ -1,29 +1,38 @@
-import React from 'react';
-import { motion } from 'motion/react';
+import React, { useRef } from 'react';
+import { motion, useInView } from 'motion/react';
 import { Award, ShieldCheck, BarChart3 } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import { AnimatedCounter } from './AnimatedCounter';
 
 export default function Stats() {
   const { t } = useLanguage();
+  const gridRef = useRef<HTMLDivElement>(null);
+  const isStatsInView = useInView(gridRef, { once: true, amount: 0.3 });
 
   const statsList = [
     {
       id: 'years',
-      val: t.stats.years_val,
+      start: 0,
+      target: 10,
+      suffix: '+',
       icon: <Award className="w-12 h-12 text-brand-primary-container" />,
       title: t.stats.years_title,
       desc: t.stats.years_desc
     },
     {
       id: 'kpi',
-      val: t.stats.kpi_val,
+      start: 100,
+      target: 0,
+      suffix: '%',
       icon: <ShieldCheck className="w-12 h-12 text-brand-primary-container" />,
       title: t.stats.kpi_title,
       desc: t.stats.kpi_desc
     },
     {
       id: 'reports',
-      val: t.stats.reports_val,
+      start: 0,
+      target: 24,
+      suffix: '/7',
       icon: <BarChart3 className="w-12 h-12 text-brand-primary-container" />,
       title: t.stats.reports_title,
       desc: t.stats.reports_desc
@@ -53,7 +62,7 @@ export default function Stats() {
         </motion.div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+        <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-3 gap-10">
           {statsList.map((st, idx) => (
             <motion.div 
               key={st.id} 
@@ -68,7 +77,12 @@ export default function Stats() {
                 {st.icon}
               </div>
               <div className="font-display text-4xl font-extrabold text-brand-primary-container tracking-tight">
-                {st.val}
+                <AnimatedCounter
+                  start={st.start}
+                  target={st.target}
+                  suffix={st.suffix}
+                  isInView={isStatsInView}
+                />
               </div>
               <div className="font-display text-lg font-bold text-brand-on-surface">
                 {st.title}

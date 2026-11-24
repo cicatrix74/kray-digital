@@ -56,8 +56,8 @@ export default function Expertise({ onSelectService }: ExpertiseProps) {
         serpTitle: 'google.com/search • ТОП-1',
         growth: '+340% Органика',
         speed: 'Speed 98/100',
-        item1: 'Внутренняя SEO от 5 000 ₴',
-        item2: 'Оптимизация скорости от 2 000 ₴',
+        item1: 'Внутренняя SEO от 2 000 ₴',
+        item2: 'Оптимизация скорости от 3 000 ₴',
         item3: 'SEO-тексты 100 ₴ / 1 000 симв.'
       },
       ads: {
@@ -99,8 +99,8 @@ export default function Expertise({ onSelectService }: ExpertiseProps) {
         serpTitle: 'google.com/search • ТОП-1',
         growth: '+340% Органіка',
         speed: 'Speed 98/100',
-        item1: 'Внутрішня SEO від 5 000 ₴',
-        item2: 'Оптимізація швидкості від 2 000 ₴',
+        item1: 'Внутрішня SEO від 2 000 ₴',
+        item2: 'Оптимізація швидкості від 3 000 ₴',
         item3: 'SEO-тексти 100 ₴ / 1 000 симв.'
       },
       ads: {
@@ -142,8 +142,8 @@ export default function Expertise({ onSelectService }: ExpertiseProps) {
         serpTitle: 'google.com/search • TOP #1',
         growth: '+340% Organic Traffic',
         speed: 'Speed 98/100',
-        item1: 'On-Page SEO from $120',
-        item2: 'PageSpeed Optimization from $50',
+        item1: 'On-Page SEO from $50',
+        item2: 'PageSpeed Optimization from $75',
         item3: 'SEO Articles $3 / 1k chars'
       },
       ads: {

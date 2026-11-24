@@ -104,7 +104,7 @@ export default function Footer(_props: FooterProps) {
   ];
 
   return (
-    <footer className="bg-brand-surface-container-lowest/95 md:bg-brand-surface-container-lowest/30 md:backdrop-blur-md border-t border-[#3b494b]/20 py-8 pb-24 relative z-20">
+    <footer className="bg-brand-surface-container-lowest/95 md:bg-brand-surface-container-lowest/30 md:backdrop-blur-md border-t border-[#3b494b]/20 py-6 md:py-7 relative z-20">
       <div className="max-w-7xl mx-auto px-4 md:px-10 flex flex-col gap-5">
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           {/* Left: Copyright */}
