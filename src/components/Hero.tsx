@@ -20,43 +20,49 @@ interface HeroProps {
 
 const HERO_CARD_STRINGS = {
   uk: {
-    status: 'Система активна • KPI модель',
+    status: 'На зв’язку • Готовий до роботи',
     speedLabel: 'Google PageSpeed',
-    speedSub: 'Миттєве завантаження 0.8с',
-    growthVal: '+340%',
+    speedSub: 'Швидке завантаження до 1.2с',
+    growthVal: '+200%',
     growthLabel: 'Середнє зростання заявок',
     noPrepay: 'Оплата за фактом виконання робіт',
-    auditBadge: 'Безкоштовний аудит за 24 години',
-    guarantee: 'Фіксація термінів та KPI у договорі',
-    delivered: '150+ зданих проєктів',
+    auditBadge: 'Безкоштовний розбір за 24 години',
+    guarantee: 'Фіксація термінів та умов у договорі',
+    delivered: '50+ зданих проєктів',
     stackTitle: 'Стек розробки',
-    ctaMini: 'Розрахувати в калькуляторі'
+    ctaMini: 'Розрахувати в калькуляторі',
+    chart1Title: 'Конверсія сайту',
+    chart2Title: 'Органічний трафік'
   },
   ru: {
-    status: 'Система активна • KPI модель',
+    status: 'На связи • Готов к работе',
     speedLabel: 'Google PageSpeed',
-    speedSub: 'Мгновенная загрузка 0.8с',
-    growthVal: '+340%',
+    speedSub: 'Быстрая загрузка до 1.2с',
+    growthVal: '+200%',
     growthLabel: 'Средний рост конверсии и заявок',
     noPrepay: 'Оплата по факту выполнения работ',
-    auditBadge: 'Бесплатный аудит за 24 часа',
-    guarantee: 'Фиксация сроков и KPI в договоре',
-    delivered: '150+ сданных проектов',
+    auditBadge: 'Бесплатный разбор за 24 часа',
+    guarantee: 'Фиксация сроков и условий в договоре',
+    delivered: '50+ сданных проектов',
     stackTitle: 'Стек разработки',
-    ctaMini: 'Рассчитать в калькуляторе'
+    ctaMini: 'Рассчитать в калькуляторе',
+    chart1Title: 'Конверсия сайта',
+    chart2Title: 'Органический трафик'
   },
   en: {
-    status: 'System Active • KPI Driven',
+    status: 'Online • Available for Projects',
     speedLabel: 'Google PageSpeed',
-    speedSub: 'Ultra-fast 0.8s load time',
-    growthVal: '+340%',
+    speedSub: 'Fast load time < 1.2s',
+    growthVal: '+200%',
     growthLabel: 'Average conversion & lead growth',
     noPrepay: 'Payment upon completion of work',
-    auditBadge: 'Free 24h Digital Audit',
-    guarantee: 'Guaranteed delivery & SLA',
-    delivered: '150+ delivered projects',
+    auditBadge: 'Free 24h Website Review',
+    guarantee: 'Fixed timeline & clear terms',
+    delivered: '50+ delivered projects',
     stackTitle: 'Core Tech Stack',
-    ctaMini: 'Calculate in 1 click'
+    ctaMini: 'Calculate in 1 click',
+    chart1Title: 'Site Conversion',
+    chart2Title: 'Organic Traffic'
   }
 };
 
@@ -92,7 +98,7 @@ export default function Hero({ onOpenCalculator, onOpenCases }: HeroProps) {
               {t.hero.title_prefix}{' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary-container via-cyan-300 to-brand-secondary-container">
                 {t.hero.title_highlight}
-              </span>{' '}
+              </span>
               {t.hero.title_suffix}
             </h1>
 
@@ -159,7 +165,7 @@ export default function Hero({ onOpenCalculator, onOpenCases }: HeroProps) {
                   <span className="w-3 h-3 rounded-full bg-rose-500/80 inline-block"></span>
                   <span className="w-3 h-3 rounded-full bg-amber-500/80 inline-block"></span>
                   <span className="w-3 h-3 rounded-full bg-emerald-500/80 inline-block"></span>
-                  <span className="ml-2 font-mono text-[11px] text-gray-400">agency-metrics.ts</span>
+                  <span className="ml-2 font-mono text-[11px] text-gray-400">developer-metrics.ts</span>
                 </div>
                 <div className="flex items-center gap-1.5 text-[11px] text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-full font-medium">
                   <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
@@ -181,7 +187,7 @@ export default function Hero({ onOpenCalculator, onOpenCases }: HeroProps) {
                     </span>
                   </div>
                   <div className="flex items-baseline gap-2">
-                    <span className="font-display text-3xl font-extrabold text-emerald-400">99</span>
+                    <span className="font-display text-3xl font-extrabold text-emerald-400">90+</span>
                     <span className="text-xs text-gray-400">/ 100</span>
                   </div>
                   <span className="text-[11px] text-gray-400 mt-1">{cardStrings.speedSub}</span>
@@ -203,17 +209,68 @@ export default function Hero({ onOpenCalculator, onOpenCases }: HeroProps) {
                 </div>
               </div>
 
-              {/* Compact Code Preview Terminal */}
-              <div className="bg-[#080b12] rounded-xl p-3.5 border border-white/5 font-mono text-[12px] leading-relaxed text-gray-300 space-y-1">
-                <div className="text-gray-500">// Kray Digital Model:</div>
-                <div>
-                  <span className="text-cyan-300">const</span> <span className="text-indigo-300">payment</span> = <span className="text-emerald-300">'0% Deposit / 100% on Delivery'</span>;
+              {/* Two Upward Growth Charts */}
+              <div className="grid grid-cols-2 gap-3.5">
+                {/* Chart 1: Conversion Growth */}
+                <div className="bg-[#0b101b]/90 border border-emerald-500/20 rounded-xl p-3.5 flex flex-col justify-between">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-[11px] font-medium text-gray-300 truncate">{cardStrings.chart1Title}</span>
+                    <span className="text-[10px] font-bold text-emerald-400 bg-emerald-500/15 px-1.5 py-0.5 rounded font-mono">▲</span>
+                  </div>
+                  <svg viewBox="0 0 180 68" className="w-full h-16 overflow-visible" aria-hidden="true">
+                    <defs>
+                      <linearGradient id="heroChartGradEmerald" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="#34d399" stopOpacity="0.35" />
+                        <stop offset="100%" stopColor="#34d399" stopOpacity="0.0" />
+                      </linearGradient>
+                    </defs>
+                    <line x1="0" y1="20" x2="180" y2="20" stroke="rgba(255,255,255,0.05)" strokeDasharray="3 3" />
+                    <line x1="0" y1="44" x2="180" y2="44" stroke="rgba(255,255,255,0.05)" strokeDasharray="3 3" />
+                    <path
+                      d="M 4 58 C 32 56, 52 46, 78 40 C 106 34, 130 22, 174 8 L 174 64 L 4 64 Z"
+                      fill="url(#heroChartGradEmerald)"
+                    />
+                    <path
+                      d="M 4 58 C 32 56, 52 46, 78 40 C 106 34, 130 22, 174 8"
+                      fill="none"
+                      stroke="#34d399"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                    />
+                    <circle cx="174" cy="8" r="4" fill="#34d399" />
+                    <circle cx="174" cy="8" r="7" fill="#34d399" fillOpacity="0.25" />
+                  </svg>
                 </div>
-                <div>
-                  <span className="text-cyan-300">const</span> <span className="text-indigo-300">pricing</span> = &#123; landing: <span className="text-amber-300">'від 5 000 ₴'</span>, corp: <span className="text-amber-300">'від 15 000 ₴'</span> &#125;;
-                </div>
-                <div>
-                  <span className="text-cyan-300">const</span> <span className="text-indigo-300">guarantee</span> = <span className="text-emerald-300">'KPI & SLA Contract'</span>;
+
+                {/* Chart 2: Organic Traffic & Leads Growth */}
+                <div className="bg-[#0b101b]/90 border border-cyan-500/20 rounded-xl p-3.5 flex flex-col justify-between">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-[11px] font-medium text-gray-300 truncate">{cardStrings.chart2Title}</span>
+                    <span className="text-[10px] font-bold text-cyan-400 bg-cyan-500/15 px-1.5 py-0.5 rounded font-mono">▲</span>
+                  </div>
+                  <svg viewBox="0 0 180 68" className="w-full h-16 overflow-visible" aria-hidden="true">
+                    <defs>
+                      <linearGradient id="heroChartGradCyan" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="#22d3ee" stopOpacity="0.35" />
+                        <stop offset="100%" stopColor="#22d3ee" stopOpacity="0.0" />
+                      </linearGradient>
+                    </defs>
+                    <line x1="0" y1="20" x2="180" y2="20" stroke="rgba(255,255,255,0.05)" strokeDasharray="3 3" />
+                    <line x1="0" y1="44" x2="180" y2="44" stroke="rgba(255,255,255,0.05)" strokeDasharray="3 3" />
+                    <path
+                      d="M 4 60 C 36 58, 62 50, 92 38 C 122 26, 146 16, 174 6 L 174 64 L 4 64 Z"
+                      fill="url(#heroChartGradCyan)"
+                    />
+                    <path
+                      d="M 4 60 C 36 58, 62 50, 92 38 C 122 26, 146 16, 174 6"
+                      fill="none"
+                      stroke="#22d3ee"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                    />
+                    <circle cx="174" cy="6" r="4" fill="#22d3ee" />
+                    <circle cx="174" cy="6" r="7" fill="#22d3ee" fillOpacity="0.25" />
+                  </svg>
                 </div>
               </div>
 

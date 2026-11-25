@@ -224,7 +224,7 @@ export default function CasesDrawer({ isOpen, onClose, onContactClick, initialCa
                       </div>
                       <div className="flex items-center gap-1.5 px-3 py-0.5 rounded-md bg-brand-surface-container-high/60 border border-brand-outline-variant/15 text-[10px] font-mono text-gray-400">
                         <span className="text-emerald-400">https://</span>
-                        <span>kray-digital.com/preview/{activeCase.id}</span>
+                        <span>kray.digital/case/{activeCase.id}</span>
                       </div>
                       <div className="w-6" />
                     </div>
@@ -234,7 +234,7 @@ export default function CasesDrawer({ isOpen, onClose, onContactClick, initialCa
                       onError={(e) => {
                         (e.target as HTMLElement).style.display = 'none';
                       }}
-                      className="w-full h-[calc(100%-1.75rem)] object-cover object-top group-hover:scale-105 transition-transform duration-700"
+                      className="w-full h-[calc(100%-1.75rem)] object-contain bg-[#070b14] group-hover:scale-[1.02] transition-transform duration-500"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-brand-surface-container-low/60 via-transparent to-transparent pointer-events-none" />
                   </div>

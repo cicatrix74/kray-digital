@@ -365,6 +365,45 @@ function formatKyivDateTime(isoStr?: string): string {
   return `${get('hour')}:${get('minute')} ${get('day')}.${get('month')}.${get('year')}`;
 }
 
+function computeEstimatedRestore(startIso: string | undefined, yasnoGroup: any) {
+  const now = new Date();
+  const nowMs = now.getTime();
+  let restoreMs: number | null = null;
+
+  if (yasnoGroup && yasnoGroup.today && Array.isArray(yasnoGroup.today.slots)) {
+    const parts = new Intl.DateTimeFormat('en-GB', {
+      timeZone: 'Europe/Kiev',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false
+    }).formatToParts(now);
+    const h = parseInt(parts.find(p => p.type === 'hour')?.value || '0', 10) % 24;
+    const m = parseInt(parts.find(p => p.type === 'minute')?.value || '0', 10);
+    const curMin = h * 60 + m;
+
+    const activeSlot = yasnoGroup.today.slots.find((s: any) => curMin >= s.start && curMin < s.end);
+    if (activeSlot && typeof activeSlot.end === 'number') {
+      restoreMs = nowMs + (activeSlot.end - curMin) * 60 * 1000;
+    }
+  }
+
+  if (!restoreMs || restoreMs <= nowMs + 5 * 60 * 1000) {
+    const startMs = startIso ? new Date(startIso).getTime() : nowMs;
+    const baseMs = Number.isNaN(startMs) ? nowMs : startMs;
+    restoreMs = baseMs + 2 * 60 * 60 * 1000;
+    while (restoreMs <= nowMs + 15 * 60 * 1000) {
+      restoreMs += 2 * 60 * 60 * 1000;
+    }
+  }
+
+  const formatted = formatKyivDateTime(new Date(restoreMs).toISOString());
+  return {
+    ua: `до ${formatted}`,
+    ru: `до ${formatted}`,
+    en: `until ${formatted}`
+  };
+}
+
 let manualEmergencyMode: boolean | null = null;
 let emergencyStartedAt: string | null = null;
 let emergencyEndedAt: string | null = null;
@@ -420,14 +459,16 @@ app.get('/api/status', async (req, res) => {
   const startIso = (manualEmergencyMode === true ? emergencyStartedAt : (emerg.startedAt || emergencyStartedAt)) || (yasnoGroup && yasnoGroup.updatedOn) || (dtekMirror && dtekMirror.lastUpdated);
   const updatedIso = (dtekMirror && dtekMirror.lastUpdated) || (yasnoGroup && yasnoGroup.updatedOn);
 
+  const restoreTimes = isEmergency ? computeEstimatedRestore(startIso, yasnoGroup) : null;
+
   const emergencyDetails = isEmergency ? {
     reasonUa: 'Екстрені відключення (Аварійне без застосування графіку погодинних відключень)',
     reasonRu: 'Экстренные отключения (Аварийное без применения графика почасовых отключений)',
     reasonEn: 'Emergency shutdowns (Emergency outage without hourly schedule)',
     startTime: formatKyivDateTime(startIso),
-    estimatedRestoreUa: 'уточнюється (за командою НЕК Укренерго)',
-    estimatedRestoreRu: 'уточняется (по команде НЭК Укрэнерго)',
-    estimatedRestoreEn: 'pending grid stabilization (per NEC Ukrenergo)',
+    estimatedRestoreUa: restoreTimes!.ua,
+    estimatedRestoreRu: restoreTimes!.ru,
+    estimatedRestoreEn: restoreTimes!.en,
     updatedAt: formatKyivDateTime(updatedIso)
   } : null;
 
@@ -619,6 +660,7 @@ app.get('/api/search', async (req, res) => {
       if (isGroupEmergency) {
         const startIso = (yasnoGroup && yasnoGroup.updatedOn) || (dtekMirror && dtekMirror.lastUpdated);
         const updatedIso = (dtekMirror && dtekMirror.lastUpdated) || (yasnoGroup && yasnoGroup.updatedOn);
+        const restoreTimes = computeEstimatedRestore(startIso, yasnoGroup);
         outageInfo = {
           hasOutage: true,
           type: 'emergency_shutdown',
@@ -626,9 +668,9 @@ app.get('/api/search', async (req, res) => {
           reasonRu: 'Экстренные отключения (Аварийное без применения графика почасовых отключений)',
           reasonEn: 'Emergency shutdowns (Emergency outage without hourly schedule)',
           startTime: formatKyivDateTime(startIso),
-          estimatedRestore: 'уточнюється (за командою НЕК Укренерго)',
-          estimatedRestoreRu: 'уточняется (по команде НЭК Укрэнерго)',
-          estimatedRestoreEn: 'pending grid stabilization (per NEC Ukrenergo)',
+          estimatedRestore: restoreTimes.ua,
+          estimatedRestoreRu: restoreTimes.ru,
+          estimatedRestoreEn: restoreTimes.en,
           updatedAt: formatKyivDateTime(updatedIso),
           operator: 'ДТЕК Дніпровські електромережі',
           noticeUa: 'За даною адресою в даний момент відсутня електроенергія. Причина: Екстрені відключення. Графіки стабілізаційних відключень не діють!',

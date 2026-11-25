@@ -14,24 +14,24 @@ const NAV_ITEMS = {
   uk: [
     { id: 'expertise-section', label: 'Послуги' },
     { id: 'roadmap-section', label: 'Процес & Терміни' },
+    { id: 'stats-section', label: 'Переваги' },
     { id: 'portfolio-section', label: 'Кейси' },
-    { id: 'stats-section', label: 'Чому ми' },
     { id: 'faq-section', label: 'FAQ' },
     { id: 'contact-cta-section', label: 'Контакти' }
   ],
   ru: [
     { id: 'expertise-section', label: 'Услуги' },
     { id: 'roadmap-section', label: 'Процесс & Сроки' },
+    { id: 'stats-section', label: 'Преимущества' },
     { id: 'portfolio-section', label: 'Кейсы' },
-    { id: 'stats-section', label: 'Почему мы' },
     { id: 'faq-section', label: 'FAQ' },
     { id: 'contact-cta-section', label: 'Контакты' }
   ],
   en: [
     { id: 'expertise-section', label: 'Services' },
     { id: 'roadmap-section', label: 'Process & Timeline' },
+    { id: 'stats-section', label: 'Advantages' },
     { id: 'portfolio-section', label: 'Case Studies' },
-    { id: 'stats-section', label: 'Why Us' },
     { id: 'faq-section', label: 'FAQ' },
     { id: 'contact-cta-section', label: 'Contacts' }
   ]

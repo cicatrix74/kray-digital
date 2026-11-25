@@ -172,17 +172,17 @@ const TRANSLATIONS: Record<Language, TranslationSchema> = {
       getEstimate: 'Отримати розрахунок'
     },
     hero: {
-      badge: '⚡ Додамо динаміки вашому сайту',
+      badge: '⚡ Додам динаміки вашому сайту',
       title_prefix: 'Ваш бізнес заслуговує на найкращу ',
       title_highlight: 'digital-присутність',
       title_suffix: '.',
-      description: 'Додамо динаміки вашому сайту: створюємо сайти, які продають, та виводимо їх у топ Google. Комплексний підхід до розробки та маркетингу для вимірного зростання показників.',
+      description: 'Додам динаміки вашому сайту: роблю сайти, які приводять клієнтів, та виводжу їх у топ Google. Особиста відповідальність на всіх етапах — від першого макета до реклами.',
       discuss: 'Дивитися ціни',
       cases: 'Дивитися кейси'
     },
     expertise: {
-      title: 'Експертиза Kray Digital',
-      subtitle: 'Ми поєднуємо глибокі знання технологій з розумінням маркетингової стратегії для створення рішень, що приносять реальний прибуток.',
+      title: 'Експертиза та послуги',
+      subtitle: 'Поєдную глибокі знання технологій з розумінням маркетингової стратегії, щоб створювати рішення, які приносять реальний прибуток.',
       btnDetails: 'Дізнатися детальніше',
       btnCalc: 'Отримати розрахунок',
       conversion: 'Конверсія +32%',
@@ -191,15 +191,15 @@ const TRANSLATIONS: Record<Language, TranslationSchema> = {
       services: {
         dev: {
           title: 'Розробка сайтів',
-          desc: 'Від висококонверсійних лендингів до складних корпоративних систем та інтернет-магазинів з інтеграціями.'
+          desc: 'Від простих лендінгів і сайтів-візиток до інтернет-магазинів та індивідуальних веб-сервісів.'
         },
         seo: {
           title: 'SEO-оптимізація',
-          desc: 'Стабільне зростання органічного цільового трафіку та топові позиції у пошуку Google.'
+          desc: 'Стабільне зростання відвідуваності з пошуку Google без постійних витрат на кліки.'
         },
         ads: {
           title: 'Google Реклама',
-          desc: 'Швидкі ліди, висока окупність інвестицій (ROI) та точний таргетинг на гарячу аудиторію.'
+          desc: 'Швидкі заявки з пошуку Google, зрозуміла окупність реклами та показ лише зацікавленим клієнтам.'
         },
         smm: {
           title: 'Додаткові послуги та техпідтримка',
@@ -208,23 +208,23 @@ const TRANSLATIONS: Record<Language, TranslationSchema> = {
       }
     },
     stats: {
-      title: 'Чому обирають нас',
-      subtitle: 'Прозорість на кожному кроці, експертна команда та безумовний фокус на бізнес-результатах наших клієнтів.',
+      title: 'Чому працюють зі мною',
+      subtitle: 'Прозорість на кожному кроці, прямий зв’язок без посередників та фокус на бізнес-результатах клієнтів.',
       years_val: '10+',
       years_title: 'Років досвіду',
-      years_desc: 'У digital-маркетингу та розробці високонавантажених систем',
+      years_desc: 'У створенні сайтів, пошуковому просуванні та налаштуванні реклами',
       kpi_val: '0%',
       kpi_title: 'Без передоплати',
       kpi_desc: 'Жодних авансів на старті. Оплата здійснюється виключно за фактом здачі та прийому робіт.',
       reports_val: '24/7',
       reports_title: 'Звітність',
-      reports_desc: 'Повністю прозора наскрізна веб-аналітика та звіти в реальному часі'
+      reports_desc: 'Зрозуміла статистика заявок, дзвінків і витрат без складних термінів'
     },
     contact: {
       badge: 'Аудит у подарунок',
       title: 'Готові обговорити ваш проєкт?',
-      desc: 'Залиште заявку, і наші фахівці зв\'яжуться з вами протягом робочого дня для проведення безкоштовного аудиту ваших поточних digital-активів.',
-      bullet1: 'Детальний розбір задачі нашими тімлідами',
+      desc: 'Залиште заявку — я зв\'яжуся з вами протягом робочого дня для безкоштовного розбору вашого сайту або реклами.',
+      bullet1: 'Детальний розбір задачі та архітектури особисто',
       bullet2: 'Оцінка орієнтовних термінів та вилки бюджету',
       bullet3: 'Покроковий план перших кроків запуску',
       label_name: 'Ваше ім\'я',
@@ -243,26 +243,26 @@ const TRANSLATIONS: Record<Language, TranslationSchema> = {
       err_phone: 'Будь ласка, введіть ваш телефон',
       err_phone_short: 'Номер телефону занадто короткий',
       success_title: 'Заявку успішно відправлено!',
-      success_desc: 'Дякуємо за довіру. Ми вже вивчаємо вашу нішу та зателефонуємо вам найближчим часом.',
+      success_desc: 'Дякую за довіру. Я вже вивчаю вашу нішу та зателефоную вам найближчим часом.',
       success_btn: 'Надіслати ще одну'
     },
     footer: {
       link_services: 'Послуги',
       link_cases: 'Кейси',
-      link_why: 'Чому ми',
+      link_why: 'Переваги',
       link_contacts: 'Контакти',
       crm_panel: 'Панель лідів CRM',
       resources_title: 'Корисні ресурси',
       copyright: '© 2026 Kray Digital. Усі права захищено.'
     },
     portfolio: {
-      title: 'Наші успішні роботи',
-      subtitle: 'Реальні результати, виражені в зростанні продажів та трафіку для наших клієнтів.',
+      title: 'Мої успішні роботи',
+      subtitle: 'Реальні результати, виражені в зростанні продажів та трафіку для клієнтів.',
       btnMore: 'Детальніше про проєкт',
       viewAll: 'Дивитися всі кейси'
     },
     casesDrawer: {
-      drawer_title: 'Наші успішні кейси',
+      drawer_title: 'Мої успішні кейси',
       drawer_subtitle: 'Реальні цифри та результати вирішення бізнес-проблем',
       cat_all: 'Всі',
       cat_dev: 'Розробка сайтів',
@@ -343,17 +343,17 @@ const TRANSLATIONS: Record<Language, TranslationSchema> = {
       getEstimate: 'Получить расчет'
     },
     hero: {
-      badge: '⚡ Добавим динамики вашему сайту',
+      badge: '⚡ Добавлю динамики вашему сайту',
       title_prefix: 'Ваш бизнес заслуживает лучшего ',
       title_highlight: 'digital-присутствия',
       title_suffix: '.',
-      description: 'Добавим динамики вашему сайту: создаем продающие интерфейсы и выводим их в топ Google. Комплексный подход к разработке и маркетингу для измеримого роста показателей.',
+      description: 'Добавлю динамики вашему сайту: делаю сайты, которые приводят клиентов, и вывожу их в топ Google. Личная ответственность на каждом этапе — от макета до рекламы.',
       discuss: 'Смотреть цены',
       cases: 'Смотреть кейсы'
     },
     expertise: {
-      title: 'Экспертиза Kray Digital',
-      subtitle: 'Мы объединяем глубокие знания технологий с пониманием маркетинговой стратегии для создания решений, приносящих реальную прибыль.',
+      title: 'Экспертиза и услуги',
+      subtitle: 'Объединяю глубокие знания технологий с пониманием маркетинговой стратегии, чтобы создавать решения, приносящие реальную прибыль.',
       btnDetails: 'Узнать подробнее',
       btnCalc: 'Получить расчет',
       conversion: 'Конверсия +32%',
@@ -362,15 +362,15 @@ const TRANSLATIONS: Record<Language, TranslationSchema> = {
       services: {
         dev: {
           title: 'Разработка сайтов',
-          desc: 'От высококонверсионных лендингов до сложных корпоративных систем и интернет-магазинов с интеграциями.'
+          desc: 'От простых лендингов и сайтов-визиток до интернет-магазинов и индивидуальных веб-сервисов.'
         },
         seo: {
           title: 'SEO-оптимизация',
-          desc: 'Стабильный рост органического целевого трафика и топовые позиции в поиске Google.'
+          desc: 'Стабильный рост посещаемости из поиска Google без постоянных трат на клики.'
         },
         ads: {
           title: 'Google Реклама',
-          desc: 'Быстрые лиды, высокая окупаемость инвестиций (ROI) и точный таргетинг на горячую аудиторию.'
+          desc: 'Быстрые заявки из поиска Google, понятная окупаемость рекламы и показ только заинтересованным клиентам.'
         },
         smm: {
           title: 'Дополнительные услуги и техподдержка',
@@ -379,23 +379,23 @@ const TRANSLATIONS: Record<Language, TranslationSchema> = {
       }
     },
     stats: {
-      title: 'Почему выбирают нас',
-      subtitle: 'Прозрачность на каждом шаге, экспертная команда и безусловный фокус на бизнес-результатах наших клиентов.',
+      title: 'Почему работают со мной',
+      subtitle: 'Прозрачность на каждом шаге, прямая связь без посредников и фокус на бизнес-результатах клиентов.',
       years_val: '10+',
       years_title: 'Лет опыта',
-      years_desc: 'В digital-маркетинге и разработке высоконагруженных систем',
+      years_desc: 'В создании сайтов, поисковом продвижении и настройке рекламы',
       kpi_val: '0%',
       kpi_title: 'Без предоплаты',
       kpi_desc: 'Никаких авансов на старте. Оплата производится исключительно по факту сдачи и приёмки работ.',
       reports_val: '24/7',
       reports_title: 'Отчетность',
-      reports_desc: 'Полностью прозрачная сквозная веб-аналитика и отчеты в реальном времени'
+      reports_desc: 'Понятная статистика заявок, звонков и расходов без сложных терминов'
     },
     contact: {
       badge: 'Аудит в подарок',
       title: 'Готовы обсудить ваш проект?',
-      desc: 'Оставьте заявку, и наши специалисты свяжутся с вами в течение рабочего дня для проведения бесплатного аудита ваших текущих digital-активов.',
-      bullet1: 'Детальный разбор задачи нашими тимлидами',
+      desc: 'Оставьте заявку — я свяжусь с вами в течение рабочего дня для бесплатного разбора вашего сайта или рекламы.',
+      bullet1: 'Детальный разбор задачи и архитектуры лично',
       bullet2: 'Оценка ориентировочных сроков и вилки бюджета',
       bullet3: 'Пошаговый план первых шагов запуска',
       label_name: 'Ваше имя',
@@ -414,26 +414,26 @@ const TRANSLATIONS: Record<Language, TranslationSchema> = {
       err_phone: 'Пожалуйста, введите ваш телефон',
       err_phone_short: 'Номер телефона слишком короткий',
       success_title: 'Заявка успешно отправлена!',
-      success_desc: 'Спасибо за доверие. Мы уже изучаем вашу нишу и перезвоним вам в ближайшее время.',
+      success_desc: 'Спасибо за доверие. Я уже изучаю вашу нишу и перезвоню вам в ближайшее время.',
       success_btn: 'Отправить еще одну'
     },
     footer: {
       link_services: 'Услуги',
       link_cases: 'Кейсы',
-      link_why: 'Почему мы',
+      link_why: 'Преимущества',
       link_contacts: 'Контакты',
       crm_panel: 'Панель лидов CRM',
       resources_title: 'Полезные ресурсы',
       copyright: '© 2026 Kray Digital. Все права защищены.'
     },
     portfolio: {
-      title: 'Наши успешные работы',
-      subtitle: 'Реальные результаты, выраженные в росте продаж и трафика для наших клиентов.',
+      title: 'Мои успешные работы',
+      subtitle: 'Реальные результаты, выраженные в росте продаж и трафика для клиентов.',
       btnMore: 'Подробнее о проекте',
       viewAll: 'Смотреть все кейсы'
     },
     casesDrawer: {
-      drawer_title: 'Наши успешные кейсы',
+      drawer_title: 'Мои успешные кейсы',
       drawer_subtitle: 'Реальные цифры и результаты решения бизнес-проблем',
       cat_all: 'Все',
       cat_dev: 'Разработка сайтов',
@@ -518,13 +518,13 @@ const TRANSLATIONS: Record<Language, TranslationSchema> = {
       title_prefix: 'Your business deserves the best ',
       title_highlight: 'digital presence',
       title_suffix: '.',
-      description: 'Bringing dynamics to your website: we build high-converting interfaces and rank them #1 on Google. A comprehensive approach for measurable growth.',
+      description: 'Bringing dynamics to your website: I build high-converting interfaces and rank them #1 on Google. Direct communication and full accountability.',
       discuss: 'View Pricing',
       cases: 'View Case Studies'
     },
     expertise: {
-      title: 'Kray Digital Expertise',
-      subtitle: 'We combine deep technical expertise with strategic marketing insight to deliver solutions that drive real bottom-line revenue.',
+      title: 'Expertise & Services',
+      subtitle: 'I combine deep technical expertise with strategic marketing insight to deliver solutions that drive real bottom-line revenue.',
       btnDetails: 'Learn More',
       btnCalc: 'Get Estimate',
       conversion: 'Conversion +32%',
@@ -550,8 +550,8 @@ const TRANSLATIONS: Record<Language, TranslationSchema> = {
       }
     },
     stats: {
-      title: 'Why Choose Us',
-      subtitle: 'Transparency at every stage, an expert team, and absolute focus on our clients\' business results.',
+      title: 'Why Work With Me',
+      subtitle: 'Transparency at every stage, direct communication without intermediaries, and focus on clients\' business results.',
       years_val: '10+',
       years_title: 'Years of Experience',
       years_desc: 'In digital marketing and highly scalable systems engineering',
@@ -565,8 +565,8 @@ const TRANSLATIONS: Record<Language, TranslationSchema> = {
     contact: {
       badge: 'Free Audit Included',
       title: 'Ready to discuss your project?',
-      desc: 'Submit a request, and our specialists will contact you within one business day for a free audit of your current digital assets.',
-      bullet1: 'Detailed task analysis by our team leads',
+      desc: 'Submit a request, and I will contact you within one business day for a free audit of your current digital assets.',
+      bullet1: 'Personal task and architecture breakdown',
       bullet2: 'Estimate of delivery timelines and budget brackets',
       bullet3: 'Step-by-step roadmap for launching your project',
       label_name: 'Your Name',
@@ -585,26 +585,26 @@ const TRANSLATIONS: Record<Language, TranslationSchema> = {
       err_phone: 'Please enter your phone number',
       err_phone_short: 'Phone number is too short',
       success_title: 'Request successfully submitted!',
-      success_desc: 'Thank you for your trust. We are already analyzing your niche and will get back to you shortly.',
+      success_desc: 'Thank you for your trust. I am already reviewing your niche and will get back to you shortly.',
       success_btn: 'Submit another'
     },
     footer: {
       link_services: 'Services',
       link_cases: 'Cases',
-      link_why: 'Why Us',
+      link_why: 'Advantages',
       link_contacts: 'Contacts',
       crm_panel: 'CRM Leads Panel',
       resources_title: 'Useful Resources',
       copyright: '© 2026 Kray Digital. All rights reserved.'
     },
     portfolio: {
-      title: 'Our Successful Works',
-      subtitle: 'Real business-solving results reflected in traffic growth and sales metrics for our clients.',
+      title: 'Selected Works',
+      subtitle: 'Real business-solving results reflected in traffic growth and sales metrics for clients.',
       btnMore: 'View details',
       viewAll: 'Explore All Case Studies'
     },
     casesDrawer: {
-      drawer_title: 'Our Successful Cases',
+      drawer_title: 'Case Studies',
       drawer_subtitle: 'Real metrics and results of solving business challenges',
       cat_all: 'All',
       cat_dev: 'Web Development',
@@ -746,21 +746,21 @@ function getInitialLanguage(initialLanguage?: Language): Language {
 
 const SEO_META: Record<Language, { title: string; description: string; notFoundTitle: string }> = {
   uk: {
-    title: 'Kray Digital — Розробка сайтів та digital-маркетинг',
+    title: 'Kray Digital — Приватний веб-розробник та SEO/PPC-спеціаліст',
     description:
-      'Digital-агентство Kray Digital. Розробка швидких веб-сайтів від 5 000 ₴, SEO-оптимізація та Google реклама. Без передоплати — оплата виключно за фактом робіт.',
+      'Приватний веб-розробник та SEO/PPC-спеціаліст (Kray Digital). Розробка швидких веб-сайтів від 5 000 ₴, SEO-оптимізація та Google реклама. Без передоплати — оплата виключно за фактом робіт.',
     notFoundTitle: '404 — Сторінку не знайдено | Kray Digital',
   },
   ru: {
-    title: 'Kray Digital — Разработка сайтов и digital-маркетинг',
+    title: 'Kray Digital — Частный веб-разработчик и SEO/PPC-специалист',
     description:
-      'Digital-агентство Kray Digital. Разработка быстрых веб-сайтов от 5 000 ₴, SEO-оптимизация и Google реклама. Без предоплаты — оплата исключительно по факту работ.',
+      'Частный веб-разработчик и SEO/PPC-специалист (Kray Digital). Разработка быстрых веб-сайтов от 5 000 ₴, SEO-оптимизация и Google реклама. Без предоплаты — оплата исключительно по факту работ.',
     notFoundTitle: '404 — Страница не найдена | Kray Digital',
   },
   en: {
-    title: 'Kray Digital — Web Development & Digital Marketing',
+    title: 'Kray Digital — Independent Web Developer & Digital Marketer',
     description:
-      'Kray Digital agency. Fast website development, SEO optimization and Google Ads. Pay-on-delivery model with guaranteed KPIs.',
+      'Independent web developer & SEO/PPC specialist (Kray Digital). Fast website development, SEO optimization and Google Ads. Pay-on-delivery model with guaranteed KPIs.',
     notFoundTitle: '404 — Page Not Found | Kray Digital',
   },
 };

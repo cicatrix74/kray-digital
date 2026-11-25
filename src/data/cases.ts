@@ -18,7 +18,7 @@ export const CASE_STUDIES: Record<Language, CaseStudy[]> = {
       ],
       metrics: [
         { label: 'Зростання конверсії', value: '+42%' },
-        { label: 'Швидкість завантаження', value: '0.8s' },
+        { label: 'Швидкість завантаження', value: '1.2s' },
         { label: 'Зростання чека', value: '+28%' }
       ],
       tags: ['React', 'Next.js', 'Tailwind', 'Framer Motion', 'Headless Commerce']
@@ -37,7 +37,7 @@ export const CASE_STUDIES: Record<Language, CaseStudy[]> = {
         'Зниження вартості залучення ліда (CPL) на 60%'
       ],
       metrics: [
-        { label: 'Органічний трафик', value: '+320%' },
+        { label: 'Органічний трафік', value: '+320%' },
         { label: 'Запити в Топ-10', value: '85%' },
         { label: 'Зниження CPL', value: '-60%' }
       ],
@@ -140,7 +140,7 @@ export const CASE_STUDIES: Record<Language, CaseStudy[]> = {
       ],
       metrics: [
         { label: 'Рост конверсии', value: '+42%' },
-        { label: 'Скорость загрузки', value: '0.8s' },
+        { label: 'Скорость загрузки', value: '1.2s' },
         { label: 'Рост чека', value: '+28%' }
       ],
       tags: ['React', 'Next.js', 'Tailwind', 'Framer Motion', 'Headless Commerce']
@@ -262,7 +262,7 @@ export const CASE_STUDIES: Record<Language, CaseStudy[]> = {
       ],
       metrics: [
         { label: 'Conversion Growth', value: '+42%' },
-        { label: 'Page Load Speed', value: '0.8s' },
+        { label: 'Page Load Speed', value: '1.2s' },
         { label: 'Average Ticket', value: '+28%' }
       ],
       tags: ['React', 'Next.js', 'Tailwind', 'Framer Motion', 'Headless Commerce']

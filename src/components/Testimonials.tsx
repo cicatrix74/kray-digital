@@ -114,22 +114,22 @@ export default function Testimonials({ onOpenCase, onScrollToContact }: Testimon
       en: 'Social Proof & Success Stories'
     },
     title: {
-      uk: 'Історії успіху наших клієнтів',
-      ru: 'Истории успеха наших клиентов',
-      en: 'Real outcomes from real partners'
+      uk: 'Відгуки клієнтів',
+      ru: 'Отзывы клиентов',
+      en: 'Client Feedback'
     },
     subtitle: {
-      uk: 'Дізнайтеся, як ми допомогли українським та міжнародним компаніям масштабувати онлайн-продажі, запустити веб-платформи та підвищити конверсію.',
-      ru: 'Узнайте, как мы помогли украинским и международным компаниям масштабировать онлайн-продажи, запустить веб-платформы и повысить конверсию.',
-      en: 'See how we helped businesses scale digital sales, launch high-performance platforms, and achieve measurable ROI.'
+      uk: 'Дізнайтеся, як моя робота допомогла компаніям масштабувати онлайн-продажі, запустити веб-платформи та підвищити конверсію.',
+      ru: 'Узнайте, как моя работа помогла компаниям масштабировать онлайн-продажи, запустить веб-платформы и повысить конверсию.',
+      en: 'See how my work helped businesses scale digital sales, launch high-performance platforms, and achieve measurable ROI.'
     },
     aggregate: {
-      rating: '4.98 / 5.0',
-      ratingText: { uk: 'Середня оцінка (50+ проектів)', ru: 'Средняя оценка (50+ проектов)', en: 'Average rating (50+ projects)' },
-      retention: '96%',
-      retentionText: { uk: 'Клієнтів звертаються повторно за новими проектами', ru: 'Клиентов обращаются повторно за новыми проектами', en: 'Client retention & repeat projects' },
-      roi: '3.4x',
-      roiText: { uk: 'Середній ROI маркетингових кампаній', ru: 'Средний ROI маркетинговых кампаний', en: 'Average marketing ROI' }
+      rating: '4.8 / 5.0',
+      ratingText: { uk: 'Середня оцінка (50+ проєктів)', ru: 'Средняя оценка (50+ проектов)', en: 'Average rating (50+ projects)' },
+      retention: '78%',
+      retentionText: { uk: 'Клієнтів звертаються повторно за новими проєктами', ru: 'Клиентов обращаются повторно за новыми проектами', en: 'Client retention & repeat projects' },
+      roi: '2.5x',
+      roiText: { uk: 'Середня окупність реклами', ru: 'Средняя окупаемость рекламы', en: 'Average ad return' }
     },
     cats: {
       all: { uk: 'Усі відгуки', ru: 'Все отзывы', en: 'All Stories' },
@@ -139,7 +139,7 @@ export default function Testimonials({ onOpenCase, onScrollToContact }: Testimon
       retail: { uk: 'FinTech & Retail', ru: 'FinTech & Retail', en: 'FinTech & Retail' }
     },
     verifiedClient: { uk: 'Підтверджений клієнт', ru: 'Подтвержденный клиент', en: 'Verified Client' },
-    viewCase: { uk: 'Читати кейс проекту', ru: 'Читать кейс проекта', en: 'View Case Study' },
+    viewCase: { uk: 'Читати кейс проєкту', ru: 'Читать кейс проекта', en: 'View Case Study' },
     btnConsult: { uk: 'Отримати подібний результат', ru: 'Получить похожий результат', en: 'Get Similar Growth' }
   };
 
@@ -167,20 +167,20 @@ export default function Testimonials({ onOpenCase, onScrollToContact }: Testimon
         en: 'in first 3 months post-launch'
       },
       quote: {
-        uk: 'KRAY DIGITAL повністю переробили наш інтернет-магазин на швидкий PWA з миттєвим завантаженням. Конверсія мобільних користувачів зросла з 1.2% до 3.8%. Швидкість завантаження сторінок за даними Google PageSpeed досягла 98/100.',
-        ru: 'KRAY DIGITAL полностью переработали наш интернет-магазин в быстрый PWA с мгновенной загрузкой. Конверсия мобильных пользователей выросла с 1.2% до 3.8%. Скорость загрузки страниц по Google PageSpeed достигла 98/100.',
-        en: 'KRAY DIGITAL completely rebuilt our e-commerce platform into a lighting-fast PWA. Mobile conversion rate leaped from 1.2% to 3.8%. Google PageSpeed score reached an incredible 98/100.'
+        uk: 'KRAY DIGITAL повністю переробив наш інтернет-магазин у сучасний швидкий сайт із миттєвим завантаженням. Замовлень зі смартфонів стало втричі більше (конверсія зросла з 1.2% до 3.8%), а швидкість за Google PageSpeed досягла 90+/100.',
+        ru: 'KRAY DIGITAL полностью переработал наш интернет-магазин в современный быстрый сайт с мгновенной загрузкой. Заказов со смартфонов стало втрое больше (конверсия выросла с 1.2% до 3.8%), а скорость по Google PageSpeed достигла 90+/100.',
+        en: 'KRAY DIGITAL completely rebuilt our online store into a fast, modern website. Mobile orders tripled (conversion grew from 1.2% to 3.8%), and Google PageSpeed reached 90+/100.'
       },
       verified: true,
       projectType: {
-        uk: 'E-Commerce Platform + SEO',
-        ru: 'E-Commerce Platform + SEO',
-        en: 'E-Commerce Platform + SEO'
+        uk: 'Інтернет-магазин + SEO',
+        ru: 'Интернет-магазин + SEO',
+        en: 'E-Commerce Store + SEO'
       },
       duration: {
-        uk: 'Термін розробки: 6 тижнів',
-        ru: 'Срок разработки: 6 недель',
-        en: 'Timeline: 6 weeks'
+        uk: '6 тижнів',
+        ru: '6 недель',
+        en: '6 weeks'
       },
       linkedCaseId: 'ecom-1'
     },
@@ -207,20 +207,20 @@ export default function Testimonials({ onOpenCase, onScrollToContact }: Testimon
         en: 'saved $18k in ad burn rate'
       },
       quote: {
-        uk: 'Команда KRAY DIGITAL створила для нас інтерактивний веб-сервіс із розумним калькулятором та запустила таргетовану рекламу у Google Ads. Кількість кваліфікованих B2B-демо зросла втричі без збільшення щомісячного бюджету!',
-        ru: 'Команда KRAY DIGITAL создала для нас интерактивный веб-сервис с умным калькулятором и запустила таргетированную рекламу в Google Ads. Количество квалифицированных B2B-демо выросло втрое без увеличения ежемесячного бюджета!',
-        en: 'KRAY DIGITAL designed a lead-generating web application with an interactive pricing calculator and rearchitected our Google Ads structure. Qualified B2B demo requests tripled with zero extra ad spend.'
+        uk: 'KRAY DIGITAL створив для нас зручний сайт із розумним калькулятором та налаштував рекламу у Google. Кількість заявок від бізнес-клієнтів зросла втричі без збільшення щомісячного бюджету!',
+        ru: 'KRAY DIGITAL создал для нас удобный сайт с умным калькулятором и настроил рекламу в Google. Количество заявок от бизнес-клиентов выросло втрое без увеличения ежемесячного бюджета!',
+        en: 'KRAY DIGITAL built a clean website with an interactive pricing calculator and restructured our Google Ads. Qualified business inquiries tripled with zero extra ad spend.'
       },
       verified: true,
       projectType: {
-        uk: 'Web App + Google Performance Max',
-        ru: 'Web App + Google Performance Max',
-        en: 'Web App + Google Performance Max'
+        uk: 'Веб-сервіс + Google Реклама',
+        ru: 'Веб-сервис + Google Реклама',
+        en: 'Web App + Google Ads'
       },
       duration: {
-        uk: 'Термін розробки: 4 тижні',
-        ru: 'Срок разработки: 4 недели',
-        en: 'Timeline: 4 weeks'
+        uk: '4 тижні',
+        ru: '4 недели',
+        en: '4 weeks'
       },
       linkedCaseId: 'saas-1'
     },
@@ -247,20 +247,20 @@ export default function Testimonials({ onOpenCase, onScrollToContact }: Testimon
         en: 'lead dispatch & CRM syncing'
       },
       quote: {
-        uk: 'Шукали надійну українську IT-агенцію для розробки корпоративного порталу та інтеграції з нашою CRM. Хлопці здали проект раніше дедлайну на 4 дні. Всі вимоги до безпеки та оптимізації були виконанні на 10/10.',
-        ru: 'Искали надежное украинское IT-агентство для разработки корпоративного портала и интеграции с нашей CRM. Ребята сдали проект раньше дедлайна на 4 дня. Все требования к безопасности и оптимизации были выполнены на 10/10.',
-        en: 'We were looking for a top-tier digital partner to build a B2B corporate portal with custom CRM syncing. They delivered 4 days ahead of deadline with impeccable code quality and security standards.'
+        uk: 'Шукали надійного українського розробника для створення корпоративного порталу та інтеграції з нашою CRM. Проєкт здав раніше дедлайну на 4 дні, усі вимоги до безпеки та оптимізації були виконані на 10/10.',
+        ru: 'Искали надежного украинского разработчика для создания корпоративного портала и интеграции с нашей CRM. Проект сдал раньше дедлайна на 4 дня, все требования к безопасности и оптимизации выполнены на 10/10.',
+        en: 'We were looking for a reliable developer to build a B2B corporate portal with custom CRM syncing. He delivered 4 days ahead of deadline with impeccable code quality and security standards.'
       },
       verified: true,
       projectType: {
-        uk: 'Corporate Portal + ERP Integration',
-        ru: 'Corporate Portal + ERP Integration',
-        en: 'Corporate Portal + ERP Integration'
+        uk: 'Портал + інтеграція з CRM',
+        ru: 'Портал + интеграция с CRM',
+        en: 'Corporate Portal + CRM'
       },
       duration: {
-        uk: 'Термін розробки: 5 тижнів',
-        ru: 'Срок разработки: 5 недель',
-        en: 'Timeline: 5 weeks'
+        uk: '5 тижнів',
+        ru: '5 недель',
+        en: '5 weeks'
       },
       linkedCaseId: 'b2b-1'
     },
@@ -287,20 +287,20 @@ export default function Testimonials({ onOpenCase, onScrollToContact }: Testimon
         en: 'achieved in month 1'
       },
       quote: {
-        uk: 'Неймовірний підхід до аналітики та UI/UX дизайну! Розробили нам лендінг із високою конверсією та налаштували наскрізну аналітику у Google Analytics 4. Чіткий щотижневий звіт та постійна підтримка.',
-        ru: 'Невероятный подход к аналитике и UI/UX дизайну! Разработали нам лендинг с высокой конверсией и настроили сквозную аналитику в Google Analytics 4. Четкий еженедельный отчет и постоянная поддержка.',
-        en: 'Incredible analytical precision and modern UI/UX design. They built our conversion landing page and configured end-to-end GA4 attribution tracking. Clear weekly reporting and relentless optimization.'
+        uk: 'Чудовий підхід до дизайну та аналітики! Розробив нам лендінг із високою віддачею та налаштував зрозумілу статистику заявок і реклами. Чіткі щотижневі звіти та постійна підтримка.',
+        ru: 'Отличный подход к дизайну и аналитике! Разработал нам лендинг с высокой отдачей и настроил понятную статистику заявок и рекламы. Четкие еженедельные отчеты и постоянная поддержка.',
+        en: 'Great approach to design and analytics. He built our high-performing landing page and set up clear ad and lead tracking with weekly reports and reliable support.'
       },
       verified: true,
       projectType: {
-        uk: 'FinTech Promo + GA4 Tracking',
-        ru: 'FinTech Promo + GA4 Tracking',
-        en: 'FinTech Promo + GA4 Tracking'
+        uk: 'Лендінг + Аналітика',
+        ru: 'Лендинг + Аналитика',
+        en: 'Landing Page + Analytics'
       },
       duration: {
-        uk: 'Термін розробки: 2 тижні',
-        ru: 'Срок разработки: 2 недели',
-        en: 'Timeline: 2 weeks'
+        uk: '2 тижні',
+        ru: '2 недели',
+        en: '2 weeks'
       },
       linkedCaseId: 'fin-1'
     }
@@ -392,7 +392,7 @@ export default function Testimonials({ onOpenCase, onScrollToContact }: Testimon
             <div>
               <div className="flex items-center gap-2">
                 <span className="text-2xl font-black text-brand-on-surface tabular-nums">
-                  <AnimatedCounter target={4.98} decimals={2} suffix=" / 5.0" isInView={isStatsInView} />
+                  <AnimatedCounter target={4.8} decimals={1} suffix=" / 5.0" isInView={isStatsInView} />
                 </span>
                 <div className="flex items-center text-amber-400 gap-0.5">
                   {[...Array(5)].map((_, i) => (
@@ -423,7 +423,7 @@ export default function Testimonials({ onOpenCase, onScrollToContact }: Testimon
             </div>
             <div>
               <span className="text-2xl font-black text-brand-on-surface tabular-nums">
-                <AnimatedCounter target={96} decimals={0} suffix="%" isInView={isStatsInView} />
+                <AnimatedCounter target={78} decimals={0} suffix="%" isInView={isStatsInView} />
               </span>
               <p className="text-xs text-brand-on-surface-variant mt-0.5">{labels.aggregate.retentionText[language]}</p>
             </div>
@@ -435,7 +435,7 @@ export default function Testimonials({ onOpenCase, onScrollToContact }: Testimon
             </div>
             <div>
               <span className="text-2xl font-black text-brand-on-surface tabular-nums">
-                <AnimatedCounter target={3.4} decimals={1} suffix="x" isInView={isStatsInView} />
+                <AnimatedCounter target={2.5} decimals={1} suffix="x" isInView={isStatsInView} />
               </span>
               <p className="text-xs text-brand-on-surface-variant mt-0.5">{labels.aggregate.roiText[language]}</p>
             </div>
@@ -511,54 +511,22 @@ export default function Testimonials({ onOpenCase, onScrollToContact }: Testimon
                 {/* Decorative background quotation mark */}
                 <Quote className="absolute top-6 right-8 w-32 h-32 text-brand-primary-container/5 pointer-events-none rotate-12" />
 
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-                  
-                  {/* Left Column: Outcome Metric Highlight Card */}
-                  <div className="lg:col-span-5 bg-[#0f131e]/80 border border-brand-outline-variant/20 rounded-2xl p-6 md:p-8 flex flex-col justify-between relative group">
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-primary-container/10 border border-brand-primary-container/20 text-brand-primary-container text-xs font-bold uppercase tracking-wider">
-                        <TrendingUp className="w-3.5 h-3.5" />
-                        Key Metric Growth
-                      </span>
-                      {currentTestimonial.verified && (
-                        <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20">
-                          <CheckCircle2 className="w-3.5 h-3.5" />
-                          {labels.verifiedClient[language]}
-                        </span>
-                      )}
-                    </div>
-
-                    <div className="my-4">
-                      <h3 className="text-3xl md:text-4xl font-extrabold text-brand-primary-container tracking-tight mb-2">
-                        {currentTestimonial.metric[language]}
-                      </h3>
-                      <p className="text-sm text-brand-on-surface-variant font-medium">
-                        {currentTestimonial.metricSubtitle[language]}
-                      </p>
-                    </div>
-
-                    <div className="pt-4 border-t border-brand-outline-variant/15 flex flex-col gap-2 text-xs text-brand-on-surface-variant/80">
-                      <div className="flex items-center justify-between">
-                        <span>Project:</span>
-                        <span className="font-semibold text-brand-on-surface">{currentTestimonial.projectType[language]}</span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span>Timeline:</span>
-                        <span className="font-semibold text-brand-on-surface">{currentTestimonial.duration[language]}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Right Column: Quote Text, Author Details & Rating */}
-                  <div className="lg:col-span-7 flex flex-col justify-between space-y-6">
-                    
-                    {/* Stars */}
+                <div className="flex flex-col justify-between space-y-6 relative z-10">
+                  {/* Stars & Verified badge */}
+                  <div className="flex items-center justify-between gap-3 flex-wrap">
                     <div className="flex items-center gap-1 text-amber-400">
                       {[...Array(currentTestimonial.rating)].map((_, i) => (
                         <Star key={i} className="w-5 h-5 fill-amber-400" />
                       ))}
                       <span className="text-xs font-bold text-brand-on-surface-variant ml-2">5.0 / 5.0</span>
                     </div>
+                    {currentTestimonial.verified && (
+                      <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20">
+                        <CheckCircle2 className="w-3.5 h-3.5" />
+                        {labels.verifiedClient[language]}
+                      </span>
+                    )}
+                  </div>
 
                     {/* Quote Text */}
                     <blockquote className="text-base md:text-xl font-medium text-brand-on-surface leading-relaxed italic">
@@ -605,8 +573,6 @@ export default function Testimonials({ onOpenCase, onScrollToContact }: Testimon
                     </div>
 
                   </div>
-
-                </div>
               </motion.div>
             </AnimatePresence>
 

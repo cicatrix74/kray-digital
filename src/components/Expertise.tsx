@@ -44,8 +44,8 @@ export default function Expertise({ onSelectService }: ExpertiseProps) {
   const LABELS = {
     ru: {
       web: {
-        priceBadge: 'от 5 000 ₴ • от 3–5 дней',
-        prepayBadge: '0% предоплата — оплата по факту',
+        priceBadge: 'от 3–5 дней',
+        prepayBadge: 'Оплата по факту выполнения работ',
         terminalFile: 'production.config.ts',
         metricSpeed: 'Скорость PageSpeed',
         metricMobile: 'Mobile First 100%',
@@ -53,42 +53,42 @@ export default function Expertise({ onSelectService }: ExpertiseProps) {
         tags: ['React', 'Next.js', 'Tailwind', 'TypeScript', 'REST API']
       },
       seo: {
-        serpTitle: 'google.com/search • ТОП-1',
-        growth: '+340% Органика',
-        speed: 'Speed 98/100',
-        item1: 'Внутренняя SEO от 2 000 ₴',
-        item2: 'Оптимизация скорости от 3 000 ₴',
-        item3: 'SEO-тексты 100 ₴ / 1 000 симв.'
+        serpTitle: 'google.com/search • ТОП-5',
+        growth: '+200% Органика',
+        speed: 'Speed 90/100',
+        item1: 'Внутренняя SEO-оптимизация',
+        item2: 'Оптимизация скорости загрузки',
+        item3: 'SEO-тексты и метатеги'
       },
       ads: {
-        roi: 'ROAS / ROI',
-        roiVal: '+380%',
-        cpl: 'Стоимость лида',
+        roi: 'Окупаемость рекламы',
+        roiVal: '300%',
+        cpl: 'Стоимость заявки',
         cplVal: '-42%',
-        item1: 'Запуск кампаний за 3–5 дней',
-        item2: 'Сквозная аналитика GA4',
-        item3: 'Google Search & Performance Max'
+        item1: 'Запуск рекламы за 3–5 дней',
+        item2: 'Понятная аналитика заявок',
+        item3: 'Поиск Google и реклама на сайтах'
       },
       smm: {
         badge: 'Техподдержка & Услуги',
-        uptime: 'Uptime 99.9%',
+        uptime: 'Стабильная работа',
         response: 'Реакция: от 15 мин',
-        sla: 'SLA Гарантия',
+        sla: 'Гарантия качества',
         items: [
-          'Модернизация сайта от 2 000 ₴',
-          'Перенос на Хостинг — 1 000 ₴',
-          'Перенос на WordPress — 3 000 ₴',
-          'Формы и полезные инструменты от 200 ₴',
-          'Оптимизация нагрузки на сервер от 2 000 ₴',
-          'Восстановление работы сайта от 1 000 ₴'
+          'Модернизация сайта',
+          'Перенос на хостинг',
+          'Перенос на WordPress',
+          'Формы и полезные инструменты',
+          'Оптимизация нагрузки на сервер',
+          'Восстановление работы сайта'
         ],
         tags: ['WordPress', 'Хостинг', 'Серверы', 'Бекапы', 'Багфикс', 'Формы']
       }
     },
     uk: {
       web: {
-        priceBadge: 'від 5 000 ₴ • від 3–5 днів',
-        prepayBadge: '0% передоплата — оплата за фактом',
+        priceBadge: 'від 3–5 днів',
+        prepayBadge: 'Оплата за фактом виконання робіт',
         terminalFile: 'production.config.ts',
         metricSpeed: 'Швидкість PageSpeed',
         metricMobile: 'Mobile First 100%',
@@ -96,42 +96,42 @@ export default function Expertise({ onSelectService }: ExpertiseProps) {
         tags: ['React', 'Next.js', 'Tailwind', 'TypeScript', 'REST API']
       },
       seo: {
-        serpTitle: 'google.com/search • ТОП-1',
-        growth: '+340% Органіка',
-        speed: 'Speed 98/100',
-        item1: 'Внутрішня SEO від 2 000 ₴',
-        item2: 'Оптимізація швидкості від 3 000 ₴',
-        item3: 'SEO-тексти 100 ₴ / 1 000 симв.'
+        serpTitle: 'google.com/search • ТОП-5',
+        growth: '+200% Органіка',
+        speed: 'Speed 90/100',
+        item1: 'Внутрішня SEO-оптимізація',
+        item2: 'Оптимізація швидкості завантаження',
+        item3: 'SEO-тексти та метатеги'
       },
       ads: {
-        roi: 'ROAS / ROI',
-        roiVal: '+380%',
-        cpl: 'Вартість ліда',
+        roi: 'Окупність реклами',
+        roiVal: '300%',
+        cpl: 'Вартість заявки',
         cplVal: '-42%',
         item1: 'Швидкий запуск за 3–5 днів',
-        item2: 'Наскрізна аналітика GA4',
-        item3: 'Google Search & Performance Max'
+        item2: 'Зрозуміла аналітика заявок',
+        item3: 'Пошук Google та реклама на сайтах'
       },
       smm: {
         badge: 'Техпідтримка & Послуги',
-        uptime: 'Uptime 99.9%',
+        uptime: 'Стабільна робота',
         response: 'Реакція: від 15 хв',
-        sla: 'SLA Гарантія',
+        sla: 'Гарантія якості',
         items: [
-          'Модернізація сайту від 2 000 ₴',
-          'Перенесення на Хостинг — 1 000 ₴',
-          'Перенесення на WordPress — 3 000 ₴',
-          'Форми та корисні інструменти від 200 ₴',
-          'Оптимізація навантаження на сервер від 2 000 ₴',
-          'Відновлення роботи сайту від 1 000 ₴'
+          'Модернізація сайту',
+          'Перенесення на хостинг',
+          'Перенесення на WordPress',
+          'Форми та корисні інструменти',
+          'Оптимізація навантаження на сервер',
+          'Відновлення роботи сайту'
         ],
         tags: ['WordPress', 'Хостинг', 'Сервери', 'Бекапи', 'Багфікс', 'Форми']
       }
     },
     en: {
       web: {
-        priceBadge: 'from $120 • from 3–5 days',
-        prepayBadge: '0% deposit — pay on delivery',
+        priceBadge: 'from 3–5 days',
+        prepayBadge: 'Payment upon completion of work',
         terminalFile: 'production.config.ts',
         metricSpeed: 'PageSpeed Score',
         metricMobile: 'Mobile First 100%',
@@ -139,34 +139,34 @@ export default function Expertise({ onSelectService }: ExpertiseProps) {
         tags: ['React', 'Next.js', 'Tailwind', 'TypeScript', 'REST API']
       },
       seo: {
-        serpTitle: 'google.com/search • TOP #1',
-        growth: '+340% Organic Traffic',
-        speed: 'Speed 98/100',
-        item1: 'On-Page SEO from $50',
-        item2: 'PageSpeed Optimization from $75',
-        item3: 'SEO Articles $3 / 1k chars'
+        serpTitle: 'google.com/search • TOP #5',
+        growth: '+200% Organic Traffic',
+        speed: 'Speed 90/100',
+        item1: 'On-Page SEO Optimization',
+        item2: 'PageSpeed Optimization',
+        item3: 'SEO Content & Meta Tags'
       },
       ads: {
-        roi: 'ROAS / ROI',
-        roiVal: '+380%',
+        roi: 'Ad Return (ROAS)',
+        roiVal: '300%',
         cpl: 'Cost per Lead',
         cplVal: '-42%',
         item1: 'Campaign launch in 3–5 days',
-        item2: 'GA4 Full-Funnel Tracking',
-        item3: 'Google Search & Performance Max'
+        item2: 'Clear Lead & Sales Tracking',
+        item3: 'Google Search & Display Ads'
       },
       smm: {
         badge: 'Maintenance & Support',
-        uptime: 'Uptime 99.9%',
+        uptime: 'Stable Operation',
         response: 'Response: 15 mins',
-        sla: 'SLA Guarantee',
+        sla: 'Quality Guarantee',
         items: [
-          'Website modernization from $50',
-          'Hosting migration — $25',
-          'WordPress migration — $75',
-          'Forms & utility tools from $5',
-          'Server load optimization from $50',
-          'Emergency site recovery from $25'
+          'Website modernization',
+          'Hosting migration',
+          'WordPress migration',
+          'Forms & utility tools',
+          'Server load optimization',
+          'Emergency site recovery'
         ],
         tags: ['WordPress', 'Hosting', 'Servers', 'Backups', 'Bugfix', 'Forms']
       }
@@ -277,7 +277,7 @@ export default function Expertise({ onSelectService }: ExpertiseProps) {
                       {currentLabels.web.metricSpeed}:
                     </span>
                     <span className="font-bold text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded text-[10px] border border-emerald-500/20">
-                      99 / 100
+                      90+ / 100
                     </span>
                   </div>
 
@@ -301,7 +301,7 @@ export default function Expertise({ onSelectService }: ExpertiseProps) {
                 <div className="pt-2.5 border-t border-brand-outline-variant/20 flex items-center justify-between text-[10px] text-brand-on-surface-variant font-sans">
                   <span>SSL & SEO-Ready</span>
                   <span className="text-brand-primary-container font-semibold flex items-center gap-1">
-                    Подробнее <ArrowUpRight className="w-3 h-3" />
+                    {language === 'uk' ? 'Детальніше' : language === 'ru' ? 'Подробнее' : 'Learn more'} <ArrowUpRight className="w-3 h-3" />
                   </span>
                 </div>
               </div>
@@ -347,7 +347,7 @@ export default function Expertise({ onSelectService }: ExpertiseProps) {
                   <span className="text-[11px] font-mono text-white/90 truncate">{currentLabels.seo.serpTitle}</span>
                 </div>
                 <span className="text-[9px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-1.5 py-0.5 rounded shrink-0">
-                  TOP 1
+                  TOP 5
                 </span>
               </div>
 
@@ -508,9 +508,11 @@ export default function Expertise({ onSelectService }: ExpertiseProps) {
                   <ShieldCheck className="w-3.5 h-3.5 text-brand-primary-container" />
                   {currentLabels.smm.sla}
                 </span>
-                <span className="text-[10px] text-emerald-400 font-mono">
-                  {language === 'ru' ? '0% Предоплата' : language === 'en' ? '0% Deposit' : '0% Передоплата'}
-                </span>
+              </div>
+
+              <div className="flex items-center gap-2 text-xs font-semibold text-emerald-400">
+                <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
+                <span>{currentLabels.web.prepayBadge}</span>
               </div>
 
               <div className="space-y-2 text-xs">
@@ -523,9 +525,11 @@ export default function Expertise({ onSelectService }: ExpertiseProps) {
               </div>
 
               <div className="pt-2 border-t border-brand-outline-variant/20 flex items-center justify-between text-[11px]">
-                <span className="text-gray-400">Гарантия на все работы</span>
+                <span className="text-gray-400">
+                  {language === 'uk' ? 'Гарантія на всі роботи' : language === 'ru' ? 'Гарантия на все работы' : 'Warranty on all work'}
+                </span>
                 <span className="text-brand-primary-container font-semibold flex items-center gap-1">
-                  Заказать <ArrowUpRight className="w-3 h-3" />
+                  {language === 'uk' ? 'Замовити' : language === 'ru' ? 'Заказать' : 'Order'} <ArrowUpRight className="w-3 h-3" />
                 </span>
               </div>
             </div>

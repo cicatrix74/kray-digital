@@ -56,7 +56,7 @@ const FlipDigit: React.FC<{ digit: string }> = ({ digit }) => {
 
   return (
     <div
-      className="relative w-6 h-8 sm:w-7 sm:h-9 rounded-md select-none font-display text-base sm:text-lg font-bold text-[#f9fafb] tabular-nums shadow-md"
+      className="relative w-5 h-8 sm:w-6 sm:h-9 rounded-md select-none font-display text-base sm:text-lg font-bold text-[#f9fafb] tabular-nums shadow-md"
       style={{ perspective: '200px' }}
     >
       <div
@@ -160,7 +160,7 @@ const LOCALIZED_DATA = {
       step2Title: 'Оберіть масштаб та тип проєкту',
       step2Desc: 'Вкажіть складність та необхідні можливості для точної відповідності',
       step3Title: 'Коли необхідно завершити роботу?',
-      step3Desc: 'Терміновість впливає на розподіл ресурсів команди',
+      step3Desc: 'Терміновість впливає на пріоритетність у графіку',
       step4Title: 'Кому надіслати фінальний кошторис?',
       step4Desc: 'Введіть контакти, щоб закріпити за собою розраховану знижку',
       selectedService: 'Обрана послуга:',
@@ -179,7 +179,7 @@ const LOCALIZED_DATA = {
       ticketTimeline: 'Закріплений термін:',
       ticketStatus: 'Статус:',
       ticketStatusVal: 'Очікує на дзвінок',
-      successNote: 'Наш експерт зв\'яжеться з вами протягом 15 хвилин для підтвердження брифу.',
+      successNote: 'Я зв\'яжуся з вами протягом 15 хвилин для підтвердження брифу.',
       btnClose: 'Закрити розрахунок',
       btnBack: 'Назад',
       btnContinue: 'Продовжити',
@@ -187,7 +187,7 @@ const LOCALIZED_DATA = {
       validationPhone: 'Будь ласка, введіть номер телефону',
       validationPhoneShort: 'Введіть коректний номер телефону',
       baseCostNoChange: 'Базова вартість без змін',
-      acceleratesTeam: 'Прискорює команду (+25% до бюджету)',
+      acceleratesTeam: 'Пріоритетний запуск (+25% до бюджету)',
       flexibilityDiscount: 'Знижка 10% за гнучкість',
       preliminaryEstimate: 'Попередній розрахунок',
       from: 'від',
@@ -243,7 +243,7 @@ const LOCALIZED_DATA = {
       step2Title: 'Выберите масштаб и тип проекта',
       step2Desc: 'Укажите сложность и требуемые возможности для точного соответствия',
       step3Title: 'Когда необходимо завершить работу?',
-      step3Desc: 'Срочность влияет на распределение ресурсов команды',
+      step3Desc: 'Срочность влияет на приоритетность в графике',
       step4Title: 'Кому отправить финальную смету?',
       step4Desc: 'Введите контакты, чтобы закрепить за собой расчетную скидку',
       selectedService: 'Выбранная услуга:',
@@ -262,7 +262,7 @@ const LOCALIZED_DATA = {
       ticketTimeline: 'Закрепленный срок:',
       ticketStatus: 'Статус:',
       ticketStatusVal: 'Ожидает звонка',
-      successNote: 'Наш эксперт свяжется с вами в течение 15 минут для подтверждения брифа.',
+      successNote: 'Я свяжусь с вами в течение 15 минут для подтверждения брифа.',
       btnClose: 'Закрыть расчет',
       btnBack: 'Назад',
       btnContinue: 'Продолжить',
@@ -270,7 +270,7 @@ const LOCALIZED_DATA = {
       validationPhone: 'Пожалуйста, введите номер телефона',
       validationPhoneShort: 'Введите корректный номер телефона',
       baseCostNoChange: 'Базовая стоимость без изменений',
-      acceleratesTeam: 'Ускоряет команду (+25% к бюджету)',
+      acceleratesTeam: 'Приоритетный запуск (+25% к бюджету)',
       flexibilityDiscount: 'Скидка 10% за гибкость',
       preliminaryEstimate: 'Предварительный расчет',
       from: 'от',
@@ -326,7 +326,7 @@ const LOCALIZED_DATA = {
       step2Title: 'Select the scale and type of project',
       step2Desc: 'Specify project complexity and required capabilities',
       step3Title: 'When do we need to finish?',
-      step3Desc: 'Urgency affects the allocation of our team resources',
+      step3Desc: 'Urgency affects scheduling priority',
       step4Title: 'Who should we send the final estimate to?',
       step4Desc: 'Enter your details to secure the calculated discount',
       selectedService: 'Selected service:',
@@ -345,7 +345,7 @@ const LOCALIZED_DATA = {
       ticketTimeline: 'Secured timeline:',
       ticketStatus: 'Status:',
       ticketStatusVal: 'Awaiting call',
-      successNote: 'Our expert will contact you within 15 minutes to confirm the brief.',
+      successNote: 'I will contact you within 15 minutes to confirm the brief.',
       btnClose: 'Close calculator',
       btnBack: 'Back',
       btnContinue: 'Continue',
@@ -353,7 +353,7 @@ const LOCALIZED_DATA = {
       validationPhone: 'Please enter your phone number',
       validationPhoneShort: 'Please enter a valid phone number',
       baseCostNoChange: 'Base cost without changes',
-      acceleratesTeam: 'Accelerates team (+25% budget)',
+      acceleratesTeam: 'Priority delivery (+25% budget)',
       flexibilityDiscount: '10% discount for flexibility',
       preliminaryEstimate: 'Preliminary calculation',
       from: 'from',
@@ -395,7 +395,11 @@ export default function CalculatorModal({ isOpen, onClose, onSubmitLead, initial
   // Synchronize initial service from outside click
   useEffect(() => {
     if (initialService) {
-      const match = servicesList.find(s => s.name.toLowerCase().includes(initialService.toLowerCase()));
+      const q = initialService.toLowerCase();
+      const match = servicesList.find(s => {
+        const sn = s.name.toLowerCase();
+        return sn.includes(q) || q.includes(sn);
+      });
       if (match) {
         setService(match.id);
       }
@@ -566,7 +570,7 @@ export default function CalculatorModal({ isOpen, onClose, onSubmitLead, initial
         {/* Weekly Cyclic Flip Timer Banner */}
         <div
           id="calc-weekly-timer"
-          className="mx-5 mt-2 px-3.5 py-2 rounded-xl bg-[#131926] border border-cyan-500/25 text-center shadow-lg shrink-0"
+          className="w-fit max-w-[calc(100%-2.5rem)] mx-auto mt-2 px-4 py-2 rounded-xl bg-[#131926] border border-cyan-500/25 text-center shadow-lg shrink-0"
         >
           <div className="flex items-center justify-center gap-2 mb-1.5 flex-wrap">
             <Clock className="w-3.5 h-3.5 text-brand-primary-container shrink-0" />

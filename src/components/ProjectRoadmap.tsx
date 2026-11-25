@@ -76,9 +76,9 @@ export default function ProjectRoadmap({ onOpenCalculator, onScrollToContact }: 
 
   const presetDurations: Record<ProjectType, Record<string, string>> = {
     web: {
-      uk: '3–5 тижнів',
-      ru: '3–5 недель',
-      en: '3–5 weeks'
+      uk: '5–8 тижнів (24–40 роб. днів)',
+      ru: '5–8 недель (24–40 раб. дней)',
+      en: '5–8 weeks (24–40 business days)'
     },
     seo: {
       uk: 'від 2 місяців',
@@ -103,9 +103,9 @@ export default function ProjectRoadmap({ onOpenCalculator, onScrollToContact }: 
         id: 'p1',
         stepNumber: '01',
         title: {
-          uk: 'Discovery & Аналітика',
-          ru: 'Discovery и Аналитика',
-          en: 'Discovery & Strategy'
+          uk: 'Знайомство та план робіт',
+          ru: 'Знакомство и план работ',
+          en: 'Planning & Structure'
         },
         duration: {
           uk: '3–5 днів',
@@ -143,9 +143,9 @@ export default function ProjectRoadmap({ onOpenCalculator, onScrollToContact }: 
           ]
         },
         clientRole: {
-          uk: 'Заповнення брифу (20 хв) + вступний зідзвін з техлідом.',
-          ru: 'Заполнение брифа (20 мин) + вводный созвон с техлидом.',
-          en: 'Briefing questionnaire (20 mins) + kickoff call with project lead.'
+          uk: 'Заповнення брифу (20 хв) + вступний зідзвін зі спеціалістом.',
+          ru: 'Заполнение брифа (20 мин) + вводный созвон со специалистом.',
+          en: 'Briefing questionnaire (20 mins) + kickoff call.'
         },
         transparencyGuarantee: {
           uk: 'Фіксована ціна. Жодних прихованих доплат після підписання договору.',
@@ -157,9 +157,9 @@ export default function ProjectRoadmap({ onOpenCalculator, onScrollToContact }: 
         id: 'p2',
         stepNumber: '02',
         title: {
-          uk: 'UI/UX Дизайн & Figma',
-          ru: 'UI/UX Дизайн и Figma',
-          en: 'UI/UX Design & Figma'
+          uk: 'Дизайн у Figma',
+          ru: 'Дизайн в Figma',
+          en: 'Design in Figma'
         },
         duration: {
           uk: '7–10 днів',
@@ -319,8 +319,8 @@ export default function ProjectRoadmap({ onOpenCalculator, onScrollToContact }: 
         id: 'p5',
         stepNumber: '05',
         title: {
-          uk: 'Реліз & Підтримка',
-          ru: 'Релиз и Поддержка',
+          uk: 'Запуск і підтримка',
+          ru: 'Запуск и поддержка',
           en: 'Launch & 30-Day Support'
         },
         duration: {
@@ -331,24 +331,24 @@ export default function ProjectRoadmap({ onOpenCalculator, onScrollToContact }: 
         daysCount: 2,
         percentageShare: 10,
         description: {
-          uk: 'Перенос на хостинг/домен, налаштування аналітики (GA4, Meta Pixel) та 30 днів гарантії.',
-          ru: 'Перенос на хостинг/домен, настройка аналитики (GA4, Meta Pixel) и 30 дней гарантии.',
-          en: 'Production deployment, Google Analytics 4, Meta Pixel setup, and 30-day warranty.'
+          uk: 'Перенесення на хостинг і домен, підключення статистики відвідувань та 30 днів гарантії.',
+          ru: 'Перенос на хостинг и домен, подключение статистики посещений и 30 дней гарантии.',
+          en: 'Hosting & domain setup, visitor analytics, and 30-day warranty.'
         },
         icon: Rocket,
         color: 'from-blue-400 to-indigo-500',
         badgeColor: 'text-blue-400 bg-blue-500/10 border-blue-500/30',
         deliverables: {
           uk: [
-            'Деплой на прод-сервер та привʼязка домену',
-            'Підключення Google Analytics 4 & Tag Manager',
-            'Навчання вашої команди управлінню сайтом',
+            'Перенесення на робочий хостинг і привʼязка домену',
+            'Підключення статистики (Google Analytics)',
+            'Інструкція та допомога з керуванням сайтом',
             '30 днів безкоштовного гарантійного обслуговування'
           ],
           ru: [
-            'Деплой на прод-сервер и привязка домена',
-            'Подключение Google Analytics 4 & Tag Manager',
-            'Обучение вашей команды управлению сайтом',
+            'Перенос на рабочий хостинг и привязка домена',
+            'Подключение статистики (Google Analytics)',
+            'Инструкция и помощь по управлению сайтом',
             '30 дней бесплатного гарантийного обслуживания'
           ],
           en: [
@@ -364,9 +364,9 @@ export default function ProjectRoadmap({ onOpenCalculator, onScrollToContact }: 
           en: 'Granting domain DNS record access.'
         },
         transparencyGuarantee: {
-          uk: 'Персональний менеджер на звʼязку навіть після завершення проекту.',
-          ru: 'Персональный менеджер на связи даже после завершения проекта.',
-          en: 'Dedicated tech manager assistance post-launch.'
+          uk: 'Залишаюся на звʼязку для підтримки та розвитку навіть після запуску проєкту.',
+          ru: 'Остаюсь на связи для поддержки и развития даже после запуска проекта.',
+          en: 'Ongoing direct support and maintenance after launch.'
         }
       }
     ],
@@ -764,7 +764,7 @@ export default function ProjectRoadmap({ onOpenCalculator, onScrollToContact }: 
 
         <h2 className="font-display text-3xl md:text-5xl font-extrabold text-brand-on-background tracking-tight mb-4">
           {language === 'uk' ? (
-            <>Дорожня Карта <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary-container via-teal-300 to-cyan-400">Проекту & Терміни</span></>
+            <>Дорожня Карта <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary-container via-teal-300 to-cyan-400">Проєкту & Терміни</span></>
           ) : language === 'ru' ? (
             <>Дорожная Карта <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary-container via-teal-300 to-cyan-400">Проекта и Сроки</span></>
           ) : (
@@ -774,9 +774,9 @@ export default function ProjectRoadmap({ onOpenCalculator, onScrollToContact }: 
 
         <p className="text-brand-on-surface-variant text-sm md:text-base leading-relaxed">
           {language === 'uk' ? (
-            'Жодних "завтраків" чи непередбачених затримок. Ми гарантуємо точний графік виконання кожного кроку з контролем якості та прозорою звітністю.'
+            'Жодних непередбачених затримок. Гарантую точний графік виконання кожного кроку з контролем якості та прозорою звітністю.'
           ) : language === 'ru' ? (
-            'Никаких "завтраков" или непредвиденных задержек. Мы гарантируем точный график выполнения каждого шага с контролем качества и прозрачной отчетностью.'
+            'Никаких непредвиденных задержек. Гарантирую точный график выполнения каждого шага с контролем качества и прозрачной отчетностью.'
           ) : (
             'No missed deadlines or vague promises. Clear phase breakdowns, fixed timelines, and full transparency from kickoff to production launch.'
           )}
@@ -950,12 +950,12 @@ export default function ProjectRoadmap({ onOpenCalculator, onScrollToContact }: 
                       <div className="flex flex-wrap items-center gap-2 mb-1">
                         <span className="font-mono text-xs font-bold text-brand-primary-container">
                           {language === 'uk' ? `КРОК ${phase.stepNumber}` : language === 'ru' ? `ШАГ ${phase.stepNumber}` : `PHASE ${phase.stepNumber}`}
-                        </span>
+                        </span>{' '}
                         <span className={`text-[11px] px-2.5 py-0.5 rounded-full font-mono font-semibold border ${phase.badgeColor}`}>
                           {getLangText(phase.duration)}
-                        </span>
+                        </span>{' '}
                         <span className="text-[11px] text-brand-on-surface-variant font-mono">
-                          ({phase.percentageShare}% {language === 'uk' ? 'проекту' : language === 'ru' ? 'проекта' : 'share'})
+                          ({phase.percentageShare}% {language === 'uk' ? 'проєкту' : language === 'ru' ? 'проекта' : 'share'})
                         </span>
                       </div>
                       <h3 className="font-display text-lg md:text-xl font-bold text-brand-on-background">

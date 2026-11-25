@@ -120,32 +120,19 @@ export default function Portfolio({ onOpenCase }: PortfolioProps) {
               {/* Highlight background shine effect */}
               <div className="absolute inset-0 bg-radial from-brand-primary-container/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
-              {/* Project Screenshot / Mockup Preview */}
+              {/* Minimalist Visual Preview */}
               {cs.image && (
-                <div className="relative w-full h-44 mb-4 rounded-xl overflow-hidden bg-brand-surface-container-lowest border border-brand-outline-variant/15 group/img shadow-inner z-10">
-                  {/* Browser header bar */}
-                  <div className="h-6 bg-[#0a0e19]/90 border-b border-brand-outline-variant/15 px-3 flex items-center justify-between z-10 relative">
-                    <div className="flex items-center gap-1.5">
-                      <span className="w-2 h-2 rounded-full bg-rose-500/70" />
-                      <span className="w-2 h-2 rounded-full bg-amber-500/70" />
-                      <span className="w-2 h-2 rounded-full bg-emerald-500/70" />
-                    </div>
-                    <span className="text-[9px] font-mono text-gray-500 truncate max-w-[160px]">
-                      kray-digital.com/cases/{cs.id}
-                    </span>
-                    <div className="w-6" />
-                  </div>
-                  {/* Image preview with smooth zoom on hover */}
+                <div className="relative w-full h-44 mb-4 rounded-xl overflow-hidden bg-[#070b14] border border-brand-outline-variant/15 group/img shadow-inner z-10">
                   <img
                     src={cs.image}
                     alt={cs.title}
                     onError={(e) => {
                       (e.target as HTMLElement).style.display = 'none';
                     }}
-                    className="w-full h-[calc(100%-1.5rem)] object-cover object-top group-hover/img:scale-105 transition-transform duration-500"
+                    className="w-full h-full object-cover group-hover/img:scale-105 transition-transform duration-500"
                     loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-brand-surface-container-low/70 via-transparent to-transparent opacity-50 pointer-events-none" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-brand-surface-container-low/50 via-transparent to-transparent pointer-events-none" />
                 </div>
               )}
 

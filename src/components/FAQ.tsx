@@ -100,37 +100,37 @@ export default function FAQ({ onScrollToContact, onOpenCalculator }: FAQProps) {
     {
       id: 'timeline-1',
       category: 'timelines',
-      badge: { uk: 'Сроки розробки', ru: 'Сроки разработки', en: 'Timelines' },
+      badge: { uk: 'Терміни розробки', ru: 'Сроки разработки', en: 'Timelines' },
       question: {
         uk: 'Скільки часу займає розробка сайту та запуск цифрових кампаній?',
         ru: 'Сколько времени занимает разработка сайта и запуск цифровых кампаний?',
         en: 'How long does website development and marketing campaign setup take?'
       },
       answer: {
-        uk: 'Терміни залежать від типу та масштабу проекту. Ми фіксуємо чіткий календарний план у договорі з проміжними дедлайнами.',
-        ru: 'Сроки зависят от типа и масштаба проекта. Мы фиксируем четкий календарный план в договоре с четкими промежуточными дедлайнами.',
-        en: 'Timelines depend on the project scope and complexity. We lock in a strict timeline schedule in our legal agreement with phase milestones.'
+        uk: 'Терміни залежать від типу та масштабу проєкту. Фіксуємо чіткий календарний план у договорі з проміжними дедлайнами.',
+        ru: 'Сроки зависят от типа и масштаба проекта. Фиксируем четкий календарный план в договоре с понятными промежуточными дедлайнами.',
+        en: 'Timelines depend on the project scope and complexity. We lock in a clear timeline schedule in our agreement with phase milestones.'
       },
       bullets: {
         uk: [
-          'Простий Landing Page / Promo: 10–14 робочих днів.',
+          'Простий Landing Page / Promo: 3–5 робочих днів.',
           'Корпоративний сайт / Сервіс: 3–5 тижнів.',
-          'E-Commerce інтернет-магазин: 4–8 тижнів.',
-          'Налаштування Google Ads / PPC: 5–7 робочих днів до першого запуску.',
+          'E-Commerce інтернет-магазин: 5–8 тижнів.',
+          'Налаштування Google Ads / PPC: 3–5 робочих днів до першого запуску.',
           'Перші видимі результати в SEO: від 1.5 до 3 місяців за рахунок якісного технічного фундаменту.'
         ],
         ru: [
-          'Простой Landing Page / Promo: 10–14 рабочих дней.',
+          'Простой Landing Page / Promo: 3–5 рабочих дней.',
           'Корпоративный сайт / Сервис: 3–5 недель.',
-          'E-Commerce интернет-магазин: 4–8 недель.',
-          'Настройка Google Ads / PPC: 5–7 рабочих дней до первого запуска.',
+          'E-Commerce интернет-магазин: 5–8 недель.',
+          'Настройка Google Ads / PPC: 3–5 рабочих дней до первого запуска.',
           'Первые видимые результаты в SEO: от 1.5 до 3 месяцев благодаря качественному техническому фундаменту.'
         ],
         en: [
-          'High-converting Landing Page: 10–14 business days.',
+          'High-converting Landing Page: 3–5 business days.',
           'Corporate Website / Web Service: 3–5 weeks.',
-          'E-Commerce Store with integrations: 4–8 weeks.',
-          'Google Ads & PPC Setup: 5–7 business days to launch.',
+          'E-Commerce Store with integrations: 5–8 weeks.',
+          'Google Ads & PPC Setup: 3–5 business days to launch.',
           'First organic SEO growth results: 1.5 to 3 months due to core technical superiority.'
         ]
       }
@@ -212,25 +212,19 @@ export default function FAQ({ onScrollToContact, onOpenCalculator }: FAQProps) {
         en: 'What payment schedule and milestones do you offer?'
       },
       answer: {
-        uk: 'Зазвичай ми ділимо бюджет на 2–3 частини (наприклад, 50% аванс та 50% перед запуском на ваш основний домен) або прив’язуємо до здачі конкретних фаз.',
-        ru: 'Обычно мы делим бюджет на 2–3 части (например, 50% аванс и 50% перед запуском на ваш основной домен) или привязываем к сдаче конкретных фаз.',
-        en: 'Typically we divide the project budget into 2–3 milestone payments (e.g. 50% deposit and 50% upon sign-off before production domain deployment).'
+        uk: 'Працюю без передоплати: ви сплачуєте виключно за фактом виконаних робіт або поетапно після приймання кожного готового етапу.',
+        ru: 'Работаю без предоплаты: вы оплачиваете исключительно по факту выполненных работ или поэтапно после приёмки каждого готового этапа.',
+        en: 'Zero prepayment: you pay strictly upon completion of work or step-by-step after approving each finished stage.'
       },
       bullets: {
         uk: [
-          'Можливість оплати за безготівковим розрахунком з ПДВ або без ПДВ.',
-          'Оплата за результатами частин робіт (Дизайн -> Верстка -> Інтеграція -> Запуск).',
-          'Повне закриття актами виконаних робіт.'
+          'Оплата за результатами частин робіт (Дизайн -> Верстка -> Інтеграція -> Запуск).'
         ],
         ru: [
-          'Возможность оплаты по безналичному расчету с НДС или без НДС.',
-          'Оплата по результатам частей работ (Дизайн -> Верстка -> Интеграция -> Запуск).',
-          'Полное закрытие актами выполненных работ.'
+          'Оплата по результатам частей работ (Дизайн -> Верстка -> Интеграция -> Запуск).'
         ],
         en: [
-          'Official bank transfer with full accounting documents.',
-          'Phase-by-phase payments tied to deliverable sign-offs.',
-          'Flexible currency options and transparent accounting.'
+          'Phase-by-phase payments tied to deliverable sign-offs (Design -> Frontend -> Integration -> Launch).'
         ]
       }
     },
@@ -244,25 +238,25 @@ export default function FAQ({ onScrollToContact, onOpenCalculator }: FAQProps) {
         en: 'Who owns the intellectual property, source code, and domain after launch?'
       },
       answer: {
-        uk: 'Усі інтелектуальні права, вихідний код, графічні файли Figma, домени та акаунти аналітики на 100% передаються вам. Ми не прив’язуємо вас до власної CMS або прихованих підписок.',
-        ru: 'Все интеллектуальные права, исходный код, графические файлы Figma, домены и аккаунты аналитики на 100% передаются вам. Мы не привязываем вас к собственной CMS или скрытым подпискам.',
-        en: '100% of all intellectual property, full source code repositories, Figma design files, domain credentials, and analytics accounts belong entirely to you without vendor lock-in.'
+        uk: 'Усі права на сайт, вихідний код, макети дизайну, домен та акаунти статистики на 100% передаються вам. Я не прив’язую вас до власної платформи чи прихованих підписок.',
+        ru: 'Все права на сайт, исходный код, макеты дизайна, домен и аккаунты статистики на 100% передаются вам. Я не привязываю вас к собственной платформе или скрытым подпискам.',
+        en: '100% of all rights to the website, source code, design files, domain, and analytics accounts belong entirely to you with no hidden subscriptions or lock-in.'
       },
       bullets: {
         uk: [
-          'Передача репозиторію GitHub / GitLab.',
-          'Передача оригіналів вихідних макетів Figma.',
-          'Прямий доступ до хостингу, серверів та доменних записів.'
+          'Повна передача вихідного коду сайту.',
+          'Передача всіх вихідних макетів та графіки дизайну.',
+          'Прямий доступ до хостингу, сервера та налаштувань домену.'
         ],
         ru: [
-          'Передача репозитория GitHub / GitLab.',
-          'Передача оригиналов исходных макетов Figma.',
-          'Прямой доступ к хостингу, серверам и доменным записям.'
+          'Полная передача исходного кода сайта.',
+          'Передача всех исходных макетов и графики дизайна.',
+          'Прямой доступ к хостингу, серверу и настройкам домена.'
         ],
         en: [
-          'Full source code GitHub/GitLab repository transfer.',
-          'Editable original Figma master files.',
-          'Full root admin access to hosting, servers, and DNS zones.'
+          'Full website source code transfer.',
+          'All editable design files and graphics.',
+          'Direct access to hosting, server, and domain settings.'
         ]
       }
     },
