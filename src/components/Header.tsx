@@ -123,15 +123,15 @@ export default function Header({ onOpenCalculator, onOpenCallback, onScrollToSec
 
   return (
     <header className="fixed top-0 w-full z-50 bg-[#0f131e]/95 md:bg-[#0f131e]/90 md:backdrop-blur-xl border-b border-[#3b494b]/20">
-      {/* Sleek Desktop Topbar (28px) */}
+      {/* Sleek Desktop Topbar */}
       <div className="hidden lg:block bg-[#0a0e19]/90 border-b border-[#3b494b]/20">
-        <div className="max-w-7xl mx-auto px-4 md:px-10 h-7 flex items-center justify-between text-[11px]">
+        <div className="max-w-7xl mx-auto px-4 md:px-10 h-10 flex items-center justify-between text-xs">
           <span className="text-brand-on-surface-variant/80 tracking-wide">
             {topbarNote}
           </span>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
             <PhoneLink
-              className="text-[11px] px-2.5 py-0.5 rounded-md border border-brand-outline-variant/30 bg-[#171b27]/80 hover:border-brand-primary-container/50"
+              className="text-xs px-3.5 py-1.5 rounded-lg border border-brand-outline-variant/30 bg-[#171b27]/80 hover:border-brand-primary-container/50"
             />
             <div className="flex items-center gap-1.5" aria-label="Language switcher">
               {langLinks.map((item, idx) => {
