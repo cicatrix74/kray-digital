@@ -9,7 +9,7 @@
     {
       id: 'mandrykivka',
       name: 'Мандриківка / Перемога-3',
-      subgroup: '5.1',
+      subgroup: '17.1',
       center: [48.436, 35.062],
       polygon: [
         [48.445, 35.056],
@@ -23,7 +23,7 @@
     {
       id: 'peremoga_1_3',
       name: 'ж/м Перемога (1 - 2)',
-      subgroup: '2.1',
+      subgroup: '17.1',
       center: [48.449, 35.059],
       polygon: [
         [48.454, 35.054],
@@ -35,7 +35,7 @@
     {
       id: 'peremoga_4_5',
       name: 'ж/м Перемога (4 - 5)',
-      subgroup: '5.1',
+      subgroup: '17.1',
       center: [48.420, 35.065],
       polygon: [
         [48.427, 35.059],
@@ -47,7 +47,7 @@
     {
       id: 'peremoga_6',
       name: 'ж/м Перемога-6 / Пд. міст',
-      subgroup: '1.2',
+      subgroup: '17.1',
       center: [48.406, 35.069],
       polygon: [
         [48.414, 35.061],
@@ -59,7 +59,7 @@
     {
       id: 'sokil',
       name: 'ж/м Сокіл (1, 2)',
-      subgroup: '5.1',
+      subgroup: '17.1',
       center: [48.418, 35.055],
       polygon: [
         [48.426, 35.050],
@@ -71,7 +71,7 @@
     {
       id: 'centre_yavornytsky',
       name: 'Центр / просп. Дмитра Яворницького',
-      subgroup: '2.2',
+      subgroup: '17.1',
       center: [48.464, 35.045],
       polygon: [
         [48.472, 35.035],
@@ -83,7 +83,7 @@
     {
       id: 'nagirny',
       name: 'Нагірний / Парк Шевченка / ДНУ',
-      subgroup: '2.1',
+      subgroup: '17.1',
       center: [48.458, 35.062],
       polygon: [
         [48.465, 35.056],
@@ -95,7 +95,7 @@
     {
       id: 'gagarina_pidstantsiya',
       name: 'просп. Науки (Гагаріна) / Підстанція',
-      subgroup: '5.2',
+      subgroup: '17.1',
       center: [48.432, 35.035],
       polygon: [
         [48.448, 35.035],
@@ -107,7 +107,7 @@
     {
       id: 'topolya_1',
       name: 'ж/м Тополя-1',
-      subgroup: '1.1',
+      subgroup: '17.1',
       center: [48.397, 35.025],
       polygon: [
         [48.405, 35.020],
@@ -119,7 +119,7 @@
     {
       id: 'topolya_2_3',
       name: 'ж/м Тополя (2, 3) / Терра',
-      subgroup: '5.2',
+      subgroup: '17.1',
       center: [48.388, 35.028],
       polygon: [
         [48.392, 35.018],
@@ -131,7 +131,7 @@
     {
       id: 'polya_kirova',
       name: 'просп. Олександра Поля (Кірова)',
-      subgroup: '4.1',
+      subgroup: '15.1',
       center: [48.452, 35.022],
       polygon: [
         [48.465, 35.022],
@@ -143,7 +143,7 @@
     {
       id: 'robocha',
       name: 'вул. Робоча / Каверіна',
-      subgroup: '4.2',
+      subgroup: '13.1',
       center: [48.451, 35.002],
       polygon: [
         [48.468, 35.005],
@@ -155,7 +155,7 @@
     {
       id: 'titova',
       name: 'вул. Титова / Метеор / Аполло',
-      subgroup: '5.2',
+      subgroup: '15.1',
       center: [48.435, 35.011],
       polygon: [
         [48.440, 35.000],
@@ -167,7 +167,7 @@
     {
       id: 'kvartal_12',
       name: '12 Квартал / просп. Б. Хмельницького',
-      subgroup: '5.1',
+      subgroup: '15.1',
       center: [48.415, 35.008],
       polygon: [
         [48.428, 34.998],
@@ -179,7 +179,7 @@
     {
       id: 'chervony_kamin',
       name: 'ж/м Червоний Камінь',
-      subgroup: '6.1',
+      subgroup: '13.1',
       center: [48.488, 34.965],
       polygon: [
         [48.498, 34.956],
@@ -191,7 +191,7 @@
     {
       id: 'pokrovsky',
       name: 'ж/м Покровський (Комунар)',
-      subgroup: '1.1',
+      subgroup: '13.1',
       center: [48.484, 34.945],
       polygon: [
         [48.496, 34.936],
@@ -203,7 +203,7 @@
     {
       id: 'parus',
       name: 'ж/м Парус (1, 2)',
-      subgroup: '6.2',
+      subgroup: '13.1',
       center: [48.482, 34.922],
       polygon: [
         [48.494, 34.910],
@@ -215,7 +215,7 @@
     {
       id: 'mazepy',
       name: 'просп. Івана Мазепи / Нігояна',
-      subgroup: '4.1',
+      subgroup: '15.1',
       center: [48.465, 34.985],
       polygon: [
         [48.476, 34.975],
@@ -227,7 +227,7 @@
     {
       id: 'vokzal',
       name: 'Вокзали / Старомостова / Озерка',
-      subgroup: '1.1',
+      subgroup: '15.1',
       center: [48.475, 35.020],
       polygon: [
         [48.484, 35.010],
@@ -239,7 +239,7 @@
     {
       id: 'sonyachny',
       name: 'ж/м Сонячний / ТРЦ Вавилон',
-      subgroup: '2.1',
+      subgroup: '16.1',
       center: [48.482, 35.062],
       polygon: [
         [48.488, 35.050],
@@ -251,7 +251,7 @@
     {
       id: 'slobozhansky',
       name: 'просп. Слобожанський (Правди)',
-      subgroup: '3.1',
+      subgroup: '16.1',
       center: [48.498, 35.072],
       polygon: [
         [48.515, 35.060],
@@ -263,7 +263,7 @@
     {
       id: 'kalynova_kosiora',
       name: 'вул. Калинова / Петра Калнишевського',
-      subgroup: '3.2',
+      subgroup: '16.1',
       center: [48.512, 35.072],
       polygon: [
         [48.525, 35.050],
@@ -275,7 +275,7 @@
     {
       id: 'livoberezhny',
       name: 'ж/м Лівобережний (1-3) / Караван',
-      subgroup: '3.2',
+      subgroup: '14.1',
       center: [48.538, 35.025],
       polygon: [
         [48.556, 35.008],
@@ -287,7 +287,7 @@
     {
       id: 'prydniprovsk',
       name: 'ж/м Придніпровськ',
-      subgroup: '2.2',
+      subgroup: '18.1',
       center: [48.405, 35.130],
       polygon: [
         [48.416, 35.120],
@@ -299,7 +299,7 @@
     {
       id: 'lomyvsky_kamyansky',
       name: 'ж/м Ломівський / Кам\'янський (Фрунзенський)',
-      subgroup: '3.2',
+      subgroup: '14.1',
       center: [48.511, 34.978],
       polygon: [
         [48.522, 34.962],
@@ -311,7 +311,7 @@
     {
       id: 'amur_peredova',
       name: 'Амур / вул. Передова / Мануйлівський',
-      subgroup: '3.1',
+      subgroup: '14.1',
       center: [48.496, 35.020],
       polygon: [
         [48.508, 35.000],
@@ -323,7 +323,7 @@
     {
       id: 'klochko_berezynka',
       name: 'ж/м Клочко-6 / Березинка / Янтарна',
-      subgroup: '3.2',
+      subgroup: '14.1',
       center: [48.516, 35.038],
       polygon: [
         [48.526, 35.025],
@@ -335,7 +335,7 @@
     {
       id: 'kaidaky_svobody',
       name: 'Кайдаки / просп. Свободи',
-      subgroup: '6.1',
+      subgroup: '13.1',
       center: [48.479, 34.992],
       polygon: [
         [48.486, 34.978],
@@ -347,7 +347,7 @@
     {
       id: 'pivnichny',
       name: 'ж/м Північний / Нижньодніпровськ-Вузол',
-      subgroup: '3.2',
+      subgroup: '18.1',
       center: [48.508, 35.118],
       polygon: [
         [48.520, 35.096],
@@ -359,7 +359,7 @@
     {
       id: 'nyzhnodniprovsk_malynovskoho',
       name: 'Нижньодніпровськ / Сонячна Набережна',
-      subgroup: '2.1',
+      subgroup: '16.1',
       center: [48.485, 35.096],
       polygon: [
         [48.495, 35.078],
@@ -371,7 +371,7 @@
     {
       id: 'igren',
       name: 'Стара Ігрень / Рибальське',
-      subgroup: '2.2',
+      subgroup: '18.1',
       center: [48.449, 35.160],
       polygon: [
         [48.462, 35.142],
@@ -383,7 +383,7 @@
     {
       id: 'zakhidny',
       name: 'ж/м Західний',
-      subgroup: '4.2',
+      subgroup: '15.1',
       center: [48.460, 34.952],
       polygon: [
         [48.470, 34.936],
@@ -395,13 +395,158 @@
     {
       id: 'myrny',
       name: 'ж/м Мирний / Краснопілля',
-      subgroup: '5.1',
+      subgroup: '17.1',
       center: [48.389, 35.000],
       polygon: [
         [48.400, 34.988],
         [48.399, 35.014],
         [48.378, 35.012],
         [48.380, 34.985]
+      ]
+    },
+    // Обласні міста та громади (черги 1.1 – 12.1)
+    {
+      id: 'oblast_pidgorodne',
+      name: 'м. Підгородне / Слобожанське',
+      subgroup: '1.1',
+      center: [48.578, 35.105],
+      polygon: [
+        [48.605, 35.070],
+        [48.605, 35.145],
+        [48.555, 35.145],
+        [48.555, 35.070]
+      ]
+    },
+    {
+      id: 'oblast_samar',
+      name: 'м. Самар (Новомосковськ)',
+      subgroup: '2.1',
+      center: [48.638, 35.255],
+      polygon: [
+        [48.670, 35.205],
+        [48.670, 35.305],
+        [48.605, 35.305],
+        [48.605, 35.205]
+      ]
+    },
+    {
+      id: 'oblast_synelnykove',
+      name: 'м. Синельникове',
+      subgroup: '3.1',
+      center: [48.318, 35.512],
+      polygon: [
+        [48.350, 35.465],
+        [48.350, 35.560],
+        [48.285, 35.560],
+        [48.285, 35.465]
+      ]
+    },
+    {
+      id: 'oblast_pavlograd',
+      name: 'м. Павлоград',
+      subgroup: '4.1',
+      center: [48.534, 35.870],
+      polygon: [
+        [48.575, 35.815],
+        [48.575, 35.925],
+        [48.495, 35.925],
+        [48.495, 35.815]
+      ]
+    },
+    {
+      id: 'oblast_ternivka',
+      name: 'м. Тернівка / Першотравенськ',
+      subgroup: '5.1',
+      center: [48.518, 36.085],
+      polygon: [
+        [48.555, 36.030],
+        [48.555, 36.140],
+        [48.485, 36.140],
+        [48.485, 36.030]
+      ]
+    },
+    {
+      id: 'oblast_kamianske',
+      name: 'м. Кам’янське (Лівий / Правий берег)',
+      subgroup: '6.1',
+      center: [48.518, 34.612],
+      polygon: [
+        [48.565, 34.550],
+        [48.565, 34.680],
+        [48.475, 34.680],
+        [48.475, 34.550]
+      ]
+    },
+    {
+      id: 'oblast_vilnohirsk',
+      name: 'м. Вільногірськ / Верхівцеве',
+      subgroup: '7.1',
+      center: [48.478, 34.025],
+      polygon: [
+        [48.515, 33.975],
+        [48.515, 34.080],
+        [48.440, 34.080],
+        [48.440, 33.975]
+      ]
+    },
+    {
+      id: 'oblast_kryvyi_rih_center',
+      name: 'м. Кривий Ріг (Центр / Соцмісто)',
+      subgroup: '8.1',
+      center: [47.910, 33.390],
+      polygon: [
+        [47.965, 33.320],
+        [47.965, 33.460],
+        [47.860, 33.460],
+        [47.860, 33.320]
+      ]
+    },
+    {
+      id: 'oblast_kryvyi_rih_north',
+      name: 'м. Кривий Ріг (Північ / СевГОК)',
+      subgroup: '9.1',
+      center: [48.065, 33.485],
+      polygon: [
+        [48.115, 33.420],
+        [48.115, 33.550],
+        [48.015, 33.550],
+        [48.015, 33.420]
+      ]
+    },
+    {
+      id: 'oblast_zhovti_vody',
+      name: 'м. Жовті Води / П’ятихатки',
+      subgroup: '10.1',
+      center: [48.352, 33.505],
+      polygon: [
+        [48.395, 33.450],
+        [48.395, 33.560],
+        [48.310, 33.560],
+        [48.310, 33.450]
+      ]
+    },
+    {
+      id: 'oblast_nikopol',
+      name: 'м. Нікополь / Покров',
+      subgroup: '11.1',
+      center: [47.575, 34.385],
+      polygon: [
+        [47.620, 34.315],
+        [47.620, 34.455],
+        [47.530, 34.455],
+        [47.530, 34.315]
+      ]
+    },
+    {
+      id: 'oblast_marhanets',
+      name: 'м. Марганець / Томаківка',
+      subgroup: '12.1',
+      center: [47.648, 34.625],
+      polygon: [
+        [47.690, 34.565],
+        [47.690, 34.690],
+        [47.605, 34.690],
+        [47.605, 34.565]
       ]
     }
   ];
@@ -434,7 +579,7 @@
     map = L.map('dniproMap', {
       center: [48.464, 35.045],
       zoom: 12,
-      minZoom: 10,
+      minZoom: 7,
       maxZoom: 17,
       zoomControl: true,
       attributionControl: false
@@ -445,6 +590,21 @@
       maxZoom: 19,
       attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
+
+    const btnDnipro = document.getElementById('btnMapDnipro');
+    const btnOblast = document.getElementById('btnMapOblast');
+    if (btnDnipro && btnOblast) {
+      btnDnipro.addEventListener('click', () => {
+        btnDnipro.classList.add('is-active');
+        btnOblast.classList.remove('is-active');
+        map.flyTo([48.464, 35.045], 12, { duration: 0.7 });
+      });
+      btnOblast.addEventListener('click', () => {
+        btnOblast.classList.add('is-active');
+        btnDnipro.classList.remove('is-active');
+        map.flyTo([48.20, 34.70], 8, { duration: 0.7 });
+      });
+    }
 
     renderDistrictPolygons();
   }
@@ -511,6 +671,21 @@
       });
 
       polygonLayers.push(poly);
+
+      // Постійний бейдж з номером черги прямо на карті
+      const badgeClass = `map-queue-badge state-${status} ${isSelected ? 'is-selected' : ''}`;
+      const labelMarker = L.marker(d.center, {
+        icon: L.divIcon({
+          className: 'map-queue-label-icon',
+          html: `<span class="${badgeClass}">${d.subgroup}</span>`,
+          iconSize: [44, 22],
+          iconAnchor: [22, 11]
+        })
+      }).addTo(map);
+      labelMarker.on('click', () => {
+        selectDistrictOnMap(d);
+      });
+      polygonLayers.push(labelMarker);
     });
   }
 

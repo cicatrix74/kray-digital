@@ -107,7 +107,11 @@ window.currentProvider = currentProvider;
 window.currentGroup = currentGroup;
 
 let providersList = [];
-const allSubgroups = ['1.1', '1.2', '2.1', '2.2', '3.1', '3.2', '4.1', '4.2', '5.1', '5.2', '6.1', '6.2'];
+let allSubgroups = [
+  '1.1', '2.1', '3.1', '4.1', '5.1', '6.1',
+  '7.1', '8.1', '9.1', '10.1', '11.1', '12.1',
+  '13.1', '14.1', '15.1', '16.1', '17.1', '18.1'
+];
 let countdownInterval = null;
 
 // DOM Elements
@@ -333,6 +337,14 @@ async function fetchSchedule() {
     const data = await res.json();
     scheduleData = data;
     window.scheduleData = data;
+    if (Array.isArray(data.groups) && data.groups.length > 0) {
+      allSubgroups = data.groups;
+      if (currentGroup && !allSubgroups.includes(currentGroup)) {
+        currentGroup = '';
+        localStorage.removeItem(CACHE_KEY_GROUP);
+      }
+      renderSubgroupButtons();
+    }
     window.currentGroup = currentGroup;
     updateGroupSelectionVisibility();
     renderDates();
@@ -608,7 +620,15 @@ function downloadMatrixAsPng() {
 
   const dpr = 2;
   const W = 1300;
-  const H = 616;
+  const tableX = 34;
+  const tableY = 74;
+  const groupColW = 78;
+  const cellW = 48;
+  const headerH = 32;
+  const rowH = 36;
+  const tableW = groupColW + 24 * cellW;
+  const tableH = headerH + allSubgroups.length * rowH;
+  const H = tableY + tableH + 68;
   const canvas = document.createElement('canvas');
   canvas.width = W * dpr;
   canvas.height = H * dpr;
@@ -658,15 +678,7 @@ function downloadMatrixAsPng() {
   ctx.textAlign = 'right';
   ctx.fillText(timeStamp, W - 34, 46);
 
-  // Table geometry
-  const tableX = 34;
-  const tableY = 74;
-  const groupColW = 78;
-  const cellW = 48;
-  const headerH = 32;
-  const rowH = 36;
-  const tableW = groupColW + 24 * cellW;
-  const tableH = headerH + allSubgroups.length * rowH;
+  // Table geometry (already computed above for dynamic height)
 
   drawRoundedRect(ctx, tableX, tableY, tableW, tableH, 8);
   ctx.fillStyle = '#0b1120';
@@ -1212,6 +1224,7 @@ window.selectSubgroupExternal = function(group) {
 };
 
 // Search Logic
+let searchRequestSeq = 0;
 async function performAddressSearch() {
   const streetQuery = addressSearch.value.trim();
   const bldQuery = buildingInput.value.trim();
@@ -1220,13 +1233,17 @@ async function performAddressSearch() {
   clearSearch.style.display = streetQuery ? 'block' : 'none';
 
   if (!streetQuery) {
+    searchRequestSeq++;
     searchResults.style.display = 'none';
     return;
   }
 
+  const reqId = ++searchRequestSeq;
+
   try {
     const res = await fetch(`/api/search?q=${encodeURIComponent(streetQuery)}&building=${encodeURIComponent(bldQuery)}&city=${encodeURIComponent(selectedCity)}`);
     const data = await res.json();
+    if (reqId !== searchRequestSeq) return;
     if (data.results && data.results.length > 0) {
       searchResults.innerHTML = '';
       data.results.forEach(item => {
@@ -1243,8 +1260,13 @@ async function performAddressSearch() {
         const bldLabel = lang === 'en' ? 'bld.' : (lang === 'ru' ? 'д.' : 'буд.');
 
         let bldSubtitle = '';
-        if (bldQuery) {
-          bldSubtitle = `<span style="color:#38bdf8; font-weight:600;">${bldLabel} ${bldQuery}</span> ${item.matchedRange ? '<span style="opacity:0.75; font-size:11px;">(' + item.matchedRange + ')</span>' : ''}`;
+        if (item.matchedRange) {
+          bldSubtitle = `<span style="color:#38bdf8; font-weight:600;">${item.matchedRange}</span>`;
+        } else if (bldQuery) {
+          bldSubtitle = `<span style="color:#38bdf8; font-weight:600;">${bldLabel} ${bldQuery}</span>`;
+        } else if (item.needsBuilding) {
+          const hintTxt = lang === 'en' ? 'Enter building # for exact queue' : (lang === 'ru' ? 'Укажите № дома для точной очереди' : 'Вкажіть № будинку для точної черги');
+          bldSubtitle = `<div style="font-size:11px; color:#94a3b8; margin-top:2px;">${hintTxt}</div>`;
         } else if (item.ranges && item.ranges.length > 1) {
           const numPrefix = lang === 'en' ? 'Numbers' : (lang === 'ru' ? 'Номера' : 'Номери');
           bldSubtitle = `<div style="font-size:11px; opacity:0.8; margin-top:2px;">${numPrefix}: ${item.ranges.map(r => `${r.buildings} → гр.${r.group}`).join(', ')}</div>`;
@@ -1252,12 +1274,16 @@ async function performAddressSearch() {
           bldSubtitle = `<div style="font-size:11px; opacity:0.75; margin-top:1px;">${item.ranges[0].buildings}</div>`;
         }
 
+        const liveBadge = item.isLiveAddress
+          ? `<span style="font-size:10px; padding:2px 6px; border-radius:4px; background:rgba(16,185,129,0.18); color:#34d399; border:1px solid rgba(16,185,129,0.35); font-weight:700; margin-left:6px;">LIVE YASNO</span>`
+          : '';
         const calculatedBadge = item.isCalculated ? '<span style="font-size:10px; padding:2px 5px; border-radius:4px; background:rgba(234,179,8,0.2); color:#facc15; margin-left:6px;">розрахункова</span>' : '';
 
         div.innerHTML = `
           <div style="flex:1; padding-right:10px;">
             <div style="display:flex; align-items:center; flex-wrap:wrap; gap:4px;">
               <strong style="color:#f8fafc; font-size:13px;">${item.street}</strong>
+              ${liveBadge}
               ${calculatedBadge}
               ${outageBadge}
             </div>
@@ -1268,7 +1294,11 @@ async function performAddressSearch() {
         `;
 
         div.addEventListener('click', () => {
-          applyAddressSelection(item, bldQuery);
+          const pickedBld = item.matchedRange ? item.matchedRange.replace(/^буд\.\s*/i, '') : bldQuery;
+          applyAddressSelection(item, pickedBld);
+          if (pickedBld && buildingInput) {
+            buildingInput.value = pickedBld;
+          }
         });
 
         searchResults.appendChild(div);
@@ -1600,6 +1630,27 @@ async function loadTelegramFeed() {
   updateActiveAddressChip();
   await fetchSystemStatus();
   await fetchSchedule();
+
+  if (savedStreet && savedBuilding) {
+    try {
+      const refreshCity = (citySelect && citySelect.value) ? citySelect.value : currentCity;
+      const rRes = await fetch(`/api/search?q=${encodeURIComponent(savedStreet)}&building=${encodeURIComponent(savedBuilding)}&city=${encodeURIComponent(refreshCity)}`);
+      const rData = await rRes.json();
+      if (rData && rData.results && rData.results.length > 0 && rData.results[0].isLiveAddress) {
+        const liveItem = rData.results[0];
+        if (liveItem.group && liveItem.group !== currentGroup) {
+          currentGroup = liveItem.group;
+          window.currentGroup = currentGroup;
+          localStorage.setItem(CACHE_KEY_GROUP, currentGroup);
+          updateActiveAddressChip();
+          renderSubgroupButtons();
+          updateLocationInfo();
+          await fetchSchedule();
+        }
+      }
+    } catch (_) {}
+  }
+
   loadTelegramFeed();
 
   const downloadMatrixBtn = document.getElementById('downloadMatrixBtn');

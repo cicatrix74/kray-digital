@@ -1730,11 +1730,61 @@ body {
   transition: all 0.2s ease;
 }
 
-.map-pill-btn:hover {
-  background: rgba(6, 182, 212, 0.15);
+.map-pill-btn:hover,
+.map-pill-btn.is-active {
+  background: rgba(6, 182, 212, 0.22);
   border-color: var(--brand-cyan);
   color: #fff;
   transform: translateY(-1px);
+}
+
+.map-view-switch {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.map-queue-label-icon {
+  background: transparent !important;
+  border: none !important;
+}
+
+.map-queue-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 38px;
+  padding: 2px 7px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: #f8fafc;
+  background: rgba(15, 23, 42, 0.88);
+  border: 1.5px solid #10b981;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.55);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.map-queue-badge.state-off,
+.map-queue-badge.state-emergency {
+  border-color: #ef4444;
+  color: #fecaca;
+}
+
+.map-queue-badge.state-maybe {
+  border-color: #f59e0b;
+  color: #fde68a;
+}
+
+.map-queue-badge.is-selected {
+  background: #06b6d4;
+  border-color: #ecfeff;
+  color: #082f49;
+  transform: scale(1.12);
+  box-shadow: 0 0 12px rgba(6, 182, 212, 0.75);
 }
 
 .dnipro-map-view {

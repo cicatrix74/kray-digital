@@ -190,14 +190,14 @@
             </div>
           </div>
 
-          <!-- All 12 Subgroups (1.1 - 6.2) -->
+          <!-- All 18 Queues (1.1 - 18.1) -->
           <div class="control-group subgroups-group">
             <div class="label-with-hint">
-              <label data-i18n="labelSubgroups">Оберіть вашу підгрупу відключень (1.1–6.2):</label>
+              <label data-i18n="labelSubgroups">Оберіть вашу чергу відключень (1.1–18.1):</label>
               <span class="hint-tag" data-i18n="subgroupHint">ДТЕК Дніпро</span>
             </div>
             <div class="subgroup-grid" id="subgroupGrid">
-              <!-- Injected by JS: 1.1, 1.2, 2.1, 2.2 ... 6.2 -->
+              <!-- Injected by JS: 1.1, 2.1, 3.1 ... 18.1 -->
             </div>
           </div>
 
@@ -386,9 +386,13 @@
             <div class="map-title-area">
               <span class="map-badge-icon">🗺️</span>
               <div>
-                <h2 class="map-title" data-i18n="mapTitle">Інтерактивна карта відключень: м. Дніпро</h2>
-                <p class="map-subtitle" data-i18n="mapSubtitle">Переважаючі черги житлових масивів обох берегів. Для 100% точності за номером будинку використовуйте пошук вище</p>
+                <h2 class="map-title" data-i18n="mapTitle">Інтерактивна карта відключень: Дніпро та область</h2>
+                <p class="map-subtitle" data-i18n="mapSubtitle">Усі 18 черг (1.1–18.1) на карті: Дніпро та міста області. Для 100% точності за будинком використовуйте пошук вище</p>
               </div>
+            </div>
+            <div class="map-view-switch">
+              <button type="button" class="map-pill-btn is-active" id="btnMapDnipro">🏙️ Дніпро (13.1–18.1)</button>
+              <button type="button" class="map-pill-btn" id="btnMapOblast">🗺️ Вся область (1.1–18.1)</button>
             </div>
           </div>
           <div id="dniproMap" class="dnipro-map-view"></div>
@@ -405,7 +409,7 @@
       <section class="matrix-section">
         <details class="details-accordion" id="matrixAccordion" open>
           <summary style="display:flex; align-items:center; flex-wrap:wrap; gap:8px;">
-            <span data-i18n="matrixTitle">Зведена таблиця всіх 12 підгруп Дніпропетровської області на 24 години</span>
+            <span data-i18n="matrixTitle">Зведена таблиця всіх 18 черг Дніпропетровської області на 24 години</span>
             <span id="matrixStatusBadge" class="hint-tag" style="background: rgba(16, 185, 129, 0.2); color: #34d399; font-size:11px;">🟢 Сьогодні: без відключень</span>
             <button type="button" id="downloadMatrixBtn" class="matrix-download-btn" title="Завантажити графік у PNG">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -660,7 +664,7 @@
   <script defer src="/shared/site-footer.js"></script>
   <script src="./vendor/leaflet/leaflet.js"></script>
   <script src="./i18n.js?v=4.5"></script>
-  <script src="./app.js?v=4.7"></script>
-  <script src="./map.js?v=4.2"></script>
+  <script src="./app.js?v=4.8"></script>
+  <script src="./map.js?v=4.9"></script>
 </body>
 </html>
