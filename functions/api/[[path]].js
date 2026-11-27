@@ -28,7 +28,43 @@ const PROVIDERS = [
   }
 ];
 
-const ALL_SUBGROUPS = ['1.1', '1.2', '2.1', '2.2', '3.1', '3.2', '4.1', '4.2', '5.1', '5.2', '6.1', '6.2'];
+const ALL_SUBGROUPS = [
+  '1.1', '2.1', '3.1', '4.1', '5.1', '6.1',
+  '7.1', '8.1', '9.1', '10.1', '11.1', '12.1',
+  '13.1', '14.1', '15.1', '16.1', '17.1', '18.1'
+];
+
+function sortSubgroups(list) {
+  return [...list].sort((a, b) => {
+    const [aMaj, aMin = '0'] = a.split('.');
+    const [bMaj, bMin = '0'] = b.split('.');
+    const majDiff = parseInt(aMaj, 10) - parseInt(bMaj, 10);
+    return majDiff !== 0 ? majDiff : parseInt(aMin, 10) - parseInt(bMin, 10);
+  });
+}
+
+function getActiveSubgroups(yasnoData, dtekMirror) {
+  const found = new Set();
+  if (dtekMirror && dtekMirror.fact && dtekMirror.fact.data) {
+    for (const gpvObj of Object.values(dtekMirror.fact.data)) {
+      if (!gpvObj || typeof gpvObj !== 'object') continue;
+      for (const k of Object.keys(gpvObj)) {
+        if (k.startsWith('GPV')) {
+          found.add(k.slice(3));
+        }
+      }
+      if (found.size > 0) break;
+    }
+  }
+  if (found.size === 0 && yasnoData && typeof yasnoData === 'object') {
+    for (const k of Object.keys(yasnoData)) {
+      if (/^\d+\.\d+$/.test(k)) {
+        found.add(k);
+      }
+    }
+  }
+  return found.size > 0 ? sortSubgroups(found) : ALL_SUBGROUPS;
+}
 
 let cachedYasno = null;
 let lastYasnoFetch = 0;
@@ -199,7 +235,8 @@ async function fetchLiveYasno() {
 }
 
 function parseDaySchedule(group, isTomorrow, yasnoData, dtekMirror) {
-  const normSubgroup = ALL_SUBGROUPS.includes(group) ? group : '5.1';
+  const activeGroups = getActiveSubgroups(yasnoData, dtekMirror);
+  const normSubgroup = activeGroups.includes(group) ? group : (activeGroups[0] || '1.1');
   const gpvKey = `GPV${normSubgroup}`;
   const todayStr = new Date().toISOString().split('T')[0];
   const tomDate = new Date(Date.now() + 86400000);
@@ -504,10 +541,11 @@ export async function onRequest(context) {
       fetchLiveDtekMirror()
     ]);
 
+    const activeGroups = getActiveSubgroups(yasno, dtekMirror);
     const todayMatrix = {};
     const tomorrowMatrix = {};
 
-    ALL_SUBGROUPS.forEach(sub => {
+    activeGroups.forEach(sub => {
       todayMatrix[sub] = parseDaySchedule(sub, false, yasno, dtekMirror).hours.map(h => h.status);
       tomorrowMatrix[sub] = parseDaySchedule(sub, true, yasno, dtekMirror).hours.map(h => h.status);
     });
@@ -519,6 +557,7 @@ export async function onRequest(context) {
       success: true,
       provider: 'dtek_dnipro',
       group: group,
+      groups: activeGroups,
       today: todaySched,
       tomorrow: tomorrowSched,
       todayMatrix: todayMatrix,
@@ -526,16 +565,226 @@ export async function onRequest(context) {
     }), { headers: corsHeaders });
   }
 
+const YASNO_ADDRESS_CACHE = new Map();
+const YASNO_CITY_MAP = {
+  'дніпро': { id: 6, name: 'м. Дніпро' },
+  'м. дніпро': { id: 6, name: 'м. Дніпро' },
+  'кривий ріг': { id: 10, name: 'м. Кривий Ріг' },
+  'м. кривий ріг': { id: 10, name: 'м. Кривий Ріг' },
+  "кам'янське": { id: 8, name: 'м. Кам’янське' },
+  "м. кам'янське": { id: 8, name: 'м. Кам’янське' },
+  'кам’янське': { id: 8, name: 'м. Кам’янське' },
+  'павлоград': { id: 15, name: 'м. Павлоград' },
+  'м. павлоград': { id: 15, name: 'м. Павлоград' },
+  'нікополь': { id: 12, name: 'м. Нікополь' },
+  'м. нікополь': { id: 12, name: 'м. Нікополь' }
+};
+
+async function fetchYasnoAddressJson(targetUrl, ttlMs = 10 * 60 * 1000) {
+  const now = Date.now();
+  const cached = YASNO_ADDRESS_CACHE.get(targetUrl);
+  if (cached && (now - cached.ts < ttlMs)) {
+    return cached.data;
+  }
+  try {
+    const res = await fetch(targetUrl, {
+      headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' }
+    });
+    if (!res.ok) return null;
+    const parsed = await res.json();
+    YASNO_ADDRESS_CACHE.set(targetUrl, { ts: Date.now(), data: parsed });
+    return parsed;
+  } catch {
+    return null;
+  }
+}
+
+function ruStreetToUa(str) {
+  return str
+    .replace(/ы/g, 'и')
+    .replace(/Ы/g, 'И')
+    .replace(/э/g, 'е')
+    .replace(/Э/g, 'Е')
+    .replace(/ъ/g, "'")
+    .replace(/ё/g, 'йо')
+    .replace(/ская\b/gi, 'ська')
+    .replace(/ский\b/gi, 'ський')
+    .replace(/ское\b/gi, 'ське')
+    .replace(/ая\b/gi, 'а')
+    .replace(/ое\b/gi, 'е')
+    .replace(/ее\b/gi, 'є');
+}
+
+function buildAddressOutageInfo(assignedGroup, yasno, dtekMirror, emerg) {
+  const yasnoGroup = yasno && yasno[assignedGroup] ? yasno[assignedGroup] : null;
+  const isGroupEmergency = yasnoGroup && yasnoGroup.today && yasnoGroup.today.status === 'EmergencyShutdowns';
+  if (!isGroupEmergency) return null;
+
+  const startIso = (emerg && emerg.startedAt) || emergencyStartedAt || (yasnoGroup && yasnoGroup.updatedOn) || (dtekMirror && dtekMirror.lastUpdated);
+  const updatedIso = (dtekMirror && dtekMirror.lastUpdated) || (yasnoGroup && yasnoGroup.updatedOn);
+  const restoreTimes = computeEstimatedRestore(startIso, yasnoGroup);
+  return {
+    hasOutage: true,
+    type: 'emergency_shutdown',
+    reasonUa: 'Екстрені відключення (Аварійне без застосування графіку погодинних відключень)',
+    reasonRu: 'Экстренные отключения (Аварийное без применения графика почасовых отключений)',
+    reasonEn: 'Emergency shutdowns (Emergency outage without hourly schedule)',
+    startTime: formatKyivDateTime(startIso),
+    estimatedRestore: restoreTimes.ua,
+    estimatedRestoreRu: restoreTimes.ru,
+    estimatedRestoreEn: restoreTimes.en,
+    updatedAt: formatKyivDateTime(updatedIso),
+    operator: 'ДТЕК Дніпровські електромережі',
+    noticeUa: 'За даною адресою в даний момент відсутня електроенергія. Причина: Екстрені відключення. Графіки стабілізаційних відключень не діють!',
+    noticeRu: 'По данному адресу в данный момент отсутствует электроэнергия. Причина: Экстренные отключения. Графики стабилизационных отключений не действуют!',
+    noticeEn: 'Power is currently cut at this address. Reason: Emergency shutdowns. Scheduled outages are suspended!'
+  };
+}
+
+async function resolveYasnoCity(cityFilter) {
+  const key = (cityFilter || '').trim().toLowerCase();
+  if (!key || key === 'all') return { id: 6, name: 'м. Дніпро' };
+  if (YASNO_CITY_MAP[key]) return YASNO_CITY_MAP[key];
+
+  const cleanCity = cityFilter.replace(/^(м\.|с\.|смт|сел\.?)\s*/i, '').trim();
+  const data = await fetchYasnoAddressJson(
+    `https://app.yasno.ua/api/blackout-service/public/shutdowns/addresses/v2/cities?regionId=3&dsoId=301&query=${encodeURIComponent(cleanCity)}`
+  );
+  if (Array.isArray(data) && data.length > 0) {
+    const chosen = data.find(c => (c.value || '').toLowerCase().includes(cleanCity.toLowerCase())) || data[0];
+    return { id: chosen.id, name: chosen.value };
+  }
+  return { id: 6, name: 'м. Дніпро' };
+}
+
+async function searchYasnoLiveAddresses(rawStreet, cleanedStreet, buildingNumber, cityFilter, localFallbackStreets, yasno, dtekMirror, emerg) {
+  const city = await resolveYasnoCity(cityFilter);
+  const candidateQueries = [];
+  const abbreviatedRaw = rawStreet
+    .replace(/^(проспект|просп\.?|пр-т)\s+/i, 'просп. ')
+    .replace(/^(вулиця|вул\.?|улица|ул\.?)\s+/i, 'вул. ')
+    .replace(/^(провулок|пров\.?|переулок|пер\.?)\s+/i, 'пров. ')
+    .replace(/^(бульвар|бул\.?)\s+/i, 'бул. ')
+    .replace(/^(площа|площадь|пл\.?)\s+/i, 'пл. ')
+    .trim();
+  if (abbreviatedRaw && abbreviatedRaw !== cleanedStreet && abbreviatedRaw.length >= 4) {
+    candidateQueries.push(abbreviatedRaw);
+  }
+  if (cleanedStreet.length >= 2 && !candidateQueries.includes(cleanedStreet)) {
+    candidateQueries.push(cleanedStreet);
+  }
+  if (rawStreet && rawStreet !== cleanedStreet && rawStreet.length >= 2 && !candidateQueries.includes(rawStreet)) {
+    candidateQueries.push(rawStreet);
+  }
+
+  for (const item of localFallbackStreets.slice(0, 3)) {
+    const cleanLocal = (item.street || '')
+      .replace(/\(.*?\)/g, '')
+      .replace(/^(вул\.|вулиця|просп\.|проспект|пр-т|пров\.|провулок|бул\.|бульвар|ж\/м|шосе|пл\.|площа)\s+/i, '')
+      .trim();
+    if (cleanLocal && !candidateQueries.includes(cleanLocal)) {
+      candidateQueries.push(cleanLocal);
+    }
+  }
+  const translit = ruStreetToUa(cleanedStreet);
+  if (translit && translit !== cleanedStreet && !candidateQueries.includes(translit)) {
+    candidateQueries.push(translit);
+  }
+
+  let streets = [];
+  for (const q of candidateQueries) {
+    const res = await fetchYasnoAddressJson(
+      `https://app.yasno.ua/api/blackout-service/public/shutdowns/addresses/v2/streets?regionId=3&dsoId=301&cityId=${city.id}&query=${encodeURIComponent(q)}`
+    );
+    if (Array.isArray(res) && res.length > 0) {
+      streets = res;
+      break;
+    }
+  }
+
+  if (streets.length === 0) return [];
+
+  const sortedStreets = [...streets].sort((a, b) => {
+    const av = String(a.value || '').toLowerCase();
+    const bv = String(b.value || '').toLowerCase();
+    const aCorner = av.startsWith('ріг ') ? 1 : 0;
+    const bCorner = bv.startsWith('ріг ') ? 1 : 0;
+    if (aCorner !== bCorner) return aCorner - bCorner;
+    return av.length - bv.length;
+  });
+
+  const topStreets = sortedStreets.slice(0, 8);
+  const housesByStreet = await Promise.all(
+    topStreets.map(async (st) => {
+      const hUrl = `https://app.yasno.ua/api/blackout-service/public/shutdowns/addresses/v2/houses?regionId=3&dsoId=301&cityId=${city.id}&streetId=${st.id}&query=${encodeURIComponent(buildingNumber || '')}`;
+      const houses = await fetchYasnoAddressJson(hUrl);
+      return { street: st, houses: Array.isArray(houses) ? houses : [] };
+    })
+  );
+
+  const normBld = buildingNumber.trim().toLowerCase();
+  const groupTasks = [];
+
+  for (const entry of housesByStreet) {
+    if (entry.houses.length === 0) continue;
+    if (normBld) {
+      const sorted = [...entry.houses].sort((a, b) => {
+        const av = String(a.value || '').trim().toLowerCase();
+        const bv = String(b.value || '').trim().toLowerCase();
+        const aExact = av === normBld ? 2 : (av.startsWith(normBld) ? 1 : 0);
+        const bExact = bv === normBld ? 2 : (bv.startsWith(normBld) ? 1 : 0);
+        return bExact - aExact;
+      });
+      const perStreetLimit = topStreets.length === 1 ? 4 : 2;
+      for (const h of sorted.slice(0, perStreetLimit)) {
+        if (groupTasks.length < 8) {
+          groupTasks.push({ street: entry.street, house: h });
+        }
+      }
+    } else {
+      if (groupTasks.length < 6) {
+        groupTasks.push({ street: entry.street, house: entry.houses[0] });
+      }
+    }
+  }
+
+  if (groupTasks.length === 0) return [];
+
+  const resolved = await Promise.all(
+    groupTasks.map(async ({ street, house }) => {
+      const gUrl = `https://app.yasno.ua/api/blackout-service/public/shutdowns/addresses/v2/group?regionId=3&dsoId=301&cityId=${city.id}&streetId=${street.id}&houseId=${house.id}`;
+      const grp = await fetchYasnoAddressJson(gUrl);
+      if (!grp || grp.group === undefined || grp.subgroup === undefined) return null;
+      const assignedGroup = `${grp.group}.${grp.subgroup}`;
+      return {
+        street: street.value,
+        city: city.name,
+        provider: 'dtek_dnipro',
+        group: assignedGroup,
+        building: buildingNumber ? `буд. ${house.value}` : '',
+        matchedRange: buildingNumber ? `буд. ${house.value}` : '',
+        needsBuilding: !buildingNumber,
+        isLiveAddress: true,
+        ranges: [],
+        outage: buildAddressOutageInfo(assignedGroup, yasno, dtekMirror, emerg)
+      };
+    })
+  );
+
+  return resolved.filter(Boolean);
+}
+
   if (pathname.endsWith('/search')) {
-    const [yasno, dtekMirror] = await Promise.all([
+    const [yasno, dtekMirror, emerg] = await Promise.all([
       fetchLiveYasno(),
-      fetchLiveDtekMirror()
+      fetchLiveDtekMirror(),
+      checkEmergencyStatus()
     ]);
     const rawStreet = (url.searchParams.get('q') || url.searchParams.get('street') || '').trim();
     const buildingNumber = (url.searchParams.get('building') || '').trim();
     const cityFilter = (url.searchParams.get('city') || '').trim();
 
-    const streetPrefixRegex = /^(вул\.|вулиця|просп\.|проспект|пр-т|пров\.|провулок|бул\.|бульвар|ж\/м|шосе|пл\.|площа)\s+/i;
+    const streetPrefixRegex = /^(вул\.|вулиця|просп\.|проспект|пр-т|пров\.|провулок|бул\.|бульвар|ж\/м|шосе|пл\.|площа|ул\.|улица|пер\.|переулок)\s+/i;
     const cleanedStreet = rawStreet.replace(streetPrefixRegex, '').trim();
     const normQuery = normalizeSearchText(cleanedStreet);
     const queryWords = cleanedStreet.toLowerCase().split(/\s+/).map(normalizeSearchText).filter(w => w.length >= 2);
@@ -604,7 +853,24 @@ export async function onRequest(context) {
       }
 
       scoredMatches.sort((a, b) => b.score - a.score);
-      matches = scoredMatches.slice(0, 20).map(m => m.item).map(item => {
+      const localTop = scoredMatches.slice(0, 10).map(m => m.item);
+
+      const liveMatches = await searchYasnoLiveAddresses(
+        rawStreet,
+        cleanedStreet,
+        buildingNumber,
+        cityFilter,
+        localTop,
+        yasno,
+        dtekMirror,
+        emerg
+      );
+
+      if (liveMatches.length > 0) {
+        matches = liveMatches;
+      } else {
+        const activeGroups = getActiveSubgroups(yasno, dtekMirror);
+        matches = localTop.map(item => {
         let assignedGroup = item.defaultGroup;
         let matchedBuildingRange = '';
 
@@ -659,6 +925,12 @@ export async function onRequest(context) {
           };
         }
 
+        if (!activeGroups.includes(assignedGroup)) {
+          const base = String(assignedGroup).split('.')[0];
+          const mapped = `${base}.1`;
+          assignedGroup = activeGroups.includes(mapped) ? mapped : activeGroups[0];
+        }
+
         return {
           street: item.street,
           city: item.city,
@@ -670,6 +942,7 @@ export async function onRequest(context) {
           outage: outageInfo
         };
       });
+      }
 
       if (matches.length === 0) {
         let hash = 0;
